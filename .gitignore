@@ -70,3 +70,6 @@ node_modules/
 # bower packages
 telemeta_mshs/assets-src/vendor/
 .sass-cache/
+
+# Data
+data/
