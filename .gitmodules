@@ -1,0 +1,3 @@
+[submodule "telemeta_mshs/apps/Telemeta"]
+	path = telemeta_mshs/apps/Telemeta
+	url = https://github.com/Parisson/Telemeta.git
