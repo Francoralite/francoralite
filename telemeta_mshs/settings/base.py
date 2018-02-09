@@ -1,6 +1,8 @@
 import os
 import sys
 
+#from django.apps import apps as django_apps
+
 # PATH vars
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,8 +11,14 @@ root = lambda *x: os.path.join(BASE_DIR, *x)
 sys.path.insert(0, root('apps'))
 
 
+# Load Telemeta default settings
+
+from .telemeta import *  # noqa
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'CHANGE THIS!!!'
+#SECRET_KEY = 'CHANGE THIS!!!'
+SECRET_KEY = 'qsqdfdsfsfqsdq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -26,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'telemeta',
 ]
 
 PROJECT_APPS = []
@@ -124,6 +133,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Telemeta app settings
+#print dir(django_apps.get_app_config('telemeta'))
+#django_apps.load_app('telemeta')
+#print dir(django_apps.get_app_config('telemeta'))
+#from django_apps.telemeta.app.settings import *
+
 
 
 # .local.py overrides all the common settings.
