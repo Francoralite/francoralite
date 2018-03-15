@@ -21,4 +21,21 @@ timeside==0.7 # See https://github.com/Parisson/TimeSide/issues/104
 -e git+https://github.com/maths28/django-haystack.git@v2.4.1.dev0#egg=django-haystack-2.4.1.dev0
 -e git+https://github.com/yomguy/django-jqchat.git#egg=django-jqchat
 
+# Legacy main app
 git+https://github.com/Parisson/Telemeta.git@5036463
+
+# Docker compose dependeny
+docker-compose==1.19.0
+
+# API dependencies
+djangorestframework==3.7.7
+django-rest-swagger==2.1.2
+
+# Testing dependencies
+gunicorn==19.7.1
+factory_boy==2.10.0
+ipython==5.5.0
+parameterized==0.6.1
+pytest==3.4.2
+pytest-cov==2.5.1
+pytest-django==3.1.2

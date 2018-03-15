@@ -1,1 +1,0 @@
-./telemeta_mshs/apps/Telemeta/requirements-dev.txt
