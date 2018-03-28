@@ -12,7 +12,7 @@ See [Docker CE](https://docs.docker.com/install/#platform-support-matrix)
 * Install tkinter
 
 ```
-apt-get install python-tk python-gst-1.0
+apt-get install python-tk python-gst-1.0 python-dev libmysqlclient-dev
 ```
 
 ### Git dependencies
