@@ -29,15 +29,9 @@ git clone git@github.com:lluc/telemeta-integration.git
 git submodule init && git submodule update
 ```
 
-### Python dependencies
-
-* Install Python dependencies (inside a virtualenv)
-
-```
-pip install -r requirements.txt
-```
-
 ### Run stack
+
+> You must have docker compose installed inside a Python2 virtualenv
 
 ```
 docker-compose up
@@ -45,6 +39,14 @@ docker-compose up
 
 ### Run tests
 
+We need to install tests dependencies inside container before and remove south
+
+```
+docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip install --no-cache-dir .[tests] --process-dependency-links'
+docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip uninstall south'
+```
+
+Now, we can launch tests
 ```
 docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps python manage.py test --settings=telemeta_mshs.settings.testing -v 3'
 ```

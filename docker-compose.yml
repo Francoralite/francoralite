@@ -52,6 +52,11 @@ services:
       - data
     env_file:
       - ./telemeta_mshs/apps/Telemeta/env/prod.env
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
+      interval: 10s
+      timeout: 2s
+      retries: 20
     command: /bin/bash /srv/scripts/start_api.sh
     depends_on:
       db:
@@ -62,12 +67,16 @@ services:
       - search
 
   worker:
-    build: .
+    build:
+      context: .
     volumes_from:
       - app
     env_file:
       - ./telemeta_mshs/apps/Telemeta/env/prod.env
     command: /bin/bash /srv/scripts/start_worker.sh
+    depends_on:
+      app:
+        condition: service_healthy
     links:
       - broker
       - db
