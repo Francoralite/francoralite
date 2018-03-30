@@ -20,7 +20,7 @@ INSTITUTION_STRUCTURE = [
 ]
 
 # Expected keys for Institution objects
-INSTITUTION_FIELDS = sorted([item[0] for item in ADDRESS_TYPE_STRUCTURE])
+INSTITUTION_FIELDS = sorted([item[0] for item in INSTITUTION_STRUCTURE])
 
 
 @pytest.mark.django_db
@@ -113,12 +113,6 @@ class TestInstitutionList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.json(), dict)
 
-        # Ensure name displayed is the default locale
-        self.assertEqual(
-            response_get.json()['name'],
-            response_get.json()['name_en'],
-        )
-
 
     def test_update_an_institution(self):
         """
@@ -132,9 +126,7 @@ class TestInstitutionList(APITestCase):
         url_get = reverse('institution-detail', kwargs={'pk': item.id})
         data = self.client.get(url_get).json()
 
-        # Update English name
         data['name'] = 'foobar_test_put'
-        data['name_en'] = 'foobar_test_put'
         url = reverse('institution-detail', kwargs={'pk': item.id})
         response = self.client.put(url, data, format='json')
 
@@ -142,7 +134,6 @@ class TestInstitutionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.json(), dict)
         self.assertEqual(sorted(response.json().keys()), INSTITUTION_FIELDS)
-        self.assertEqual(data['name_en'], response.json()['name'])
         self.assertEqual(response.json()['name'], 'foobar_test_put')
 
 
@@ -155,7 +146,7 @@ class TestInstitutionList(APITestCase):
         self.assertNotEqual(item.name, 'foobar_test_patch')
 
         # Update English name
-        data = {'name': 'foobar_test_patch', 'name_en': 'foobar_test_patch'}
+        data = {'name': 'foobar_test_patch'}
         url = reverse('institution-detail', kwargs={'pk': item.id})
         response = self.client.put(url, data, format='json')
 
@@ -163,7 +154,6 @@ class TestInstitutionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.json(), dict)
         self.assertEqual(sorted(response.json().keys()), INSTITUTION_FIELDS)
-        self.assertEqual(data['name_en'], response.json()['name'])
         self.assertEqual(response.json()['name'], 'foobar_test_patch')
 
 
