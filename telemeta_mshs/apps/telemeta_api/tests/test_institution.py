@@ -2,8 +2,10 @@
 Institution tests
 """
 
-import pytest
 import factory
+import pytest
+import sys
+
 from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
@@ -18,6 +20,7 @@ from ..models.institution import Institution
 INSTITUTION_STRUCTURE = [
     ('id', int),
     ('name', str),
+    ('notes', str),
 ]
 
 # Expected keys for Institution objects
@@ -37,20 +40,17 @@ class TestInstitutionList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
+        for idx in range(6):
+            institution = InstitutionFactory.create()
+            institution.save()
+
 
     def test_can_get_institution_list(self):
         """
         Ensure Institution objects exists
         """
-        #url = reverse('institution-list')
-        url = '/institution'
+        url = reverse('institution-list')
 
-        for idx in range(6):
-            data = factory.build(dict, FACTORY_CLASS=InstitutionFactory)
-            response = self.client.post(url, data, format='json')
-
-        # Check only expected attributes returned
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # ORM side
         institutions = Institution.objects.all()
         self.assertEqual(len(institutions), 6)
@@ -58,9 +58,9 @@ class TestInstitutionList(APITestCase):
         # API side
         response = self.client.get(url)
 
-        self.assertIsInstance(response.json(), list)
+        self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()), 6)
+        self.assertEqual(len(response.data), 6)
 
 
     @parameterized.expand(INSTITUTION_STRUCTURE)
@@ -72,18 +72,23 @@ class TestInstitutionList(APITestCase):
         url = reverse('institution-list')
         response = self.client.get(url)
 
-        self.assertIsInstance(response.json(), list)
+        self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        for institution in response.json():
-            with self.subTest(institution=institution):
-                # Check only expected attributes returned
-                self.assertEqual(
-                    sorted(institution.keys()), INSTITUTION_FIELDS)
+        for institution in response.data:
+            # Check only expected attributes returned
+            self.assertEqual(
+                sorted(institution.keys()), INSTITUTION_FIELDS)
 
-                # Ensure type of each attribute
+            # Ensure type of each attribute
+            if attribute_type == str:
+                if sys.version_info.major == 2:
+                    self.assertIsInstance(institution[attribute], basestring)
+                else:
+                    self.assertIsInstance(institution[attribute], str)
+            else:
                 self.assertIsInstance(institution[attribute], attribute_type)
-                self.assertIsNot(institution[attribute], '')
+            self.assertIsNot(institution[attribute], '')
 
 
     def test_get_an_institution(self):
@@ -96,7 +101,7 @@ class TestInstitutionList(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.json(), dict)
+        self.assertIsInstance(response.data, dict)
 
 
     def test_create_an_institution(self):
@@ -110,17 +115,17 @@ class TestInstitutionList(APITestCase):
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIsInstance(response.json(), dict)
-        self.assertEqual(sorted(response.json().keys()), INSTITUTION_FIELDS)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
 
         url = reverse(
             'institution-detail',
-            kwargs={'pk': response.json()['id']}
+            kwargs={'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response_get.json(), dict)
+        self.assertIsInstance(response_get.data, dict)
 
 
     def test_update_an_institution(self):
@@ -133,7 +138,7 @@ class TestInstitutionList(APITestCase):
 
         # Get existing object from API
         url_get = reverse('institution-detail', kwargs={'pk': item.id})
-        data = self.client.get(url_get).json()
+        data = self.client.get(url_get).data
 
         data['name'] = 'foobar_test_put'
         url = reverse('institution-detail', kwargs={'pk': item.id})
@@ -141,9 +146,9 @@ class TestInstitutionList(APITestCase):
 
         # Ensure new name returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.json(), dict)
-        self.assertEqual(sorted(response.json().keys()), INSTITUTION_FIELDS)
-        self.assertEqual(response.json()['name'], 'foobar_test_put')
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
+        self.assertEqual(response.data['name'], 'foobar_test_put')
 
 
     def test_patch_an_institution(self):
@@ -154,16 +159,15 @@ class TestInstitutionList(APITestCase):
         item = Institution.objects.first()
         self.assertNotEqual(item.name, 'foobar_test_patch')
 
-        # Update English name
         data = {'name': 'foobar_test_patch'}
         url = reverse('institution-detail', kwargs={'pk': item.id})
-        response = self.client.put(url, data, format='json')
+        response = self.client.patch(url, data, format='json')
 
         # Ensure new name returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.json(), dict)
-        self.assertEqual(sorted(response.json().keys()), INSTITUTION_FIELDS)
-        self.assertEqual(response.json()['name'], 'foobar_test_patch')
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
+        self.assertEqual(response.data['name'], 'foobar_test_patch')
 
 
     def test_delete_an_institution(self):
