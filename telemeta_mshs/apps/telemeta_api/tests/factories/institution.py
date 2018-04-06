@@ -15,3 +15,4 @@ class InstitutionFactory(factory.Factory):
         model = Institution
 
     name = factory.Faker('word')
+    notes = factory.Faker('word')

@@ -5,6 +5,7 @@ Institution tests
 import pytest
 import factory
 from django.forms.models import model_to_dict
+from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
 from rest_framework import status
@@ -28,6 +29,14 @@ class TestInstitutionList(APITestCase):
     """
     This class manage all Institution tests
     """
+
+    def setUp(self):
+        """
+        Run needed commands to have a fully working project
+        """
+
+        call_command('telemeta-setup-enumerations')
+
 
     def test_can_get_institution_list(self):
         """
