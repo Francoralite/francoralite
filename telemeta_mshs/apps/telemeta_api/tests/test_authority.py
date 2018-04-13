@@ -17,7 +17,7 @@ from .factories.authority import AuthorityFactory
 from ..models.authority import Authority
 
 # Expected structure for Authority objects
-_STRUCTURE = [
+AUTHORITY_STRUCTURE = [
     ('id', int),
     ('last_name', str),
     ('first_name', str),

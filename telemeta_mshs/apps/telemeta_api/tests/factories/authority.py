@@ -15,14 +15,16 @@ class AuthorityFactory(factory.Factory):
     class Meta:
         model = Authority
 
-    fake = factory.Faker('fr_FR')
+    #fake = factory.Faker('fr_FR')
     # FIXIT------------------
-    last_name = fake.last_name()
-    first_name = fake.last_name()
-    civilite = fake.prefix()
-    alias = fake.word()
-    roles = fake.word()
-    birth_date = fake.date()
-    death_date = fake.date()
-    biography = fake.paragraphs(nb=3)
-    uri = fake.uri_page()
+    last_name = factory.Faker('last_name')
+    first_name = factory.Faker('first_name')
+    civilite = factory.Faker('prefix')
+    alias = factory.Faker('word')
+    roles = factory.Faker('word')
+    birth_date = factory.Faker('date')
+    death_date = factory.Faker('date')
+    biography = factory.Faker('paragraphs')
+    uri = factory.Faker('uri_page')
+    birth_location = None
+    death_location = None

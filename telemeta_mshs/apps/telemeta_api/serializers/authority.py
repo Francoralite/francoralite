@@ -23,14 +23,12 @@ class AuthoritySerializer(serializers.ModelSerializer):
         ('EDT','Editeur')
     )
     roles = serializers.MultipleChoiceField(choices=ROLES)
-    birth_date = serializers.DateField(null=True)
-    # FIXIT ----
-    #birth_location = ForeignKey('Location', related_name='birth_location', verbose_name=_('birth location'), blank=True, null=True, on_delete=models.SET_NULL)
-    death_date = serializers.DateField( null=True )
-    # FIXIT ----
-    #death_location = ForeignKey('Location',related_name='death_location', verbose_name=_('death location'), blank=True, null=True, on_delete=models.SET_NULL)
-    biography = serializers.TextField( null=True, blank=True )
-    uri = serializers.URLField(null=True, blank=True)
+    birth_date = serializers.DateField(allow_null=True)
+    death_date = serializers.DateField(allow_null=True)
+    birth_location = serializers.StringRelatedField()
+    death_location = serializers.StringRelatedField()
+    biography = serializers.CharField(allow_null=True, allow_blank=True)
+    uri = serializers.URLField(allow_null=True, allow_blank=True)
 
 
 
