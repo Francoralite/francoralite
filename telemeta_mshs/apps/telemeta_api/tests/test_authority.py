@@ -14,6 +14,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.authority import AuthorityFactory
+from .factories.location import LocationFactory
 from ..models.authority import Authority
 
 # Expected structure for Authority objects
@@ -23,7 +24,7 @@ AUTHORITY_STRUCTURE = [
     ('first_name', str),
     ('civilite', str),
     ('alias', str),
-    ('roles', str),
+    ('roles', set),
     ('birth_date', str),
     ('birth_location', str),
     ('death_date', str),
@@ -49,9 +50,7 @@ class TestAuthorityList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
-        for idx in range(6):
-            authority = AuthorityFactory.create()
-            authority.save()
+        AuthorityFactory.create_batch(6)
 
 
     def test_can_get_authority_list(self):

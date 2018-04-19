@@ -40,9 +40,7 @@ class TestInstitutionList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
-        for idx in range(6):
-            institution = InstitutionFactory.create()
-            institution.save()
+        InstitutionFactory.create_batch(6)
 
 
     def test_can_get_institution_list(self):
