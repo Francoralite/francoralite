@@ -17,7 +17,7 @@ from .factories.authority import AuthorityFactory
 from ..models.authority import Authority
 
 # Expected structure for Authority objects
-_STRUCTURE = [
+AUTHORITY_STRUCTURE = [
     ('id', int),
     ('last_name', str),
     ('first_name', str),
@@ -25,7 +25,9 @@ _STRUCTURE = [
     ('alias', str),
     ('roles', str),
     ('birth_date', str),
+    ('birth_location', str),
     ('death_date', str),
+    ('death_location', str),
     ('biography', str),
     ('uri', str),
 ]
@@ -141,13 +143,13 @@ class TestAuthorityList(APITestCase):
         """
 
         item = Authority.objects.first()
-        self.assertNotEqual(item.name, 'foobar_test_put')
+        self.assertNotEqual(item.last_name, 'foobar_test_put')
 
         # Get existing object from API
         url_get = reverse('authority-detail', kwargs={'pk': item.id})
         data = self.client.get(url_get).data
 
-        data['name'] = 'foobar_test_put'
+        data['last_name'] = 'foobar_test_put'
         url = reverse('authority-detail', kwargs={'pk': item.id})
         response = self.client.put(url, data, format='json')
 
@@ -155,7 +157,7 @@ class TestAuthorityList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), AUTHORITY_FIELDS)
-        self.assertEqual(response.data['name'], 'foobar_test_put')
+        self.assertEqual(response.data['last_name'], 'foobar_test_put')
 
 
     def test_patch_an_authority(self):
@@ -164,9 +166,9 @@ class TestAuthorityList(APITestCase):
         """
 
         item = Authority.objects.first()
-        self.assertNotEqual(item.name, 'foobar_test_patch')
+        self.assertNotEqual(item.last_name, 'foobar_test_patch')
 
-        data = {'name': 'foobar_test_patch'}
+        data = {'last_name': 'foobar_test_patch'}
         url = reverse('authority-detail', kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='json')
 
@@ -174,7 +176,7 @@ class TestAuthorityList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), AUTHORITY_FIELDS)
-        self.assertEqual(response.data['name'], 'foobar_test_patch')
+        self.assertEqual(response.data['last_name'], 'foobar_test_patch')
 
 
     def test_delete_an_authority(self):

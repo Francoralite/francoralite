@@ -5,6 +5,7 @@ authority factory to execute tests
 
 import factory
 from ...models.authority import Authority
+from location import LocationFactory
 
 
 class AuthorityFactory(factory.Factory):
@@ -15,14 +16,15 @@ class AuthorityFactory(factory.Factory):
     class Meta:
         model = Authority
 
-    fake = factory.Faker('fr_FR')
     # FIXIT------------------
-    last_name = fake.last_name()
-    first_name = fake.last_name()
-    civilite = fake.prefix()
-    alias = fake.word()
-    roles = fake.word()
-    birth_date = fake.date()
-    death_date = fake.date()
-    biography = fake.paragraphs(nb=3)
-    uri = fake.uri_page()
+    last_name = factory.Faker('last_name')
+    first_name = factory.Faker('first_name')
+    civilite = factory.Faker('prefix')
+    alias = factory.Faker('word')
+    roles = factory.Faker('word')
+    birth_date = factory.Faker('date')
+    birth_location = factory.SubFactory(LocationFactory)
+    death_date = factory.Faker('date')
+    death_location = factory.SubFactory(LocationFactory)
+    biography = factory.Faker('paragraphs')
+    uri = factory.Faker('uri_page')
