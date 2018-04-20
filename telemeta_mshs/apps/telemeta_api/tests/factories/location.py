@@ -5,16 +5,17 @@ location factory to execute tests
 
 import factory
 from telemeta.models.location import Location
-from location_type import LocationTypeFactory
+from .location_type import LocationTypeFactory
 
 
-class LocationFactory(factory.Factory):
+class LocationFactory(factory.django.DjangoModelFactory):
     """
     Location factory
     """
 
     class Meta:
         model = Location
+        django_get_or_create = ('name',)
 
     # FIXIT------------------
     name = factory.Faker('word')

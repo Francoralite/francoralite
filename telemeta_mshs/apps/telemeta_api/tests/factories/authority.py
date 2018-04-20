@@ -5,10 +5,11 @@ authority factory to execute tests
 
 import factory
 from ...models.authority import Authority
-from location import LocationFactory
+from .location import LocationFactory
 
+ROLES = [role[0] for role in Authority.ROLES]
 
-class AuthorityFactory(factory.Factory):
+class AuthorityFactory(factory.django.DjangoModelFactory):
     """
     Authority factory
     """
@@ -21,7 +22,7 @@ class AuthorityFactory(factory.Factory):
     first_name = factory.Faker('first_name')
     civilite = factory.Faker('prefix')
     alias = factory.Faker('word')
-    roles = factory.Faker('word')
+    roles = factory.Faker('random_element', elements=ROLES)
     birth_date = factory.Faker('date')
     birth_location = factory.SubFactory(LocationFactory)
     death_date = factory.Faker('date')

@@ -6,7 +6,7 @@ import factory
 from ...models.institution import Institution
 
 
-class InstitutionFactory(factory.Factory):
+class InstitutionFactory(factory.django.DjangoModelFactory):
     """
     Institution factory
     """
