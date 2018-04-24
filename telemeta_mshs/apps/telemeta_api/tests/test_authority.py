@@ -16,6 +16,7 @@ from rest_framework.test import APITestCase
 from .factories.authority import AuthorityFactory
 from .factories.location import LocationFactory
 from ..models.authority import Authority
+from telemeta.models.location import Location
 
 # Expected structure for Authority objects
 AUTHORITY_STRUCTURE = [
@@ -24,7 +25,7 @@ AUTHORITY_STRUCTURE = [
     ('first_name', str),
     ('civilite', str),
     ('alias', str),
-    ('roles', set),
+    ('roles', str),
     ('birth_date', str),
     ('birth_location', str),
     ('death_date', str),
@@ -118,6 +119,12 @@ class TestAuthorityList(APITestCase):
         """
 
         data = factory.build(dict, FACTORY_CLASS=AuthorityFactory)
+
+        loc = Location.objects.first()
+        # Write the Location object in the authority data object.
+        data['birth_location'] = loc.name
+        data['death_location'] = loc.name
+
         url = reverse('authority-list')
         response = self.client.post(url, data, format='json')
 

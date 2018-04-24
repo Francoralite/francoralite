@@ -17,7 +17,6 @@ class LocationFactory(factory.django.DjangoModelFactory):
         model = Location
         django_get_or_create = ('name',)
 
-    # FIXIT------------------
     name = factory.Faker('word')
     type = 0
     complete_type = factory.SubFactory(LocationTypeFactory)
