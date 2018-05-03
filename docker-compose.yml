@@ -16,7 +16,7 @@ services:
     command: 'true'
 
   db:
-    image: mysql
+    image: mysql:8.0.2
     volumes:
       - ./telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts
       - ./data/mysql/:/var/lib/mysql
