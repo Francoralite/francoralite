@@ -6,7 +6,7 @@ import factory
 import pytest
 import sys
 
-from django.forms.models import model_to_dict
+# from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -14,7 +14,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.authority import AuthorityFactory
-from .factories.location import LocationFactory
+# from .factories.location import LocationFactory
 from ..models.authority import Authority
 from telemeta.models.location import Location
 
@@ -53,7 +53,6 @@ class TestAuthorityList(APITestCase):
 
         AuthorityFactory.create_batch(6)
 
-
     def test_can_get_authority_list(self):
         """
         Ensure Authority objects exists
@@ -70,7 +69,6 @@ class TestAuthorityList(APITestCase):
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
-
 
     @parameterized.expand(AUTHORITY_STRUCTURE)
     def test_has_valid_authority_values(self, attribute, attribute_type):
@@ -99,7 +97,6 @@ class TestAuthorityList(APITestCase):
                 self.assertIsInstance(authority[attribute], attribute_type)
             self.assertIsNot(authority[attribute], '')
 
-
     def test_get_an_authority(self):
         """
         Ensure we can get an Authority objects using an existing id
@@ -111,7 +108,6 @@ class TestAuthorityList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
-
 
     def test_create_an_authority(self):
         """
@@ -142,7 +138,6 @@ class TestAuthorityList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-
     def test_update_an_authority(self):
         """
         Ensure we can update an Authority object
@@ -165,7 +160,6 @@ class TestAuthorityList(APITestCase):
         self.assertEqual(sorted(response.data.keys()), AUTHORITY_FIELDS)
         self.assertEqual(response.data['last_name'], 'foobar_test_put')
 
-
     def test_patch_an_authority(self):
         """
         Ensure we can patch an Authority object
@@ -183,7 +177,6 @@ class TestAuthorityList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), AUTHORITY_FIELDS)
         self.assertEqual(response.data['last_name'], 'foobar_test_patch')
-
 
     def test_delete_an_authority(self):
         """

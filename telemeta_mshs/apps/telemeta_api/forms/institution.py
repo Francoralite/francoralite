@@ -4,9 +4,9 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-import django.forms as forms
 from django.forms import ModelForm
 from telemeta.models import Institution
+
 
 class InstitutionForm(ModelForm):
 

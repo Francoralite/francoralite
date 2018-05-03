@@ -5,8 +5,10 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.core import *
+from telemeta.models.core import ModelCore, MetaCore
+from telemeta.models.core import CharField, TextField
 from django.utils.translation import ugettext_lazy as _
+
 
 class Institution(ModelCore):
     "Institution who owns some resources"
@@ -16,7 +18,7 @@ class Institution(ModelCore):
 
     @property
     def has_fonds(self):
-        if self.objects.MediaFonds.all().count()>0 :
+        if self.objects.MediaFonds.all().count() > 0:
             return True
         return False
 
