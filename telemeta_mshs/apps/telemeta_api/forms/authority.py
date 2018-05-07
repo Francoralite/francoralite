@@ -3,16 +3,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
-
 from django.forms import ModelForm
-from telemeta.models import Institution
+from telemeta.models import Authority
 
 
-class InstitutionForm(ModelForm):
+class AuthorityForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(InstitutionForm, self).__init__(*args, **kwargs)
+        super(AuthorityForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = Institution
+        model = Authority
         exclude = []

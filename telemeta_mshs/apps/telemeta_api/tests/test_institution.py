@@ -6,7 +6,7 @@ import factory
 import pytest
 import sys
 
-from django.forms.models import model_to_dict
+# from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -40,10 +40,7 @@ class TestInstitutionList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
-        for idx in range(6):
-            institution = InstitutionFactory.create()
-            institution.save()
-
+        InstitutionFactory.create_batch(6)
 
     def test_can_get_institution_list(self):
         """
@@ -61,7 +58,6 @@ class TestInstitutionList(APITestCase):
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
-
 
     @parameterized.expand(INSTITUTION_STRUCTURE)
     def test_has_valid_institution_values(self, attribute, attribute_type):
@@ -90,7 +86,6 @@ class TestInstitutionList(APITestCase):
                 self.assertIsInstance(institution[attribute], attribute_type)
             self.assertIsNot(institution[attribute], '')
 
-
     def test_get_an_institution(self):
         """
         Ensure we can get an Institution objects using an existing id
@@ -102,7 +97,6 @@ class TestInstitutionList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
-
 
     def test_create_an_institution(self):
         """
@@ -127,7 +121,6 @@ class TestInstitutionList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-
     def test_update_an_institution(self):
         """
         Ensure we can update an Institution object
@@ -150,7 +143,6 @@ class TestInstitutionList(APITestCase):
         self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
         self.assertEqual(response.data['name'], 'foobar_test_put')
 
-
     def test_patch_an_institution(self):
         """
         Ensure we can patch an Institution object
@@ -168,7 +160,6 @@ class TestInstitutionList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
         self.assertEqual(response.data['name'], 'foobar_test_patch')
-
 
     def test_delete_an_institution(self):
         """
