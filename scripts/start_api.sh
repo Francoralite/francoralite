@@ -3,6 +3,7 @@
 # paths
 app='/srv/app'
 static='/srv/static/'
+wsgi='/srv/app/telemeta_mshs/wsgi.py'
 media='/srv/media/'
 src='/srv/src/'
 log='/var/log/uwsgi/app.log'
@@ -42,9 +43,8 @@ else
     # fix media access rights
     find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
-    # Start Gunicorn processes
-    echo Starting Gunicorn.
-    exec gunicorn telemeta_mshs.wsgi:application \
-            --bind :$port \
-            --workers 3
+    # Start UWSGI processes
+    uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
+    --processes $processes --threads $threads \
+    --uid $uid --gid $gid --logto $log --touch-reload $wsgi
 fi
