@@ -36,13 +36,9 @@ class EnumerationFactory(factory.django.DjangoModelFactory):
     notes = factory.Faker('paragraph', nb_sentences=2)
 
 
-class RecordingContextFactory(factory.django.DjangoModelFactory):
+class RecordingContextFactory(EnumerationFactory):
     class Meta:
         model = RecordingContext
-        django_get_or_create = ('value', )
-
-    value = factory.Faker('word')
-    notes = factory.Faker('paragraph', nb_sentences=2)
 
 
 class PublisherFactory(EnumerationFactory):
@@ -50,7 +46,7 @@ class PublisherFactory(EnumerationFactory):
         model = Publisher
 
 
-class PublisherCollectionFactory(factory.Factory):
+class PublisherCollectionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PublisherCollection
 

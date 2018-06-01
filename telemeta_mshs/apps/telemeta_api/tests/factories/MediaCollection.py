@@ -54,7 +54,7 @@ class MediacollectionFactory(factory.django.DjangoModelFactory):
     auto_period_access = factory.Faker('boolean')
     legal_rights = factory.SubFactory(LegalRightsFactory)
 
-    code = factory.Faker('word')
+    code = factory.Sequence(lambda n: 'code{0}'.format(n))
     old_code = factory.Faker('word')
     acquisition_mode = factory.SubFactory(AcquisitionModeFactory)
     cnrs_contributor = factory.Faker('word')
