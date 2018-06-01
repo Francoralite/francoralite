@@ -1,7 +1,9 @@
 from rest_framework import routers
-from .views import authority
-from .views import coupe
-from .views import institution
+from .views import (
+    authority,
+    coupe,
+    institution,
+    MediaCollection)
 
 router = routers.DefaultRouter()
 router.register(r'institution',
@@ -9,3 +11,6 @@ router.register(r'institution',
 router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
 router.register(r'authority',
                 authority.AuthorityViewSet, base_name='authority')
+router.register(r'collection',
+                MediaCollection.MediacollectionViewSet,
+                base_name='MediaCollection')
