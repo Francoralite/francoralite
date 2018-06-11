@@ -3,7 +3,9 @@ from .views import (
     authority,
     coupe,
     institution,
-    MediaCollection)
+    MediaCollection,
+    ExtMediaCollection,
+    )
 
 router = routers.DefaultRouter()
 router.register(r'institution',
@@ -14,3 +16,6 @@ router.register(r'authority',
 router.register(r'collection',
                 MediaCollection.MediacollectionViewSet,
                 base_name='MediaCollection')
+router.register(r'extcollection',
+                ExtMediaCollection.ExtMediacollectionViewSet,
+                base_name='ExtMediaCollection')

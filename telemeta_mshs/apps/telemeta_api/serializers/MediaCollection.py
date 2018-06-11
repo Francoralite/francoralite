@@ -54,7 +54,7 @@ class MediacollectionSerializer(serializers.ModelSerializer):
     conservation_site = serializers.CharField()
 
     media_type = serializers.StringRelatedField()
-    approx_duration = '00:20:00'
+    approx_duration = serializers.CharField()  # '00:20:00'
     physical_items_num = serializers.IntegerField()
     original_format = serializers.StringRelatedField()
     physical_format = serializers.StringRelatedField()

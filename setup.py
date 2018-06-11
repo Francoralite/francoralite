@@ -73,6 +73,7 @@ setup(
     'Werkzeug',
     'django-dirtyfields==1.2.1',
     'sqlparse==0.2.2',
+    'django-markdownx',
   ],
   extras_require = {
     'tests': [

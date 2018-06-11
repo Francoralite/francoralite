@@ -29,7 +29,7 @@ class MediacollectionFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Mediacollection
-        django_get_or_create = ('title',)
+        django_get_or_create = ()
 
     # FIXIT------------------
     title = factory.Faker('word')

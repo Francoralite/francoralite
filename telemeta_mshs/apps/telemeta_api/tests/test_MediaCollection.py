@@ -22,9 +22,7 @@ from rest_framework.test import APITestCase
 
 from .factories.MediaCollection import MediacollectionFactory
 from telemeta.models.collection import MediaCollection as Mediacollection
-from telemeta.models.enum import (
-    RecordingContext
-)
+
 
 # Expected structure for Mediacollection objects
 # FIXIT ----

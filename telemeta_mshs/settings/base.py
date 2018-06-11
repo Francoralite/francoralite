@@ -3,7 +3,7 @@ import os
 import sys
 
 # Original Telemeta application settings
-#from .telemeta_settings import *  # noqa
+# from .telemeta_settings import *  # noqa
 from telemeta_settings import *  # noqa
 
 INSTALLED_APPS = (
@@ -18,7 +18,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    #'timeside.server',
+    # 'timeside.server',
     'jsonrpc',
     'sorl.thumbnail',
     'timezones',
@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'saved_searches',
     'rest_framework_swagger',
     'telemeta_mshs.apps.telemeta_api',
+    'markdownx',
 )
 
 DATABASES = {
