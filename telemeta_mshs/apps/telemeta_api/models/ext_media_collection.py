@@ -35,13 +35,17 @@ class ExtMediaCollection(ModelCore):
     location_details = MarkdownxField(blank=True)
     cultural_area = TextField(
         'cultural area',
-        help_text=_('Aire culturelle ; Aire culturelle'))
+        help_text=('Aire culturelle ; Aire culturelle'),
+        default="", blank=True)
     # language_iso = ManyToManyField(
     #     'telemeta.Language',
     #     related_name="collections",
     #     verbose_name=_('Language (ISO norm)'),
     #     blank=True, null=True)
-    language = TextField('langage', help_text=_('Langage ; langage'))
+    language = TextField(
+        'langage',
+        help_text=('Langage ; langage'),
+        default="", blank=True)
 
     # collectors = ManyToManyField(
     #     'Authority',

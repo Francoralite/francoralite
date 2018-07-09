@@ -198,7 +198,7 @@ class TestMediacollectionList(APITestCase):
         self.assertIsInstance(response_get.data, dict)
 
         item = Mediacollection.objects.first()
-        self.assertEqual(item.id, 1)
+        self.assertEqual(item.id, 7)
 
     def test_update_an_MediaCollection(self):
         """

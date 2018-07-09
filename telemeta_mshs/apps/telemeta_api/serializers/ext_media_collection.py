@@ -8,6 +8,7 @@ from rest_framework import serializers
 from .MediaCollection import MediacollectionSerializer
 from ..models.ext_media_collection import(
     ExtMediaCollection as ExtMediaCollectionModel)
+from telemeta.models.collection import MediaCollection as MediacollectionModel
 
 
 class ExtMediacollectionSerializer(serializers.ModelSerializer):
@@ -33,20 +34,38 @@ class ExtMediacollectionSerializer(serializers.ModelSerializer):
         """
 
         collection_data = validated_data.pop('media_collection')
-        collection = MediacollectionSerializer.create(
-            MediacollectionSerializer(), validated_data=collection_data)
-
-        extCollection, created = \
-            ExtMediaCollectionModel.objects.update_or_create(
-                media_collection=collection,
-                location_details=validated_data.pop('location_details'),
-                cultural_area=validated_data.pop('cultural_area'),
-                language=validated_data.pop('language'))
+        # Create an oject Mediacollection with the data converted in dict
+        collection = MediacollectionModel.objects.create(**collection_data)
+        # Create an oject ExtMediacollection, and add it Mediacollection
+        extCollection = \
+            ExtMediaCollectionModel.objects.create(
+                media_collection=collection, **validated_data)
 
         return extCollection
 
     def update(self, instance, validated_data):
-        instance.media_collection = validated_data['media_collection']
+        """
+        Overriding the default update method of the Model serializer.
+        :param validated_data: data containing all the details
+               of ext_collection
+        :return: returns a successfully created ext_collection record
+        """
+        collection_id = instance.media_collection.id
+        try:
+            if(collection_id):
+                MediacollectionModel.objects.filter(id=collection_id).update(
+                    **validated_data['media_collection'])
+        except:
+            pass
+
+        # Update the extended fields
+        instance.location_details = validated_data.get(
+            'location_details', instance.location_details)
+        instance.cultural_area = validated_data.get(
+            'cultural_area', instance.cultural_area)
+        instance.language = validated_data.get(
+            'language', instance.language)
+
         instance.save()
 
         return instance

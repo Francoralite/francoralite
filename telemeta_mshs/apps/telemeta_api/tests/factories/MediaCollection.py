@@ -26,12 +26,12 @@ class MediacollectionFactory(factory.django.DjangoModelFactory):
     """
     Mediacollection factory
     """
+    code = factory.Sequence(lambda n: 'code{0}'.format(n))
 
     class Meta:
         model = Mediacollection
-        django_get_or_create = ()
+        django_get_or_create = ('code',)
 
-    # FIXIT------------------
     title = factory.Faker('word')
     alt_title = factory.Faker('word')
     creator = factory.Faker('word')
@@ -54,7 +54,6 @@ class MediacollectionFactory(factory.django.DjangoModelFactory):
     auto_period_access = factory.Faker('boolean')
     legal_rights = factory.SubFactory(LegalRightsFactory)
 
-    code = factory.Sequence(lambda n: 'code{0}'.format(n))
     old_code = factory.Faker('word')
     acquisition_mode = factory.SubFactory(AcquisitionModeFactory)
     cnrs_contributor = factory.Faker('word')
