@@ -85,12 +85,10 @@ def location_details_markdown(self):
 
 @receiver(post_save, sender=MediaCollection)
 def create_media_collection_extended(sender, instance, created, **kwargs):
-    # print(dir(instance))
     if created:
         ExtMediaCollection.objects.create(media_collection=instance)
 
 
 @receiver(post_save, sender=MediaCollection)
 def save_media_collection_extended(sender, instance, **kwargs):
-    # print(dir(instance))
     instance.extmediacollection.save()

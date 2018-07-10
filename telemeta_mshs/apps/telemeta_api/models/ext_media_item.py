@@ -28,12 +28,10 @@ class ExtMediaItem(ModelCore):
 
 @receiver(post_save, sender=MediaItem)
 def create_media_item_extended(sender, instance, created, **kwargs):
-    # print dir(instance)
     if created:
         ExtMediaItem.objects.create(media_item=instance)
 
 
 @receiver(post_save, sender=MediaItem)
 def save_media_item_extended(sender, instance, **kwargs):
-    # print dir(instance)
     instance.extmediaitem.save()
