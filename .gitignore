@@ -70,3 +70,15 @@ node_modules/
 # bower packages
 telemeta_mshs/assets-src/vendor/
 .sass-cache/
+
+# Data
+data/
+enumeration/
+settings.py
+src/
+telemeta_mshs/robots.txt
+telemeta_settings.py
+worker.py
+
+# Testing
+.pytest_cache/
