@@ -1,13 +1,14 @@
-from rest_framework import routers
+from rest_framework_nested import routers
 from .views import (
     authority,
     coupe,
     institution,
     MediaCollection,
     ExtMediaCollection,
+    collectioncollectors,
     )
 
-router = routers.DefaultRouter()
+router = routers.SimpleRouter()
 router.register(r'institution',
                 institution.InstitutionViewSet, base_name='institution')
 router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
@@ -19,3 +20,12 @@ router.register(r'collection',
 router.register(r'extcollection',
                 ExtMediaCollection.ExtMediacollectionViewSet,
                 base_name='ExtMediaCollection')
+
+
+# Nested routers
+router.register(
+    r'extcollections', ExtMediaCollection.ExtMediacollectionViewSet)
+ExtMediaCollection_router = routers.NestedSimpleRouter(
+    router, r'extcollections', lookup='extcollection')
+ExtMediaCollection_router.register(
+    r'collectors', collectioncollectors.CollectionCollectorsViewSet)

@@ -38,6 +38,7 @@ setup(
     'django-jqchat',
     'django-rest-swagger==2.1.2',
     'djangorestframework==3.6.4',
+    'drf-nested-routers==0.90.0',
     'ebooklib==0.16',
     'gunicorn==19.7.1',
     'saved_searches==2.0.0-beta',
