@@ -7,6 +7,7 @@ from .views import (
     ExtMediaCollection,
     collectioncollectors,
     collection_informer,
+    collection_publisher,
     )
 
 router = routers.SimpleRouter()
@@ -32,3 +33,5 @@ ExtMediaCollection_router.register(
     r'collectors', collectioncollectors.CollectionCollectorsViewSet)
 ExtMediaCollection_router.register(
     r'informer', collection_informer.CollectionInformerViewSet)
+ExtMediaCollection_router.register(
+    r'publisher', collection_publisher.CollectionPublisherViewSet)
