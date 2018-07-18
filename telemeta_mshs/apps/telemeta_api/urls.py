@@ -8,6 +8,8 @@ from .views import (
     collectioncollectors,
     collection_informer,
     collection_publisher,
+    collection_location,
+    location,
     )
 
 router = routers.SimpleRouter()
@@ -22,6 +24,9 @@ router.register(r'collection',
 router.register(r'extcollection',
                 ExtMediaCollection.ExtMediacollectionViewSet,
                 base_name='ExtMediaCollection')
+router.register(r'location',
+                location.LocationViewSet,
+                base_name='location')
 
 
 # Nested routers
@@ -35,3 +40,5 @@ ExtMediaCollection_router.register(
     r'informer', collection_informer.CollectionInformerViewSet)
 ExtMediaCollection_router.register(
     r'publisher', collection_publisher.CollectionPublisherViewSet)
+ExtMediaCollection_router.register(
+    r'location', collection_location.CollectionLocationViewSet)
