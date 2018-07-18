@@ -10,4 +10,5 @@ from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer
 from .collection_publisher import CollectionPublisher
 from .collection_location import CollectionLocation
+from .collection_language import CollectionLanguage
 from .institution import Institution
