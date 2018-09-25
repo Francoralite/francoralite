@@ -82,11 +82,10 @@ class ExtMediaItemSerializer(serializers.ModelSerializer):
                of Ext_media_item
         :return: returns a successfully created ext_item record
         """
-        item_id = instance.media_item.id
+
         try:
-            if(item_id):
-                MediaItemModel.objects.filter(id=item_id).update(
-                    **validated_data['media_item'])
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
         except:
             pass
 
