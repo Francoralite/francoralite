@@ -9,7 +9,6 @@ MediaItem factory to execute tests
 """
 
 import factory
-import uuid
 from telemeta.models.item import (
     MediaItem as Mediaitem, ITEM_PUBLIC_ACCESS_CHOICES)
 
@@ -79,4 +78,4 @@ class MediaItemFactory(factory.django.DjangoModelFactory):
     topic = factory.SubFactory(TopicFactory)
     summary = factory.Faker('paragraph', nb_sentences=2)
     contributor = factory.Sequence(lambda n: 'code%s' % n)
-    code = str(uuid.uuid1())
+    code = factory.Faker('uuid4')

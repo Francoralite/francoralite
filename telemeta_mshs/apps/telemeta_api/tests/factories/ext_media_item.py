@@ -9,11 +9,11 @@ ExtMediaItem factory to execute tests
 """
 
 import factory
-import uuid
 from django.db.models import signals
 from ...models.ext_media_item import ExtMediaItem
 from .media_item import MediaItemFactory
 from .coupe import CoupeFactory
+from .attributes.fuzzy_media_item_code import FuzzyMediaItemCode
 
 
 # mute signal, because there's
@@ -21,7 +21,7 @@ from .coupe import CoupeFactory
 @factory.django.mute_signals(signals.post_save)
 class ExtMediaItemFactory(factory.django.DjangoModelFactory):
     """
-    ExtMediItem factory
+    ExtMediaItem factory
     """
 
     class Meta:
@@ -66,4 +66,4 @@ class ExtMediaItemFactory(factory.django.DjangoModelFactory):
     mshs_code_Aare = factory.Faker('word')
     mshs_musical_organization = factory.Faker('word')
     mshs_group = factory.Faker('word')
-    code = str(uuid.uuid1())  # factory.Sequence(lambda n: 'code%05d' % n)
+    code = FuzzyMediaItemCode()

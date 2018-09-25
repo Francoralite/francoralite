@@ -18,6 +18,21 @@ from markdownx.utils import markdownify
 from .coupe import Coupe
 
 
+import random
+import string
+
+
+def default_code():
+    """
+    Return value
+    """
+
+    return 'DEFA_ULT_0000_{}_{}'.format(
+        random.randint(1000, 9999),
+        random.randint(100, 999)
+    )
+
+
 class ExtMediaItem(ModelCore):
     """
     Telemeta MediaItem model extend
@@ -104,6 +119,7 @@ class ExtMediaItem(ModelCore):
     code = CharField(
         _('code'), unique=True, blank=True,
         help_text=_('CollectionCode_ItemCode'),
+        default=default_code,
         validators=[
             RegexValidator(
                 regex=r'^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}_[0-9]{4}_[0-9]{3}$',
