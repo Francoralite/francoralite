@@ -8,6 +8,7 @@ from telemeta.models.enum import (
     RecordingContext,
     Publisher,
     PublisherCollection,
+    EthnicGroup,
     LegalRight,
     AcquisitionMode,
     CopyType,
@@ -18,7 +19,13 @@ from telemeta.models.enum import (
     MediaType,
     OriginalFormat,
     PhysicalFormat,
-    AdConversion
+    AdConversion,
+    VernacularStyle,
+    GenericStyle,
+    Organization,
+    Rights,
+    MediaType,
+    Topic
     )
 
 
@@ -52,6 +59,11 @@ class PublisherCollectionFactory(factory.django.DjangoModelFactory):
 
     publisher = factory.SubFactory(PublisherFactory)
     value = factory.Faker('word')
+
+
+class EthnicGroupFactory(EnumerationFactory):
+    class Meta:
+        model = EthnicGroup
 
 
 class LegalRightsFactory(EnumerationFactory):
@@ -107,3 +119,28 @@ class PhysicalFormatFactory(EnumerationFactory):
 class AdconversionFactory(EnumerationFactory):
     class Meta:
         model = AdConversion
+
+
+class VernacularStyleFactory(EnumerationFactory):
+    class Meta:
+        model = VernacularStyle
+
+
+class GenericStyleFactory(EnumerationFactory):
+    class Meta:
+        model = GenericStyle
+
+
+class OrganizationFactory(EnumerationFactory):
+    class Meta:
+        model = Organization
+
+
+class RightsFactory(EnumerationFactory):
+    class Meta:
+        model = Rights
+
+
+class TopicFactory(EnumerationFactory):
+    class Meta:
+        model = Topic

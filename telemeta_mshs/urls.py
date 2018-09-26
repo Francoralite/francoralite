@@ -11,7 +11,8 @@ from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
 # Apps urls
 from .apps.telemeta_api import urls as telemeta_api_urls
 
-# Create our schema's view w/ the get_schema_view() helper method. Pass in the proper Renderers for swagger
+# Create our schema's view w/ the get_schema_view() helper method.
+#   Pass in the proper Renderers for swagger
 schema_view = get_schema_view(
     title='Users API',
     renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer]
@@ -32,10 +33,12 @@ urlpatterns = [
 
     url(r'^admin/django/', include(admin.site.urls)),
     url(r'^api/', include(telemeta_api_urls.router.urls)),
+    url(r'^api/', include(telemeta_api_urls.ExtMediaCollection_router.urls)),
     url(r'^docs/', schema_view, name="docs"),
 
     # Languages
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/$', javascript_catalog, js_info_dict),
-    url(r'^robots\.txt$', lambda r: HttpResponse(robots_rules, content_type="text/plain")),
+    url(r'^robots\.txt$', lambda r: HttpResponse(
+        robots_rules, content_type="text/plain")),
 ]
