@@ -51,7 +51,7 @@ services:
     volumes_from:
       - data
     env_file:
-      - ./telemeta_mshs/apps/Telemeta/env/prod.env
+      - ./telemeta_mshs/apps/Telemeta/env/debug.env
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
       interval: 10s

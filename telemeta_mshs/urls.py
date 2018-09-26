@@ -29,7 +29,8 @@ robots_rules = open(PROJECT_ROOT + os.sep + 'robots.txt', 'r').read()
 
 urlpatterns = [
     # Telemeta orignal app
-    url(r'', include('telemeta.urls')),
+    # url(r'', include('telemeta.urls')),
+    url(r'', include('telemeta_front.urls')),
 
     url(r'^admin/django/', include(admin.site.urls)),
     url(r'^api/', include(telemeta_api_urls.router.urls)),
