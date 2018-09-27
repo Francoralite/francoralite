@@ -1,0 +1,31 @@
+{% extends "telemeta/base.html" %}
+{% load i18n %}
+{% load telemeta_tags %}
+{% load bootstrap3 %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block logo %}
+    <a href="{% url "telemeta-home" %}">
+      <img src="{{ STATIC_URL }}telemeta_front/logo_universite_poitiers.jpg"
+       alt="Université de Poitiers"/>
+    </a>
+{% endblock %}
+
+{% block menu %}
+    {% include "inc/nav.html" %}
+{% endblock menu %}
+
+
+{% block footer %}
+    <div id="footer">
+        <hr>
+    </div>
+{% endblock %}
