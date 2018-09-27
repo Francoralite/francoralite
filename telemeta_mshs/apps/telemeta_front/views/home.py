@@ -4,10 +4,13 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.views.generic.base import TemplateView
+
 from telemeta.views.core import (
     render
 )
 
 
-def home(request):
-    return render(request, 'home2.html')
+class HomePageView(TemplateView):
+
+    template_name = "../templates/home.html"

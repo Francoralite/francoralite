@@ -6,14 +6,11 @@
 
 from django.conf.urls import url, include
 
-from views import (
-    home as home2
+from .views import (
+    home as telemeta_front_home
 )
 
 
 urlpatterns = [
-    url(r'^$', home2.home, name="telemeta-home"),
-    # Telemeta orignal app
-    url(r'', include('telemeta.urls')),
-
-    ]
+    url(r'^$', telemeta_front_home.HomePageView.as_view(), name="telemeta-home-new"),
+]

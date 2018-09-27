@@ -10,6 +10,7 @@ from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
 
 # Apps urls
 from .apps.telemeta_api import urls as telemeta_api_urls
+from .apps.telemeta_front import urls as telemeta_front_urls
 
 # Create our schema's view w/ the get_schema_view() helper method.
 #   Pass in the proper Renderers for swagger
@@ -28,9 +29,11 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 robots_rules = open(PROJECT_ROOT + os.sep + 'robots.txt', 'r').read()
 
 urlpatterns = [
+    # New frontend endpoints
+    url(r'', include(telemeta_front_urls)),
+
     # Telemeta orignal app
-    # url(r'', include('telemeta.urls')),
-    url(r'', include('telemeta_front.urls')),
+    url(r'', include('telemeta.urls')),
 
     url(r'^admin/django/', include(admin.site.urls)),
     url(r'^api/', include(telemeta_api_urls.router.urls)),

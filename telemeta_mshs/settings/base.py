@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'saved_searches',
     'rest_framework_swagger',
     'telemeta_mshs.apps.telemeta_api',
-    'telemeta_front',
+    'telemeta_mshs.apps.telemeta_front',
     'markdownx',
 )
 
