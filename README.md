@@ -26,7 +26,7 @@ git clone git@github.com:lluc/telemeta-integration.git
 * Manage sub modules
 
 ```
-git submodule init && git submodule update
+git submodule update --recursive --init
 ```
 
 ### Run stack
