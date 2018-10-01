@@ -8,10 +8,10 @@
                             {% if user.is_authenticated %}
                                 <li><a href="{% url "telemeta-desk-lists" %}" class="blue">{% trans "Desk" %}</a></li>
                             {% else %}
-                                <li><a href="{% url "telemeta-home" %}" class="blue">Accueil</a></li>
+                                <li><a href="{% url "home" %}" class="blue">Accueil</a></li>
                             {% endif %}
 
-                            <li><a href="" class="green">Institutions</a>
+                            <li><a href="{% url "institution" %}" class="green">Institutions</a>
                             </li>
 
                             <li><a href="#archives#" class="green">Archives</a>

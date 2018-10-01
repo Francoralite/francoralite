@@ -4,13 +4,16 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.conf.urls import url, include
+from django.conf.urls import url
 
 from .views import (
-    home as telemeta_front_home
+    home as home_integration,
+    institution as institution_integration
 )
 
 
 urlpatterns = [
-    url(r'^$', telemeta_front_home.HomePageView.as_view(), name="telemeta-home-new"),
+    url(r'^$', home_integration.HomePageView.as_view(), name="home"),
+    url(r'^institution/$', institution_integration.InstitutionView.as_view(),
+        name="institution"),
 ]
