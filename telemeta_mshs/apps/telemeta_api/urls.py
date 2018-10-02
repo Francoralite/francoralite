@@ -12,7 +12,6 @@ from .views import (
     collection_language,
     location,
     language,
-    enumeration,
     media_item,
     ext_media_item,
     )
@@ -58,11 +57,6 @@ ExtMediaCollection_router.register(
     r'location', collection_location.CollectionLocationViewSet)
 ExtMediaCollection_router.register(
     r'language', collection_language.CollectionLanguageViewSet)
-
-router.register(
-    r'enumeration', enumeration.EnumerationViewSet)
-enumeration_router = routers.NestedSimpleRouter(
-    router, r'enumeration', lookup='enumeration')
 
 router.register(
     r'extitems', ext_media_item.ExtMediaItemViewSet)
