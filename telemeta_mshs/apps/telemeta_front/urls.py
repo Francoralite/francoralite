@@ -16,4 +16,7 @@ urlpatterns = [
     url(r'^$', home_integration.HomePageView.as_view(), name="home"),
     url(r'^institution/$', institution_integration.InstitutionView.as_view(),
         name="institution"),
+    url(r'^institution/(?P<pk>[0-9]+)/$',
+        institution_integration.InstitutionDetail.as_view(),
+        name='institution-detail'),
 ]
