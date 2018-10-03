@@ -7,6 +7,7 @@
 from django.views.generic.base import TemplateView
 from rest_framework import status
 import requests
+from settings import FRONT_HOST_URL
 
 
 class InstitutionView(TemplateView):
@@ -16,7 +17,7 @@ class InstitutionView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(InstitutionView, self).get_context_data(**kwargs)
         context['institutions'] = requests.get(
-            'http://localhost:8000/api/institution/').json
+            FRONT_HOST_URL+'/api/institution/').json
         return context
 
 
@@ -28,7 +29,7 @@ class InstitutionDetail(TemplateView):
 
         # Obtain values of the record
         response = requests.get(
-            'http://localhost:8000/api/institution/'+context['pk'])
+            FRONT_HOST_URL+'/api/institution/'+context['pk'])
         if response.status_code == status.HTTP_200_OK:
             context['institution'] = response.json
         return context

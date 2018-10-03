@@ -55,6 +55,8 @@ DATABASES = {
     }
 }
 
+FRONT_HOST_URL = 'http://localhost:8000'
+
 ROOT_URLCONF = 'telemeta_mshs.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
