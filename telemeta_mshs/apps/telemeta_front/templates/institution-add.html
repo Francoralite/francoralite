@@ -1,0 +1,30 @@
+{% extends "institution.html" %}
+{% load bootstrap3 %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title %}
+   {{ block.super}}
+   Création
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form action="/api/institution/" method="POST">
+    {% csrf_token %}
+    {% bootstrap_field form.name layout='vertical' %}
+    {% bootstrap_field form.notes layout='vertical' %}
+    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+  </form>
+</div>
+{% endblock %}

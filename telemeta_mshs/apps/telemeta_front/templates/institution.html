@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
 
 {% block javascript %}
   {{ block.super }}
@@ -21,6 +23,15 @@
 </div>
 {% endblock %}
 
+{% block title_buttons %}
+    <a href="{% url "institution-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}</span>
+    </button>
+    </a>
+{% endblock %}
+
+
 </div>
 {% block content %}
 <div class="fullpage">
@@ -37,7 +48,7 @@
           <a href="/institution/{{ institution.id }}/">
             {{ institution.name }}</a>
       </td>
-      <td>{{ institution.notes|safe }}</td>
+      <td>{{ institution.notes|markdown|safe }}</td>
   </tr>
   {% endfor %}
 </table>

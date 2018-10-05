@@ -19,4 +19,7 @@ urlpatterns = [
     url(r'^institution/(?P<pk>[0-9]+)/$',
         institution_integration.InstitutionDetail.as_view(),
         name='institution-detail'),
+    url(r'^institution/add/$',
+        institution_integration.InstitutionAdd.as_view(),
+        name='institution-add'),
 ]

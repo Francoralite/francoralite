@@ -5,9 +5,11 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
 from settings import FRONT_HOST_URL
+from telemeta_front.forms.institution import InstitutionForm
 
 
 class InstitutionView(TemplateView):
@@ -33,3 +35,9 @@ class InstitutionDetail(TemplateView):
         if response.status_code == status.HTTP_200_OK:
             context['institution'] = response.json
         return context
+
+
+class InstitutionAdd(FormView):
+    template_name = "../templates/institution-add.html"
+    form_class = InstitutionForm
+    success_url = '/'
