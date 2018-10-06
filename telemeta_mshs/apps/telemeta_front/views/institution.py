@@ -12,6 +12,7 @@ import requests
 from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.institution import InstitutionForm
+from django.shortcuts import render
 
 
 class InstitutionView(TemplateView):
@@ -65,10 +66,11 @@ class InstitutionAdd(FormView):
 
 class InstitutionDelete(View):
     def get(self, request, *args, **kwargs):
-        id = kwargs.get('id')
+        id = kwargs.get('pk')
         try:
+            # raise Exception(id)
             requests.delete(
-                FRONT_HOST_URL + '/api/institution/' + id
+                FRONT_HOST_URL + '/api/institution/' + str(id)
                 )
             return HttpResponseRedirect('/institution/')
 
@@ -80,6 +82,30 @@ class InstitutionEdit(FormView):
     template_name = "../templates/institution-add.html"
     form_class = InstitutionForm
     success_url = '/institution/'
+
+    def get_context_data(self, **kwargs):
+        context = super(InstitutionEdit, self).get_context_data(**kwargs)
+
+        id = kwargs.get('pk')
+        # Obtain values of the record
+        response = requests.get(
+            FRONT_HOST_URL + '/api/institution/' + str(id))
+        if response.status_code == status.HTTP_200_OK:
+            context['institution'] = response.json
+        return context
+
+    def get(self, request, *args, **kwargs):
+
+        id = kwargs.get('pk')
+
+        # Obtain values of the record
+        institution = requests.get(
+            FRONT_HOST_URL + '/api/institution/' + str(id))
+        form = InstitutionForm(initial=institution.json())
+
+        return render(request,
+                      '../templates/institution-add.html',
+                      {'form': form, 'id': id})
 
     def put(self, request, *args, **kwargs):
 

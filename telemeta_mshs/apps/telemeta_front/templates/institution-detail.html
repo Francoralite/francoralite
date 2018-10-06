@@ -22,6 +22,9 @@
   </h1>
 {% endblock %}
 
+{% block title_buttons %}
+{% endblock %}
+
 {% block content %}
 {% if institution %}
 {{institution.notes|markdown|safe}}
