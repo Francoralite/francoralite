@@ -22,4 +22,10 @@ urlpatterns = [
     url(r'^institution/add/$',
         institution_integration.InstitutionAdd.as_view(),
         name='institution-add'),
+    url(r'^institution/edit/(?P<pk>[0-9]+)$',
+        institution_integration.InstitutionEdit.as_view(),
+        name='institution-edit'),
+    url(r'^institution/delete/(?P<pk>[0-9]+)$',
+        institution_integration.InstitutionDelete.as_view(),
+        name='institution-delete'),
 ]

@@ -58,6 +58,12 @@ DATABASES = {
 FRONT_HOST_URL = 'http://localhost:8000'
 USE_X_FORWARDED_HOST = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
+
 ROOT_URLCONF = 'telemeta_mshs.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.

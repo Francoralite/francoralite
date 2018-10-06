@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.http import HttpResponseRedirect
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
@@ -61,3 +61,40 @@ class InstitutionAdd(FormView):
                 return HttpResponseRedirect('/institution/add')
 
         return HttpResponseRedirect('/institution/add')
+
+
+class InstitutionDelete(View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        try:
+            requests.delete(
+                FRONT_HOST_URL + '/api/institution/' + id
+                )
+            return HttpResponseRedirect('/institution/')
+
+        except RequestException:
+            return HttpResponseRedirect('/institution/')
+
+
+class InstitutionEdit(FormView):
+    template_name = "../templates/institution-add.html"
+    form_class = InstitutionForm
+    success_url = '/institution/'
+
+    def put(self, request, *args, **kwargs):
+
+        form = InstitutionForm(request.PUT)
+
+        if form.is_valid():
+
+            try:
+                requests.put(
+                    FRONT_HOST_URL + '/api/institution/',
+                    data=form.cleaned_data
+                )
+                return HttpResponseRedirect('/institution/')
+
+            except RequestException:
+                return HttpResponseRedirect('/institution/edit')
+
+        return HttpResponseRedirect('/institution/edit')

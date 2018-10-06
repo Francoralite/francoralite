@@ -52,12 +52,12 @@
       <td>{{ institution.notes|markdown|safe }}</td>
       <td>
         {% buttons %}
-        <a href="{% url "institution" %}{{ institution.id }} ">
+        <a href="{% url "institution-edit" %}{{ institution.id }} ">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> Editer
               </button>
         </a>
-        <a href="{% url "institution" %}{{ institution.id }} ">
+        <a href="{% url "institution-delete" %}{{ institution.id }} ">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-trash"></span> Supprimer
               </button>
