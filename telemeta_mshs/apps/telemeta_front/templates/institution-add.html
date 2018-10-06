@@ -20,7 +20,7 @@
 
 {% block content %}
 <div class="container">
-  <form action="/api/institution/" method="POST">
+  <form action="/institution/add/" method="POST">
     {% csrf_token %}
     {% bootstrap_field form.name layout='vertical' %}
     {% bootstrap_field form.notes layout='vertical' %}
