@@ -56,6 +56,7 @@ DATABASES = {
 }
 
 FRONT_HOST_URL = 'http://localhost:8000'
+USE_X_FORWARDED_HOST = True
 
 ROOT_URLCONF = 'telemeta_mshs.urls'
 

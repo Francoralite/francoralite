@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
 
@@ -49,6 +50,20 @@
             {{ institution.name }}</a>
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
+      <td>
+        {% buttons %}
+        <a href="{% url "institution" %}{{ institution.id }} ">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> Editer
+              </button>
+        </a>
+        <a href="{% url "institution" %}{{ institution.id }} ">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span> Supprimer
+              </button>
+        </a>
+        {% endbuttons %}
+      </td>
   </tr>
   {% endfor %}
 </table>
