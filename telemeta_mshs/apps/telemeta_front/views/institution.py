@@ -107,9 +107,9 @@ class InstitutionEdit(FormView):
                       '../templates/institution-add.html',
                       {'form': form, 'id': id})
 
-    def put(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
 
-        form = InstitutionForm(request.PUT)
+        form = InstitutionForm(request.POST)
 
         if form.is_valid():
 
