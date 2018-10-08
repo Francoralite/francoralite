@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title %}
+<div class="col-md-4">
+  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
+    style="vertical-align:middle" />
+    <h1>{% trans "Personnes" %}</h1>
+</div>
+<div class="col-md-8">
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
+{% endblock %}
+
+{% block title_buttons %}
+    <a href="{% url "personne-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}</span>
+    </button>
+    </a>
+{% endblock %}
+
+
+</div>
+{% block content %}
+<div class="fullpage">
+{% if personnes|length > 0 %}
+  <!-- Table to display the institutions --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Biographie" %}</th>
+  </tr>
+  {% for personne in personnes %}
+  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td class="highlight">
+          <a href="/authority/{{ personne.id }}/">
+            {{ personne.last_name }} {{personne.first_name}}</a>
+      </td>
+      <td>{{ institution.biography|markdown|safe }}</td>
+      <td>
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+    <p>{% trans "Il n'y a pas de personnes" %}</p>
+{% endif %}
+</div>
+{% endblock %}

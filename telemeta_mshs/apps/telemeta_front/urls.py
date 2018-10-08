@@ -9,7 +9,8 @@ from django.conf.urls import url
 from .views import (
     home as home_integration,
     institution, institution_add, institution_delete, institution_detail,
-    institution_edit
+    institution_edit,
+    personne, personne_add
 )
 
 
@@ -29,4 +30,9 @@ urlpatterns = [
     url(r'^institution/delete/(?P<id>[0-9]+)$',
         institution_delete.InstitutionDelete.as_view(),
         name='institution-delete'),
+    url(r'^authority/$', personne.PersonneView.as_view(),
+        name="personne"),
+    url(r'^authority/add/$',
+        personne_add.PersonneAdd.as_view(),
+        name='personne-add'),
 ]

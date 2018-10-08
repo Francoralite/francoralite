@@ -1,0 +1,44 @@
+{% extends "personne.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title %}
+   {{ block.super}}
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% if id %}
+  <form action="/authority/edit/{{id}}" method="POST">
+  {% else %}
+  <form action="/authority/add/" method="POST">
+  {% endif %}
+    {% csrf_token %}
+    {% bootstrap_field form.last_name layout='vertical' %}
+    {% bootstrap_field form.first_name layout='vertical' %}
+    {% bootstrap_field form.biography layout='vertical' %}
+    {% if id %}
+    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
+    {% else %}
+    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+    {% endif %}
+  </form>
+</div>
+{% endblock %}
