@@ -16,7 +16,7 @@
 <div class="col-md-4">
   <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
     style="vertical-align:middle" />
-    <h1>Institutions</h1>
+    <h1>{% trans "Institutions" %}</h1>
 </div>
 <div class="col-md-8">
 </div>
@@ -40,8 +40,8 @@
   <!-- Table to display the institutions --->
   <table class="listing">
   <tr>
-      <th class="highlight">Nom</th>
-      <th>Notes</th>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
   </tr>
   {% for institution in institutions %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -54,12 +54,12 @@
         {% buttons %}
         <a href="{% url "institution-edit" id=institution.id %}">
               <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> Editer
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
         <a href="{% url "institution-delete" id=institution.id %}">
               <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-trash"></span> Supprimer
+                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
               </button>
         </a>
         {% endbuttons %}
@@ -68,7 +68,7 @@
   {% endfor %}
 </table>
 {% else %}
-    <p>Il n'y a pas d'institutions</p>
+    <p>{% trans "Il n'y a pas d'institutions" %}</p>
 {% endif %}
 </div>
 {% endblock %}

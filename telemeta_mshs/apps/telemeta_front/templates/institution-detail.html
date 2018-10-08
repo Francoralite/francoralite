@@ -16,7 +16,7 @@
 {% block title %}
   <h1>
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    Institution
+    {% trans "Institution" %}
     {% if institution %}
      : {{ institution.name }}
     {% endif %}
@@ -35,18 +35,18 @@
 {% if institution %}
 {{institution.notes|markdown|safe}}
 
-  <h2>Fonds</h2>
+  <h2>{% trans "Fonds" %}</h2>
   <div class="with-rightcol">
        <table class="listing">
            <tr>
-               <th class="highlight">Titre</th>
-               <th>Code</th>
-               <th>Description</th>
+               <th class="highlight">{% trans "Titre" %}</th>
+               <th>{% trans "Code" %}</th>
+               <th>{% trans "Description" %}</th>
            </tr>
 
        </table>
   </div>
 {% else %}
-  <p>Cette institution n'existe pas.</p>
+  <p>{% trans "Cette institution n'existe pas." %}"</p>
 {% endif %}
 {% endblock %}

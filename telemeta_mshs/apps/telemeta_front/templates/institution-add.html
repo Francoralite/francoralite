@@ -1,5 +1,6 @@
 {% extends "institution.html" %}
 {% load bootstrap3 %}
+{% load i18n %}
 {% load markdown_extra %}
 
 {% block javascript %}
@@ -13,9 +14,9 @@
 {% block title %}
    {{ block.super}}
    {% if id %}
-   Modification
+   {% trans "Modification" %}
    {% else %}
-   Création
+   {% trans "Création" %}
    {% endif %}
 {% endblock %}
 
