@@ -66,7 +66,7 @@ class InstitutionAdd(FormView):
 
 class InstitutionDelete(View):
     def get(self, request, *args, **kwargs):
-        id = kwargs.get('pk')
+        id = kwargs.get('id')
         try:
             # raise Exception(id)
             requests.delete(
@@ -86,7 +86,7 @@ class InstitutionEdit(FormView):
     def get_context_data(self, **kwargs):
         context = super(InstitutionEdit, self).get_context_data(**kwargs)
 
-        id = kwargs.get('pk')
+        id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
             FRONT_HOST_URL + '/api/institution/' + str(id))
@@ -96,7 +96,7 @@ class InstitutionEdit(FormView):
 
     def get(self, request, *args, **kwargs):
 
-        id = kwargs.get('pk')
+        id = kwargs.get('id')
 
         # Obtain values of the record
         institution = requests.get(
@@ -110,14 +110,16 @@ class InstitutionEdit(FormView):
     def post(self, request, *args, **kwargs):
 
         form = InstitutionForm(request.POST)
+        id = kwargs.get('id')
 
         if form.is_valid():
-
             try:
-                requests.put(
-                    FRONT_HOST_URL + '/api/institution/',
+                response = requests.patch(
+                    FRONT_HOST_URL + '/api/institution/' + str(id) + '/',
                     data=form.cleaned_data
                 )
+                if(response.status_code != status.HTTP_200_OK):
+                    return HttpResponseRedirect('/institution/edit')
                 return HttpResponseRedirect('/institution/')
 
             except RequestException:
