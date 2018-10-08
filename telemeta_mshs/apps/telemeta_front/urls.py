@@ -8,24 +8,25 @@ from django.conf.urls import url
 
 from .views import (
     home as home_integration,
-    institution as institution_integration
+    institution, institution_add, institution_delete, institution_detail,
+    institution_edit
 )
 
 
 urlpatterns = [
     url(r'^$', home_integration.HomePageView.as_view(), name="home"),
-    url(r'^institution/$', institution_integration.InstitutionView.as_view(),
+    url(r'^institution/$', institution.InstitutionView.as_view(),
         name="institution"),
     url(r'^institution/(?P<id>[0-9]+)/$',
-        institution_integration.InstitutionDetail.as_view(),
+        institution_detail.InstitutionDetail.as_view(),
         name='institution-detail'),
     url(r'^institution/add/$',
-        institution_integration.InstitutionAdd.as_view(),
+        institution_add.InstitutionAdd.as_view(),
         name='institution-add'),
     url(r'^institution/edit/(?P<id>[0-9]+)$',
-        institution_integration.InstitutionEdit.as_view(),
+        institution_edit.InstitutionEdit.as_view(),
         name='institution-edit'),
     url(r'^institution/delete/(?P<id>[0-9]+)$',
-        institution_integration.InstitutionDelete.as_view(),
+        institution_delete.InstitutionDelete.as_view(),
         name='institution-delete'),
 ]
