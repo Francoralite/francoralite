@@ -1,0 +1,65 @@
+{% extends "personne.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Personne" %}
+    {% if personne %}
+     : {{ personne.last_name }} {{personne.first_name}}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  <a href="{% url "personne-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </button>
+  </a>
+{% endblock %}
+
+{% block content %}
+{% if personne %}
+<div class="container_line">
+  {% field_data _("Nom") personne.first_name %}
+  {% field_data _("Prénom") personne.last_name %}
+  {% field_data _("Civilité") personne.civilite %}
+  {% field_data _("Alias") personne.alias %}
+</div>
+<div class="block-grey">
+  <h2>{% trans "Naissance" %}</h2>
+  <div class="container_line">
+    {% field_data _("Date") personne.birth_date %}
+    {% field_data _("Lieu") personne.birth_location %}
+  </div>
+</div>
+<div class="block-grey">
+  <h2>{% trans "Décès" %}</h2>
+  <div class="container_line">
+    {% field_data _("Date") personne.death_date %}
+    {% field_data _("Lieu") personne.death_location %}
+  </div>
+</div>
+{% field_data _("Biographie") personne.biography|markdown|safe %}
+{% field_data "URI" personne.uri %}
+
+
+
+{% else %}
+  <p>{% trans "Cette personne n'existe pas." %}</p>
+{% endif %}
+{% endblock %}

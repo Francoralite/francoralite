@@ -15,5 +15,5 @@ class PersonneView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PersonneView, self).get_context_data(**kwargs)
         context['personnes'] = requests.get(
-            FRONT_HOST_URL+'/api/authority/').json
+            FRONT_HOST_URL + '/api/authority/').json
         return context

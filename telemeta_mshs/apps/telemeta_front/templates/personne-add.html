@@ -3,6 +3,10 @@
 {% load i18n %}
 {% load markdown_extra %}
 
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
 {% block javascript %}
   {{ block.super }}
 {% endblock %}
@@ -24,16 +28,48 @@
 {% endblock %}
 
 {% block content %}
+{{ form.media }}
 <div class="container">
   {% if id %}
-  <form action="/authority/edit/{{id}}" method="POST">
+  <form action="{%url "personne-edit" id %}" method="POST">
   {% else %}
-  <form action="/authority/add/" method="POST">
+  <form action="{%url "personne-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    {% bootstrap_field form.last_name layout='vertical' %}
-    {% bootstrap_field form.first_name layout='vertical' %}
+    <div class="row">
+      <span class="col-xs-12 col-md-6">
+        {% bootstrap_field form.last_name layout='vertical' %}
+      </span>
+      <span class="col-xs-12 col-md-6">
+        {% bootstrap_field form.first_name layout='vertical' %}
+      </span>
+    </div>
+    <div class="row">
+      <span class="col-xs-12 col-md-3">
+        {% bootstrap_field form.civilite layout='vertical' %}
+      </span>
+      <span class="col-xs-12 col-md-4">
+        {% bootstrap_field form.alias layout='vertical' %}
+      </span>
+    </div>
+    <div class="form-group">
+          <label class="control-label">Rôles</label>
+          {{ form.role }}
+    </div>
+    <div class="block-grey">
+      <h2>{% trans "Naissance" %}</h2>
+      {% bootstrap_field form.birth_date %}
+      {% bootstrap_field form.birth_location layout='vertical' %}
+    </div>
+    <div class="block-grey">
+      <h2>{% trans "Décès" %}</h2>
+      {% bootstrap_field form.death_date layout='vertical' %}
+      {% bootstrap_field form.death_location layout='vertical' %}
+    </div>
+
     {% bootstrap_field form.biography layout='vertical' %}
+    {% bootstrap_field form.uri layout='vertical' %}
+
     {% if id %}
     {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
     {% else %}

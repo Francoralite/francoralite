@@ -10,7 +10,7 @@ from .views import (
     home as home_integration,
     institution, institution_add, institution_delete, institution_detail,
     institution_edit,
-    personne, personne_add
+    personne, personne_add, personne_detail, personne_edit
 )
 
 
@@ -35,4 +35,10 @@ urlpatterns = [
     url(r'^authority/add/$',
         personne_add.PersonneAdd.as_view(),
         name='personne-add'),
+    url(r'^authority/(?P<id>[0-9]+)/$',
+        personne_detail.PersonneDetail.as_view(),
+        name='personne-detail'),
+    url(r'^authority/edit/(?P<id>[0-9]+)$',
+        personne_edit.PersonneEdit.as_view(),
+        name='personne-edit'),
 ]

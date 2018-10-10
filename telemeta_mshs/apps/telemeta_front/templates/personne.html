@@ -40,18 +40,18 @@
   <!-- Table to display the institutions --->
   <table class="listing">
   <tr>
-      <th class="highlight">{% trans "Nom" %}</th>
-      <th>{% trans "Biographie" %}</th>
+      <th class="highlight">{% trans "Nom / Prénom" %}</th>
+      <th>{% trans "Alias" %}</th>
+      <th>{% trans "Rôles" %}</th>
   </tr>
   {% for personne in personnes %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
-          <a href="/authority/{{ personne.id }}/">
+          <a href="{% url "personne-detail"  personne.id %}">
             {{ personne.last_name }} {{personne.first_name}}</a>
       </td>
-      <td>{{ institution.biography|markdown|safe }}</td>
-      <td>
-      </td>
+      <td>{{ personne.alias}}</td>
+      <td>{{ personne.roles}}</td>
   </tr>
   {% endfor %}
 </table>

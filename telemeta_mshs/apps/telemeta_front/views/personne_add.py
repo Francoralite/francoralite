@@ -15,7 +15,7 @@ from telemeta_front.forms.personne import PersonneForm
 class PersonneAdd(FormView):
     template_name = "../templates/personne-add.html"
     form_class = PersonneForm
-    success_url = '/personne/'
+    success_url = '/authority/'
 
     def post(self, request, *args, **kwargs):
 
@@ -25,12 +25,12 @@ class PersonneAdd(FormView):
 
             try:
                 requests.post(
-                    FRONT_HOST_URL + '/api/personne/',
+                    FRONT_HOST_URL + '/api/authority/',
                     data=form.cleaned_data
                 )
-                return HttpResponseRedirect('/personne/')
+                return HttpResponseRedirect('/authority/')
 
             except RequestException:
-                return HttpResponseRedirect('/personne/add')
+                return HttpResponseRedirect('/authority/add')
 
-        return HttpResponseRedirect('/personne/add')
+        return HttpResponseRedirect('/authority/add')

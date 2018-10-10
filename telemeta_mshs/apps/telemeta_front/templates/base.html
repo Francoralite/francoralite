@@ -1,4 +1,5 @@
 {% extends "telemeta/base.html" %}
+{% load staticfiles %}
 {% load i18n %}
 {% load telemeta_tags %}
 {% load bootstrap3 %}
@@ -12,11 +13,12 @@
 
 {% block stylesheets %}
   {{ block.super }}
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/style.css" %}" />
 {% endblock %}
 
 {% block logo %}
     <a href="{% url "telemeta-home" %}">
-      <img src="{{ STATIC_URL }}telemeta_front/logo_universite_poitiers.jpg"
+      <img src="{% static "telemeta_front/images/logo_universite_poitiers.jpg" %}"
        alt="Université de Poitiers"/>
     </a>
 {% endblock %}

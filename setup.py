@@ -60,6 +60,7 @@ setup(
     'django-extra-views',
     'django-breadcrumbs',
     'django-bootstrap3==8.1.0',
+    'django-bootstrap-datepicker==1.1.1',
     'django-bootstrap-pagination',
     'django-json-rpc',
     'django-suit',
@@ -75,6 +76,10 @@ setup(
     'django-dirtyfields==1.2.1',
     'sqlparse==0.2.2',
     'django-markdownx',
+    'django_select2==5.11.1',
+    'lxml',
+    'django-leaflet',
+    'django-geojson'
   ],
   extras_require = {
     'tests': [
