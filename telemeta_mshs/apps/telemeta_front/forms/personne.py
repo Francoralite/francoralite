@@ -10,31 +10,31 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class PersonneForm(forms.Form):
-    last_name = forms.CharField(label=_('Nom'), max_length=255, required=True)
-    first_name = forms.CharField(label=_('Prénom'),
+    last_name = forms.CharField(label=_(u'Nom'), max_length=255, required=True)
+    first_name = forms.CharField(label=_(u'Prénom'),
                                  max_length=255, required=False)
     civilite = forms.CharField(
-        label=_('Civilité'), max_length=16, required=False)
-    alias = forms.CharField(label=_('Alias'), max_length=16, required=False)
-    roles = forms.CharField(label=_('Rôles'), max_length=16, required=False)
-    birth_date = forms.DateField(label=_('Date de naissance'), required=False,
+        label=_(u'Civilité'), max_length=16, required=False)
+    alias = forms.CharField(label=_(u'Alias'), max_length=16, required=False)
+    roles = forms.CharField(label=_(u'Rôles'), max_length=16, required=False)
+    birth_date = forms.DateField(label=_(u'Date de naissance'), required=False,
                                  widget=DatePicker(
                                         options={
-                                            "format": "mm/dd/yyyy",
+                                            "format": "dd/mm/yyyy",
                                             "autoclose": True
                                         }
                                     ))
     birth_location = forms.CharField(
-        label=_('Lieu de naissance'), required=False)
-    death_date = forms.DateField(label=_('Date de Décès'), required=False,
+        label=_(u'Lieu de naissance'), required=False)
+    death_date = forms.DateField(label=_(u'Date de Décès'), required=False,
                                  widget=DatePicker(
                                     options={
-                                        "format": "mm/dd/yyyy",
+                                        "format": "dd/mm/yyyy",
                                         "autoclose": True
                                     }
                                  ))
-    death_location = forms.CharField(label=_('Lieu de décès'), required=False)
+    death_location = forms.CharField(label=_(u'Lieu de décès'), required=False)
     biography = forms.CharField(
-        label='Biographie',
+        label=u'Biographie',
         widget=forms.Textarea, required=False)
     uri = forms.CharField(label='URI', required=False)

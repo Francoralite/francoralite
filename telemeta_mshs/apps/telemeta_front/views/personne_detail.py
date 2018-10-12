@@ -9,6 +9,7 @@ from rest_framework import status
 import requests
 
 from settings import FRONT_HOST_URL
+from telemeta_front.forms.personne import PersonneForm
 
 
 class PersonneDetail(TemplateView):
@@ -22,4 +23,5 @@ class PersonneDetail(TemplateView):
             FRONT_HOST_URL + '/api/authority/' + context['id'] + '/')
         if response.status_code == status.HTTP_200_OK:
             context['personne'] = response.json
+            context['form'] = PersonneForm
         return context
