@@ -78,8 +78,8 @@ setup(
     'django-markdownx',
     'django_select2==5.11.1',
     'lxml',
-    'django-leaflet',
-    'django-geojson'
+    'django-leaflet==0.24.0',
+    'django-geojson==2.11.0'
   ],
   extras_require = {
     'tests': [

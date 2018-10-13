@@ -1,0 +1,141 @@
+{% extends "location.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load leaflet_tags %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% leaflet_css %}
+
+
+{% block javascript %}
+  {{ block.super }}
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <style>
+     .leaflet-container {
+       width: 100%;
+       height: 600px;
+      }
+      #mapid {
+        height: 300px;
+       }
+   </style>
+{% endblock %}
+
+{% block title %}
+   {{ block.super}}
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+{{ form.media }}
+<div class="container">
+  {% if id %}
+  <form action="{%url "location-edit" id %}" method="POST">
+  {% else %}
+  <form action="{%url "location-add" %}" method="POST">
+  {% endif %}
+    {% csrf_token %}
+    <div class="row">
+      <span class="col-xs-12 col-md-6">
+        {% bootstrap_field form.name layout='vertical' %}
+      </span>
+    </div>
+
+     <div>
+            <div class="control-label">
+                <label class="" for="id_name">Localisation:</label>
+            </div>
+              {% leaflet_map "mapItems" callback="window.map_init_basic" %}
+    </div>
+
+    <div class="block-grey">
+      <h2>{% trans "Coordonnées" %}</h2>
+      <div class="row">
+        <span class="col-xs-12 col-md-6">
+          {% bootstrap_field form.latitude layout='vertical' %}
+        </span>
+        <span class="col-xs-12 col-md-6">
+          {% bootstrap_field form.longitude layout='vertical' %}
+        </span>
+      </div>
+      {% bootstrap_field form.type layout='vertical'%}
+      {% bootstrap_field form.complete_type layout='vertical'%}
+      {% bootstrap_field form.is_authoritative layout='vertical'%}
+    </div>
+
+    {% if id %}
+    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
+    {% else %}
+    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+    {% endif %}
+  </form>
+</div>
+{% leaflet_js %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script type="text/javascript">
+function map_init_basic (map, options) {
+  // Type of geocoder to use
+  geocoder = L.Control.Geocoder.nominatim({
+    geocodingQueryParams:{limit:10,},
+  });
+  // Create a search control
+  control = L.Control.geocoder({
+    collapsed:false,
+    placeholder:"Recherche ...",
+    showResultIcons:true,
+    geocoder: geocoder,
+  })
+  .on('markgeocode', function(e) {
+    // When a geocoding is performed
+    //control._map.removeLayer(control._map.geocodeMarker);
+    //  a marker with the new geocoded data is updated
+    $("#id_latitude").val( e.geocode.center.lat );
+    $("#id_longitude").val( e.geocode.center.lng );
+    $("#id_name").val( e.geocode.properties.display_name );
+  })
+  .addTo(map);
+  // There is some data ...
+  if( $("#id_latitude").val()!=0 && $("#id_longitude").val()!=0 ) {
+    // Create a marker with current data
+    control._map.geocodeMarker = L.marker([$("#id_latitude").val(), $("#id_longitude").val()],{ draggable:true })
+    .setPopupContent('<p>'+$("#id_name").val()+'</p>')
+    .addTo(map)
+    .openPopup();
+    // Center the map on the current location
+    map.setView([$("#id_latitude").val(), $("#id_longitude").val()],14);
+  }
+  else {
+    // ... It's a new location
+    // Zoom the map to the bounds
+    bounds = L.bounds(
+      L.point( 50, -85 ),
+      L.point( 30, 0 )
+    );
+    map.setMaxZoom(18);
+    map.setMaxBounds( bounds );
+    map.fitBounds( [ [50, -85], [30, 0] ] );
+  }
+}
+</script>
+
+{% endblock %}

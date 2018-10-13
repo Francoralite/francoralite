@@ -10,24 +10,24 @@ from rest_framework import status
 import requests
 from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
-from telemeta_front.forms.personne import PersonneForm
+from telemeta_front.forms.location import LocationForm
 from django.shortcuts import render
 
 
-class PersonneEdit(FormView):
-    template_name = "../templates/personne-add.html"
-    form_class = PersonneForm
-    success_url = '/authority/'
+class LocationEdit(FormView):
+    template_name = "../templates/location-add.html"
+    form_class = LocationForm
+    success_url = '/location/'
 
     def get_context_data(self, **kwargs):
-        context = super(PersonneEdit, self).get_context_data(**kwargs)
+        context = super(LocationEdit, self).get_context_data(**kwargs)
 
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/authority/' + str(id))
+            FRONT_HOST_URL + '/api/location/' + str(id))
         if response.status_code == status.HTTP_200_OK:
-            context['personne'] = response.json
+            context['location'] = response.json
         return context
 
     def get(self, request, *args, **kwargs):
@@ -35,31 +35,31 @@ class PersonneEdit(FormView):
         id = kwargs.get('id')
 
         # Obtain values of the record
-        personne = requests.get(
-            FRONT_HOST_URL + '/api/authority/' + str(id))
-        form = PersonneForm(initial=personne.json())
+        location = requests.get(
+            FRONT_HOST_URL + '/api/location/' + str(id))
+        form = LocationForm(initial=location.json())
 
         return render(request,
-                      '../templates/personne-add.html',
+                      '../templates/location-add.html',
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
 
-        form = PersonneForm(request.POST)
+        form = LocationForm(request.POST)
         id = kwargs.get('id')
 
         if form.is_valid():
             try:
                 response = requests.patch(
-                    FRONT_HOST_URL + '/api/authority/' + str(id) + '/',
+                    FRONT_HOST_URL + '/api/location/' + str(id) + '/',
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/authority/edit/' +
+                    return HttpResponseRedirect('/location/edit/' +
                                                 str(id) + '/')
-                return HttpResponseRedirect('/authority/')
+                return HttpResponseRedirect('/location/')
 
             except RequestException:
                 raise Exception(response.status_code)
-                return HttpResponseRedirect('/authority/edit/')
-        return HttpResponseRedirect('/authority/edit/')
+                return HttpResponseRedirect('/location/edit/')
+        return HttpResponseRedirect('/location/edit/')
