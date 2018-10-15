@@ -11,9 +11,12 @@ register = template.Library()
 
 @register.simple_tag
 def field_data(label, data):
-    str_data = str(data)
-    if str_data == "None":
-        str_data = ""
+    try:
+        str_data = str(data)
+        if str_data == "None":
+            str_data = ""
+    except Exception:
+        str_data = data
     code = "<span class=\"container_data\"><span class=\"libelle\">"
     code = code + str(label) + "</span> <span class=\"donnee\" >"
     code = code + str_data + "</span> </span>"
