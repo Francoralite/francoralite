@@ -12,6 +12,9 @@ class LocationForm(forms.Form):
     name = forms.CharField(label=_(u'Nom'), max_length=255, required=True)
     latitude = forms.FloatField(label=_(u'Latitude'), required=True)
     longitude = forms.FloatField(label=_(u'Longitude'), required=True)
-    type = forms.IntegerField(label=_('Type'), initial=0)
-    complete_type = forms.CharField(label=_('Type complet'), initial="")
-    is_authoritative = forms.BooleanField(label=_('Officiel'), initial=True)
+    type = forms.IntegerField(
+        label=_('Type'), initial=0, widget=forms.HiddenInput())
+    complete_type = forms.CharField(
+        label=_('Type complet'), initial=1, widget=forms.HiddenInput())
+    is_authoritative = forms.BooleanField(
+        label=_('Officiel'), initial=True, widget=forms.HiddenInput())

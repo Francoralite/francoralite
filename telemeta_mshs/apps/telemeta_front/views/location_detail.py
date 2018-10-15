@@ -20,7 +20,7 @@ class LocationDetail(TemplateView):
 
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/location' + context['id'] + '/')
+            FRONT_HOST_URL + '/api/location/' + context['id'])
         if response.status_code == status.HTTP_200_OK:
             context['location'] = response.json
             context['form'] = LocationForm

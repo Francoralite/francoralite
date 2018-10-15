@@ -43,15 +43,30 @@
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Latitude" %}</th>
       <th>{% trans "Longitude" %}</th>
+      <th></th>
   </tr>
-  {% for location in location %}
+  {% for location in locations %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
-          <a href="{% url "location-detail"  location.id %}">
+          <a href="{{location.id}}">
             {{ location.name}}</a>
       </td>
       <td>{{ location.latitude}}</td>
       <td>{{ location.longitude}}</td>
+      <td>
+        {% buttons %}
+        <a href="{% url "location-edit" id=location.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <a href="{% url "location-delete" id=location.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+        </a>
+        {% endbuttons %}
+      </td>
   </tr>
   {% endfor %}
 </table>

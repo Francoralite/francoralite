@@ -123,6 +123,13 @@ function map_init_basic (map, options) {
     .openPopup();
     // Center the map on the current location
     map.setView([$("#id_latitude").val(), $("#id_longitude").val()],14);
+
+    control._map.geocodeMarker.on("dragend", function (e) {
+	 	        var changedPos = e.target.getLatLng();
+            $("#id_latitude").val( changedPos.lat );
+            $("#id_longitude").val( changedPos.lng );
+          }
+    );
   }
   else {
     // ... It's a new location

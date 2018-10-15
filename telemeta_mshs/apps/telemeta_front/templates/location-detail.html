@@ -1,0 +1,72 @@
+{% extends "location.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+{% load leaflet_tags %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+<style>
+  #mapid {
+    height: 500px;
+    width: 100%;
+   }
+   .leaflet-container {
+     justify-content: center;
+   }
+</style>
+{% leaflet_css %}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Lieu" %}
+    {% if location %}
+     : {{location.name}}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  <a href="{% url "location-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </button>
+  </a>
+{% endblock %}
+
+{% block content %}
+{% if location %}
+
+<div class="container_line center">
+  {% field_data form.latitude.label  location.latitude %}
+  {% field_data form.longitude.label location.longitude %}
+</div>
+
+<script type="text/javascript">
+ function map_init_basic (map, options) {
+        L.marker([{{location.latitude|virgule}},
+          {{location.longitude|virgule}} ]).addTo(map);
+        map.setView([{{location.latitude|virgule}},
+          {{location.longitude|virgule}}], 15);
+    };
+</script>
+{% leaflet_map "mapid" callback="window.map_init_basic"%}
+
+
+
+{% leaflet_js %}
+
+
+{% else %}
+  <p>{% trans "Ce lieu n'existe pas." %}</p>
+{% endif %}
+{% endblock %}

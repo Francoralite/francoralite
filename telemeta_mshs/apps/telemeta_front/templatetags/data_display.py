@@ -19,3 +19,8 @@ def field_data(label, data):
     code = code + str_data + "</span> </span>"
 
     return code
+
+
+@register.filter
+def virgule(self):
+    return str(self).replace(",", ".")
