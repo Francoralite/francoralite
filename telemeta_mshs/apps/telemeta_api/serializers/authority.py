@@ -11,7 +11,7 @@ class AuthoritySerializer(serializers.ModelSerializer):
     Common serializer for all authority actions
     """
 
-    civilite = serializers.CharField(allow_blank=True, required=False)
+    civility = serializers.CharField(allow_blank=True, required=False)
     birth_date = serializers.DateField(required=False)
     birth_location = serializers.PrimaryKeyRelatedField(
         queryset=LocationModel.objects.all(), required=False)
