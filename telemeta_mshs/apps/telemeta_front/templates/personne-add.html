@@ -9,10 +9,14 @@
 
 {% block javascript %}
   {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+
 {% endblock %}
 
 {% block stylesheets %}
   {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
 {% endblock %}
 
 {% block title %}
@@ -36,25 +40,24 @@
   <form action="{%url "personne-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    <div class="row">
-      <span class="col-xs-12 col-md-6">
-        {% bootstrap_field form.last_name layout='vertical' %}
-      </span>
-      <span class="col-xs-12 col-md-6">
-        {% bootstrap_field form.first_name layout='vertical' %}
-      </span>
+    <div class="container_line">
+      {% bootstrap_field form.last_name layout='vertical' %}
+      {% bootstrap_field form.first_name layout='vertical' %}
     </div>
-    <div class="row">
-      <span class="col-xs-12 col-md-3">
+    <div class="container_line">
         {% bootstrap_field form.civilite layout='vertical' %}
-      </span>
-      <span class="col-xs-12 col-md-4">
         {% bootstrap_field form.alias layout='vertical' %}
-      </span>
     </div>
     <div class="form-group">
-          <label class="control-label">Rôles</label>
-          {{ form.role }}
+          <label class="control-label">{% trans "Rôles" %}</label>
+          <div class="container_line space-around">
+          {% bootstrap_field form.is_collector %}
+          {% bootstrap_field form.is_informer %}
+          {% bootstrap_field form.is_author %}
+          {% bootstrap_field form.is_composer %}
+          {% bootstrap_field form.is_editor %}
+        </div>
+
     </div>
     <div class="block-grey">
       <h2>{% trans "Naissance" %}</h2>
@@ -77,4 +80,48 @@
     {% endif %}
   </form>
 </div>
+
+<script>
+var locations = new Bloodhound({
+  datumTokenizer: function(datum) {
+    return Bloodhound.tokenizers.whitespace(datum.value);
+  },
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    url: 'http://localhost:8000/api/locationgis?search=%QUERY',
+    wildcard: '%QUERY',
+    transform: function(response) {
+      // Map the remote source JSON array to a JavaScript object array
+      return $.map(response, function(location) {
+        return {
+          name: location.name,
+          code: location.code,
+          id: location.id
+        };
+      });
+    }
+  }
+});
+
+$('.typeahead').typeahead({
+  minLength: 2,
+  highlight: true,
+},{
+  display: 'name',
+  source: locations,
+  templates: {
+    empty: [
+      '<div class="empty-message">',
+        "Il n\'y a pas de lieux qui corresponde à cette recherche.",
+      '</div>'
+    ].join('\n'),
+    suggestion: function(data) {
+      return '<div><strong>' + data.code + '</strong> : '+ data.name + '</div>';
+    }
+}
+}).on('typeahead:selected', function(event, data){
+        $('.typeahead').val(data.id);
+      });
+</script>
+{{ form.media.js }}
 {% endblock %}

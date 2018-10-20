@@ -4,19 +4,22 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from .views import (
     home as home_integration,
     institution, institution_add, institution_delete, institution_detail,
     institution_edit,
     personne, personne_add, personne_detail, personne_edit, personne_delete,
-    location, location_add, location_detail, location_edit, location_delete
+    location, location_add, location_detail, location_edit, location_delete,
+    location_gis, location_gis_add, location_gis_detail, location_gis_edit,
+    location_gis_delete
 )
 
 
 urlpatterns = [
     url(r'^$', home_integration.HomePageView.as_view(), name="home"),
+    url(r'^select2/', include('django_select2.urls')),
 
     # Institutions
     url(r'^institution/$', institution.InstitutionView.as_view(),
@@ -65,4 +68,20 @@ urlpatterns = [
     url(r'^location/delete/(?P<id>[0-9]+)$',
         location_delete.LocationDelete.as_view(),
         name='location-delete'),
+
+    # Location GIS ( Lieux)
+    url(r'^location_gis/$', location_gis.LocationView.as_view(),
+        name="location_gis"),
+    url(r'^location_gis/add/$',
+        location_gis_add.LocationAdd.as_view(),
+        name='location_gis-add'),
+    url(r'^location_gis/(?P<id>[0-9]+)/$',
+        location_gis_detail.LocationDetail.as_view(),
+        name='location_gis-detail'),
+    url(r'^location_gis/edit/(?P<id>[0-9]+)$',
+        location_gis_edit.LocationEdit.as_view(),
+        name='location_gis-edit'),
+    url(r'^location_gis/delete/(?P<id>[0-9]+)$',
+        location_gis_delete.LocationDelete.as_view(),
+        name='location_gis-delete'),
 ]

@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-  <a href="{% url "location-edit" id=id %}">
+  <a href="{% url "location_gis-edit" id=id %}">
   <button type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
   </button>
@@ -47,6 +47,8 @@
 {% if location %}
 
 <div class="container_line center">
+  {% field_data form.code.label  location.code %}
+  {% field_data form.notes.label  location.notes %}
   {% field_data form.latitude.label  location.latitude %}
   {% field_data form.longitude.label location.longitude %}
 </div>

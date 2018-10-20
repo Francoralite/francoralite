@@ -40,6 +40,14 @@
   {% field_data form.civilite.label personne.civilite %}
   {% field_data form.alias.label personne.alias %}
 </div>
+<div class="container_line">
+  <h2>{% trans "Rôles" %}</h2>
+  {% field_data_bool form.is_collector.label personne.is_collector %}
+  {% field_data_bool form.is_informer.label personne.is_informer %}
+  {% field_data_bool form.is_author.label personne.is_author %}
+  {% field_data_bool form.is_composer.label personne.is_composer %}
+  {% field_data_bool form.is_editor.label personne.is_editor %}
+</div>
 <div class="block-grey">
   <h2>{% trans "Naissance" %}</h2>
   <div class="container_line">

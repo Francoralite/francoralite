@@ -48,15 +48,17 @@
 {{ form.media }}
 <div class="container">
   {% if id %}
-  <form action="{%url "location-edit" id %}" method="POST">
+  <form action="{%url "location_gis-edit" id %}" method="POST">
   {% else %}
-  <form action="{%url "location-add" %}" method="POST">
+  <form action="{%url "location_gis-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    <div class="row">
-      <span class="col-xs-12 col-md-6">
+    <div class="container_line">
+        {% bootstrap_field form.code layout='vertical' %}
         {% bootstrap_field form.name layout='vertical' %}
-      </span>
+    </div>
+    <div class="container_line">
+      {% bootstrap_field form.notes layout='vertical' %}
     </div>
 
      <div>
@@ -68,17 +70,10 @@
 
     <div class="block-grey">
       <h2>{% trans "Coordonnées" %}</h2>
-      <div class="row">
-        <span class="col-xs-12 col-md-6">
-          {% bootstrap_field form.latitude layout='vertical' %}
-        </span>
-        <span class="col-xs-12 col-md-6">
-          {% bootstrap_field form.longitude layout='vertical' %}
-        </span>
+      <div class="container_line">
+        {% bootstrap_field form.latitude layout='vertical' %}
+        {% bootstrap_field form.longitude layout='vertical' %}
       </div>
-      {% bootstrap_field form.type layout='vertical'%}
-      {% bootstrap_field form.complete_type layout='vertical'%}
-      {% bootstrap_field form.is_authoritative layout='vertical'%}
     </div>
 
     {% if id %}

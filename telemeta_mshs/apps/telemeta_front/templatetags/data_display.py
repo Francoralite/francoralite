@@ -24,6 +24,19 @@ def field_data(label, data):
     return code
 
 
+@register.simple_tag
+def field_data_bool(label, data):
+    icon = ""
+    if data is True:
+        icon = "glyphicon-ok "
+    code = "<span class=\"container_data\"><span class=\"libelle\">"
+    code = code + str(label) + "</span> <span class=\" center glyphicon "
+    code = code + icon + "donnee\" >"
+    code = code + "</span> </span>"
+
+    return code
+
+
 @register.filter
 def virgule(self):
     return str(self).replace(",", ".")

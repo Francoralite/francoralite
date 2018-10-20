@@ -16,16 +16,28 @@ class PersonneForm(forms.Form):
     civilite = forms.CharField(
         label=_(u'Civilité'), max_length=16, required=False)
     alias = forms.CharField(label=_(u'Alias'), max_length=16, required=False)
-    roles = forms.CharField(label=_(u'Rôles'), max_length=16, required=False)
-    birth_date = forms.DateField(label=_(u'Date de naissance'), required=False,
+    is_collector = forms.BooleanField(label=_(u'Enquêteur'), required=False)
+    is_informer = forms.BooleanField(label=_(u'Informateur'), required=False)
+    is_author = forms.BooleanField(label=_(u'Auteur'), required=False)
+    is_composer = forms.BooleanField(label=_(u'Compositeur'), required=False)
+    is_editor = forms.BooleanField(label=_(u'Editeur'), required=False)
+    birth_date = forms.DateField(label=_(u'Date de naissance'),
+                                 required=False,
                                  widget=DatePicker(
-                                        options={
+                                      options={
                                             "format": "dd/mm/yyyy",
                                             "autoclose": True
                                         }
                                     ))
     birth_location = forms.CharField(
-        label=_(u'Lieu de naissance'), required=False)
+        label=_(u'Lieu de naissance'),
+        widget=forms.TextInput(
+            attrs={
+                 'class': 'typeahead',
+                 'placeholder': _(u'Saisir le nom d\'un lieu'),
+             }
+        ),
+        required=False)
     death_date = forms.DateField(label=_(u'Date de Décès'), required=False,
                                  widget=DatePicker(
                                     options={
@@ -33,7 +45,15 @@ class PersonneForm(forms.Form):
                                         "autoclose": True
                                     }
                                  ))
-    death_location = forms.CharField(label=_(u'Lieu de décès'), required=False)
+    death_location = forms.CharField(
+        label=_(u'Lieu de décès'),
+        widget=forms.TextInput(
+            attrs={
+                 'class': 'typeahead',
+                 'placeholder': _(u'Saisir le nom d\'un lieu'),
+             }
+        ),
+        required=False)
     biography = forms.CharField(
         label=u'Biographie',
         widget=forms.Textarea, required=False)

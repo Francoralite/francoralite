@@ -11,6 +11,7 @@ from .views import (
     collection_location,
     collection_language,
     location,
+    location_gis,
     language,
     media_item,
     ext_media_item,
@@ -31,6 +32,9 @@ router.register(r'extcollection',
 router.register(r'location',
                 location.LocationViewSet,
                 base_name='location')
+router.register(r'locationgis',
+                location_gis.LocationGISViewSet,
+                base_name='location_gis')
 router.register(r'language',
                 language.LanguageViewSet,
                 base_name='language')

@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-    <a href="{% url "location-add" %}">
+    <a href="{% url "location_gis-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}</span>
     </button>
@@ -40,6 +40,7 @@
   <!-- Table to display the institutions --->
   <table class="listing">
   <tr>
+      <th>{% trans "Code" %}</th>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Latitude" %}</th>
       <th>{% trans "Longitude" %}</th>
@@ -47,6 +48,7 @@
   </tr>
   {% for location in locations %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td>{{ location.code }}</td>
       <td class="highlight">
           <a href="{{location.id}}">
             {{ location.name}}</a>
@@ -55,12 +57,12 @@
       <td>{{ location.longitude}}</td>
       <td>
         {% buttons %}
-        <a href="{% url "location-edit" id=location.id %}">
+        <a href="{% url "location_gis-edit" id=location.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
-        <a href="{% url "location-delete" id=location.id %}">
+        <a href="{% url "location_gis-delete" id=location.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
               </button>
