@@ -35,9 +35,9 @@
 {% block content %}
 {% if personne %}
 <div class="container_line">
-  {% field_data form.first_name.label personne.first_name %}
-  {% field_data form.last_name.label personne.last_name %}
-  {% field_data form.civilite.label personne.civilite %}
+  {% field_data form.first_name.label|safe personne.first_name|safe %}
+  {% field_data form.last_name.label|safe personne.last_name|safe %}
+  {% field_data form.civilite.label|safe personne.civilite|safe %}
   {% field_data form.alias.label personne.alias %}
 </div>
 <div class="container_line">

@@ -25,7 +25,8 @@ class PersonneForm(forms.Form):
                                  required=False,
                                  widget=DatePicker(
                                       options={
-                                            "format": "dd/mm/yyyy",
+                                            "format": "yyyy-mm-dd",
+                                            "language": "fr",
                                             "autoclose": True
                                         }
                                     ))
@@ -41,7 +42,8 @@ class PersonneForm(forms.Form):
     death_date = forms.DateField(label=_(u'Date de Décès'), required=False,
                                  widget=DatePicker(
                                     options={
-                                        "format": "dd/mm/yyyy",
+                                        "format": "yyyy-mm-dd",
+                                        "language": "fr",
                                         "autoclose": True
                                     }
                                  ))
