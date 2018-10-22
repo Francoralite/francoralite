@@ -38,7 +38,7 @@
   {% field_data form.first_name.label|safe personne.first_name|safe %}
   {% field_data form.last_name.label|safe personne.last_name|safe %}
   {% field_data form.civility.label|safe personne.civility|safe %}
-  {% field_data form.alias.label personne.alias %}
+  {% field_data form.alias.label|safe personne.alias %}
 </div>
 <div class="container_line">
   <h2>{% trans "Rôles" %}</h2>
@@ -51,15 +51,15 @@
 <div class="block-grey">
   <h2>{% trans "Naissance" %}</h2>
   <div class="container_line">
-    {% field_data form.birth_date.label personne.birth_date %}
-    {% field_data form.birth_location.label personne.birth_location %}
+    {% field_data form.birth_date.label|safe personne.birth_date %}
+    {% field_data form.birth_location.label|safe personne.birth_location.name %}
   </div>
 </div>
 <div class="block-grey">
   <h2>{% trans "Décès" %}</h2>
   <div class="container_line">
-    {% field_data form.death_date.label personne.death_date %}
-    {% field_data form.death_location.label personne.death_location %}
+    {% field_data form.death_date.label|safe personne.death_date %}
+    {% field_data form.death_location.label|safe personne.death_location.name %}
   </div>
 </div>
 {% field_data form.biography.label personne.biography|markdown|safe %}

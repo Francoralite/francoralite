@@ -62,12 +62,14 @@
     <div class="block-grey">
       <h2>{% trans "Naissance" %}</h2>
       {% bootstrap_field form.birth_date %}
-      {% bootstrap_field form.birth_location layout='vertical' %}
+      {% bootstrap_field form.birth_location_name layout='vertical' %}
+      {% bootstrap_field form.birth_location %}
     </div>
     <div class="block-grey">
       <h2>{% trans "Décès" %}</h2>
       {% bootstrap_field form.death_date layout='vertical' %}
-      {% bootstrap_field form.death_location layout='vertical' %}
+      {% bootstrap_field form.death_location_name layout='vertical' %}
+      {% bootstrap_field form.death_location %}
     </div>
 
     {% bootstrap_field form.biography layout='vertical' %}
@@ -81,7 +83,25 @@
   </form>
 </div>
 
+{% if id %}
 <script>
+  // Fill the locations fields with related values
+  $('#id_birth_location').val({{personne.birth_location.id}});
+  $('#id_birth_location_name').val("{{personne.birth_location.name}}");
+  $('#id_death_location').val({{personne.death_location.id}});
+  $('#id_death_location_name').val("{{personne.death_location.name}}");
+</script>
+{% else %}
+<script>
+  $('#id_birth_location').val();
+  $('#id_death_location').val();
+</script>
+{% endif %}
+
+<script>
+
+// Searching a location, using Bloodhound
+//  and queyring the API
 var locations = new Bloodhound({
   datumTokenizer: function(datum) {
     return Bloodhound.tokenizers.whitespace(datum.value);
@@ -103,6 +123,7 @@ var locations = new Bloodhound({
   }
 });
 
+// An autocompletion to choose a location
 $('.typeahead').typeahead({
   minLength: 2,
   highlight: true,
@@ -119,9 +140,16 @@ $('.typeahead').typeahead({
       return '<div><strong>' + data.code + '</strong> : '+ data.name + '</div>';
     }
 }
-}).on('typeahead:selected', function(event, data){
-        $('.typeahead').val(data.id);
-      });
+});
+
+// Catch the ID of a selectd location
+$('#id_birth_location_name').on('typeahead:selected', function (event, result){
+  $('#id_birth_location').val(result.id);
+});
+$('#id_death_location_name').on('typeahead:selected', function (event, result){
+  $('#id_death_location').val(result.id);
+});
+
 </script>
 {{ form.media.js }}
 {% endblock %}

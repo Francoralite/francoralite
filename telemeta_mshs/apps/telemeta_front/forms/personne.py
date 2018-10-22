@@ -30,7 +30,7 @@ class PersonneForm(forms.Form):
                                             "autoclose": True
                                         }
                                     ))
-    birth_location = forms.CharField(
+    birth_location_name = forms.CharField(
         label=_(u'Lieu de naissance'),
         widget=forms.TextInput(
             attrs={
@@ -38,6 +38,10 @@ class PersonneForm(forms.Form):
                  'placeholder': _(u'Saisir le nom d\'un lieu'),
              }
         ),
+        required=False)
+    birth_location = forms.CharField(
+        label=_(u'Lieu de naissance'),
+        widget=forms.HiddenInput(),
         required=False)
     death_date = forms.DateField(label=_(u'Date de Décès'), required=False,
                                  widget=DatePicker(
@@ -47,7 +51,7 @@ class PersonneForm(forms.Form):
                                         "autoclose": True
                                     }
                                  ))
-    death_location = forms.CharField(
+    death_location_name = forms.CharField(
         label=_(u'Lieu de décès'),
         widget=forms.TextInput(
             attrs={
@@ -56,6 +60,10 @@ class PersonneForm(forms.Form):
              }
         ),
         required=False)
+    death_location = forms.CharField(
+            label=_(u'Lieu de décès'),
+            widget=forms.HiddenInput(),
+            required=False)
     biography = forms.CharField(
         label=u'Biographie',
         widget=forms.Textarea, required=False)

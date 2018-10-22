@@ -38,10 +38,13 @@ class PersonneEdit(FormView):
         personne = requests.get(
             FRONT_HOST_URL + '/api/authority/' + str(id))
         form = PersonneForm(initial=personne.json())
+        authority = personne.json()
 
         return render(request,
                       '../templates/personne-add.html',
-                      {'form': form, 'id': id})
+                      {'form': form,
+                       'id': id,
+                       'personne': authority})
 
     def post(self, request, *args, **kwargs):
 
