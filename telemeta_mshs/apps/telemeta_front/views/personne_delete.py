@@ -20,7 +20,7 @@ class PersonneDelete(View):
             requests.delete(
                 FRONT_HOST_URL + '/api/authority/' + str(id)
                 )
-            return HttpResponseRedirect('/personne/')
+            return HttpResponseRedirect('/authority/')
 
         except RequestException:
-            return HttpResponseRedirect('/personne/')
+            return HttpResponseRedirect('/authority/')

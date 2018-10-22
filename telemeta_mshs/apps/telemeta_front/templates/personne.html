@@ -43,6 +43,7 @@
       <th class="highlight">{% trans "Nom / Prénom" %}</th>
       <th>{% trans "Alias" %}</th>
       <th>{% trans "Rôles" %}</th>
+      <th></th>
   </tr>
   {% for personne in personnes %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -67,6 +68,20 @@
         {% if personne.is_editor %}
           {{form.is_editor.label}}
         {% endif %}
+      </td>
+      <td>
+        {% buttons %}
+        <a href="{% url "personne-edit" id=personne.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <a href="{% url "personne-delete" id=personne.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+        </a>
+        {% endbuttons %}
       </td>
   </tr>
   {% endfor %}
