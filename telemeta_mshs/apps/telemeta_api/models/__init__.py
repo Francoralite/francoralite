@@ -12,3 +12,4 @@ from .collection_publisher import CollectionPublisher
 from .collection_location import CollectionLocation
 from .collection_language import CollectionLanguage
 from .institution import Institution
+from .location import Location

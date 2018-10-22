@@ -9,11 +9,11 @@ import requests
 from settings import FRONT_HOST_URL
 
 
-class InstitutionView(TemplateView):
-    template_name = "../templates/institution.html"
+class LocationView(TemplateView):
+    template_name = "../templates/location.html"
 
     def get_context_data(self, **kwargs):
-        context = super(InstitutionView, self).get_context_data(**kwargs)
-        context['institutions'] = requests.get(
-            FRONT_HOST_URL+'/api/institution/').json
+        context = super(LocationView, self).get_context_data(**kwargs)
+        context['locations'] = requests.get(
+            FRONT_HOST_URL+'/api/locationgis/').json
         return context

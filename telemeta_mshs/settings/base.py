@@ -26,6 +26,7 @@ INSTALLED_APPS = (
     # 'ipauth',
     'extra_views',
     'bootstrap3',
+    'bootstrap_datepicker',
     'bootstrap_pagination',
     'registration',
     'rest_framework',
@@ -35,8 +36,11 @@ INSTALLED_APPS = (
     'djng',
     'saved_searches',
     'rest_framework_swagger',
+    'django_filters',
     'telemeta_mshs.apps.telemeta_api',
     'telemeta_mshs.apps.telemeta_front',
+    'django_select2',
+    'leaflet',
     'markdownx',
 )
 

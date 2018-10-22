@@ -5,9 +5,8 @@ authority factory to execute tests
 
 import factory
 from ...models.authority import Authority
-from .location import LocationFactory
+from .location_gis import LocationGisFactory
 
-ROLES = [role[0] for role in Authority.ROLES]
 
 class AuthorityFactory(factory.django.DjangoModelFactory):
     """
@@ -19,12 +18,16 @@ class AuthorityFactory(factory.django.DjangoModelFactory):
 
     last_name = factory.Faker('last_name')
     first_name = factory.Faker('first_name')
-    civilite = factory.Faker('prefix')
+    civility = factory.Faker('prefix')
     alias = factory.Faker('word')
-    roles = "'ENQ','INF'"
+    is_collector = factory.Faker('boolean')
+    is_informer = factory.Faker('boolean')
+    is_author = factory.Faker('boolean')
+    is_composer = factory.Faker('boolean')
+    is_editor = factory.Faker('boolean')
     birth_date = factory.Faker('date')
-    birth_location = factory.SubFactory(LocationFactory)
+    birth_location = factory.SubFactory(LocationGisFactory)
     death_date = factory.Faker('date')
-    death_location = factory.SubFactory(LocationFactory)
+    death_location = factory.SubFactory(LocationGisFactory)
     biography = factory.Faker('paragraph', nb_sentences=5)
     uri = factory.Faker('uri')

@@ -4,7 +4,6 @@
 {% load markdown_extra %}
 {% load data_display %}
 
-
 {% block javascript %}
   {{ block.super }}
 {% endblock %}
@@ -18,7 +17,7 @@
 <div class="col-md-4">
   <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
     style="vertical-align:middle" />
-    <h1>{% trans "Institutions" %}</h1>
+    <h1>{% trans "Lieux" %}</h1>
 </div>
 <div class="col-md-8">
 </div>
@@ -27,7 +26,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-    <a href="{% url "institution-add" %}">
+    <a href="{% url "location_gis-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}</span>
     </button>
@@ -38,31 +37,36 @@
 </div>
 {% block content %}
 <div class="fullpage">
-{% if institutions|length > 0 %}
+{% if locations|length > 0 %}
   <!-- Table to display the institutions --->
   <table class="listing">
   <tr>
+      <th>{% trans "Code" %}</th>
       <th class="highlight">{% trans "Nom" %}</th>
-      <th>{% trans "Notes" %}</th>
+      <th>{% trans "Latitude" %}</th>
+      <th>{% trans "Longitude" %}</th>
+      <th></th>
   </tr>
-  {% for institution in institutions %}
+  {% for location in locations %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td>{{ location.code }}</td>
       <td class="highlight">
-          <a href="/institution/{{ institution.id }}/">
-            {{ institution.name }}</a>
+          <a href="{{location.id}}">
+            {{ location.name}}</a>
       </td>
-      <td>{{ institution.notes|markdown|safe }}</td>
+      <td>{{ location.latitude}}</td>
+      <td>{{ location.longitude}}</td>
       <td>
         {% buttons %}
-        <a href="{% url "institution-edit" id=institution.id %}">
+        <a href="{% url "location_gis-edit" id=location.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
-            data-name="{{institution.name}}"
-            data-url="{% url "institution-delete" id=institution.id %}">
+            data-name="{{location.code}} - {{location.name}}"
+            data-url="{% url "location_gis-delete" id=location.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endbuttons %}
@@ -74,7 +78,7 @@
 {% modal_delete %}
 
 {% else %}
-    <p>{% trans "Il n'y a pas d'institutions" %}</p>
+    <p>{% trans "Il n'y a pas de lieux" %}</p>
 {% endif %}
 </div>
 {% endblock %}

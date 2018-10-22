@@ -1,0 +1,42 @@
+{% load i18n %}
+
+<div class="modal fade"  id="modalDelete" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close"
+        data-dismiss="modal" aria-label="Close"><span aria-hidden="true">
+        &times;</span></button>
+        <h4 class="modal-title">{% trans "Confirmation de suppresion" %}</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          {% trans "Etes-vous certain(e) de vouloir supprimer cette fiche ?" %}
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+        {% trans "Annuler" %}
+        </button>
+        <a id="deleteURL" href="{{url}}">
+          <button type="button" class="btn btn-danger">
+            {% trans "Oui, supprimer" %}
+          </button>
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$('#modalDelete').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var name = button.data('name') // Extract info from data-* attributes
+  var url = button.data('url')
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text(name)
+  $("#deleteURL").attr("href",url);
+})
+</script>

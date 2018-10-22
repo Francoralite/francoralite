@@ -16,16 +16,20 @@ from rest_framework.test import APITestCase
 from .factories.authority import AuthorityFactory
 # from .factories.location import LocationFactory
 from ..models.authority import Authority
-from telemeta.models.location import Location
+from ..models.location import Location
 
 # Expected structure for Authority objects
 AUTHORITY_STRUCTURE = [
     ('id', int),
     ('last_name', str),
     ('first_name', str),
-    ('civilite', str),
+    ('civility', str),
     ('alias', str),
-    ('roles', str),
+    ('is_collector', int),
+    ('is_informer', bool),
+    ('is_author', bool),
+    ('is_composer', bool),
+    ('is_editor', bool),
     ('birth_date', str),
     ('birth_location', str),
     ('death_date', str),
@@ -60,8 +64,8 @@ class TestAuthorityList(APITestCase):
         url = reverse('authority-list')
 
         # ORM side
-        authoritys = Authority.objects.all()
-        self.assertEqual(len(authoritys), 6)
+        authorities = Authority.objects.all()
+        self.assertEqual(len(authorities), 6)
 
         # API side
         response = self.client.get(url)

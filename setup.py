@@ -39,6 +39,7 @@ setup(
     'django-rest-swagger==2.1.2',
     'djangorestframework==3.6.4',
     'drf-nested-routers==0.90.0',
+    'django-filter==1.0.0',
     'ebooklib==0.16',
     'gunicorn==19.7.1',
     'saved_searches==2.0.0-beta',
@@ -60,6 +61,7 @@ setup(
     'django-extra-views',
     'django-breadcrumbs',
     'django-bootstrap3==8.1.0',
+    'django-bootstrap-datepicker==1.1.1',
     'django-bootstrap-pagination',
     'django-json-rpc',
     'django-suit',
@@ -75,6 +77,10 @@ setup(
     'django-dirtyfields==1.2.1',
     'sqlparse==0.2.2',
     'django-markdownx',
+    'django_select2==5.11.1',
+    'lxml',
+    'django-leaflet==0.24.0',
+    'django-geojson==2.11.0'
   ],
   extras_require = {
     'tests': [

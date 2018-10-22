@@ -5,9 +5,11 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.core import ModelCore, MetaCore, ForeignKey, models
-from telemeta.models.core import CharField, TextField, DateField, URLField
+from telemeta.models.core import ModelCore, MetaCore, models
+from telemeta.models.core import (
+    CharField, TextField, DateField, URLField, BooleanField)
 from django.utils.translation import ugettext_lazy as _
+from django.db import models
 
 
 class Authority(ModelCore):
@@ -17,26 +19,23 @@ class Authority(ModelCore):
     # List of the fields
     last_name = CharField(_('last name'), required=True)
     first_name = CharField(_('first name'))
-    civilite = CharField(_('civilite'))
+    civility = CharField(_('civility'))
     alias = CharField(_('alias'))
-    ROLES = (
-        ('ENQ', 'Enquêteur'),
-        ('INF', 'Informateur'),
-        ('AUT', 'Auteur'),
-        ('CMP', 'Compositeur'),
-        ('EDT', 'Editeur')
-    )
-    roles = CharField(_('Roles'), choices=ROLES)
+    is_collector = BooleanField(_('collector'), default=False)
+    is_informer = BooleanField(_('informer'), default=False)
+    is_author = BooleanField(_('author'), default=False)
+    is_composer = BooleanField(_('composer'), default=False)
+    is_editor = BooleanField(_('editor'), default=False)
     birth_date = DateField(null=True)
-    birth_location = ForeignKey(
-        'telemeta.Location',
+    birth_location = models.ForeignKey(
+        'telemeta_api.Location',
         related_name='birth_location',
         verbose_name=_('birth location'),
         blank=True,
         null=True, on_delete=models.SET_NULL)
     death_date = DateField(null=True)
-    death_location = ForeignKey(
-        'telemeta.Location',
+    death_location = models.ForeignKey(
+        'telemeta_api.Location',
         related_name='death_location',
         verbose_name=_('death location'),
         blank=True,

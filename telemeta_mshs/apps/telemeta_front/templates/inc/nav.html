@@ -23,7 +23,15 @@
                                 </ul>
                             </li>
 
-                            <li><a href="" class="green">Personnes</a>
+                            <li>
+                              <a href="{% url "personne" %}" class="green">
+                                {% trans "Personnes" %}</a>
+                                <ul>
+                                  <li>
+                                    <a href="{% url "location_gis" %}">
+                                      {% trans "Lieux" %}</a>
+                                  </li>
+                                </ul>
                             </li>
 
                             <li><a href="{% url "telemeta-geo-continents" %}"
