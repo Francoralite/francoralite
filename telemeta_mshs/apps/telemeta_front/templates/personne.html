@@ -2,6 +2,7 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
@@ -76,18 +77,25 @@
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
-        <a href="{% url "personne-delete" id=personne.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
-              </button>
-        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{personne.last_name}} {{personne.first_name}}"
+            data-url="{% url "personne-delete" id=personne.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
         {% endbuttons %}
       </td>
   </tr>
   {% endfor %}
 </table>
+
+{% modal_delete %}
+
 {% else %}
     <p>{% trans "Il n'y a pas de personnes" %}</p>
 {% endif %}
 </div>
+
+
+
 {% endblock %}

@@ -2,6 +2,8 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load data_display %}
+
 
 {% block javascript %}
   {{ block.super }}
@@ -43,7 +45,7 @@
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
   </tr>
-  {% for institution in institutions %}
+  {% for institution in institlocationutions %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
           <a href="/institution/{{ institution.id }}/">
@@ -62,11 +64,20 @@
                 <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
               </button>
         </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{institution.name}}"
+            data-url="{% url "institution-delete" id=institution.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
         {% endbuttons %}
       </td>
   </tr>
   {% endfor %}
 </table>
+
+{% modal_delete %}
+
 {% else %}
     <p>{% trans "Il n'y a pas d'institutions" %}</p>
 {% endif %}

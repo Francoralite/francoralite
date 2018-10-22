@@ -2,6 +2,7 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
@@ -62,16 +63,20 @@
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
-        <a href="{% url "location_gis-delete" id=location.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
-              </button>
-        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{location.code}} - {{location.name}}"
+            data-url="{% url "location_gis-delete" id=location.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
         {% endbuttons %}
       </td>
   </tr>
   {% endfor %}
 </table>
+
+{% modal_delete %}
+
 {% else %}
     <p>{% trans "Il n'y a pas de lieux" %}</p>
 {% endif %}

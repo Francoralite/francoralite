@@ -39,6 +39,11 @@ def field_data_bool(label, data):
     return code
 
 
+@register.inclusion_tag('inc/modal-delete.html')
+def modal_delete():
+    return {}
+
+
 @register.filter
 def virgule(self):
     return str(self).replace(",", ".")
