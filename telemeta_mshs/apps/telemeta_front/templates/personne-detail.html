@@ -42,11 +42,21 @@
 </div>
 <div class="container_line">
   <h2>{% trans "Rôles" %}</h2>
-  {% field_data_bool form.is_collector.label personne.is_collector %}
-  {% field_data_bool form.is_informer.label personne.is_informer %}
-  {% field_data_bool form.is_author.label personne.is_author %}
-  {% field_data_bool form.is_composer.label personne.is_composer %}
-  {% field_data_bool form.is_editor.label personne.is_editor %}
+    {% if personne.is_collector %}
+    {% field_data_bool form.is_collector.label personne.is_collector %}
+    {% endif %}
+    {% if personne.is_informer %}
+    {% field_data_bool form.is_informer.label personne.is_informer %}
+    {% endif %}
+    {% if personne.is_author %}
+    {% field_data_bool form.is_author.label personne.is_author %}
+    {% endif %}
+    {% if personne.is_composer %}
+    {% field_data_bool form.is_composer.label personne.is_composer %}
+    {% endif %}
+    {% if personne.is_editor %}
+    {% field_data_bool form.is_editor.label personne.is_editor %}
+    {% endif %}
 </div>
 <div class="block-grey">
   <h2>{% trans "Naissance" %}</h2>
