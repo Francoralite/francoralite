@@ -45,7 +45,7 @@
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
   </tr>
-  {% for institution in institlocationutions %}
+  {% for institution in institutions %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
           <a href="/institution/{{ institution.id }}/">
@@ -57,11 +57,6 @@
         <a href="{% url "institution-edit" id=institution.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-              </button>
-        </a>
-        <a href="{% url "institution-delete" id=institution.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
               </button>
         </a>
         <button type="button" class="btn btn-default"

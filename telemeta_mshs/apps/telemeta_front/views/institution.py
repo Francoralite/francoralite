@@ -11,7 +11,6 @@ from settings import FRONT_HOST_URL
 
 class InstitutionView(TemplateView):
     template_name = "../templates/institution.html"
-    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super(InstitutionView, self).get_context_data(**kwargs)
