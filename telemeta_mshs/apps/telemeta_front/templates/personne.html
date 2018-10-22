@@ -51,7 +51,23 @@
             {{ personne.last_name }} {{personne.first_name}}</a>
       </td>
       <td>{{ personne.alias}}</td>
-      <td>{{ personne.roles}}</td>
+      <td>
+        {% if personne.is_collector %}
+          {{form.is_collector.label}}
+        {% endif %}
+        {% if personne.is_informer %}
+          {{form.is_informer.label}}
+        {% endif %}
+        {% if personne.is_author %}
+          {{form.is_author.label}}
+        {% endif %}
+        {% if personne.is_composer %}
+          {{form.is_composer.label}}
+        {% endif %}
+        {% if personne.is_editor %}
+          {{form.is_editor.label}}
+        {% endif %}
+      </td>
   </tr>
   {% endfor %}
 </table>

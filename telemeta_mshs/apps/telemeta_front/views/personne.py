@@ -7,6 +7,7 @@
 from django.views.generic.base import TemplateView
 import requests
 from settings import FRONT_HOST_URL
+from telemeta_front.forms.personne import PersonneForm
 
 
 class PersonneView(TemplateView):
@@ -16,4 +17,5 @@ class PersonneView(TemplateView):
         context = super(PersonneView, self).get_context_data(**kwargs)
         context['personnes'] = requests.get(
             FRONT_HOST_URL + '/api/authority/').json
+        context['form'] = PersonneForm
         return context
