@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 """
 location factory to execute tests
@@ -17,7 +22,7 @@ class LocationFactory(factory.django.DjangoModelFactory):
         model = Location
         django_get_or_create = ('name',)
 
-    name = factory.Faker('word')
+    name = factory.Sequence(lambda n: 'Location {0}'.format(n))
     type = 0
     complete_type = factory.SubFactory(LocationTypeFactory)
     latitude = factory.Faker('latitude')
