@@ -38,7 +38,7 @@ router.register(r'locationgis',
                 location_gis.LocationGISViewSet,
                 base_name='location_gis')
 router.register(r'fond', fond.FondViewSet, base_name='fond'),
-router.register(r'acquistionmode',
+router.register(r'acquisitionmode',
                 acquisition_mode.AcquisitionModeViewSet,
                 base_name='acquisition_mode'),
 router.register(r'language',

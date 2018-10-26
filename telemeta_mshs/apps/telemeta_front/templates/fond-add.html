@@ -1,0 +1,147 @@
+{% extends "fond.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title %}
+   {{ block.super}}
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block content %}
+{{ form.media }}
+<div class="container">
+  {% if id %}
+  <form action="{%url "fond-edit" id %}" method="POST">
+  {% else %}
+  <form action="{%url "fond-add" %}" method="POST">
+  {% endif %}
+    {% csrf_token %}
+    {% bootstrap_field form.institution layout='vertical' %}
+    <div class="container_line">
+      {% bootstrap_field form.code layout='vertical' %}
+      {% bootstrap_field form.title layout='vertical' %}
+      {% bootstrap_field form.public_access layout='vertical' %}
+    </div>
+    {% bootstrap_field form.descriptions layout='vertical' %}
+
+
+    <div class="block-grey">
+      <h2>{% trans "Archivage" %}</h2>
+      <div class="container_line">
+        {% bootstrap_field form.acquisition_mode layout='vertical' %}
+        {% bootstrap_field form.conservation_site layout='vertical' %}
+      </div>
+    </div>
+
+    {% bootstrap_field form.comment layout='vertical' %}
+
+    {% if id %}
+    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
+    {% else %}
+    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+    {% endif %}
+  </form>
+</div>
+
+{% if id %}
+<script>
+  // Fill the locations fields with related values
+  /*
+  $('#id_birth_location').val({{personne.birth_location.id}});
+  $('#id_birth_location_name').val("{{personne.birth_location.name}}");
+  $('#id_death_location').val({{personne.death_location.id}});
+  $('#id_death_location_name').val("{{personne.death_location.name}}");
+  */
+</script>
+{% else %}
+<script>
+/*
+  $('#id_birth_location').val();
+  $('#id_death_location').val();
+  */
+</script>
+{% endif %}
+
+<script>
+
+/*
+// Searching a location, using Bloodhound
+//  and queyring the API
+var locations = new Bloodhound({
+  datumTokenizer: function(datum) {
+    return Bloodhound.tokenizers.whitespace(datum.value);
+  },
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    url: '/api/locationgis?search=%QUERY',
+    wildcard: '%QUERY',
+    transform: function(response) {
+      // Map the remote source JSON array to a JavaScript object array
+      return $.map(response, function(location) {
+        return {
+          name: location.name,
+          code: location.code,
+          id: location.id
+        };
+      });
+    }
+  }
+});
+
+// An autocompletion to choose a location
+$('.typeahead').typeahead({
+  minLength: 2,
+  highlight: true,
+},{
+  display: 'name',
+  source: locations,
+  templates: {
+    empty: [
+      '<div class="empty-message">',
+        "Il n\'y a pas de lieux qui corresponde à cette recherche.",
+      '</div>'
+    ].join('\n'),
+    suggestion: function(data) {
+      return '<div><strong>' + data.code + '</strong> : '+ data.name + '</div>';
+    }
+}
+});
+
+// Catch the ID of a selectd location
+$('#id_birth_location_name').on('typeahead:selected', function (event, result){
+  $('#id_birth_location').val(result.id);
+});
+$('#id_death_location_name').on('typeahead:selected', function (event, result){
+  $('#id_death_location').val(result.id);
+});
+*/
+
+</script>
+{{ form.media.js }}
+{% endblock %}

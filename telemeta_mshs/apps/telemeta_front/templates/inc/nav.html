@@ -16,7 +16,7 @@
 
                             <li><a href="#archives#" class="green">Archives</a>
                                 <ul>
-                                    <li><a href="">Fonds</a></li>
+                                    <li><a href="{% url "fond" %}">Fonds</a></li>
                                     <li><a href="">Missions</a></li>
                                     <li><a href="">Enquêtes</a></a></li>
                                     <li><a href="">Items</a></a></li>
@@ -34,11 +34,11 @@
                                 </ul>
                             </li>
 
-                            <li><a href="{% url "telemeta-geo-continents" %}"
-                                   class="yellow">{% trans "Geo Navigator" %}</a></li>
+                            <li><a href=""
+                                   class="yellow">{% trans "Carte" %}</a></li>
 
-                            <li><a href="{% url "haystack_advance_search" %}"
-                                   class="orange">{% trans "Advanced search" %}</a></li>
+                            <li><a href=""
+                                   class="orange">{% trans "Recherche avancée" %}</a></li>
 
                             {% if user.is_authenticated and user.is_staff %}
                                 <li><a href="#vocabulary#" class="red">{% trans "Terminology" %}</a>

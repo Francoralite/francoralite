@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from ..models.fond import Fond as FondModel
 from ..serializers.fond import FondSerializer
 
@@ -17,3 +17,9 @@ class FondViewSet(viewsets.ModelViewSet):
 
     queryset = FondModel.objects.all()
     serializer_class = FondSerializer
+
+    filter_backends = (filters.DjangoFilterBackend,
+                       filters.OrderingFilter, filters.SearchFilter)
+    filter_fields = ('institution',)
+    ordering = ('institution', 'code',)
+    search_fields = ('institution', 'code', 'title')
