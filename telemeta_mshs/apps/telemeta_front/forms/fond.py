@@ -11,7 +11,7 @@ from .core import Core
 
 class FondForm(forms.Form):
     title = forms.CharField(label=_(u'Titre'), max_length=255, required=True)
-    code = forms.CharField(label=_(u'Cote'),
+    code = forms.CharField(label=_(u'Cote du fonds'),
                            widget=forms.TextInput(
                                attrs={
                                     'data-mask': 'aaaa_aaa',
@@ -21,8 +21,9 @@ class FondForm(forms.Form):
                            max_length=16, required=True)
     descriptions = forms.CharField(label=_(u'Description'),
                                    widget=forms.Textarea, required=False)
-    conservation_site = forms.CharField(label=_(u'Site de conservation'),
-                                        max_length=255, required=True)
+    conservation_site = forms.CharField(
+        label=_(u'Lieu de conservation original'),
+        max_length=255, required=True)
     comment = forms.CharField(label=_(u'Commentaires'),
                               widget=forms.Textarea,
                               required=False)
@@ -38,13 +39,13 @@ class FondForm(forms.Form):
             )
 
         self.fields['public_access'] = forms.ChoiceField(
-            label=_(u'Accès publique'),
+            label=_(u'Type d\'accès'),
             choices=PUBLIC_ACCESS_CHOICES,
             initial="metadata",
             required=True)
 
         self.fields['institution'] = forms.ChoiceField(
-            label=_(u'Institution'),
+            label=_(u'Institution partenaire'),
             choices=Core.get_choices(
                 entity="institution", label_field="name"),
             required=True)

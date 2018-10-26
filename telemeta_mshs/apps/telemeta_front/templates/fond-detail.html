@@ -17,7 +17,7 @@
 {% block title %}
   <h1>
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "Fond" %}
+    {% trans "Fonds" %}
     {% if fond %}
      : {{ personne.code }} - {{fond.title}}
     {% endif %}
@@ -37,7 +37,7 @@
 
 <div class="container_line">
   <span class="container_data">
-    <span class="libelle"> {% trans 'Institution' %}</span>
+    <span class="libelle"> {{form.institution.label|safe}}</span>
     <span class="donnee">
       <a href="{% url "institution-detail" id=fond.institution.id %}">
         {{fond.institution.name|safe}}
