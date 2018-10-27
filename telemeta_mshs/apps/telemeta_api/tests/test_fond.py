@@ -33,6 +33,7 @@ FOND_STRUCTURE = [
     ('code', str),
     ('public_access', str),
     ('institution', dict),
+    ('code_partner', str),
     ('acquisition_mode', dict),
     ('conservation_site', str),
     ('comment', str)

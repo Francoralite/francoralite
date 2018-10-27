@@ -42,7 +42,10 @@
   <form action="{%url "fond-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    {% bootstrap_field form.institution layout='vertical' %}
+    <div class="container_line">
+      {% bootstrap_field form.institution layout='vertical' %}
+      {% bootstrap_field form.code_partner layout='vertical' %}
+    </div>
     <div class="container_line">
       {% bootstrap_field form.code layout='vertical' %}
       {% bootstrap_field form.title layout='vertical' %}

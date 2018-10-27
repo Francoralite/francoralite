@@ -19,6 +19,8 @@ class FondForm(forms.Form):
                                 }
                            ),
                            max_length=16, required=True)
+    code_partner = forms.CharField(
+        label=_('Cote dans l\'institution partenaire'), required=False)
     descriptions = forms.CharField(label=_(u'Description'),
                                    widget=forms.Textarea, required=False)
     conservation_site = forms.CharField(

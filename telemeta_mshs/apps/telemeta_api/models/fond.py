@@ -20,13 +20,17 @@ class Fond(MediaBaseResource):
         'telemeta_api.Institution',
         related_name='fonds',
         verbose_name=_('Institution'))
+    code_partner = CharField(
+        _('Cote dans l\'institution partenaire'),
+        null=True, blank=True)
     acquisition_mode = models.ForeignKey(
         'telemeta_api.AcquisitionMode',
         related_name='fonds',
         verbose_name=_('Mode d\'acquisition'),
         blank=True,
         null=True, on_delete=models.SET_NULL)
-    conservation_site = CharField(_('site de conservation'))
+    conservation_site = CharField(_('lieu de conservation original'),
+                                  null=True, blank=True)
     comment = TextField(_('commentaires'), null=True, blank=True)
 
     class Meta(MetaCore):
