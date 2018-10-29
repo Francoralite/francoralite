@@ -11,6 +11,10 @@ register = template.Library()
 
 @register.simple_tag
 def field_data(label, data):
+    try:
+        str_label = str(label)
+    except Exception:
+        str_label = label
 
     try:
         str_data = str(data)
@@ -20,7 +24,7 @@ def field_data(label, data):
         str_data = data
 
     code = "<span class=\"container_data\"><span class=\"libelle\">"
-    code = code + label + "</span> <span class=\"donnee\" >"
+    code = code + str_label + "</span> <span class=\"donnee\" >"
     code = code + str_data + "</span> </span>"
 
     return code

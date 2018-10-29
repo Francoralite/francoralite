@@ -47,10 +47,10 @@
 {% if location %}
 
 <div class="container_line center">
-  {% field_data form.code.label  location.code %}
-  {% field_data form.notes.label  location.notes %}
-  {% field_data form.latitude.label  location.latitude %}
-  {% field_data form.longitude.label location.longitude %}
+  {% field_data form.code.label|safe  location.code|safe %}
+  {% field_data form.notes.label|safe  location.notes|markdown|safe %}
+  {% field_data form.latitude.label|safe  location.latitude %}
+  {% field_data form.longitude.label|safe location.longitude %}
 </div>
 
 <script type="text/javascript">
