@@ -40,4 +40,4 @@ class Fond(MediaBaseResource):
         ordering = []
 
     def __unicode__(self):
-        return self.name
+        return self.title

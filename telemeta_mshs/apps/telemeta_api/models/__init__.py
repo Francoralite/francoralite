@@ -15,3 +15,4 @@ from .institution import Institution
 from .location import Location
 from .fond import Fond
 from .acquisition_mode import AcquisitionMode
+from .mission import Mission
