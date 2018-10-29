@@ -1,6 +1,8 @@
 {% extends "institution.html" %}
+{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
@@ -24,10 +26,16 @@
 {% endblock %}
 
 {% block title_buttons %}
+  <a href="{% url "fond-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un fonds" %}
+    </button>
+  </a>
   <a href="{% url "institution-edit" id=id %}">
-  <button type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
-  </button>
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-edit"></span>{% trans "Modifier" %}
+    </button>
   </a>
 {% endblock %}
 
@@ -35,17 +43,47 @@
 {% if institution %}
 {{institution.notes|markdown|safe}}
 
+  {% if fonds|length > 0 %}
   <h2>{% trans "Fonds" %}</h2>
   <div class="with-rightcol">
-       <table class="listing">
-           <tr>
-               <th class="highlight">{% trans "Titre" %}</th>
-               <th>{% trans "Code" %}</th>
-               <th>{% trans "Description" %}</th>
-           </tr>
+    <table class="listing">
+    <tr>
+        <th class="highlight">{% trans "cote" %}</th>
+        <th>{% trans "Nom" %}</th>
+        <th>{% trans "Description" %}</th>
+    </tr>
+    {% for fond in fonds %}
+      <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+          <td class="highlight">
+              <a href="/fond/{{ fond.id }}/">
+                {{ fond.code|upper|safe }}</a>
+          </td>
+          <td>{{ fond.title|safe }}</td>
+          <td>{{ fond.description|markdown|safe }}</td>
+          <td>
+            {% buttons %}
+            <a href="{% url "fond-edit" id=fond.id %}">
+                  <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                  </button>
+            </a>
+            <button type="button" class="btn btn-default"
+                data-toggle="modal" data-target="#modalDelete"
+                data-name="{{fond.title}}"
+                data-url="{% url "fond-delete" id=fond.id %}">
+                  <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+            </button>
+            {% endbuttons %}
+          </td>
+        </tr>
+      </table>
+    </div>
+      {% endfor %}
 
-       </table>
-  </div>
+      {% modal_delete %}
+  {% else %}
+    {% trans "Il n'a pas de fonds pour cette institution." %}
+  {% endif %}
 {% else %}
   <p>{% trans "Cette institution n'existe pas." %}"</p>
 {% endif %}

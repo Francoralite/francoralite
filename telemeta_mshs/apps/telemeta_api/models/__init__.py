@@ -13,3 +13,5 @@ from .collection_location import CollectionLocation
 from .collection_language import CollectionLanguage
 from .institution import Institution
 from .location import Location
+from .fond import Fond
+from .acquisition_mode import AcquisitionMode

@@ -13,7 +13,8 @@ from .views import (
     personne, personne_add, personne_detail, personne_edit, personne_delete,
     location, location_add, location_detail, location_edit, location_delete,
     location_gis, location_gis_add, location_gis_detail, location_gis_edit,
-    location_gis_delete
+    location_gis_delete,
+    fond, fond_add, fond_detail, fond_edit, fond_delete,
 )
 
 
@@ -84,4 +85,20 @@ urlpatterns = [
     url(r'^location_gis/delete/(?P<id>[0-9]+)$',
         location_gis_delete.LocationDelete.as_view(),
         name='location_gis-delete'),
+
+    # Fonds
+    url(r'^fond/$', fond.FondView.as_view(),
+        name="fond"),
+    url(r'^fond/add/$',
+        fond_add.FondAdd.as_view(),
+        name='fond-add'),
+    url(r'^fond/(?P<id>[0-9]+)/$',
+        fond_detail.FondDetail.as_view(),
+        name='fond-detail'),
+    url(r'^fond/edit/(?P<id>[0-9]+)$',
+        fond_edit.FondEdit.as_view(),
+        name='fond-edit'),
+    url(r'^fond/delete/(?P<id>[0-9]+)$',
+        fond_delete.FondDelete.as_view(),
+        name='fond-delete'),
 ]

@@ -9,20 +9,19 @@ from rest_framework import status
 import requests
 
 from settings import FRONT_HOST_URL
+from telemeta_front.forms.fond import FondForm
 
 
-class InstitutionDetail(TemplateView):
-    template_name = "../templates/institution-detail.html"
+class FondDetail(TemplateView):
+    template_name = "../templates/fond-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(InstitutionDetail, self).get_context_data(**kwargs)
+        context = super(FondDetail, self).get_context_data(**kwargs)
 
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/institution/' + context['id'])
+            FRONT_HOST_URL+'/api/fond/'+context['id'])
         if response.status_code == status.HTTP_200_OK:
-            context['institution'] = response.json
-            context['fonds'] = requests.get(
-                FRONT_HOST_URL + '/api/fond/?institution=' + context['id']
-                ).json
+            context['fond'] = response.json
+            context['form'] = FondForm()
         return context

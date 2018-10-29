@@ -31,9 +31,9 @@ AUTHORITY_STRUCTURE = [
     ('is_composer', bool),
     ('is_editor', bool),
     ('birth_date', str),
-    ('birth_location', str),
+    ('birth_location', dict),
     ('death_date', str),
-    ('death_location', str),
+    ('death_location', dict),
     ('biography', str),
     ('uri', str),
 ]
@@ -122,8 +122,8 @@ class TestAuthorityList(APITestCase):
 
         loc = Location.objects.first()
         # Write the Location object in the authority data object.
-        data['birth_location'] = loc.name
-        data['death_location'] = loc.name
+        data['birth_location'] = loc.id
+        data['death_location'] = loc.id
 
         url = reverse('authority-list')
         response = self.client.post(url, data, format='json')
@@ -155,6 +155,8 @@ class TestAuthorityList(APITestCase):
         data = self.client.get(url_get).data
 
         data['last_name'] = 'foobar_test_put'
+        data['birth_location'] = data['birth_location']['id']
+        data['death_location'] = data['death_location']['id']
         url = reverse('authority-detail', kwargs={'pk': item.id})
         response = self.client.put(url, data, format='json')
 
