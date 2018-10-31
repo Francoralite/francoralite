@@ -20,7 +20,7 @@
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
     {% trans "Mission" %}
     {% if mission %}
-     : {{mission.fonds.code}}{{ mission.code }} - {{  mission.title}}
+     : {{mission.fonds.code}}_{{ mission.code }} - {{  mission.title}}
     {% endif %}
   </h1>
 {% endblock %}
