@@ -23,7 +23,7 @@ class Mission(MediaBaseResource):
             verbose_name=_('Fonds'))
     code_partner = CharField(
         _('Cote de la mission dans l\'institution partenaire'),
-        null=True, blank=True, max_length=4)
+        null=True, blank=True, max_length=255)
 
     class Meta(MetaCore):
         app_label = 'telemeta_api'
