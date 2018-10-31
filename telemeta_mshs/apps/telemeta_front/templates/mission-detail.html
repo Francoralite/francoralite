@@ -1,0 +1,93 @@
+
+{% extends "mission.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Mission" %}
+    {% if mission %}
+     : {{mission.fonds.code}}_{{ mission.code }} - {{  mission.title}}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  <a href="{% url "mission-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </button>
+  </a>
+{% endblock %}
+
+{% block content %}
+{% if mission %}
+
+<div class="container_line">
+  <span class="container_data">
+    <span class="libelle"> {{form.fonds.label|safe}}</span>
+    <span class="donnee">
+      <a href="{% url "fond-detail" id=mission.fonds.id %}">
+        {{mission.fonds.code|safe}} - {{mission.fonds.title|safe}}
+      </a>
+    </span>
+  </span>
+  {% field_data form.code_partner.label|safe mission.code_partner|safe %}
+  {% field_data form.code.label|safe mission.code|upper|safe %}
+  {% field_data form.title.label|safe mission.title|safe %}
+  {% field_data form.public_access.label|safe mission.public_access|safe %}
+</div>
+
+<div class="container_line">
+  {% field_data form.descriptions.label|safe mission.descriptions|markdown|safe %}
+</div>
+
+<div class="block-grey">
+  <h2>{% trans "Période" %}</h2>
+  {% trans "Années d'enregistrement" %}
+  <div class="container_line">
+    <span class="container_data">
+      <span class="libelle"> {% trans 'Depuis' %}</span>
+      <span class="donnee"></span>
+    </span>
+    <span class="container_data">
+      <span class="libelle"> {% trans "Jusqu\'à" %}</span>
+      <span class="donnee"></span>
+    </span>
+    <span class="container_data">
+      <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
+      <span class="donnee"></span>
+    </span>
+  </div>
+</div>
+
+<div class="block-grey">
+  <h2>{% trans "Personnes" %}</h2>
+  <span class="container_data">
+    <span class="libelle"> {% trans 'Collecteurs' %}</span>
+    <span class="donnee"></span>
+  </span>
+  <span class="container_data">
+    <span class="libelle"> {% trans 'Informateurs' %}</span>
+    <span class="donnee"></span>
+  </span>
+</div>
+
+
+{% else %}
+  <p>{% trans "Ce mission n'existe pas." %}</p>
+{% endif %}
+{% endblock %}

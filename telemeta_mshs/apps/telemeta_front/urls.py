@@ -15,6 +15,7 @@ from .views import (
     location_gis, location_gis_add, location_gis_detail, location_gis_edit,
     location_gis_delete,
     fond, fond_add, fond_detail, fond_edit, fond_delete,
+    mission, mission_add, mission_detail, mission_edit, mission_delete,
 )
 
 
@@ -101,4 +102,20 @@ urlpatterns = [
     url(r'^fond/delete/(?P<id>[0-9]+)$',
         fond_delete.FondDelete.as_view(),
         name='fond-delete'),
+
+    # Mission
+    url(r'^mission/$', mission.MissionView.as_view(),
+        name="mission"),
+    url(r'^mission/add/$',
+        mission_add.MissionAdd.as_view(),
+        name='mission-add'),
+    url(r'^mission/(?P<id>[0-9]+)/$',
+        mission_detail.MissionDetail.as_view(),
+        name='mission-detail'),
+    url(r'^mission/edit/(?P<id>[0-9]+)$',
+        mission_edit.MissionEdit.as_view(),
+        name='mission-edit'),
+    url(r'^mission/delete/(?P<id>[0-9]+)$',
+        mission_delete.MissionDelete.as_view(),
+        name='mission-delete'),
 ]
