@@ -7,6 +7,7 @@ import factory
 from django.db.models import signals
 from ...models.ext_media_collection import ExtMediaCollection
 from .MediaCollection import MediacollectionFactory
+from .mission import MissionFactory
 
 
 # mute signal, because there's
@@ -21,11 +22,13 @@ class ExtMediaCollectionFactory(factory.django.DjangoModelFactory):
         model = ExtMediaCollection
         django_get_or_create = (
             'media_collection',
+            'mission',
             'location_details',
             'cultural_area',
             'language',)
 
     media_collection = factory.SubFactory(MediacollectionFactory)
+    mission = factory.SubFactory(MissionFactory)
     location_details = factory.Faker('paragraph', nb_sentences=3)
     cultural_area = factory.Faker('paragraph', nb_sentences=1)
     language = factory.Faker('word')

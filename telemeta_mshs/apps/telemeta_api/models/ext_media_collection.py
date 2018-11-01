@@ -12,10 +12,10 @@ from django.db.models import(
     ManyToManyField
     )
 from django.db.models.signals import post_save
+from django.db import models
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from telemeta.models.collection import MediaCollection
-from telemeta.models.enum import Publisher as Publishers
 from telemeta.models.core import ModelCore, MetaCore
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdownify
@@ -27,41 +27,19 @@ class ExtMediaCollection(ModelCore):
     """
     media_collection = OneToOneField(MediaCollection, on_delete=CASCADE)
 
-    # location = ManyToManyField(
-    #     'telemeta.Location',
-    #     related_name="locations",
-    #     verbose_name=_('location'),
-    #     blank=True, null=True)
+    mission = models.ForeignKey(
+            'telemeta_api.Mission',
+            related_name='collection',
+            verbose_name=_('Mission'), blank=True, default="")
     location_details = MarkdownxField(blank=True)
     cultural_area = TextField(
         'cultural area',
         help_text=('Aire culturelle ; Aire culturelle'),
         default="", blank=True)
-    # language_iso = ManyToManyField(
-    #     'telemeta.Language',
-    #     related_name="collections",
-    #     verbose_name=_('Language (ISO norm)'),
-    #     blank=True, null=True)
     language = TextField(
         'langage',
         help_text=('Langage ; langage'),
         default="", blank=True)
-
-    # collectors = ManyToManyField(
-    #     'Authority',
-    #     related_name="collectors",
-    #     verbose_name=_('collectors'),
-    #     blank=True, null=True)
-    # informers = ManyToManyField(
-    #     'Authority',
-    #     related_name="informers",
-    #     verbose_name=_('informers'),
-    #     blank=True, null=True)
-    # publishers = ManyToManyField(
-    #     'telemeta.Publisher',
-    #     related_name="publishers",
-    #     verbose_name=_('publishers'),
-    #     blank=True, null=True)
 
     class Meta(MetaCore):
         app_label = 'telemeta_api'

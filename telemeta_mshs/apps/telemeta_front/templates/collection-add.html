@@ -1,0 +1,85 @@
+
+{% extends "collection.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title %}
+   {{ block.super}}
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block content %}
+{{ form.media }}
+<div class="container">
+  {% if id %}
+  <form action="{%url "collection-edit" id %}" method="POST">
+  {% else %}
+  <form action="{%url "collection-add" %}" method="POST">
+  {% endif %}
+    {% csrf_token %}
+    <div class="container_line">
+      {% bootstrap_field form.mission layout='vertical' %}
+      {% bootstrap_field form.title layout='vertical' %}
+      {% bootstrap_field form.alt_title layout='vertical' %}
+    </div>
+    {% bootstrap_field form.descriptions layout='vertical' %}
+    <div class="block-grey">
+      <h2>{% trans "Enregistrement" %}</h2>
+      <div class="container_line">
+        {% bootstrap_field form.record_from_year layout='vertical' %}
+        {% bootstrap_field form.record_to_year layout='vertical' %}
+        {% bootstrap_field form.year_published layout='vertical' %}
+      </div>
+    </div>
+    {% bootstrap_field form.comment layout='vertical' %}
+
+    <div class="container_line">
+      {% bootstrap_field form.code layout='vertical' %}
+      {% bootstrap_field form.code_partner layout='vertical' %}
+      {% bootstrap_field form.public_access layout='vertical' %}
+    </div>
+
+
+    <div class="block-grey">
+      <h2></h2>
+      <div class="container_line">
+
+      </div>
+    </div>
+
+    {% if id %}
+    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
+    {% else %}
+    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+    {% endif %}
+  </form>
+</div>
+
+{{ form.media.js }}
+{% endblock %}

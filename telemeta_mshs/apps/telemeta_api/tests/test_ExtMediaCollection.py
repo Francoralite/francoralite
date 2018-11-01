@@ -44,6 +44,7 @@ from telemeta.models.collection import MediaCollection
 EXTMEDIACOLLECTION_STRUCTURE = [
     ('id', int),
     ('media_collection', dict),
+    ('mission', dict),
     ('location_details', str),
     ('cultural_area', str),
     ('language', str),

@@ -16,6 +16,8 @@ from .views import (
     location_gis_delete,
     fond, fond_add, fond_detail, fond_edit, fond_delete,
     mission, mission_add, mission_detail, mission_edit, mission_delete,
+    collection, collection_add, collection_detail, collection_edit,
+    collection_delete,
 )
 
 
@@ -118,4 +120,20 @@ urlpatterns = [
     url(r'^mission/delete/(?P<id>[0-9]+)$',
         mission_delete.MissionDelete.as_view(),
         name='mission-delete'),
+
+    # Collection/Enquetes
+    url(r'^collection/$', collection.CollectionView.as_view(),
+        name="collection"),
+    url(r'^collection/add/$',
+        collection_add.CollectionAdd.as_view(),
+        name='collection-add'),
+    url(r'^collection/(?P<id>[0-9]+)/$',
+        collection_detail.CollectionDetail.as_view(),
+        name='collection-detail'),
+    url(r'^collection/edit/(?P<id>[0-9]+)$',
+        collection_edit.CollectionEdit.as_view(),
+        name='collection-edit'),
+    url(r'^collection/delete/(?P<id>[0-9]+)$',
+        collection_delete.CollectionDelete.as_view(),
+        name='collection-delete'),
 ]

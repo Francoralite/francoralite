@@ -1,5 +1,5 @@
 """
-Coupe tests
+AcquisitionMode tests
 """
 
 import factory
@@ -15,22 +15,24 @@ from rest_framework.test import APITestCase
 
 from .factories.coupe import CoupeFactory
 from ..models.coupe import Coupe
+from ..models.acquisition_mode import AcquisitionMode
+
 
 # Expected structure for Coupe objects
-INSTITUTION_STRUCTURE = [
+ACQUISTION_STRUCTURE = [
     ('id', int),
     ('value', str),
     ('notes', str),
 ]
 
 # Expected keys for Coupe objects
-INSTITUTION_FIELDS = sorted([item[0] for item in INSTITUTION_STRUCTURE])
+ACQUISITION_FIELDS = sorted([item[0] for item in ACQUISTION_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestCoupeList(APITestCase):
+class TestAcquisitionList(APITestCase):
     """
-    This class manage all Coupe tests
+    This class manage all Acquisition tests
     """
 
     def setUp(self):

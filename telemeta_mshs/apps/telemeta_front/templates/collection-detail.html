@@ -1,5 +1,5 @@
 
-{% extends "mission.html" %}
+{% extends "collection.html" %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
@@ -18,21 +18,15 @@
 {% block title %}
   <h1>
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "Mission" %}
-    {% if mission %}
-     : {{mission.fonds.code}}_{{ mission.code }} - {{  mission.title}}
+    {% trans "Enquête" %}
+    {% if collection %}
+     : {{ collection.code }} - {{  collection.title}}
     {% endif %}
   </h1>
 {% endblock %}
 
 {% block title_buttons %}
-  <a href="{% url "collection-add" %}">
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-plus"></span>
-      {% trans "Créer une enquête" %}
-    </button>
-  </a>
-  <a href="{% url "mission-edit" id=id %}">
+  <a href="{% url "collection-edit" id=id %}">
   <button type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
   </button>
@@ -40,25 +34,25 @@
 {% endblock %}
 
 {% block content %}
-{% if mission %}
+{% if collection %}
 
 <div class="container_line">
   <span class="container_data">
-    <span class="libelle"> {{form.fonds.label|safe}}</span>
+    <span class="libelle"> {{form.mission.label|safe}}</span>
     <span class="donnee">
-      <a href="{% url "fond-detail" id=mission.fonds.id %}">
-        {{mission.fonds.code|safe}} - {{mission.fonds.title|safe}}
+      <a href="{% url "mission-detail" id=collection.mission.id %}">
+        {{collection.mission.title|safe}}
       </a>
     </span>
   </span>
-  {% field_data form.code_partner.label|safe mission.code_partner|safe %}
-  {% field_data form.code.label|safe mission.code|upper|safe %}
-  {% field_data form.title.label|safe mission.title|safe %}
-  {% field_data form.public_access.label|safe mission.public_access|safe %}
+  {% field_data form.code_partner.label|safe collection.code_partner|safe %}
+  {% field_data form.code.label|safe collection.code|upper|safe %}
+  {% field_data form.title.label|safe collection.title|safe %}
+  {% field_data form.public_access.label|safe collection.public_access|safe %}
 </div>
 
 <div class="container_line">
-  {% field_data form.descriptions.label|safe mission.descriptions|markdown|safe %}
+  {% field_data form.descriptions.label|safe collection.descriptions|markdown|safe %}
 </div>
 
 <div class="block-grey">
@@ -94,6 +88,6 @@
 
 
 {% else %}
-  <p>{% trans "Ce mission n'existe pas." %}</p>
+  <p>{% trans "Cette enquête n'existe pas." %}</p>
 {% endif %}
 {% endblock %}
