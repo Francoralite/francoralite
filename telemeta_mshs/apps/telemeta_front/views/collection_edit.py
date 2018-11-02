@@ -17,7 +17,7 @@ from django.shortcuts import render
 class CollectionEdit(FormView):
     template_name = "../templates/collection-add.html"
     form_class = CollectionForm
-    success_url = '/collection/'
+    success_url = '/extcollection/'
 
     def get_context_data(self, **kwargs):
         context = super(CollectionEdit, self).get_context_data(**kwargs)
@@ -25,7 +25,7 @@ class CollectionEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/collection/' + str(id))
+            FRONT_HOST_URL + '/api/extcollection/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['collection'] = response.json
         return context
@@ -51,12 +51,12 @@ class CollectionEdit(FormView):
         if form.is_valid():
             try:
                 response = requests.patch(
-                    FRONT_HOST_URL + '/api/collection/' + str(id) + '/',
+                    FRONT_HOST_URL + '/api/extcollection/' + str(id) + '/',
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/collection/edit' +
-                                                str(id) + '/')
+                    return HttpResponseRedirect(
+                        '/collection/edit/' + str(id))
                 return HttpResponseRedirect('/collection/')
 
             except RequestException:

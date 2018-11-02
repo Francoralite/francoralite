@@ -59,7 +59,7 @@ class CollectionForm(forms.Form):
     code_partner = forms.CharField(
         label=_('Cote dans l\'institution partenaire'), required=False)
     descriptions = forms.CharField(label=_(u'Description'),
-                                   widget=forms.Textarea, required=False)
+                                   widget=forms.Textarea, required=True)
 
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
