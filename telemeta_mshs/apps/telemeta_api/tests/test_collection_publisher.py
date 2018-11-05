@@ -56,7 +56,7 @@ class TestCollectionPublisherList(APITestCase):
         """
 
         url = reverse('collectionpublisher-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
 
         # ORM side
         collection_publishers = CollectionPublisher.objects.all()
@@ -77,7 +77,7 @@ class TestCollectionPublisherList(APITestCase):
         """
 
         url = reverse('collectionpublisher-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
@@ -109,7 +109,7 @@ class TestCollectionPublisherList(APITestCase):
 
         item = CollectionPublisher.objects.first()
         url = reverse('collectionpublisher-detail', kwargs={
-                      'extcollection_pk': item.collection.id,
+                      'collection_pk': item.collection.id,
                       'pk': item.publisher.id})
         response = self.client.get(url)
 
@@ -130,12 +130,8 @@ class TestCollectionPublisherList(APITestCase):
         data['collection'] = data['collection'].__dict__['_original_state']
         data['publisher'] = data['publisher'].__dict__['_original_state']
 
-        # The type DurationField was define in the original application
-        data['collection']['approx_duration'] = str(
-            data['collection']['approx_duration'])
-
         url = reverse('collectionpublisher-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -147,7 +143,7 @@ class TestCollectionPublisherList(APITestCase):
 
         url = reverse(
             'collectionpublisher-detail',
-            kwargs={'extcollection_pk': response.data['collection']['id'],
+            kwargs={'collection_pk': response.data['collection']['id'],
                     'pk': response.data['publisher']['id']}
         )
         response_get = self.client.get(url)
@@ -165,7 +161,7 @@ class TestCollectionPublisherList(APITestCase):
         # Delete this object
         url = reverse(
             'collectionpublisher-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.publisher.id}
         )
         response = self.client.delete(url)
@@ -175,7 +171,7 @@ class TestCollectionPublisherList(APITestCase):
         # Ensure CollectionPublisher removed
         url_get = reverse(
             'collectionpublisher-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.publisher.id}
         )
         response_get = self.client.get(url_get)

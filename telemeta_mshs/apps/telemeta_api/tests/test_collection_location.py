@@ -56,7 +56,7 @@ class TestCollectionLocationList(APITestCase):
         """
 
         url = reverse('collectionlocation-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
 
         # ORM side
         collection_locations = CollectionLocation.objects.all()
@@ -77,7 +77,7 @@ class TestCollectionLocationList(APITestCase):
         """
 
         url = reverse('collectionlocation-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
@@ -100,24 +100,24 @@ class TestCollectionLocationList(APITestCase):
                     collection_location[attribute], attribute_type)
             self.assertIsNot(collection_location[attribute], '')
 
-    def test_get_an_collection_location(self):
+    def test_get_a_collection_location(self):
         """
-        Ensure we can get an CollectionLocation objects
+        Ensure we can get a CollectionLocation objects
         using an existing id
         """
 
         item = CollectionLocation.objects.first()
         url = reverse('collectionlocation-detail', kwargs={
-                      'extcollection_pk': item.collection.id,
+                      'collection_pk': item.collection.id,
                       'pk': item.location.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
-    def test_create_an_collection_location(self):
+    def test_create_a_collection_location(self):
         """
-        Ensure we can create an CollectionLocation object
+        Ensure we can create a CollectionLocation object
         """
 
         data = factory.build(
@@ -134,12 +134,8 @@ class TestCollectionLocationList(APITestCase):
         data['location']['complete_type'] = 1
         data['location']['current_location'] = ""
 
-        # The type DurationField was define in the original application
-        data['collection']['approx_duration'] = str(
-            data['collection']['approx_duration'])
-
         url = reverse('collectionlocation-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -151,7 +147,7 @@ class TestCollectionLocationList(APITestCase):
 
         url = reverse(
             'collectionlocation-detail',
-            kwargs={'extcollection_pk': response.data['collection']['id'],
+            kwargs={'collection_pk': response.data['collection']['id'],
                     'pk': response.data['location']['id']}
         )
         response_get = self.client.get(url)
@@ -159,9 +155,9 @@ class TestCollectionLocationList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-    def test_delete_an_collection_location(self):
+    def test_delete_a_collection_location(self):
         """
-        Ensure we can delete an CollectionLocation object
+        Ensure we can delete a CollectionLocation object
         """
 
         item = CollectionLocation.objects.first()
@@ -169,7 +165,7 @@ class TestCollectionLocationList(APITestCase):
         # Delete this object
         url = reverse(
             'collectionlocation-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.location.id}
         )
         response = self.client.delete(url)
@@ -179,7 +175,7 @@ class TestCollectionLocationList(APITestCase):
         # Ensure CollectionLocation removed
         url_get = reverse(
             'collectionlocation-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.location.id}
         )
         response_get = self.client.get(url_get)

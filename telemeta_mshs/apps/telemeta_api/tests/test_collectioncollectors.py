@@ -47,7 +47,7 @@ class TestCollectionCokkecrosList(APITestCase):
         Ensure CollectionCollectors objects exists
         """
         url = reverse('collectioncollectors-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
 
         # ORM side
         collectionscollectors = CollectionCollectors.objects.all()
@@ -68,7 +68,7 @@ class TestCollectionCokkecrosList(APITestCase):
         """
 
         url = reverse('collectioncollectors-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
@@ -89,37 +89,34 @@ class TestCollectionCokkecrosList(APITestCase):
                 self.assertIsInstance(collectors[attribute], attribute_type)
             self.assertIsNot(collectors[attribute], '')
 
-    def test_get_an_collectioncollectors(self):
+    def test_get_a_collectioncollectors(self):
         """
-        Ensure we can get an CollectionCollectors objects using an existing id
+        Ensure we can get a CollectionCollectors objects using an existing id
         """
 
         item = CollectionCollectors.objects.first()
         url = reverse('collectioncollectors-detail', kwargs={
-            'extcollection_pk': item.collection.id,
+            'collection_pk': item.collection.id,
             'pk': item.collector.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
-    def test_create_an_collectioncollectors(self):
+    def test_create_a_collectioncollectors(self):
         """
-        Ensure we can create an CollectionCollectors object
+        Ensure we can create a CollectionCollectors object
         """
-
-        data = factory.build(dict, FACTORY_CLASS=CollectionCollectorsFactory)
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
+        data = factory.build(dict, FACTORY_CLASS=CollectionCollectorsFactory)
+
         data['collector'] = data['collector'].__dict__['_original_state']
         data['collection'] = data['collection'].__dict__['_original_state']
-        # The type DurationField was define in the original application
-        data['collection']['approx_duration'] = str(
-            data['collection']['approx_duration'])
 
         url = reverse('collectioncollectors-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -129,7 +126,7 @@ class TestCollectionCokkecrosList(APITestCase):
 
         url = reverse(
             'collectioncollectors-detail',
-            kwargs={'extcollection_pk': response.data['collection']['id'],
+            kwargs={'collection_pk': response.data['collection']['id'],
                     'pk': response.data['collector']['id']}
         )
         response_get = self.client.get(url)
@@ -186,7 +183,7 @@ class TestCollectionCokkecrosList(APITestCase):
 
         # Delete this object
         url = reverse('collectioncollectors-detail', kwargs={
-            'extcollection_pk': item.collection.id,
+            'collection_pk': item.collection.id,
             'pk': item.collector.id})
         response = self.client.delete(url)
 
@@ -194,7 +191,7 @@ class TestCollectionCokkecrosList(APITestCase):
 
         # Ensure CollectionCollectors removed
         url_get = reverse('collectioncollectors-detail', kwargs={
-            'extcollection_pk': item.collection.id,
+            'collection_pk': item.collection.id,
             'pk': item.collector.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)

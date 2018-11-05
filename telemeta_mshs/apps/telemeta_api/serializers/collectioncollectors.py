@@ -6,12 +6,12 @@
 
 from rest_framework import serializers
 
-from .MediaCollection import MediacollectionSerializer
+from .collection import CollectionSerializer
 from .authority import AuthoritySerializer
 
-from ..models.collectioncollectors import(
+from ..models.collectioncollectors import (
     CollectionCollectors as CollectionCollectorsModel)
-from telemeta.models.collection import MediaCollection as MediacollectionModel
+from ..models.collection import Collection as CollectionModel
 from ..models.authority import Authority as AuthorityModel
 
 
@@ -19,7 +19,7 @@ class CollectionCollectorsSerializer(serializers.ModelSerializer):
     """
     Common serializer for all collection's collector actions
     """
-    collection = MediacollectionSerializer(required=True)
+    collection = CollectionSerializer(required=True)
     collector = AuthoritySerializer(required=True)
 
     class Meta:
@@ -36,7 +36,7 @@ class CollectionCollectorsSerializer(serializers.ModelSerializer):
 
         collection_data = validated_data.pop('collection')
         # Create an oject Mediacollection with the data converted in dict
-        collection = MediacollectionModel.objects.create(**collection_data)
+        collection = CollectionModel.objects.create(**collection_data)
 
         collector_data = validated_data.pop('collector')
         # Create an oject collector (Authority) with the data converted in dict

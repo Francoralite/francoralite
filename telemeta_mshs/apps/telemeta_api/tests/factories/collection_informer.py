@@ -9,7 +9,7 @@ collection_informer factory to execute tests
 
 import factory
 from ...models.collection_informer import CollectionInformer
-from .MediaCollection import MediacollectionFactory
+from .collection import CollectionFactory
 from .authority import AuthorityFactory
 
 
@@ -25,5 +25,5 @@ class CollectionInformerFactory(factory.django.DjangoModelFactory):
             'informer',)
 
     # Nested/related factories
-    collection = factory.SubFactory(MediacollectionFactory)
+    collection = factory.SubFactory(CollectionFactory)
     informer = factory.SubFactory(AuthorityFactory)

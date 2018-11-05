@@ -14,19 +14,17 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.location import LocationFactory
-from telemeta.models.location import Location
+from .factories.location_gis import LocationGisFactory
+from ..models.location import Location
 
 # Expected structure for Location objects
 LOCATION_STRUCTURE = [
     ('id', int),
+    ('code', str),
     ('name', str),
-    ('type', int),
-    ('complete_type', int),
+    ('notes', str),
     ('latitude', float),
-    ('longitude', float),
-    ('is_authoritative', bool),
-    ('current_location', (dict, NoneType)),
+    ('longitude', float)
 ]
 
 # Expected keys for Institution objects
@@ -47,13 +45,13 @@ class TestLocationList(APITestCase):
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        LocationFactory.create_batch(6)
+        LocationGisFactory.create_batch(6)
 
     def test_can_get_location_list(self):
         """
         Ensure Location objects exists
         """
-        url = reverse('location-list')
+        url = reverse('location_gis-list')
 
         # ORM side
         locations = Location.objects.all()
@@ -72,7 +70,7 @@ class TestLocationList(APITestCase):
         Ensure Location objects have valid values
         """
 
-        url = reverse('location-list')
+        url = reverse('location_gis-list')
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
@@ -100,7 +98,7 @@ class TestLocationList(APITestCase):
         """
 
         item = Location.objects.first()
-        url = reverse('location-detail', kwargs={'pk': item.id})
+        url = reverse('location_gis-detail', kwargs={'pk': item.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -111,12 +109,8 @@ class TestLocationList(APITestCase):
         Ensure we can create an Location object
         """
 
-        data = factory.build(dict, FACTORY_CLASS=LocationFactory)
-        url = reverse('location-list')
-        # Force some values
-        #  --> we are not using the current_location field
-        data['complete_type'] = 1
-        data['current_location'] = ""
+        data = factory.build(dict, FACTORY_CLASS=LocationGisFactory)
+        url = reverse('location_gis-list')
 
         response = self.client.post(url, data, format='json')
 
@@ -126,7 +120,7 @@ class TestLocationList(APITestCase):
         self.assertEqual(sorted(response.data.keys()), LOCATION_FIELDS)
 
         url = reverse(
-            'location-detail',
+            'location_gis-detail',
             kwargs={'pk': response.data['id']}
         )
         response_get = self.client.get(url)
@@ -143,11 +137,11 @@ class TestLocationList(APITestCase):
         self.assertNotEqual(item.name, 'foobar_test_put')
 
         # Get existing object from API
-        url_get = reverse('location-detail', kwargs={'pk': item.id})
+        url_get = reverse('location_gis-detail', kwargs={'pk': item.id})
         data = self.client.get(url_get).data
 
         data['name'] = 'foobar_test_put'
-        url = reverse('location-detail', kwargs={'pk': item.id})
+        url = reverse('location_gis-detail', kwargs={'pk': item.id})
         response = self.client.put(url, data, format='json')
 
         # Ensure new name returned
@@ -165,7 +159,7 @@ class TestLocationList(APITestCase):
         self.assertNotEqual(item.name, 'foobar_test_patch')
 
         data = {'name': 'foobar_test_patch'}
-        url = reverse('location-detail', kwargs={'pk': item.id})
+        url = reverse('location_gis-detail', kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='json')
 
         # Ensure new name returned
@@ -182,12 +176,12 @@ class TestLocationList(APITestCase):
         item = Location.objects.first()
 
         # Delete this object
-        url = reverse('location-detail', kwargs={'pk': item.id})
+        url = reverse('location_gis-detail', kwargs={'pk': item.id})
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         # Ensure Location removed
-        url_get = reverse('location-detail', kwargs={'pk': item.id})
+        url_get = reverse('location_gis-detail', kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)

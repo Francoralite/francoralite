@@ -7,7 +7,7 @@
 
 from telemeta.models.core import ModelCore, ForeignKey, MetaCore
 from django.utils.translation import ugettext_lazy as _
-from telemeta.models.collection import MediaCollection
+from .collection import Collection
 from .authority import Authority
 
 
@@ -17,7 +17,7 @@ class CollectionInformer(ModelCore):
 
     # List of the fields
 
-    collection = ForeignKey(MediaCollection, verbose_name=_('collection'))
+    collection = ForeignKey(Collection, verbose_name=_('collection'))
     informer = ForeignKey(Authority, verbose_name=_('informer'))
 
     class Meta(MetaCore):

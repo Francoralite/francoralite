@@ -7,8 +7,7 @@
 
 from telemeta.models.core import ModelCore, ForeignKey, MetaCore
 from django.utils.translation import ugettext_lazy as _
-from telemeta.models.collection import MediaCollection
-# FIXIT : Add nested/related tables
+from .collection import Collection
 from .authority import Authority
 
 
@@ -17,7 +16,7 @@ class CollectionPublisher(ModelCore):
     "The publishers who produce a media_collection"
 
     # List of the fields
-    collection = ForeignKey(MediaCollection, verbose_name=_('collection'))
+    collection = ForeignKey(Collection, verbose_name=_('collection'))
     publisher = ForeignKey(Authority, verbose_name=_('publisher'))
 
     class Meta(MetaCore):

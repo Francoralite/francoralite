@@ -54,9 +54,9 @@ class TestCollectionInformerList(APITestCase):
         """
         Ensure CollectionInformer objects exists
         """
-        # FIXIT : kwargs for the related tables
+
         url = reverse('collectioninformer-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
 
         # ORM side
         collection_informers = CollectionInformer.objects.all()
@@ -77,7 +77,7 @@ class TestCollectionInformerList(APITestCase):
         """
 
         url = reverse('collectioninformer-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
@@ -100,7 +100,7 @@ class TestCollectionInformerList(APITestCase):
                     collection_informer[attribute], attribute_type)
             self.assertIsNot(collection_informer[attribute], '')
 
-    def test_get_an_collection_informer(self):
+    def test_get_a_collection_informer(self):
         """
         Ensure we can get an CollectionInformer objects
         using an existing id
@@ -108,16 +108,16 @@ class TestCollectionInformerList(APITestCase):
 
         item = CollectionInformer.objects.first()
         url = reverse('collectioninformer-detail', kwargs={
-                      'extcollection_pk': item.collection.id,
+                      'collection_pk': item.collection.id,
                       'pk': item.informer.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
-    def test_create_an_collection_informer(self):
+    def test_create_a_collection_informer(self):
         """
-        Ensure we can create an CollectionInformer object
+        Ensure we can create a CollectionInformer object
         """
 
         data = factory.build(
@@ -129,12 +129,8 @@ class TestCollectionInformerList(APITestCase):
         data['collection'] = data['collection'].__dict__['_original_state']
         data['informer'] = data['informer'].__dict__['_original_state']
 
-        # The type DurationField was define in the original application
-        data['collection']['approx_duration'] = str(
-            data['collection']['approx_duration'])
-
         url = reverse('collectioninformer-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -146,7 +142,7 @@ class TestCollectionInformerList(APITestCase):
 
         url = reverse(
             'collectioninformer-detail',
-            kwargs={'extcollection_pk': response.data['collection']['id'],
+            kwargs={'collection_pk': response.data['collection']['id'],
                     'pk': response.data['informer']['id']}
         )
         response_get = self.client.get(url)
@@ -154,9 +150,9 @@ class TestCollectionInformerList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-    def test_delete_an_collection_informer(self):
+    def test_delete_a_collection_informer(self):
         """
-        Ensure we can delete an CollectionInformer object
+        Ensure we can delete a CollectionInformer object
         """
 
         item = CollectionInformer.objects.first()
@@ -164,7 +160,7 @@ class TestCollectionInformerList(APITestCase):
         # Delete this object
         url = reverse(
             'collectioninformer-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.informer.id}
         )
         response = self.client.delete(url)
@@ -174,7 +170,7 @@ class TestCollectionInformerList(APITestCase):
         # Ensure CollectionInformer removed
         url_get = reverse(
             'collectioninformer-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.informer.id}
         )
         response_get = self.client.get(url_get)

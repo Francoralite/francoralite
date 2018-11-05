@@ -5,13 +5,13 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 from rest_framework import serializers
 
-from .MediaCollection import MediacollectionSerializer
+from .collection import CollectionSerializer
 from .authority import AuthoritySerializer
 
-from ..models.collection_informer import(
+from ..models.collection_informer import (
     CollectionInformer as CollectionInformerModel)
 
-from telemeta.models.collection import MediaCollection as MediacollectionModel
+from ..models.collection import Collection as CollectionModel
 from ..models.authority import Authority as AuthorityModel
 
 
@@ -20,7 +20,7 @@ class CollectionInformerSerializer(serializers.ModelSerializer):
     Common serializer for all CollectionInformer actions
     """
 
-    collection = MediacollectionSerializer(required=True)
+    collection = CollectionSerializer(required=True)
     informer = AuthoritySerializer(required=True)
 
     class Meta:
@@ -37,7 +37,7 @@ class CollectionInformerSerializer(serializers.ModelSerializer):
 
         collection_data = validated_data.pop('collection')
         # Create an oject Mediacollection with the data converted in dict
-        collection = MediacollectionModel.objects.create(**collection_data)
+        collection = CollectionModel.objects.create(**collection_data)
 
         informer_data = validated_data.pop('informer')
         # Create an oject informer (Authority) with the data converted in dict

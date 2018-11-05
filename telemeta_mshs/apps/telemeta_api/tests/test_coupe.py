@@ -15,18 +15,17 @@ from rest_framework.test import APITestCase
 
 from .factories.coupe import CoupeFactory
 from ..models.coupe import Coupe
-from ..models.acquisition_mode import AcquisitionMode
 
 
 # Expected structure for Coupe objects
-ACQUISTION_STRUCTURE = [
+COUPE_STRUCTURE = [
     ('id', int),
     ('value', str),
     ('notes', str),
 ]
 
 # Expected keys for Coupe objects
-ACQUISITION_FIELDS = sorted([item[0] for item in ACQUISTION_STRUCTURE])
+COUPE_FIELD = sorted([item[0] for item in COUPE_STRUCTURE])
 
 
 @pytest.mark.django_db
@@ -61,7 +60,7 @@ class TestAcquisitionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
 
-    @parameterized.expand(INSTITUTION_STRUCTURE)
+    @parameterized.expand(COUPE_STRUCTURE)
     def test_has_valid_coupe_values(self, attribute, attribute_type):
         """
         Ensure Coupe objects have valid values
@@ -76,7 +75,7 @@ class TestAcquisitionList(APITestCase):
         for coupe in response.data:
             # Check only expected attributes returned
             self.assertEqual(
-                sorted(coupe.keys()), INSTITUTION_FIELDS)
+                sorted(coupe.keys()), COUPE_FIELD)
 
             # Ensure type of each attribute
             if attribute_type == str:
@@ -112,7 +111,7 @@ class TestAcquisitionList(APITestCase):
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIsInstance(response.data, dict)
-        self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
+        self.assertEqual(sorted(response.data.keys()), COUPE_FIELD)
 
         url = reverse(
             'coupe-detail',
@@ -142,7 +141,7 @@ class TestAcquisitionList(APITestCase):
         # Ensure new value returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
-        self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
+        self.assertEqual(sorted(response.data.keys()), COUPE_FIELD)
         self.assertEqual(response.data['value'], 'foobar_test_put')
 
     def test_patch_an_coupe(self):
@@ -160,7 +159,7 @@ class TestAcquisitionList(APITestCase):
         # Ensure new value returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
-        self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
+        self.assertEqual(sorted(response.data.keys()), COUPE_FIELD)
         self.assertEqual(response.data['value'], 'foobar_test_patch')
 
     def test_delete_an_coupe(self):

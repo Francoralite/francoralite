@@ -10,8 +10,8 @@ collection_location factory to execute tests
 import factory
 from ...models.collection_location import CollectionLocation
 # Import nested/related factories
-from .MediaCollection import MediacollectionFactory
-from .location import LocationFactory
+from .collection import CollectionFactory
+from .location_gis import LocationGisFactory
 
 
 class CollectionLocationFactory(factory.django.DjangoModelFactory):
@@ -26,5 +26,5 @@ class CollectionLocationFactory(factory.django.DjangoModelFactory):
             'location',)
 
     # Nested/related factories
-    collection = factory.SubFactory(MediacollectionFactory)
-    location = factory.SubFactory(LocationFactory)
+    collection = factory.SubFactory(CollectionFactory)
+    location = factory.SubFactory(LocationGisFactory)

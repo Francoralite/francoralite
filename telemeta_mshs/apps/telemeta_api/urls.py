@@ -6,8 +6,7 @@ from .views import (
     fond,
     acquisition_mode,
     mission,
-    MediaCollection,
-    ExtMediaCollection,
+    collection,
     collectioncollectors,
     collection_informer,
     collection_publisher,
@@ -27,11 +26,8 @@ router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
 router.register(r'authority',
                 authority.AuthorityViewSet, base_name='authority')
 router.register(r'collection',
-                MediaCollection.MediacollectionViewSet,
-                base_name='MediaCollection')
-router.register(r'extcollection',
-                ExtMediaCollection.ExtMediacollectionViewSet,
-                base_name='ExtMediaCollection')
+                collection.CollectionViewSet,
+                base_name='collection')
 router.register(r'location',
                 location.LocationViewSet,
                 base_name='location')
@@ -55,19 +51,17 @@ router.register(r'extitem',
 
 
 # Nested routers
-router.register(
-    r'extcollections', ExtMediaCollection.ExtMediacollectionViewSet)
-ExtMediaCollection_router = routers.NestedSimpleRouter(
-    router, r'extcollections', lookup='extcollection')
-ExtMediaCollection_router.register(
+Collection_router = routers.NestedSimpleRouter(
+    router, r'collection', lookup='collection')
+Collection_router.register(
     r'collectors', collectioncollectors.CollectionCollectorsViewSet)
-ExtMediaCollection_router.register(
+Collection_router.register(
     r'informer', collection_informer.CollectionInformerViewSet)
-ExtMediaCollection_router.register(
+Collection_router.register(
     r'publisher', collection_publisher.CollectionPublisherViewSet)
-ExtMediaCollection_router.register(
+Collection_router.register(
     r'location', collection_location.CollectionLocationViewSet)
-ExtMediaCollection_router.register(
+Collection_router.register(
     r'language', collection_language.CollectionLanguageViewSet)
 
 router.register(

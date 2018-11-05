@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Collection tests
 """
 
 import factory
@@ -20,66 +20,50 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-from .factories.MediaCollection import MediacollectionFactory
-from telemeta.models.collection import MediaCollection as Mediacollection
+from .factories.collection import CollectionFactory
+from ..models.collection import Collection
+from ..models.mission import Mission
+from ..models.location import Location
+from ..models.mediatype import MediaType
 
 
-# Expected structure for Mediacollection objects
-# FIXIT ----
-MEDIACOLLECTION_STRUCTURE = [
+# Expected structure for collection objects
+COLLECTION_STRUCTURE = [
     ('id', int),
+    ('mission', dict),
     ('title', str),
     ('alt_title', str),
-    ('creator', str),
     ('description', str),
+    ('descriptions', str),
     ('recording_context', str),
-    ('recorded_from_year', int),
-    ('recorded_to_year', int),
+    ('recorded_from_year', str),
+    ('recorded_to_year', str),
     ('year_published', int),
-    ('public_access', str),
-    ('collector', str),
+    ('location', int),
+    ('location_details', str),
+    ('cultural_area', str),
+    ('language', str),
     ('publisher', str),
     ('publisher_collection', str),
-    ('publisher_serial', str),
     ('booklet_author', str),
-    ('reference', str),
-    ('external_references', str),
-    ('auto_period_access', bool),
-    ('legal_rights', str),
-    ('code', str),
-    ('old_code', str),
-    ('acquisition_mode', str),
-    ('cnrs_contributor', str),
-    ('copy_type', str),
     ('metadata_author', str),
+    ('code', str),
+    ('code_partner', str),
     ('booklet_description', str),
-    ('publishing_status', str),
-    ('status', str),
-    ('alt_copies', str),
     ('comment', str),
-    ('metadata_writer', str),
-    ('archiver_notes', str),
-    ('items_done', str),
-    ('collector_is_creator', bool),
-    ('is_published', bool),
-    ('conservation_site', str),
-    ('media_type', str),
-    ('approx_duration', str),
+    ('media_type', dict),
     ('physical_items_num', int),
-    ('original_format', str),
-    ('physical_format', str),
-    ('ad_conversion', str),
-    ('alt_ids', str),
-    ('travail', str)
+    ('auto_period_access', bool),
+    ('public_access', str),
 ]
 
 # Expected keys for MODEL objects
-MEDIACOLLECTION_FIELDS = sorted(
-    [item[0] for item in MEDIACOLLECTION_STRUCTURE])
+COLLECTION_FIELDS = sorted(
+    [item[0] for item in COLLECTION_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestMediacollectionList(APITestCase):
+class TestCollectionList(APITestCase):
     """
     This class manage all Mediacollection tests
     """
@@ -91,17 +75,17 @@ class TestMediacollectionList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
-        MediacollectionFactory.create_batch(6)
+        CollectionFactory.create_batch(6)
 
-    def test_can_get_MediaCollection_list(self):
+    def test_can_get_collection_list(self):
         """
-        Ensure Mediacollection objects exists
+        Ensure collection objects exists
         """
-        url = reverse('MediaCollection-list')
+        url = reverse('collection-list')
 
         # ORM side
-        MediaCollections = Mediacollection.objects.all()
-        self.assertEqual(len(MediaCollections), 6)
+        collections = Collection.objects.all()
+        self.assertEqual(len(collections), 6)
 
         # API side
         response = self.client.get(url)
@@ -110,75 +94,82 @@ class TestMediacollectionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
 
-    @parameterized.expand(MEDIACOLLECTION_STRUCTURE)
-    def test_has_valid_MediaCollection_values(self, attribute, attribute_type):
+    @parameterized.expand(COLLECTION_STRUCTURE)
+    def test_has_valid_collection_values(self, attribute, attribute_type):
         """
-        Ensure Mediacollection objects have valid values
+        Ensure collection objects have valid values
         """
 
-        url = reverse('MediaCollection-list')
+        url = reverse('collection-list')
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        for MediaCollection in response.data:
+        for collection in response.data:
             # Check only expected attributes returned
             self.assertEqual(
-                sorted(MediaCollection.keys()), MEDIACOLLECTION_FIELDS)
+                sorted(collection.keys()), COLLECTION_FIELDS)
 
             # Ensure type of each attribute
             if attribute_type == str:
                 if sys.version_info.major == 2:
                     self.assertIsInstance(
-                        MediaCollection[attribute], basestring)
+                        collection[attribute], basestring)
                 else:
-                    self.assertIsInstance(MediaCollection[attribute], str)
+                    self.assertIsInstance(collection[attribute], str)
             else:
                 self.assertIsInstance(
-                    MediaCollection[attribute], attribute_type)
-            self.assertIsNot(MediaCollection[attribute], '')
+                    collection[attribute], attribute_type)
+            self.assertIsNot(collection[attribute], '')
 
-    def test_get_an_MediaCollection(self):
+    def test_get_an_collection(self):
         """
-        Ensure we can get an Mediacollection objects
+        Ensure we can get a collection objects
         using an existing id
         """
 
-        item = Mediacollection.objects.first()
-        url = reverse('MediaCollection-detail',
+        item = Collection.objects.first()
+        url = reverse('collection-detail',
                       kwargs={'pk': item.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
-    def test_create_an_MediaCollection(self):
+    def test_create_a_collection(self):
         """
-        Ensure we can create an Mediacollection object
+        Ensure we can create an collection object
         """
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=MediacollectionFactory)
+            FACTORY_CLASS=CollectionFactory)
+
+        mission = Mission.objects.first()
+        # Write the Mission object in the collection data object.
+        data['mission'] = mission.id
+
+        loc = Location.objects.first()
+        # Write the Location object in the collection data object.
+        data['location'] = loc.id
+
+        mediatype = MediaType.objects.first()
+        # Write the MediaType object in the collection data object.
+        data['media_type'] = mediatype.id
 
         # related objects
+        data['recorded_from_year'] = str(data['recorded_from_year'])
+        data['recorded_to_year'] = str(data['recorded_to_year'])
         data['recording_context'] = str(data['recording_context'])
-        data['publisher'] = str(data['publisher'])
-        data['publisher_collection'] = str(data['publisher_collection'])
-        data['legal_rights'] = str(data['legal_rights'])
-        data['acquisition_mode'] = str(data['acquisition_mode'])
-        data['copy_type'] = str(data['copy_type'])
-        data['metadata_author'] = str(data['metadata_author'])
-        data['publishing_status'] = str(data['publishing_status'])
-        data['status'] = str(data['status'])
-        data['metadata_writer'] = str(data['metadata_writer'])
-        data['media_type'] = str(data['media_type'])
-        data['original_format'] = str(data['original_format'])
-        data['physical_format'] = str(data['physical_format'])
-        data['ad_conversion'] = str(data['ad_conversion'])
+        # data['legal_rights'] = str(data['legal_rights'])
+        # data['metadata_author'] = str(data['metadata_author'])
+        # data['publishing_status'] = str(data['publishing_status'])
+        # data['status'] = str(data['status'])
+        # data['metadata_writer'] = str(data['metadata_writer'])
+        # data['media_type'] = str(data['media_type'])
 
-        url = reverse('MediaCollection-list')
+        url = reverse('collection-list')
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -186,10 +177,10 @@ class TestMediacollectionList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            MEDIACOLLECTION_FIELDS)
+            COLLECTION_FIELDS)
 
         url = reverse(
-            'MediaCollection-detail',
+            'collection-detail',
             kwargs={'pk': response.data['id']}
         )
         response_get = self.client.get(url)
@@ -197,27 +188,26 @@ class TestMediacollectionList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-        item = Mediacollection.objects.first()
-        self.assertEqual(item.id, 7)
-
-    def test_update_an_MediaCollection(self):
+    def test_update_a_collection(self):
         """
-        Ensure we can update an Mediacollection object
+        Ensure we can update a collection object
         """
 
-        item = Mediacollection.objects.first()
+        item = Collection.objects.first()
         self.assertNotEqual(item.title, 'foobar_test_put')
 
         # Get existing object from API
         url_get = reverse(
-            'MediaCollection-detail',
+            'collection-detail',
             kwargs={'pk': item.id})
         data = self.client.get(url_get).data
 
         data['title'] = 'foobar_test_put'
         url = reverse(
-            'MediaCollection-detail',
+            'collection-detail',
             kwargs={'pk': item.id})
+        data['mission'] = data['mission']['id']
+        data['media_type'] = data['media_type']['id']
         response = self.client.put(url, data, format='json')
 
         # Ensure new name returned
@@ -225,20 +215,20 @@ class TestMediacollectionList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            MEDIACOLLECTION_FIELDS)
+            COLLECTION_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_put')
 
-    def test_patch_an_MediaCollection(self):
+    def test_patch_a_collection(self):
         """
-        Ensure we can patch an Mediacollection object
+        Ensure we can patch a collection object
         """
 
-        item = Mediacollection.objects.first()
+        item = Collection.objects.first()
         self.assertNotEqual(item.title, 'foobar_test_patch')
 
         data = {'title': 'foobar_test_patch'}
         url = reverse(
-            'MediaCollection-detail',
+            'collection-detail',
             kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='json')
 
@@ -247,19 +237,19 @@ class TestMediacollectionList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            MEDIACOLLECTION_FIELDS)
+            COLLECTION_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
 
-    def test_delete_an_MediaCollection(self):
+    def test_delete_a_collection(self):
         """
-        Ensure we can delete an Mediacollection object
+        Ensure we can delete a collection object
         """
 
-        item = Mediacollection.objects.first()
+        item = Collection.objects.first()
 
         # Delete this object
         url = reverse(
-            'MediaCollection-detail',
+            'collection-detail',
             kwargs={'pk': item.id})
         response = self.client.delete(url)
 
@@ -267,7 +257,7 @@ class TestMediacollectionList(APITestCase):
 
         # Ensure Mediacollection removed
         url_get = reverse(
-            'MediaCollection-detail',
+            'collection-detail',
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)

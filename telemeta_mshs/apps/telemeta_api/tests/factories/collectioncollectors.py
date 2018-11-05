@@ -5,7 +5,7 @@ CollectionCollectors factory to execute tests
 
 import factory
 from ...models.collectioncollectors import CollectionCollectors
-from .MediaCollection import MediacollectionFactory
+from .collection import CollectionFactory
 from .authority import AuthorityFactory
 
 
@@ -20,5 +20,5 @@ class CollectionCollectorsFactory(factory.django.DjangoModelFactory):
             'collection',
             'collector',)
 
-    collection = factory.SubFactory(MediacollectionFactory)
+    collection = factory.SubFactory(CollectionFactory)
     collector = factory.SubFactory(AuthorityFactory)

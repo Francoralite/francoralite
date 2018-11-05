@@ -9,8 +9,8 @@ collection_publisher factory to execute tests
 
 import factory
 from ...models.collection_publisher import CollectionPublisher
-# Import nested/related factories
-from .MediaCollection import MediacollectionFactory
+
+from .collection import CollectionFactory
 from .authority import AuthorityFactory
 
 
@@ -26,5 +26,5 @@ class CollectionPublisherFactory(factory.django.DjangoModelFactory):
             'publisher',)
 
     # Nested/related factories
-    collection = factory.SubFactory(MediacollectionFactory)
+    collection = factory.SubFactory(CollectionFactory)
     publisher = factory.SubFactory(AuthorityFactory)

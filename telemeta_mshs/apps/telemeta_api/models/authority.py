@@ -50,7 +50,7 @@ class Authority(ModelCore):
         ordering = []
 
     def __unicode__(self):
-        if self.civilite:
+        if self.civility:
             return '%s %s %s' % (
-                self.civilite,  self.first_name, self.last_name)
+                self.civility,  self.first_name, self.last_name)
         return '%s %s' % (self.first_name, self.last_name)

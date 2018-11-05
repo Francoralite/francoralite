@@ -5,16 +5,15 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 from rest_framework import serializers
 
-# Add nested/related serializers
-from .MediaCollection import MediacollectionSerializer
-from .location import LocationSerializer
+from .collection import CollectionSerializer
+from .location_gis import LocationGisSerializer
 
-from ..models.collection_location import(
+from ..models.collection_location import (
     CollectionLocation as CollectionLocationModel)
 
 # Add nested/related table
-from telemeta.models.collection import MediaCollection as MediacollectionModel
-from telemeta.models.location import Location as LocationModel
+from ..models.collection import Collection as CollectionModel
+from ..models.location import Location as LocationModel
 
 
 class CollectionLocationSerializer(serializers.ModelSerializer):
@@ -22,8 +21,8 @@ class CollectionLocationSerializer(serializers.ModelSerializer):
     Common serializer for all CollectionLocation actions
     """
 
-    collection = MediacollectionSerializer(required=True)
-    location = LocationSerializer(required=True)
+    collection = CollectionSerializer(required=True)
+    location = LocationGisSerializer(required=True)
 
     class Meta:
         model = CollectionLocationModel
@@ -40,7 +39,7 @@ class CollectionLocationSerializer(serializers.ModelSerializer):
         # Add nested/related data
         collection_data = validated_data.pop('collection')
         # Create an oject Mediacollection with the data converted in dict
-        collection = MediacollectionModel.objects.create(**collection_data)
+        collection = CollectionModel.objects.create(**collection_data)
 
         location_data = validated_data.pop('location')
         # Create an oject location (Location) with the data converted in dict

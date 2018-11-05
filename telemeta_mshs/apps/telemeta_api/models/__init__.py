@@ -4,8 +4,9 @@ Manage these import to have models discoverables from Django makemigrations
 
 from .authority import Authority
 from .coupe import Coupe
+from .mediatype import MediaType
 from .ext_media_item import ExtMediaItem
-from .ext_media_collection import ExtMediaCollection
+from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer
 from .collection_publisher import CollectionPublisher

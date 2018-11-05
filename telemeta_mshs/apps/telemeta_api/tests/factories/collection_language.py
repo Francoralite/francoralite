@@ -10,7 +10,7 @@ collection_language factory to execute tests
 import factory
 from ...models.collection_language import CollectionLanguage
 # Import nested/related factories
-from .MediaCollection import MediacollectionFactory
+from .collection import CollectionFactory
 from .language import LanguageFactory
 
 
@@ -26,5 +26,5 @@ class CollectionLanguageFactory(factory.django.DjangoModelFactory):
             'language',)
 
     # Nested/related factories
-    collection = factory.SubFactory(MediacollectionFactory)
+    collection = factory.SubFactory(CollectionFactory)
     language = factory.SubFactory(LanguageFactory)

@@ -56,7 +56,7 @@ class TestCollectionLanguageList(APITestCase):
         Ensure CollectionLanguage objects exists
         """
         url = reverse('collectionlanguage-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
 
         # ORM side
         collection_languages = CollectionLanguage.objects.all()
@@ -76,9 +76,8 @@ class TestCollectionLanguageList(APITestCase):
         Ensure CollectionLanguage objects have valid values
         """
 
-        # FIXIT : kwargs for the related tables
         url = reverse('collectionlanguage-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
@@ -102,14 +101,14 @@ class TestCollectionLanguageList(APITestCase):
 
     def test_get_a_collection_language(self):
         """
-        Ensure we can get an CollectionLanguage objects
+        Ensure we can get a CollectionLanguage objects
         using an existing id
         """
 
         item = CollectionLanguage.objects.first()
         #  kwargs for the related tables
         url = reverse('collectionlanguage-detail', kwargs={
-                      'extcollection_pk': item.collection.id,
+                      'collection_pk': item.collection.id,
                       'pk': item.language.id})
         response = self.client.get(url)
 
@@ -118,7 +117,7 @@ class TestCollectionLanguageList(APITestCase):
 
     def test_create_a_collection_language(self):
         """
-        Ensure we can create an CollectionLanguage object
+        Ensure we can create a CollectionLanguage object
         """
 
         data = factory.build(
@@ -130,12 +129,8 @@ class TestCollectionLanguageList(APITestCase):
         data['collection'] = data['collection'].__dict__['_original_state']
         data['language'] = data['language'].__dict__['_original_state']
 
-        # The type DurationField was define in the original application
-        data['collection']['approx_duration'] = str(
-            data['collection']['approx_duration'])
-
         url = reverse('collectionlanguage-list', kwargs={
-            'extcollection_pk': 1})
+            'collection_pk': 1})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -147,7 +142,7 @@ class TestCollectionLanguageList(APITestCase):
 
         url = reverse(
             'collectionlanguage-detail',
-            kwargs={'extcollection_pk': response.data['collection']['id'],
+            kwargs={'collection_pk': response.data['collection']['id'],
                     'pk': response.data['language']['id']}
         )
         response_get = self.client.get(url)
@@ -157,7 +152,7 @@ class TestCollectionLanguageList(APITestCase):
 
     def test_delete_a_collection_language(self):
         """
-        Ensure we can delete an CollectionLanguage object
+        Ensure we can delete a CollectionLanguage object
         """
 
         item = CollectionLanguage.objects.first()
@@ -167,7 +162,7 @@ class TestCollectionLanguageList(APITestCase):
         # kwargs for the related tables
         url = reverse(
             'collectionlanguage-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.language.id}
         )
         response = self.client.delete(url)
@@ -179,7 +174,7 @@ class TestCollectionLanguageList(APITestCase):
         # kwargs for the related tables
         url_get = reverse(
             'collectionlanguage-detail', kwargs={
-                'extcollection_pk': item.collection.id,
+                'collection_pk': item.collection.id,
                 'pk': item.language.id}
         )
         response_get = self.client.get(url_get)

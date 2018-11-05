@@ -16,7 +16,6 @@ from telemeta.models.enum import (
     PublishingStatus,
     Status,
     MetadataWriter,
-    MediaType,
     OriginalFormat,
     PhysicalFormat,
     AdConversion,
@@ -24,9 +23,9 @@ from telemeta.models.enum import (
     GenericStyle,
     Organization,
     Rights,
-    MediaType,
     Topic
     )
+from ...models.mediatype import MediaType
 
 
 class EnumerationFactory(factory.django.DjangoModelFactory):

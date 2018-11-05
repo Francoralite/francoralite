@@ -5,15 +5,14 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 from rest_framework import serializers
 
-# Add nested/related serializers
-from .MediaCollection import MediacollectionSerializer
+from .collection import CollectionSerializer
 from .language import LanguageSerializer
 
-from ..models.collection_language import(
+from ..models.collection_language import (
     CollectionLanguage as CollectionLanguageModel)
 
 # Add nested/related table
-from telemeta.models.collection import MediaCollection as MediacollectionModel
+from ..models.collection import Collection as CollectionModel
 from telemeta.models.language import Language as LanguageModel
 
 
@@ -23,7 +22,7 @@ class CollectionLanguageSerializer(serializers.ModelSerializer):
     """
 
     # Fields of the serializer
-    collection = MediacollectionSerializer(required=True)
+    collection = CollectionSerializer(required=True)
     language = LanguageSerializer(required=True)
 
     class Meta:
@@ -41,7 +40,7 @@ class CollectionLanguageSerializer(serializers.ModelSerializer):
         # Add nested/related data
         collection_data = validated_data.pop('collection')
         # Create an oject Mediacollection with the data converted in dict
-        collection = MediacollectionModel.objects.create(**collection_data)
+        collection = CollectionModel.objects.create(**collection_data)
 
         language_data = validated_data.pop('language')
         # Create an oject language (Language) with the data converted in dict
