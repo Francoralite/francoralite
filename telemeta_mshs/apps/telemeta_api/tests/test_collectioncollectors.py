@@ -15,6 +15,8 @@ from rest_framework.test import APITestCase
 
 from .factories.collectioncollectors import CollectionCollectorsFactory
 from ..models.collectioncollectors import CollectionCollectors
+from ..models.authority import Authority
+from ..models.collection import Collection
 
 # Expected structure for Coupe objects
 COLLECTORS_STRUCTURE = [
@@ -112,12 +114,15 @@ class TestCollectionCokkecrosList(APITestCase):
         #  Then they will be easily converted in JSON format.
         data = factory.build(dict, FACTORY_CLASS=CollectionCollectorsFactory)
 
+        data['collector'] = Authority.objects.first()
+        data['collection'] = Collection.objects.first()
         data['collector'] = data['collector'].__dict__['_original_state']
         data['collection'] = data['collection'].__dict__['_original_state']
-
+        data['collection']['code'] = 'code1500'
         url = reverse('collectioncollectors-list', kwargs={
             'collection_pk': 1})
         response = self.client.post(url, data, format='json')
+        print(response)
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

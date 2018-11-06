@@ -21,9 +21,10 @@ from rest_framework.test import APITestCase
 
 from .factories.collection_language import CollectionLanguageFactory
 from ..models.collection_language import CollectionLanguage
+from telemeta.models.language import Language
+from ..models.collection import Collection
 
 # Expected structure for Collection_language objects
-# FIXIT ----
 COLLECTIONLANGUAGE_STRUCTURE = [
     ('id', int),
     ('collection', dict),
@@ -126,8 +127,11 @@ class TestCollectionLanguageList(APITestCase):
 
         # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
+        data['language'] = Language.objects.first()
+        data['collection'] = Collection.objects.first()
         data['collection'] = data['collection'].__dict__['_original_state']
         data['language'] = data['language'].__dict__['_original_state']
+        data['collection']['code'] = 'code1500'
 
         url = reverse('collectionlanguage-list', kwargs={
             'collection_pk': 1})

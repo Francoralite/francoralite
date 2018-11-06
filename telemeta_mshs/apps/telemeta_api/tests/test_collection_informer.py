@@ -21,6 +21,8 @@ from rest_framework.test import APITestCase
 
 from .factories.collection_informer import CollectionInformerFactory
 from ..models.collection_informer import CollectionInformer
+from ..models.authority import Authority
+from ..models.collection import Collection
 
 # Expected structure for Collection_informer objects
 COLLECTIONINFORMER_STRUCTURE = [
@@ -126,8 +128,11 @@ class TestCollectionInformerList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.-
+        data['publisher'] = Authority.objects.first()
+        data['collection'] = Collection.objects.first()
         data['collection'] = data['collection'].__dict__['_original_state']
-        data['informer'] = data['informer'].__dict__['_original_state']
+        data['publisher'] = data['publisher'].__dict__['_original_state']
+        data['collection']['code'] = 'code1500'
 
         url = reverse('collectioninformer-list', kwargs={
             'collection_pk': 1})

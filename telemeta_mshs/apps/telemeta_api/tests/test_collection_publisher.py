@@ -21,6 +21,8 @@ from rest_framework.test import APITestCase
 
 from .factories.collection_publisher import CollectionPublisherFactory
 from ..models.collection_publisher import CollectionPublisher
+from ..models.authority import Authority
+from ..models.collection import Collection
 
 # Expected structure for Collection_publisher objects
 COLLECTIONPUBLISHER_STRUCTURE = [
@@ -127,8 +129,11 @@ class TestCollectionPublisherList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
+        data['publisher'] = Authority.objects.first()
+        data['collection'] = Collection.objects.first()
         data['collection'] = data['collection'].__dict__['_original_state']
         data['publisher'] = data['publisher'].__dict__['_original_state']
+        data['collection']['code'] = 'code1500'
 
         url = reverse('collectionpublisher-list', kwargs={
             'collection_pk': 1})
