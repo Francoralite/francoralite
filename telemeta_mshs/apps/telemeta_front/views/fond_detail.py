@@ -25,6 +25,6 @@ class FondDetail(TemplateView):
             context['fond'] = response.json
             context['form'] = FondForm()
             context['missions'] = requests.get(
-                FRONT_HOST_URL + '/api/mission/?fond=' + context['id']
+                FRONT_HOST_URL + '/api/mission/?fonds=' + context['id']
                 ).json
         return context

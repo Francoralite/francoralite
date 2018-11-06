@@ -131,6 +131,10 @@
         </tr>
         {% endfor %}
       </table>
+    {% else %}
+      <div class="block-grey">
+      {% trans "Ce fonds ne possède pas de mission."%}
+      </div>
     {% endif %}
 
   </div>
