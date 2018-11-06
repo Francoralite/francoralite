@@ -47,12 +47,12 @@
     <span class="libelle"> {{form.fonds.label|safe}}</span>
     <span class="donnee">
       <a href="{% url "fond-detail" id=mission.fonds.id %}">
-        {{mission.fonds.code|safe}} - {{mission.fonds.title|safe}}
+        {{mission.fonds.title|safe}}
       </a>
     </span>
   </span>
   {% field_data form.code_partner.label|safe mission.code_partner|safe %}
-  {% field_data form.code.label|safe mission.code|upper|safe %}
+  {% field_data form.code.label mission.fonds.code|add:'_'|add:mission.code|upper|safe %}
   {% field_data form.title.label|safe mission.title|safe %}
   {% field_data form.public_access.label|safe mission.public_access|safe %}
 </div>
