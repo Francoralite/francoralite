@@ -124,7 +124,7 @@ urlpatterns = [
     # Collection/Enquetes
     url(r'^collection/$', collection.CollectionView.as_view(),
         name="collection"),
-    url(r'^collection/add/$',
+    url(r'^institution/(?P<id_institution>[0-9]+)/fond/(?P<id_fond>[0-9]+)/mission/(?P<id_mission>[0-9]+)/collection/add/$',  # noqa
         collection_add.CollectionAdd.as_view(),
         name='collection-add'),
     url(r'^collection/(?P<id>[0-9]+)/$',

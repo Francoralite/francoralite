@@ -37,7 +37,9 @@ class CollectionEdit(FormView):
         # Obtain values of the record
         collection = requests.get(
             FRONT_HOST_URL + '/api/collection/' + str(id))
-        form = CollectionForm(initial=collection.json())
+        data = collection.json()
+        data['mission'] = data['mission']['id']
+        form = CollectionForm(initial=data)
 
         return render(request,
                       '../templates/collection-add.html',

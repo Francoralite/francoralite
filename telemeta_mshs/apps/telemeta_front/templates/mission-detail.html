@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-  <a href="{% url "collection-add" %}">
+  <a href="{% url "collection-add" id_institution=mission.fonds.institution.id id_fond=mission.fonds.id id_mission=id %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une enquête" %}
@@ -34,7 +34,7 @@
   </a>
   <a href="{% url "mission-edit" id=id %}">
   <button type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </button>
   </a>
 {% endblock %}

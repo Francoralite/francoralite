@@ -37,6 +37,4 @@ class MissionAdd(FormView):
             except RequestException:
                 return HttpResponseRedirect('/mission/add')
 
-        # FIXIT
-        raise Exception(1)
         return HttpResponseRedirect('/mission/add')
