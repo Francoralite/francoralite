@@ -18,6 +18,11 @@ class CollectionAdd(FormView):
     form_class = CollectionForm
     success_url = '/collection/'
 
+    def get_initial(self):
+        initial = super(CollectionAdd, self).get_initial()
+        initial['mission'] = self.kwargs['id_mission']
+        return initial
+
     def post(self, request, *args, **kwargs):
 
         form = CollectionForm(request.POST)

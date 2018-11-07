@@ -46,7 +46,7 @@
     {% if id %}
     <form action="{%url "collection-edit" id %}" method="POST">
     {% else %}
-    <form action="{%url "collection-add" %}" method="POST">
+    <form action="{{request.path}}" method="POST">
     {% endif %}
       {% csrf_token %}
       <div class="container_line">

@@ -25,4 +25,7 @@ class MissionDetail(TemplateView):
         if response.status_code == status.HTTP_200_OK:
             context['mission'] = response.json
             context['form'] = MissionForm()
+            context['collections'] = requests.get(
+                FRONT_HOST_URL + '/api/collection/?mission=' + context['id']
+                ).json
         return context

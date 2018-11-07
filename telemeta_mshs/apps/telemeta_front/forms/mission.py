@@ -45,3 +45,4 @@ class MissionForm(forms.Form):
             choices=Core.get_choices(
                 entity="fond", label_field="title"),
             required=True)
+        self.fields['fonds'].readonly = True

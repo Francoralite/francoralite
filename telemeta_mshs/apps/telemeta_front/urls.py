@@ -108,7 +108,7 @@ urlpatterns = [
     # Mission
     url(r'^mission/$', mission.MissionView.as_view(),
         name="mission"),
-    url(r'^mission/add/$',
+    url(r'^institution/(?P<id_institution>[0-9]+)/fond/(?P<id_fond>[0-9]+)/mission/add/$',  # noqa
         mission_add.MissionAdd.as_view(),
         name='mission-add'),
     url(r'^mission/(?P<id>[0-9]+)/$',
@@ -124,7 +124,7 @@ urlpatterns = [
     # Collection/Enquetes
     url(r'^collection/$', collection.CollectionView.as_view(),
         name="collection"),
-    url(r'^collection/add/$',
+    url(r'^institution/(?P<id_institution>[0-9]+)/fond/(?P<id_fond>[0-9]+)/mission/(?P<id_mission>[0-9]+)/collection/add/$',  # noqa
         collection_add.CollectionAdd.as_view(),
         name='collection-add'),
     url(r'^collection/(?P<id>[0-9]+)/$',

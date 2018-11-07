@@ -37,7 +37,9 @@ class MissionEdit(FormView):
         # Obtain values of the record
         mission = requests.get(
             FRONT_HOST_URL + '/api/mission/' + str(id))
-        form = MissionForm(initial=mission.json())
+        data = mission.json()
+        data['fonds'] = data['fonds']['id']
+        form = MissionForm(initial=data)
 
         return render(request,
                       '../templates/mission-add.html',

@@ -21,6 +21,8 @@ from rest_framework.test import APITestCase
 
 from .factories.collection_location import CollectionLocationFactory
 from ..models.collection_location import CollectionLocation
+from ..models.location import Location
+from ..models.collection import Collection
 
 # Expected structure for Collection_location objects
 COLLECTIONLOCATION_STRUCTURE = [
@@ -126,17 +128,16 @@ class TestCollectionLocationList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
+        data['location'] = Location.objects.first()
+        data['collection'] = Collection.objects.first()
         data['collection'] = data['collection'].__dict__['_original_state']
-
         data['location'] = data['location'].__dict__['_original_state']
-        # Force some values
-        #  --> we are not using the current_location field
-        data['location']['complete_type'] = 1
-        data['location']['current_location'] = ""
+        data['collection']['code'] = 'code1500'
 
         url = reverse('collectionlocation-list', kwargs={
             'collection_pk': 1})
         response = self.client.post(url, data, format='json')
+        print(response)
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
