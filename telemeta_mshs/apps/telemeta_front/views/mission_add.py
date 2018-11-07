@@ -18,12 +18,15 @@ class MissionAdd(FormView):
     form_class = MissionForm
     success_url = '/mission/'
 
+    def get_initial(self):
+        initial = super(MissionAdd, self).get_initial()
+        initial['fonds'] = self.kwargs['id_fond']
+        return initial
+
     def post(self, request, *args, **kwargs):
 
         form = MissionForm(request.POST)
-
         if form.is_valid():
-
             try:
                 requests.post(
                     FRONT_HOST_URL + '/api/mission/',
@@ -34,4 +37,6 @@ class MissionAdd(FormView):
             except RequestException:
                 return HttpResponseRedirect('/mission/add')
 
+        # FIXIT
+        raise Exception(1)
         return HttpResponseRedirect('/mission/add')
