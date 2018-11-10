@@ -21,18 +21,12 @@ class Collection(MediaBaseResource):
             related_name='collection',
             verbose_name=_('Mission'), blank=True, default="")
     alt_title = models.CharField(
-        _(u'Titre original'), max_length=255)
+        _(u'Titre original'), blank=True, max_length=255)
     recording_context = models.CharField(
-        _(u'Contexte d\'enregistrement'),  max_length=255)
-    recorded_from_year = models.DateField(null=True)
-    recorded_to_year = models.DateField(null=True)
-    year_published = models.IntegerField(null=True)
-    location = models.ForeignKey(
-        'telemeta_api.Location',
-        related_name='location',
-        verbose_name=_('lieu'),
-        blank=True,
-        null=True, on_delete=models.SET_NULL)
+        _(u'Contexte d\'enregistrement'), blank=True, max_length=255)
+    recorded_from_year = models.DateField(blank=True, null=True)
+    recorded_to_year = models.DateField(blank=True, null=True)
+    year_published = models.IntegerField(blank=True, null=True)
     location_details = models.TextField(
         _(u'Précisions sur le lieu'),
         default="",
@@ -45,10 +39,6 @@ class Collection(MediaBaseResource):
         'langage',
         help_text=_('Langage ; langage'),
         default="", blank=True,  max_length=255)
-    publisher = models.CharField(
-        _(u'Editeur'),
-        help_text=_(u'éditeur ; éditeur'),
-        default="", blank=True, max_length=255)
     publisher_collection = models.CharField(
         _(u'Collection éditeur'),
         help_text=('collection ; collection'),
@@ -75,9 +65,15 @@ class Collection(MediaBaseResource):
         blank=True,
         null=True, on_delete=models.SET_NULL)
     physical_items_num = models.IntegerField(
-        _(u'Nombre de composants (support / pièce)'), null=True)
+        _(u'Nombre de composants (support / pièce)'), blank=True, null=True)
     auto_period_access = models.BooleanField(
         _(u'Accès automatique après la date glissante'), default=True)
+    legal_rights = models.ForeignKey(
+        'telemeta_api.LegalRights',
+        related_name='collection',
+        verbose_name=_(u'Droits d\'utilisation'),
+        blank=True,
+        null=True, on_delete=models.SET_NULL)
 
     class Meta(MetaCore):
         app_label = 'telemeta_api'

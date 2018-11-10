@@ -24,8 +24,9 @@ class CollectionAdd(FormView):
         return initial
 
     def post(self, request, *args, **kwargs):
-
+        raise Exception(1)
         form = CollectionForm(request.POST)
+        raise Exception(1)
 
         if form.is_valid():
 

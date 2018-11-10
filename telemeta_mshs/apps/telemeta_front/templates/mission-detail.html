@@ -20,7 +20,7 @@
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
     {% trans "Mission" %}
     {% if mission %}
-     : {{mission.fonds.code}}_{{ mission.code }} - {{  mission.title}}
+     : {{mission.fonds.code|upper}}_{{ mission.code }} - {{  mission.title}}
     {% endif %}
   </h1>
 {% endblock %}
@@ -50,88 +50,89 @@
    </li>
 </ul>
 
-<div class="tab-pane fade in active" id="tab_general">
-  <div class="container_line">
-      <span class="container_data">
-        <span class="libelle"> {{form.fonds.label|safe}}</span>
-      <span class="donnee">
-        <a href="{% url "fond-detail" id=mission.fonds.id %}">
-          {{mission.fonds.title|safe}}
-        </a>
-      </span>
-    </span>
-    {% field_data form.code_partner.label|safe mission.code_partner|safe %}
-    {% field_data form.code.label mission.fonds.code|add:'_'|add:mission.code|upper|safe %}
-    {% field_data form.title.label|safe mission.title|safe %}
-    {% field_data form.public_access.label|safe mission.public_access|safe %}
-  </div>
-
-  <div class="container_line">
-    {% field_data form.descriptions.label|safe mission.descriptions|markdown|safe %}
-  </div>
-
-  <div class="block-grey">
-    <h2>{% trans "Période" %}</h2>
-    {% trans "Années d'enregistrement" %}
+<div class="tab-content">
+  <div class="tab-pane fade in active" id="tab_general">
     <div class="container_line">
+        <span class="container_data">
+          <span class="libelle"> {{form.fonds.label|safe}}</span>
+        <span class="donnee">
+          <a href="{% url "fond-detail" id=mission.fonds.id %}">
+            {{mission.fonds.title|safe}}
+          </a>
+        </span>
+      </span>
+      {% field_data form.code_partner.label|safe mission.code_partner|safe %}
+      {% field_data form.code.label mission.fonds.code|add:'_'|add:mission.code|upper|safe %}
+      {% field_data form.title.label|safe mission.title|safe %}
+      {% field_data form.public_access.label|safe mission.public_access|safe %}
+    </div>
+
+    <div class="container_line">
+      {% field_data form.descriptions.label|safe mission.descriptions|markdown|safe %}
+    </div>
+
+    <div class="block-grey">
+      <h2>{% trans "Période" %}</h2>
+      {% trans "Années d'enregistrement" %}
+      <div class="container_line">
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Depuis' %}</span>
+          <span class="donnee"></span>
+        </span>
+        <span class="container_data">
+          <span class="libelle"> {% trans "Jusqu\'à" %}</span>
+          <span class="donnee"></span>
+        </span>
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
+          <span class="donnee"></span>
+        </span>
+      </div>
+    </div>
+
+    <div class="block-grey">
+      <h2>{% trans "Personnes" %}</h2>
       <span class="container_data">
-        <span class="libelle"> {% trans 'Depuis' %}</span>
+        <span class="libelle"> {% trans 'Collecteurs' %}</span>
         <span class="donnee"></span>
       </span>
       <span class="container_data">
-        <span class="libelle"> {% trans "Jusqu\'à" %}</span>
-        <span class="donnee"></span>
-      </span>
-      <span class="container_data">
-        <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
+        <span class="libelle"> {% trans 'Informateurs' %}</span>
         <span class="donnee"></span>
       </span>
     </div>
+
   </div>
 
-  <div class="block-grey">
-    <h2>{% trans "Personnes" %}</h2>
-    <span class="container_data">
-      <span class="libelle"> {% trans 'Collecteurs' %}</span>
-      <span class="donnee"></span>
-    </span>
-    <span class="container_data">
-      <span class="libelle"> {% trans 'Informateurs' %}</span>
-      <span class="donnee"></span>
-    </span>
-  </div>
-</div>
-
-  <div class="tab-pane" id="tab_collection">
-    {% if collections|length > 0 %}
-      <!-- Table to display the collections --->
-      <table class="listing">
-      <tr>
-          <th class="highlight">{% trans "cote" %}</th>
-          <th>{% trans "Nom" %}</th>
-          <th>{% trans "Description" %}</th>
-      </tr>
-      {% for collection in collections %}
-      <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-          <td class="highlight">
-              <a href="/collection/{{collection.id }}/">
-              {{collection.mission.fonds.code|upper}}_{{collection.mission.code|upper}}_{{ collection.code|upper }}</a>
-          </td>
-          <td>{{ collection.title|safe }}</td>
-          <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+    <div class="tab-pane fade in" id="tab_collection">
+      {% if collections|length > 0 %}
+        <!-- Table to display the collections --->
+        <table class="listing">
+        <tr>
+            <th class="highlight">{% trans "cote" %}</th>
+            <th>{% trans "Nom" %}</th>
+            <th>{% trans "Description" %}</th>
         </tr>
-        {% endfor %}
-      </table>
-    {% else %}
-      <div class="block-grey">
-      {% trans "Cette mission ne possède pas d'enquête."%}
+        {% for collection in collections %}
+        <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+            <td class="highlight">
+                <a href="/collection/{{collection.id }}/">
+                {{collection.mission.fonds.code|upper}}_{{collection.mission.code|upper}}_{{ collection.code|upper }}</a>
+            </td>
+            <td>{{ collection.title|safe }}</td>
+            <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+          </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <div class="block-grey">
+        {% trans "Cette mission ne possède pas d'enquête."%}
+        </div>
+      {% endif %}
       </div>
-    {% endif %}
-
   </div>
-</div>
 
 {% else %}
-  <p>{% trans "Ce mission n'existe pas." %}</p>
+  <p>{% trans "Cette mission n'existe pas." %}</p>
 {% endif %}
 {% endblock %}
