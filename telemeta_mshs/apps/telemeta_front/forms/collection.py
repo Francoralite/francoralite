@@ -13,15 +13,7 @@ from .core import Core
 class CollectionForm(forms.Form):
     title = forms.CharField(label=_(u'Titre'), max_length=255, required=True)
     alt_title = forms.CharField(
-        label=_(u'Titre original'), max_length=255, required=True)
-    code = forms.CharField(label=_(u'Cote de l\'enquête'),
-                           widget=forms.TextInput(
-                               attrs={
-                                    'data-mask': '9999',
-                                    'style': 'text-transform:uppercase;'
-                                }
-                           ),
-                           max_length=16, required=True)
+        label=_(u'Titre original'), max_length=255, required=False)
     record_from_year = forms.DateField(
         label=_(u'Date d\'enregistrement (depuis)'),
         required=False,
@@ -52,14 +44,44 @@ class CollectionForm(forms.Form):
                  'style': 'text-transform:uppercase;'
              }
         ), required=False)
+    location_details = forms.CharField(
+        label=_(u'Précisions sur le lieu'),
+        widget=forms.Textarea, required=False)
+    cultural_area = forms.CharField(
+        label=_(u'Aire culturelle'), required=False)
+    language = forms.CharField(
+        label=_(u'Langue(s)'), required=False)
+    publisher_collection = forms.CharField(
+        label=_(u'Collection éditeur'), required=False)
+    booklet_author = forms.CharField(
+        label=_(u'Auteur de la notice éditée'), required=False)
+    metadata_author = forms.CharField(
+        label=_(u'Rédacteur(s) fiche ou registre'), required=False)
+    code_partner = forms.CharField(
+        label=_('Cote dans l\'institution partenaire'), required=False)
+    code = forms.CharField(label=_(u'Cote de l\'enquête'),
+                           widget=forms.TextInput(
+                               attrs={
+                                   'data-mask': 'aaaa_aaa_9999_9999',
+                                   'style': 'text-transform:uppercase;'
+                                   }
+                               ),
+                           max_length=30, required=True)
+    booklet_description = forms.CharField(
+        label=_(u'Documentation associée'),
+        widget=forms.Textarea, required=False)
+    physical_items_num = forms.IntegerField(
+        label=_(u'Nombre de composants (support/pièce)'), required=False)
+    auto_period_access = forms.BooleanField(
+        label=_(u'Accès automatique après la date glissante'), required=False)
     comment = forms.CharField(
         label=_(u'Commentaires'),
         widget=forms.Textarea, required=False)
 
-    code_partner = forms.CharField(
-        label=_('Cote dans l\'institution partenaire'), required=False)
-    descriptions = forms.CharField(label=_(u'Description'),
-                                   widget=forms.Textarea, required=True)
+    descriptions = forms.CharField(label=_(u'Descriptions'),
+                                   widget=forms.Textarea, required=False)
+    description = forms.CharField(label=_(u'Description'),
+                                  widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
@@ -77,8 +99,26 @@ class CollectionForm(forms.Form):
             initial="metadata",
             required=True)
 
+        self.fields['recording_context'] = forms.ChoiceField(
+            label=_(u'Contexte d\'enregistrement'),
+            choices=Core.get_choices(
+                entity="recordingcontext", label_field="value"),
+            required=True)
+
+        self.fields['media_type'] = forms.ChoiceField(
+            label=_(u'Type de média'),
+            choices=Core.get_choices(
+                entity="mediatype", label_field="value"),
+            required=True)
+
         self.fields['mission'] = forms.ChoiceField(
             label=_(u'Mission'),
             choices=Core.get_choices(
                 entity="mission", label_field="title"),
+            required=True)
+
+        self.fields['legal_rights'] = forms.ChoiceField(
+            label=_(u'Droits d\'utilisation'),
+            choices=Core.get_choices(
+                entity="legalrights", label_field="value"),
             required=True)

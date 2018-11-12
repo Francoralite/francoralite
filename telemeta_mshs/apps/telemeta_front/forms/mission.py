@@ -14,15 +14,15 @@ class MissionForm(forms.Form):
     code = forms.CharField(label=_(u'Cote de la mission'),
                            widget=forms.TextInput(
                                attrs={
-                                    'data-mask': '9999',
+                                    'data-mask': 'aaaa_aaa_9999',
                                     'style': 'text-transform:uppercase;'
                                 }
                            ),
-                           max_length=16, required=True)
+                           max_length=30, required=True)
     code_partner = forms.CharField(
         label=_('Cote dans l\'institution partenaire'), required=False)
     descriptions = forms.CharField(label=_(u'Description'),
-                                   widget=forms.Textarea, required=True)
+                                   widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         super(MissionForm, self).__init__(*args, **kwargs)

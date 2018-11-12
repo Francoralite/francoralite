@@ -7,6 +7,7 @@
 
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
+from rest_framework import status
 import requests
 from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
@@ -21,9 +22,17 @@ class CollectionAdd(FormView):
     def get_initial(self):
         initial = super(CollectionAdd, self).get_initial()
         initial['mission'] = self.kwargs['id_mission']
+        # Obtain code of the mission
+        response = requests.get(
+            FRONT_HOST_URL + '/api/mission/' + self.kwargs['id_mission'])
+        if response.status_code == status.HTTP_200_OK:
+            initial['code'] = response.json()['code']
         return initial
 
     def post(self, request, *args, **kwargs):
+        id_institution = kwargs['id_institution']
+        id_fond = kwargs['id_fond']
+        id_mission = kwargs['id_mission']
 
         form = CollectionForm(request.POST)
 
@@ -37,6 +46,10 @@ class CollectionAdd(FormView):
                 return HttpResponseRedirect('/collection/')
 
             except RequestException:
-                return HttpResponseRedirect('/collection/add')
+                return HttpResponseRedirect(
+                    '/institution/' + id_institution + '/fond/'
+                    + id_fond + '/mission/' + id_mission + '/collection/add')
 
-        return HttpResponseRedirect('/collection/add')
+        return HttpResponseRedirect(
+            '/institution/' + id_institution + '/fond/'
+            + id_fond + '/mission/' + id_mission + '/collection/add')

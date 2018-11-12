@@ -45,7 +45,7 @@
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
           <a href="/mission/{{mission.id }}/">
-            {{mission.fonds.code|upper}}_{{ mission.code|upper }}</a>
+            {{ mission.code|upper }}</a>
       </td>
       <td>{{ mission.title|safe }}</td>
       <td>

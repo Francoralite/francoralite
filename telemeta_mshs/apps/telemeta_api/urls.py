@@ -17,12 +17,22 @@ from .views import (
     language,
     media_item,
     ext_media_item,
+    mediatype,
+    legal_rights,
+    recording_context
     )
 
 router = routers.SimpleRouter()
 router.register(r'institution',
                 institution.InstitutionViewSet, base_name='institution')
 router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
+router.register(r'mediatype',
+                mediatype.MediaTypeViewSet, base_name='mediatype')
+router.register(r'legalrights',
+                legal_rights.LegalRightsViewSet, base_name='legal_rights')
+router.register(r'recordingcontext',
+                recording_context.RecordingContextViewSet,
+                base_name='recordingcontext')
 router.register(r'authority',
                 authority.AuthorityViewSet, base_name='authority')
 router.register(r'collection',

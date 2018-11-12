@@ -5,6 +5,10 @@ Manage these import to have models discoverables from Django makemigrations
 from .authority import Authority
 from .coupe import Coupe
 from .mediatype import MediaType
+from .legal_rights import LegalRights
+from .metadata_author import MetadataAuthor
+from .publisher import Publisher
+from .recording_context import RecordingContext
 from .ext_media_item import ExtMediaItem
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
