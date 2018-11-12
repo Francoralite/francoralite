@@ -13,7 +13,7 @@ from .core import Core
 class CollectionForm(forms.Form):
     title = forms.CharField(label=_(u'Titre'), max_length=255, required=True)
     alt_title = forms.CharField(
-        label=_(u'Titre original'), max_length=255, required=True)
+        label=_(u'Titre original'), max_length=255, required=False)
     record_from_year = forms.DateField(
         label=_(u'Date d\'enregistrement (depuis)'),
         required=False,
@@ -62,11 +62,11 @@ class CollectionForm(forms.Form):
     code = forms.CharField(label=_(u'Cote de l\'enquête'),
                            widget=forms.TextInput(
                                attrs={
-                                   'data-mask': '9999',
+                                   'data-mask': 'aaaa_aaa_9999_9999',
                                    'style': 'text-transform:uppercase;'
                                    }
                                ),
-                           max_length=16, required=True)
+                           max_length=30, required=True)
     booklet_description = forms.CharField(
         label=_(u'Documentation associée'),
         widget=forms.Textarea, required=False)
@@ -78,8 +78,10 @@ class CollectionForm(forms.Form):
         label=_(u'Commentaires'),
         widget=forms.Textarea, required=False)
 
-    descriptions = forms.CharField(label=_(u'Description'),
-                                   widget=forms.Textarea, required=True)
+    descriptions = forms.CharField(label=_(u'Descriptions'),
+                                   widget=forms.Textarea, required=False)
+    description = forms.CharField(label=_(u'Description'),
+                                  widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
@@ -106,7 +108,7 @@ class CollectionForm(forms.Form):
         self.fields['media_type'] = forms.ChoiceField(
             label=_(u'Type de média'),
             choices=Core.get_choices(
-                entity="media_type", label_field="value"),
+                entity="mediatype", label_field="value"),
             required=True)
 
         self.fields['mission'] = forms.ChoiceField(

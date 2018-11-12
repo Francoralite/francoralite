@@ -49,6 +49,7 @@
     <form action="{{request.path}}" method="POST">
     {% endif %}
       {% csrf_token %}
+
       <div class="container_line">
         {% bootstrap_field form.mission layout='vertical' %}
         {% bootstrap_field form.title layout='vertical' %}
@@ -97,6 +98,7 @@
       </div>
 
       {% bootstrap_field form.descriptions layout='vertical' %}
+      {% bootstrap_field form.description layout='vertical' %}
       <div class="block-grey">
         <h2>{% trans "Enregistrement" %}</h2>
         <div class="container_line">
@@ -159,10 +161,9 @@
       </div>
       {% bootstrap_field form.physical_items_num layout='vertical' %}
       {% bootstrap_field form.auto_period_access layout='vertical' %}
+      {% bootstrap_field form.media_type layout='vertical' %}
       {% bootstrap_field form.legal_rights layout='vertical' %}
       {% bootstrap_field form.public_access layout='vertical' %}
-
-
 
       <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>

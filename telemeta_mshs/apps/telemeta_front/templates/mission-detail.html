@@ -20,7 +20,7 @@
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
     {% trans "Mission" %}
     {% if mission %}
-     : {{mission.fonds.code|upper}}_{{ mission.code }} - {{  mission.title}}
+     : {{ mission.code|upper }} - {{  mission.title}}
     {% endif %}
   </h1>
 {% endblock %}
@@ -62,7 +62,7 @@
         </span>
       </span>
       {% field_data form.code_partner.label|safe mission.code_partner|safe %}
-      {% field_data form.code.label mission.fonds.code|add:'_'|add:mission.code|upper|safe %}
+      {% field_data form.code.label mission.code|upper|safe %}
       {% field_data form.title.label|safe mission.title|safe %}
       {% field_data form.public_access.label|safe mission.public_access|safe %}
     </div>
