@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 
@@ -7,21 +8,6 @@
 
 {% block modules %}
 
-<div class="btn-module">
- <center>
-  <button type="button" id="btn-black" class="btn btn-default" onclick="location.href='{%url "telemeta-fullaccess-items"%}'">
-    <span class="glyphicon glyphicon-play" aria-hidden="true"></span> "Aller vers les sons en accès libre"</a></button>
- </center>
-</div>
-
-<div class="module">
-    <h3><img src="{{ STATIC_URL }}telemeta/images/module_world.png" alt="world" style="vertical-align:middle" />
-    Carte</h3>
-    <div style="background-color: white;" align="center">
-    <a class="image-link" href="{% url "telemeta-geo-continents" %}">
-    <img class="map-thumbnail" src="{{ STATIC_URL }}telemeta/images/world2.png" alt="Ouvreie le navigateur cartographique"/></a>
-    </div>
-</div>
 
 <!--
 {% with "Last changes" as title %}
@@ -31,7 +17,35 @@
 
 <div id="module" class="module">
     <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" style="vertical-align:middle" />
-    Partenaires</h3><br />
+    {% trans "Partenaires scientifiques" %}</h3><br />
+    <div style="background-color: white; padding: 1ex;" align="center">
+    <a href="https://www.umoncton.ca/" target="_blank">
+      <img class="logo"  width="40%"
+      src="{{ STATIC_URL }}telemeta_front/images/logo_moncton.jpg"
+      alt="Université de Moncton"></a>
+    <a href="https://ustboniface.ca/" target="_blank">
+      <img class="logo"  width="40%"
+      src="{{ STATIC_URL }}telemeta_front/images/logo_saint_boniface.jpg"
+      alt="Université de Saint-Boniface"></a>
+    <a href="https://laurentienne.ca/" target="_blank">
+      <img class="logo"  width="40%"
+      src="{{ STATIC_URL }}telemeta_front/images/logo_laurentienne.jpg"
+      alt="Université Laurentienne"></a>&nbsp;&nbsp;&nbsp;
+    <a href="https://www.usainteanne.ca" target="_blank">
+      <img class="logo"  width="40%"
+      src="{{ STATIC_URL }}telemeta_front/images/logo_sainte_anne.png"
+      alt="Université de Sainte-Anne"></a>&nbsp;&nbsp;&nbsp;
+    <a href="https://louisiana.edu/" target="_blank">
+      <img class="logo"  width="40%"
+      src="{{ STATIC_URL }}telemeta_front/images/logo_louisiana_lafayette.jpg"
+      alt="Université de Lafayette"></a>&nbsp;&nbsp;&nbsp;
+
+    </div>
+</div>
+
+<div id="module" class="module">
+    <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" style="vertical-align:middle" />
+    {% trans "Partenaires techniques" %}</h3><br />
     <div style="background-color: white; padding: 1ex;" align="center">
     <a href="http://www.cnrs.fr" target="_blank"><img class="logo" src="{{ STATIC_URL }}telemeta/images/logo-CNRS.png" alt="CNRS"></a>&nbsp;&nbsp;&nbsp;
     <a href="http://www.culturecommunication.gouv.fr" target="_blank"><img class="logo" src="{{ STATIC_URL }}telemeta/images/logo_mcc_2.png" alt="MCC"></a>&nbsp;&nbsp;
@@ -44,12 +58,19 @@
     </div>
 </div>
 
+<div id="module" class="module">
+    <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" style="vertical-align:middle" />
+    {% trans "Partenaires financiers" %}</h3><br />
+    <div style="background-color: white; padding: 1ex;" align="center">
+    </div>
+</div>
+
 {% endblock %}
 </div>
 
 <div class="home-description">
 
-  <h1 class="title">Telemeta : système de gestion collaborative d'ensembles multi-media</h1>
+  <h1 class="title">Francoralité : Plateforme numérique de gestion collaborative d’ensemble multi-média</h1>
 
 
   <h2 class="section">Plateforme</h2>
@@ -77,9 +98,7 @@
   <li>Lecteur audio évolué et personnalisable, avec saisie d'annotations</li>
 </ul>
 
-  <p>
-    Télémeta est développé depuis 2006, intégralement conçu avec des éléments <b>100% open source et libre</b>. Il est principalement écrit en Python HTML5 et Javascript.
-  </p>
+
 
 <h2 class="section">Organisation du catalogue</h2>
 
