@@ -117,7 +117,7 @@
         <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
             <td class="highlight">
                 <a href="/collection/{{collection.id }}/">
-                {{collection.mission.fonds.code|upper}}_{{collection.mission.code|upper}}_{{ collection.code|upper }}</a>
+                {{ collection.code|upper }}</a>
             </td>
             <td>{{ collection.title|safe }}</td>
             <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>

@@ -53,7 +53,7 @@ class CollectionEdit(FormView):
         if form.is_valid():
             try:
                 response = requests.patch(
-                    FRONT_HOST_URL + '/api/extcollection/' + str(id) + '/',
+                    FRONT_HOST_URL + '/api/collection/' + str(id) + '/',
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
