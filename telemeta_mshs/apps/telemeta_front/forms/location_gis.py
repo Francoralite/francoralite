@@ -9,8 +9,9 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class LocationForm(forms.Form):
-    code = forms.CharField(label=_(u'Code'), max_length=255, required=True)
-    name = forms.CharField(label=_(u'Nom'), max_length=255, required=True)
+    code = forms.CharField(label=_(u'Nom'), max_length=255, required=True)
+    name = forms.CharField(label=_(u'Localisation'),
+                           max_length=255, required=True)
     notes = forms.CharField(label=_(u'Notes'),
                             widget=forms.Textarea,
                             required=False)

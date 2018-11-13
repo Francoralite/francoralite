@@ -53,6 +53,19 @@
   <form action="{%url "location_gis-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
+    <div>
+      <div class="control-label">
+        <label class="" for="id_name">{% trans "Carte" %}:</label>
+      </div>
+      {% leaflet_map "mapItems" callback="window.map_init_basic" %}
+    </div>
+    <div class="block-grey">
+      <h2>{% trans "Coordonnées" %}</h2>
+      <div class="container_line">
+        {% bootstrap_field form.latitude layout='vertical' %}
+        {% bootstrap_field form.longitude layout='vertical' %}
+      </div>
+    </div>
     <div class="container_line">
         {% bootstrap_field form.code layout='vertical' %}
         {% bootstrap_field form.name layout='vertical' %}
@@ -61,20 +74,7 @@
       {% bootstrap_field form.notes layout='vertical' %}
     </div>
 
-     <div>
-            <div class="control-label">
-                <label class="" for="id_name">Localisation:</label>
-            </div>
-              {% leaflet_map "mapItems" callback="window.map_init_basic" %}
-    </div>
 
-    <div class="block-grey">
-      <h2>{% trans "Coordonnées" %}</h2>
-      <div class="container_line">
-        {% bootstrap_field form.latitude layout='vertical' %}
-        {% bootstrap_field form.longitude layout='vertical' %}
-      </div>
-    </div>
 
     {% if id %}
     {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
