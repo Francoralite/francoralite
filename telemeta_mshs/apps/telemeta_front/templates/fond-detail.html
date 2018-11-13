@@ -107,8 +107,9 @@
       {% field_data form.acquisition_mode.label|safe fond.acquisition_mode.value|safe %}
       {% field_data form.conservation_site.label|safe fond.conservation_site|safe %}
     </div>
-
+    {% if fond.comment %}
     {% field_data form.comment.label|safe fond.comment|markdown|safe %}
+    {% endif %}
   </div>
 
   <div class="tab-pane" id="tab_mission">
@@ -124,7 +125,7 @@
       <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
           <td class="highlight">
               <a href="/mission/{{mission.id }}/">
-                {{mission.fonds.code|upper}}_{{ mission.code|upper }}</a>
+                {{ mission.code|upper }}</a>
           </td>
           <td>{{ mission.title|safe }}</td>
           <td>{{ mission.descriptions|truncatechars:50|markdown|safe}}          </td>
