@@ -37,7 +37,9 @@ class FondEdit(FormView):
         # Obtain values of the record
         fond = requests.get(
             FRONT_HOST_URL + '/api/fond/' + str(id))
-        form = FondForm(initial=fond.json())
+        data = fond.json()
+        data['institution'] = data['institution']['id']
+        form = FondForm(initial=data)
 
         return render(request,
                       '../templates/fond-add.html',
@@ -55,11 +57,13 @@ class FondEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/fond/edit' +
-                                                str(id) + '/')
+                    return HttpResponseRedirect('/fond/edit/'
+                                                + str(id))
                 return HttpResponseRedirect('/fond/')
 
             except RequestException:
-                return HttpResponseRedirect('/fond/edit')
+                return HttpResponseRedirect('/fond/edit/'
+                                            + str(id))
 
-        return HttpResponseRedirect('/fond/edit')
+        return HttpResponseRedirect('/fond/edit/'
+                                    + str(id))
