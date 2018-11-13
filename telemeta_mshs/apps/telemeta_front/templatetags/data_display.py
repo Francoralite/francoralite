@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django import template
+from django.utils.translation import ugettext_lazy as _
 
 register = template.Library()
 
@@ -51,3 +52,13 @@ def modal_delete():
 @register.filter
 def virgule(self):
     return str(self).replace(",", ".")
+
+
+@register.filter
+def public_access(self):
+    choices = {}
+    choices['none'] = _(u"Aucun")
+    choices['metadata'] = _(u"Meta-données")
+    choices['partial'] = _(u"Partiel")
+    choices['full'] = _(u"Complet")
+    return choices[self]
