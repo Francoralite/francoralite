@@ -18,8 +18,8 @@
                                 <ul>
                                     <li><a href="{% url "fond" %}">Fonds</a></li>
                                     <li><a href="{% url "mission" %}">Missions</a></li>
-                                    <li><a href="{% url "collection" %}">Enquêtes</a></a></li>
-                                    <li><a href="">Items</a></a></li>
+                                    <li><a href="{% url "collection" %}">Enquêtes</a></li>
+                                    <li><a href="">Items</a></li>
                                 </ul>
                             </li>
 
@@ -28,17 +28,43 @@
                                 {% trans "Personnes" %}</a>
                                 <ul>
                                   <li>
-                                    <a href="{% url "location_gis" %}">
-                                      {% trans "Lieux" %}</a>
+                                    <a href="">
+                                      {% trans "Enquêteurs" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="">
+                                      {% trans "Informateurs" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="">
+                                      {% trans "Auteur" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="">
+                                      {% trans "Compositeur" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="">
+                                      {% trans "Editeur" %}</a>
                                   </li>
                                 </ul>
                             </li>
 
+                            <li>
+                              <a href="{% url "location_gis" %}" class="yellow">
+                                {% trans "Lieux" %}</a>
+                                <ul>
+                                  <li>
+                                    <a href="">{% trans "Enquêtes" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="">{% trans "Items" %}</a>
+                                  </li>
+                                </ul>
+                            </li>
                             <li><a href=""
-                                   class="yellow">{% trans "Carte" %}</a></li>
-
-                            <li><a href=""
-                                   class="orange">{% trans "Recherche avancée" %}</a></li>
+                                   class="orange">{% trans "Recherche" %}</a>
+                            </li>
 
                             {% if user.is_authenticated and user.is_staff %}
                                 <li><a href="#vocabulary#" class="red">{% trans "Terminology" %}</a>
