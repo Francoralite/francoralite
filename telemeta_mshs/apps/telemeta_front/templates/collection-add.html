@@ -63,9 +63,14 @@
         multiple
           v-model="collectors"
           label="first_name"
+          :filterable="false"
+          @search="onSearchCollectors"
           :options="optionsCollectors">
           <template slot="option" slot-scope="option">
-            ${ option.first_name } ${ option.last_name }
+            ${ option.first_name } ${ option.last_name } -
+            <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              <i>Fiche...</i></a>
           </template>
           <template slot="selected-option" slot-label="countryName" scope="option">
             <a :href="option.url"
@@ -82,6 +87,8 @@
         multiple
           v-model="informers"
           label="first_name"
+          :filterable="false"
+          @search="onSearchInformers"
           :options="optionsInformers">
           <template slot="option" slot-scope="option">
             ${ option.first_name } ${ option.last_name } -
@@ -118,6 +125,8 @@
             multiple
             v-model="locations"
             label="name"
+            :filterable="false"
+            @search="onSearchLocations"
             :options="optionsLocations">
             <template slot="option" slot-scope="option">
               <b>${ option.code }</b>
@@ -200,26 +209,57 @@
       computed: {
       },
       methods: {
-           getCollectors:  function() {
-               axios.get('/api/authority/?is_collector=true&ordering=first_name+last_name')
-               .then(
-               res => {
-                 for(i = 0; i < res.data.length; i++) {
-                    res.data[i].url= "/authority/"+res.data[i].id;
-                  }
-                   this.optionsCollectors = res.data;
-                });
-            },
-            getInformers:  function() {
-                axios.get('/api/authority/?is_informer=true&ordering=first_name+last_name')
-                .then(
-                res => {
-                  for(i = 0; i < res.data.length; i++) {
-                    res.data[i].url= "/authority/"+res.data[i].id;
-                  }
-                    this.optionsInformers = res.data;
-                 });
-             },
+        onSearchCollectors(search, loading) {
+          loading(true);
+          this.searchCollectors(loading, search, this);
+        },
+        searchCollectors: _.debounce((loading, search, vm)=>
+        {
+          axios.get(
+          `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`
+          ).then(
+          res => {
+            for(i = 0; i < res.data.length; i++) {
+              res.data[i].url= "/authority/"+res.data[i].id;
+            };
+              vm.optionsCollectors = res.data;
+           });
+           loading(false);
+         }),
+         onSearchInformers(search, loading) {
+           loading(true);
+           this.searchInformers(loading, search, this);
+         },
+         searchInformers: _.debounce((loading, search, vm)=>
+         {
+           axios.get(
+           `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`
+           ).then(
+           res => {
+             for(i = 0; i < res.data.length; i++) {
+               res.data[i].url= "/authority/"+res.data[i].id;
+             };
+               vm.optionsInformers = res.data;
+            });
+            loading(false);
+          }),
+          onSearchLocations(search, loading) {
+            loading(true);
+            this.searchLocations(loading, search, this);
+          },
+          searchLocations: _.debounce((loading, search, vm)=>
+          {
+            axios.get(
+            `/api/locationgis/?ordering=code&search=${escape(search)}`
+            ).then(
+            res => {
+              for(i = 0; i < res.data.length; i++) {
+                res.data[i].url= "/location_gis/"+res.data[i].id;
+              };
+                vm.optionsLocations = res.data;
+             });
+             loading(false);
+           }),
              getLocations:  function() {
                  axios.get('/api/locationgis/?ordering=code')
                  .then(
@@ -232,9 +272,8 @@
               },
        },
        mounted: function () {
-            this.getCollectors();
-            this.getInformers();
-            this.getLocations();
+            //this.getCollectors();
+            //this.getLocations();
        }
     })
     </script>
