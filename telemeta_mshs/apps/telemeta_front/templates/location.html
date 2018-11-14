@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
+{% load leaflet_tags %}
 
 {% block javascript %}
   {{ block.super }}
@@ -11,6 +12,16 @@
 
 {% block stylesheets %}
   {{ block.super }}
+  <style>
+    #mapid {
+      height: 500px;
+      width: 100%;
+     }
+     .leaflet-container {
+       justify-content: center;
+     }
+  </style>
+  {% leaflet_css %}
 {% endblock %}
 
 {% block title %}
@@ -37,48 +48,70 @@
 </div>
 {% block content %}
 <div class="fullpage">
-{% if locations|length > 0 %}
-  <!-- Table to display the institutions --->
-  <table class="listing">
-  <tr>
-      <th>{% trans "Nom" %}</th>
-      <th class="highlight">{% trans "Localisation" %}</th>
-      <th>{% trans "Latitude" %}</th>
-      <th>{% trans "Longitude" %}</th>
-      <th></th>
-  </tr>
-  {% for location in locations %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-      <td>{{ location.code }}</td>
-      <td class="highlight">
-          <a href="{{location.id}}">
-            {{ location.name}}</a>
-      </td>
-      <td>{{ location.latitude}}</td>
-      <td>{{ location.longitude}}</td>
-      <td>
-        {% buttons %}
-        <a href="{% url "location_gis-edit" id=location.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-              </button>
-        </a>
-        <button type="button" class="btn btn-default"
-            data-toggle="modal" data-target="#modalDelete"
-            data-name="{{location.code}} - {{location.name}}"
-            data-url="{% url "location_gis-delete" id=location.id %}">
-              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
-        </button>
-        {% endbuttons %}
-      </td>
-  </tr>
-  {% endfor %}
-</table>
+
+
+  {% leaflet_map "mapid" callback="window.map_init_basic"%}
+
+
+  {% leaflet_js %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+  <script type="text/javascript">
+   function map_init_basic (map, options) {
+     bounds = L.bounds(
+            L.point( 50, -85 ),
+            L.point( 30, 0 )
+        );
+        map.setMaxZoom(18);
+        map.setMaxBounds( bounds );
+        map.fitBounds( [ [50, -85], [30, 0] ] );
+        // Add a search control on the map
+        // Type of geocoder to use
+        geocoder = L.Control.Geocoder.nominatim({
+            geocodingQueryParams:{limit:10,},
+            });
+        // Create a search control
+        control = L.Control.geocoder({
+            collapsed:false,
+            placeholder:"Rechercher une localité ...",
+            showResultIcons:true,
+            geocoder: geocoder,
+        })
+        .addTo(map);
+
+        var markers = L.markerClusterGroup( {
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true,
+            removeOutsideVisibleBounds: true
+          } );
+
+        axios.get(
+        `/api/locationgis/?ordering=code`
+        ).then(
+        res => {
+          locs = res.data;
+          for( let loc of locs ) {
+            var marker = L.marker([loc.latitude,loc.longitude]).bindPopup(
+            'Lieu : <a href="/location_gis/'+
+            loc.id+'"><b>'+loc.code+
+            '</b></a><p>'+loc.name+'</p><hr/><i>'+
+            loc.notes+'</i>' );
+            markers.addLayer(marker);
+          }
+          map.addLayer(markers);
+        });
+
+
+      }
+
+  </script>
+
 
 {% modal_delete %}
-
-{% else %}
-    <p>{% trans "Il n'y a pas de lieux" %}</p>
-{% endif %}
 </div>
 {% endblock %}
