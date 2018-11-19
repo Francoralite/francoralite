@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django import forms
+from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from bootstrap_datepicker.widgets import DatePicker
 from .core import Core
@@ -59,14 +60,21 @@ class CollectionForm(forms.Form):
         label=_(u'Rédacteur(s) fiche ou registre'), required=False)
     code_partner = forms.CharField(
         label=_('Cote dans l\'institution partenaire'), required=False)
-    code = forms.CharField(label=_(u'Cote de l\'enquête'),
-                           widget=forms.TextInput(
-                               attrs={
-                                   'data-mask': 'aaaa_aaa_9999_9999',
-                                   'style': 'text-transform:uppercase;'
-                                   }
-                               ),
-                           max_length=30, required=True)
+    code = forms.CharField(
+        label=_(u'Cote de l\'enquête'),
+        widget=forms.TextInput(
+            attrs={
+                'style': 'text-transform:uppercase;'
+                }
+            ),
+        validators=[
+            RegexValidator(
+                regex=r'^[A-Za-z]{4}_[A-Za-z]{3}_[A-Za-z0-9]{4}_[0-9]{4}$',
+                message=_(u'Ce code n\'est pas conforme.'),
+                code='invalide_code'
+                ),
+        ],
+        max_length=30, required=True)
     booklet_description = forms.CharField(
         label=_(u'Documentation associée'),
         widget=forms.Textarea, required=False)
