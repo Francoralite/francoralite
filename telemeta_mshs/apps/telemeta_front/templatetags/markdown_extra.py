@@ -25,7 +25,19 @@ def markdown_editor(component):
       var simplemde = new SimpleMDE({
          element: $("#""" + component + """")[0] ,
          toolbar: ["bold", "italic", "heading", "|",
-          "quote","unordered-list", "ordered-list", "|","preview"],
+         {
+            name: "custom",
+            action: function customFunction(editor){
+            // Add your own code
+                var cm = editor.codemirror;
+                var doc = cm.getDoc();
+                var cursor = doc.getCursor();
+                doc.replaceRange('  \\r\\n', cursor);
+            },
+            className: "fa fa-paragraph",
+            title: "New line/paragraph",
+            },
+          "quote","unordered-list", "ordered-list", "|","preview", "guide"],
        });
     </script>
     """
