@@ -49,6 +49,13 @@ def modal_delete():
     return {}
 
 
+@register.inclusion_tag('inc/buttons-form.html', takes_context=True)
+def buttons_form(context):
+    request = context['request']
+    url_back = request.META['HTTP_REFERER']
+    return {'url_back': url_back}
+
+
 @register.filter
 def virgule(self):
     return str(self).replace(",", ".")

@@ -64,11 +64,7 @@
 
     {% bootstrap_field form.comment layout='vertical' %}
 
-    {% if id %}
-    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
-    {% else %}
-    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
-    {% endif %}
+    {% buttons_form %}
   </form>
 </div>
 
