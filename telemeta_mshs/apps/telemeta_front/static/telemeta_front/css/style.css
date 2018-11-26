@@ -42,3 +42,8 @@
     padding-bottom: 0.2em;
     flex-grow: 2;
 }
+
+.form-group.has-warning .control-label:after {
+    content:"*";
+    color:red;
+}

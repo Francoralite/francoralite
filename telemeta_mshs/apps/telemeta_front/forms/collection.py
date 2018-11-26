@@ -64,16 +64,12 @@ class CollectionForm(forms.Form):
         label=_(u'Cote de l\'enquête'),
         widget=forms.TextInput(
             attrs={
-                'style': 'text-transform:uppercase;'
-                }
-            ),
-        validators=[
-            RegexValidator(
-                regex=r'^[A-Za-z]{4}_[A-Za-z]{3}_[A-Za-z0-9]{4}_[0-9]{4}$',
-                message=_(u'Ce code n\'est pas conforme.'),
-                code='invalide_code'
-                ),
-        ],
+                 'style': 'text-transform:uppercase;',
+                 'placeholder': 'format : aaaa_aaa_9999_999',
+                 'pattern': '^[A-Za-z]{4}_[A-Za-z]{3}_[A-Za-z0-9]{4}_[0-9]{4}$',  # noqa
+                 'title': _(u'Cote de l\'enquête ; format : aaaa_aaa_9999_999'),  # noqa
+             }
+        ),
         max_length=30, required=True)
     booklet_description = forms.CharField(
         label=_(u'Documentation associée'),

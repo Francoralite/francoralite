@@ -15,6 +15,7 @@ class FondForm(forms.Form):
                            widget=forms.TextInput(
                                attrs={
                                     'data-mask': 'aaaa_aaa',
+                                    'pattern': '^[A-Za-z]{4}_[A-Za-z]{3}$',
                                     'style': 'text-transform:uppercase;'
                                 }
                            ),

@@ -14,8 +14,10 @@ class MissionForm(forms.Form):
     code = forms.CharField(label=_(u'Cote de la mission'),
                            widget=forms.TextInput(
                                attrs={
-                                    'data-mask': 'aaaa_aaa_9999',
-                                    'style': 'text-transform:uppercase;'
+                                    'placeholder': 'format : aaaa_aaa_9999',
+                                    'pattern': '^[A-Za-z]{4}_[A-Za-z]{3}_[A-Za-z0-9]{4}$',  # noqa
+                                    'style': 'text-transform:uppercase;',
+                                    'title': _(u'Cote de la mission ; format : aaaa_aaa_9999')  # noqa
                                 }
                            ),
                            max_length=30, required=True)
