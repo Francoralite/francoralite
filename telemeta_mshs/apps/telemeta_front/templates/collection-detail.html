@@ -28,7 +28,7 @@
 {% block title_buttons %}
   <a href="{% url "collection-edit" id=id %}">
   <button type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </button>
   </a>
 {% endblock %}
@@ -78,7 +78,15 @@
   <h2>{% trans "Personnes" %}</h2>
   <span class="container_data">
     <span class="libelle"> {% trans 'Collecteurs' %}</span>
-    <span class="donnee"></span>
+    <span class="donnee">
+      {% for collector in collectors %}
+        {% if not forloop.first %} | {% endif %}
+        <a href="{% url "personne-detail" id=collector.collector.id %}"
+        onclick="window.open(this.href); return false;">
+          {{collector.collector.first_name}} {{collector.collector.last_name}}
+          {% endfor %}
+        </a>
+      </span>
   </span>
   <span class="container_data">
     <span class="libelle"> {% trans 'Informateurs' %}</span>
