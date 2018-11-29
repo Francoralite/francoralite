@@ -80,8 +80,6 @@
           </template>
       </v-select>
       <input name="collectors" type="hidden" :value="JSON.stringify(collectors)" />
-      </div>
-
       <!-- Informers -->
       <div class="container_data">
         <label class="control_label">{% trans "Informateurs" %}</label>
@@ -268,9 +266,28 @@
                    this.optionsLocations = res.data;
                   });
               },
+          getCollectors: function(){
+            // Get the collectors
+            axios.get(`/api/collection/${escape({{id}})}/collectors`)
+            .then(
+            res => {
+              for(i = 0; i < res.data.length; i++) {
+                res.data[i].collector.url="/authority/"+res.data[i].collector.id;
+              }
+              var listCollectors = [];
+              for( var item in res.data) {
+                // Fill the list of collectors
+                listCollectors.push(res.data[item].collector)
+              }
+              // Use the list of collectors to feeds the collectors select
+              this.collectors = listCollectors;
+             });
+          },
        },
        mounted: function () {
-            //this.getCollectors();
+         {% if id %}
+           this.getCollectors();
+         {% endif %}
             //this.getLocations();
        }
     })

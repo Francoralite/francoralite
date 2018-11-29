@@ -17,7 +17,7 @@ from django.shortcuts import render
 class CollectionEdit(FormView):
     template_name = "../templates/collection-add.html"
     form_class = CollectionForm
-    success_url = '/extcollection/'
+    success_url = '/collection/'
 
     def get_context_data(self, **kwargs):
         context = super(CollectionEdit, self).get_context_data(**kwargs)
@@ -28,6 +28,13 @@ class CollectionEdit(FormView):
             FRONT_HOST_URL + '/api/extcollection/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['collection'] = response.json
+        # Obtain values of the collectors (authority related table)
+        response_collectors = requests.get(
+            FRONT_HOST_URL + '/api/collection/' + str(id)
+            + '/collectors/')
+        if response_collectors.status_code == status.HTTP_200_OK:
+            # values of the Collectors
+            context['collectors'] = response_collectors.json
         return context
 
     def get(self, request, *args, **kwargs):
@@ -39,11 +46,19 @@ class CollectionEdit(FormView):
             FRONT_HOST_URL + '/api/collection/' + str(id))
         data = collection.json()
         data['mission'] = data['mission']['id']
+        # Obtain values of the collectors (authority related table)
+        response_collectors = requests.get(
+            FRONT_HOST_URL + '/api/collection/' + str(id)
+            + '/collectors/')
+        if response_collectors.status_code == status.HTTP_200_OK:
+            # values of the Collectors
+            collectors = response_collectors.json()
+            data['collectors'] = collectors
         form = CollectionForm(initial=data)
 
         return render(request,
                       '../templates/collection-add.html',
-                      {'form': form, 'id': id})
+                      {'form': form, 'id': id, 'collectors': collectors})
 
     def post(self, request, *args, **kwargs):
 
