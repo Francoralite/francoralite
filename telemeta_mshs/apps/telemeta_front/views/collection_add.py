@@ -13,6 +13,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.collection import CollectionForm
 import json
+from .collection_related import create_related_records
 
 
 class CollectionAdd(FormView):
@@ -46,17 +47,18 @@ class CollectionAdd(FormView):
                 )
                 if response.status_code == status.HTTP_201_CREATED:
                     collection = response.json()
+
+                    # Collectors
                     collectors = json.loads(request.POST['collectors'])
-                    for collector in collectors:
-                        address = FRONT_HOST_URL + '/api/collection/' + str(collection["id"]) + '/collectors/'
-                        data = {
-                            "collection": str(collection["id"]),
-                            "collector": str(collector["id"])}
-                        response_collectors = requests.post(
-                            address,
-                            data=data)
-                        if response_collectors.status_code != status.HTTP_201_CREATED:
-                            raise Exception(response_collectors.status_code)
+                    url_collectors = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/collectors/'
+
+                    # Create collectors
+                    create_related_records(
+                        collectors, url_collectors,
+                        "collector", collection["id"])
+
                 return HttpResponseRedirect('/collection/')
 
             except RequestException:

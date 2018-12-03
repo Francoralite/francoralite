@@ -12,8 +12,6 @@ from .asymetric_related_field import AsymetricRelatedField
 
 from ..models.collectioncollectors import (
     CollectionCollectors as CollectionCollectorsModel)
-from ..models.collection import Collection as CollectionModel
-from ..models.authority import Authority as AuthorityModel
 
 
 class CollectionCollectorsSerializer(serializers.ModelSerializer):

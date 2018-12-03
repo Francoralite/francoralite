@@ -60,48 +60,51 @@
       <!-- Collectors -->
       <div class="container_data">
         <label class="control_label">{% trans "Enquêteurs" %}</label>
-      <v-select
-        multiple
-          v-model="collectors"
-          label="first_name"
-          :filterable="false"
-          @search="onSearchCollectors"
-          :options="optionsCollectors">
-          <template slot="option" slot-scope="option">
-            ${ option.first_name } ${ option.last_name } -
-            <a :href="option.url"
+        <v-select
+          multiple
+            v-model="collectors"
+            label="first_name"
+            :filterable="false"
+            @search="onSearchCollectors"
+            :options="optionsCollectors">
+            <template slot="option" slot-scope="option">
+              ${ option.first_name } ${ option.last_name } -
+              <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-label="countryName" scope="option">
+              <a :href="option.url"
               onclick="window.open(this.href); return false;">
-              <i>Fiche...</i></a>
-          </template>
-          <template slot="selected-option" slot-label="countryName" scope="option">
-            <a :href="option.url"
-            onclick="window.open(this.href); return false;">
-            ${ option.first_name } ${ option.last_name }</a>
-          </template>
-      </v-select>
+              ${ option.first_name } ${ option.last_name }</a>
+            </template>
+        </v-select>
+      </div>
       <input name="collectors" type="hidden" :value="JSON.stringify(collectors)" />
+
+
       <!-- Informers -->
       <div class="container_data">
         <label class="control_label">{% trans "Informateurs" %}</label>
-      <v-select
-        multiple
-          v-model="informers"
-          label="first_name"
-          :filterable="false"
-          @search="onSearchInformers"
-          :options="optionsInformers">
-          <template slot="option" slot-scope="option">
-            ${ option.first_name } ${ option.last_name } -
-            <a :href="option.url"
+        <v-select
+          multiple
+            v-model="informers"
+            label="first_name"
+            :filterable="false"
+            @search="onSearchInformers"
+            :options="optionsInformers">
+            <template slot="option" slot-scope="option">
+              ${ option.first_name } ${ option.last_name } -
+              <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
               onclick="window.open(this.href); return false;">
-              <i>Fiche...</i></a>
-          </template>
-          <template slot="selected-option" slot-scope="option">
-            <a :href="option.url"
-            onclick="window.open(this.href); return false;">
-            ${ option.first_name } ${ option.last_name }</a>
-          </template>
-      </v-select>
+              ${ option.first_name } ${ option.last_name }</a>
+            </template>
+        </v-select>
       </div>
 
       {% bootstrap_field form.descriptions layout='vertical' %}

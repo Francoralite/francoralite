@@ -12,6 +12,8 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.collection import CollectionForm
 from django.shortcuts import render
+import json
+from .collection_related import compare_related
 
 
 class CollectionEdit(FormView):
@@ -28,13 +30,7 @@ class CollectionEdit(FormView):
             FRONT_HOST_URL + '/api/extcollection/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['collection'] = response.json
-        # Obtain values of the collectors (authority related table)
-        response_collectors = requests.get(
-            FRONT_HOST_URL + '/api/collection/' + str(id)
-            + '/collectors/')
-        if response_collectors.status_code == status.HTTP_200_OK:
-            # values of the Collectors
-            context['collectors'] = response_collectors.json
+
         return context
 
     def get(self, request, *args, **kwargs):
@@ -46,19 +42,12 @@ class CollectionEdit(FormView):
             FRONT_HOST_URL + '/api/collection/' + str(id))
         data = collection.json()
         data['mission'] = data['mission']['id']
-        # Obtain values of the collectors (authority related table)
-        response_collectors = requests.get(
-            FRONT_HOST_URL + '/api/collection/' + str(id)
-            + '/collectors/')
-        if response_collectors.status_code == status.HTTP_200_OK:
-            # values of the Collectors
-            collectors = response_collectors.json()
-            data['collectors'] = collectors
+
         form = CollectionForm(initial=data)
 
         return render(request,
                       '../templates/collection-add.html',
-                      {'form': form, 'id': id, 'collectors': collectors})
+                      {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
 
@@ -72,8 +61,20 @@ class CollectionEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
+
                     return HttpResponseRedirect(
                         '/collection/edit/' + str(id))
+                else:
+                    collection = response.json()
+
+                    # Collectors
+                    collectors = json.loads(request.POST['collectors'])
+                    url_collectors = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/collectors/'
+                    compare_related(
+                        collectors, url_collectors, "collector", id)
+
                 return HttpResponseRedirect('/collection/')
 
             except RequestException:
