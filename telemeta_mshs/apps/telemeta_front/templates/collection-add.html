@@ -106,6 +106,7 @@
             </template>
         </v-select>
       </div>
+      <input name="informers" type="hidden" :value="JSON.stringify(informers)" />
 
       {% bootstrap_field form.descriptions layout='vertical' %}
       {% bootstrap_field form.description layout='vertical' %}
@@ -286,10 +287,28 @@
               this.collectors = listCollectors;
              });
           },
+          getInformers: function(){
+            // Get the informers
+            axios.get(`/api/collection/${escape({{id}})}/informer`)
+            .then(
+            res => {
+              for(i = 0; i < res.data.length; i++) {
+                res.data[i].informer.url="/authority/"+res.data[i].informer.id;
+              }
+              var listInformers = [];
+              for( var item in res.data) {
+                // Fill the list of informers
+                listInformers.push(res.data[item].informer)
+              }
+              // Use the list of informers to feeds the informers select
+              this.informers = listInformers;
+             });
+          },
        },
        mounted: function () {
          {% if id %}
            this.getCollectors();
+           this.getInformers();
          {% endif %}
             //this.getLocations();
        }

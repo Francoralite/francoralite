@@ -84,13 +84,21 @@
         <a href="{% url "personne-detail" id=collector.collector.id %}"
         onclick="window.open(this.href); return false;">
           {{collector.collector.first_name}} {{collector.collector.last_name}}
-          {% endfor %}
         </a>
+      {% endfor %}
       </span>
   </span>
   <span class="container_data">
     <span class="libelle"> {% trans 'Informateurs' %}</span>
-    <span class="donnee"></span>
+    <span class="donnee">
+      {% for informer in informers %}
+        {% if not forloop.first %} | {% endif %}
+        <a href="{% url "personne-detail" id=informer.informer.id %}"
+        onclick="window.open(this.href); return false;">
+          {{informer.informer.first_name}} {{informer.informer.last_name}}
+        </a>
+      {% endfor %}
+    </span>
   </span>
 </div>
 

@@ -59,6 +59,17 @@ class CollectionAdd(FormView):
                         collectors, url_collectors,
                         "collector", collection["id"])
 
+                    # Informers
+                    informers = json.loads(request.POST['informers'])
+                    url_informers = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/informer/'
+
+                    # Create informers
+                    create_related_records(
+                        informers, url_informers,
+                        "informer", collection["id"])
+
                 return HttpResponseRedirect('/collection/')
 
             except RequestException:

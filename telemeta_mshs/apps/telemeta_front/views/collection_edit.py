@@ -75,6 +75,14 @@ class CollectionEdit(FormView):
                     compare_related(
                         collectors, url_collectors, "collector", id)
 
+                    # Informers
+                    informers = json.loads(request.POST['informers'])
+                    url_informers = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/informer/'
+                    compare_related(
+                        informers, url_informers, "informer", id)
+
                 return HttpResponseRedirect('/collection/')
 
             except RequestException:
