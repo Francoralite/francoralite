@@ -145,6 +145,7 @@
             </template>
           </v-select>
         </div>
+        <input name="locations" type="hidden" :value="JSON.stringify(locations)" />
         <div class="container_line">
           {% bootstrap_field form.location_details layout='vertical' %}
           {% bootstrap_field form.cultural_area layout='vertical' %}
@@ -209,108 +210,108 @@
       computed: {
       },
       methods: {
+        searchRelated:
+        _.debounce((loading, search, vm, url, options, entity)=>
+        {
+          axios.get(url).then(
+          res => {
+            for(i = 0; i < res.data.length; i++) {
+              res.data[i].url= "/"+entity+"/"+res.data[i].id;
+            };
+            vm[options] = res.data;
+          }
+          );
+          loading(false);
+        }),
         onSearchCollectors(search, loading) {
           loading(true);
           this.searchCollectors(loading, search, this);
         },
-        searchCollectors: _.debounce((loading, search, vm)=>
-        {
-          axios.get(
-          `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`
-          ).then(
-          res => {
-            for(i = 0; i < res.data.length; i++) {
-              res.data[i].url= "/authority/"+res.data[i].id;
-            };
-              vm.optionsCollectors = res.data;
-           });
-           loading(false);
-         }),
+         searchCollectors:function(loading, search, vm){
+           this.searchRelated(
+           loading, search, vm,
+            `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+            'optionsCollectors',
+            'authority'
+           );
+         },
          onSearchInformers(search, loading) {
            loading(true);
            this.searchInformers(loading, search, this);
          },
-         searchInformers: _.debounce((loading, search, vm)=>
-         {
-           axios.get(
-           `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`
-           ).then(
-           res => {
-             for(i = 0; i < res.data.length; i++) {
-               res.data[i].url= "/authority/"+res.data[i].id;
-             };
-               vm.optionsInformers = res.data;
-            });
-            loading(false);
-          }),
+        searchInformers:function(loading, search, vm){
+          this.searchRelated(
+          loading, search, vm,
+           `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+           'optionsInformers',
+           'authority'
+          );
+        },
           onSearchLocations(search, loading) {
             loading(true);
             this.searchLocations(loading, search, this);
           },
-          searchLocations: _.debounce((loading, search, vm)=>
-          {
-            axios.get(
-            `/api/locationgis/?ordering=code&search=${escape(search)}`
-            ).then(
+          searchLocations:function(loading, search, vm){
+            this.searchRelated(
+            loading, search, vm,
+             `/api/locationgis/?ordering=code&search=${escape(search)}`,
+             'optionsLocations',
+             'location_gis'
+            );
+          },
+          getRelated: function(url, field, entity){
+            axios.get(url).then(
             res => {
               for(i = 0; i < res.data.length; i++) {
-                res.data[i].url= "/location_gis/"+res.data[i].id;
-              };
-                vm.optionsLocations = res.data;
-             });
-             loading(false);
-           }),
-             getLocations:  function() {
-                 axios.get('/api/locationgis/?ordering=code')
-                 .then(
-                 res => {
-                   for(i = 0; i < res.data.length; i++) {
-                     res.data[i].url= "/location_gis/"+res.data[i].id;
-                   }
-                   this.optionsLocations = res.data;
-                  });
-              },
-          getCollectors: function(){
-            // Get the collectors
-            axios.get(`/api/collection/${escape({{id}})}/collectors`)
-            .then(
-            res => {
-              for(i = 0; i < res.data.length; i++) {
-                res.data[i].collector.url="/authority/"+res.data[i].collector.id;
+                res.data[i][entity].url= "/authority/"+res.data[i][entity].id;
               }
-              var listCollectors = [];
+              var listRelated = [];
               for( var item in res.data) {
                 // Fill the list of collectors
-                listCollectors.push(res.data[item].collector)
+                listRelated.push(res.data[item][entity]);
               }
-              // Use the list of collectors to feeds the collectors select
-              this.collectors = listCollectors;
-             });
+              // Use the list of related to feeds the collectors select
+              this[field] = listRelated;
+            });
+          },
+          getCollectors: function(){
+            this.getRelated(
+              `/api/collection/${escape({{id}})}/collectors`,
+              'collectors',
+              'collector'
+            );
           },
           getInformers: function(){
-            // Get the informers
-            axios.get(`/api/collection/${escape({{id}})}/informer`)
-            .then(
-            res => {
-              for(i = 0; i < res.data.length; i++) {
-                res.data[i].informer.url="/authority/"+res.data[i].informer.id;
-              }
-              var listInformers = [];
-              for( var item in res.data) {
-                // Fill the list of informers
-                listInformers.push(res.data[item].informer)
-              }
-              // Use the list of informers to feeds the informers select
-              this.informers = listInformers;
-             });
+            this.getRelated(
+              `/api/collection/${escape({{id}})}/informer`,
+              'informers',
+              'informer'
+            );
           },
+          getLocations: function(){
+            this.getRelated(
+              `/api/collection/${escape({{id}})}/location/`,
+              'locations',
+              'location'
+            );
+          },
+          // getLocations:  function() {
+          //   axios.get('/api/locationgis/?ordering=code')
+          //   .then(
+          //   res => {
+          //     for(i = 0; i < res.data.length; i++) {
+          //       res.data[i].url= "/location_gis/"+res.data[i].id;
+          //     }
+          //     this.optionsLocations = res.data;
+          //   });
+          // },
        },
        mounted: function () {
          {% if id %}
            this.getCollectors();
            this.getInformers();
+           this.getLocations();
          {% endif %}
-            //this.getLocations();
        }
     })
     </script>
