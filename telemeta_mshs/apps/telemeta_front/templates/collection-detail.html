@@ -102,6 +102,24 @@
   </span>
 </div>
 
+<div class="block-grey">
+  <h2>{% trans "Localisation" %}</h2>
+  <span class="container_data">
+    <span class="libelle"> {% trans 'Lieux' %}</span>
+    <span class="donnee">
+      {% for location in locations %}
+        {% if not forloop.first %} | {% endif %}
+        <a href="{% url "location_gis-detail" id=location.location.id %}"
+        onclick="window.open(this.href); return false;">
+          {{location.location.code}}
+        </a>
+      {% endfor %}
+    </span>
+  </span>
+  {% field_data form.location_details.label|safe collection.location_details|markdown|safe %}
+  {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
+</div>
+
 
 {% else %}
   <p>{% trans "Cette enquête n'existe pas." %}</p>

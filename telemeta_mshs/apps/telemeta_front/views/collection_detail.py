@@ -44,4 +44,12 @@ class CollectionDetail(TemplateView):
                 # values of the Informers
                 context['informers'] = response_informers.json
 
+            # Locations
+            response_locations = requests.get(
+                FRONT_HOST_URL + '/api/collection/' + context['id']
+                + '/location/')
+            if response_locations.status_code == status.HTTP_200_OK:
+                # values of the Locations
+                context['locations'] = response_locations.json
+
         return context
