@@ -151,7 +151,27 @@
           {% bootstrap_field form.cultural_area layout='vertical' %}
         </div>
       </div>
-      {% bootstrap_field form.language layout='vertical' %}
+
+      <!-- Languages -->
+      <div class="container_data">
+        <label class="control_label">{% trans "Langues" %}</label>
+        <v-select
+        multiple
+        v-model="languages"
+        label="name"
+        :filterable="false"
+        @search="onSearchLanguages"
+        :options="optionsLanguages">
+          <template slot="option" slot-scope="option">
+            <p>${ option.name }</p>
+          </template>
+          <template slot="selected-option" slot-scope="option">
+            ${ option.name }
+          </template>
+        </v-select>
+      </div>
+      <input name="languages" type="hidden" :value="JSON.stringify(languages)" />
+
       <div class="block-grey">
         <h2>{% trans "Éditeur" %}</h2>
         <div class="container_line">
@@ -203,7 +223,9 @@
           informers: [],
           optionsInformers: [],
           locations: [],
-          optionsLocations: []
+          optionsLocations: [],
+          languages: [],
+          optionsLanguages:[]
       },
       watch: {
       },
@@ -259,6 +281,18 @@
              'location_gis'
             );
           },
+          onSearchLanguages(search, loading) {
+            loading(true);
+            this.searchLanguages(loading, search, this);
+          },
+          searchLanguages:function(loading, search, vm){
+            this.searchRelated(
+            loading, search, vm,
+             `/api/language/?ordering=code&search=${escape(search)}`,
+             'optionsLanguages',
+             'language'
+            );
+          },
           getRelated: function(url, field, entity){
             axios.get(url).then(
             res => {
@@ -295,12 +329,20 @@
               'location'
             );
           },
+          getLanguages: function(){
+            this.getRelated(
+              `/api/collection/${escape({{id}})}/language/`,
+              'languages',
+              'language'
+            );
+          },
        },
        mounted: function () {
          {% if id %}
            this.getCollectors();
            this.getInformers();
            this.getLocations();
+           this.getLanguages();
          {% endif %}
        }
     })

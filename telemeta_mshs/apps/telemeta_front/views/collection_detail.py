@@ -52,4 +52,12 @@ class CollectionDetail(TemplateView):
                 # values of the Locations
                 context['locations'] = response_locations.json
 
+            # Languages
+            response_languages = requests.get(
+                FRONT_HOST_URL + '/api/collection/' + context['id']
+                + '/language/')
+            if response_languages.status_code == status.HTTP_200_OK:
+                # values of the Laguages
+                context['languages'] = response_languages.json
+
         return context

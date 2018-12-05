@@ -120,6 +120,16 @@
   {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
 </div>
 
+<span class="container_data">
+  <span class="libelle"> {% trans 'Langues' %}</span>
+  <span class="donnee">
+    {% for language in languages %}
+      {% if not forloop.first %} | {% endif %}
+        {{language.language.name}}
+      </a>
+    {% endfor %}
+  </span>
+
 
 {% else %}
   <p>{% trans "Cette enquête n'existe pas." %}</p>

@@ -15,11 +15,11 @@ class LanguageSerializer(serializers.ModelSerializer):
     """
 
     identifier = serializers.CharField(max_length=3)
-    part2B = serializers.CharField(max_length=3)
-    part2T = serializers.CharField(max_length=3)
-    part1 = serializers.CharField(max_length=1)
-    scope = serializers.CharField(max_length=1)
-    type = serializers.CharField(max_length=1)
+    part2B = serializers.CharField(max_length=3, required=False)
+    part2T = serializers.CharField(max_length=3, required=False)
+    part1 = serializers.CharField(max_length=1, required=False)
+    scope = serializers.CharField(max_length=1, required=False)
+    type = serializers.CharField(max_length=1, required=False)
     name = serializers.CharField()
     comment = serializers.CharField()
 
