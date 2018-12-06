@@ -18,6 +18,7 @@ from .views import (
     media_item,
     ext_media_item,
     mediatype,
+    publisher,
     legal_rights,
     recording_context
     )
@@ -52,6 +53,9 @@ router.register(r'mission', mission.MissionViewSet, base_name='mission'),
 router.register(r'language',
                 language.LanguageViewSet,
                 base_name='language')
+router.register(r'publisher',
+                publisher.PublisherViewSet,
+                base_name='publisher')
 router.register(r'item',
                 media_item.MediaItemViewSet,
                 base_name='MediaItem')

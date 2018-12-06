@@ -8,7 +8,7 @@
 from telemeta.models.core import ModelCore, ForeignKey, MetaCore
 from django.utils.translation import ugettext_lazy as _
 from .collection import Collection
-from .authority import Authority
+from .publisher import Publisher
 
 
 class CollectionPublisher(ModelCore):
@@ -17,7 +17,7 @@ class CollectionPublisher(ModelCore):
 
     # List of the fields
     collection = ForeignKey(Collection, verbose_name=_('collection'))
-    publisher = ForeignKey(Authority, verbose_name=_('publisher'))
+    publisher = ForeignKey(Publisher, verbose_name=_('publisher'))
 
     class Meta(MetaCore):
         app_label = 'telemeta_api'

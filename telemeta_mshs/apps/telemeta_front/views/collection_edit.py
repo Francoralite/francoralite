@@ -99,6 +99,14 @@ class CollectionEdit(FormView):
                     compare_related(
                         languages, url_languages, "language", id)
 
+                    # Publishers
+                    publishers = json.loads(request.POST['publishers'])
+                    url_publishers = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/publisher/'
+                    compare_related(
+                        publishers, url_publishers, "publisher", id)
+
                 return HttpResponseRedirect('/collection/')
 
             except RequestException:

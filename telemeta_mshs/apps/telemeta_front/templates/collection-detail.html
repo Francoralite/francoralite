@@ -129,6 +129,18 @@
       </a>
     {% endfor %}
   </span>
+</span>
+
+<span class="container_data">
+  <span class="libelle"> {% trans 'Editeurs' %}</span>
+  <span class="donnee">
+    {% for publisher in publishers %}
+      {% if not forloop.first %} | {% endif %}
+        {{publisher.publisher.value}}
+      </a>
+    {% endfor %}
+  </span>
+</span>
 
 
 {% else %}

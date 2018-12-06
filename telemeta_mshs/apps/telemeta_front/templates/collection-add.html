@@ -174,6 +174,25 @@
 
       <div class="block-grey">
         <h2>{% trans "Éditeur" %}</h2>
+        <!-- Publishers -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Editeurs" %}</label>
+          <v-select
+            multiple
+            v-model="publishers"
+            label="name"
+            :filterable="false"
+            @search="onSearchPublishers"
+            :options="optionsPublishers">
+              <template slot="option" slot-scope="option">
+                <p>${ option.value }</p>
+              </template>
+              <template slot="selected-option" slot-scope="option">
+                ${ option.value }
+              </template>
+            </v-select>
+        </div>
+        <input name="publishers" type="hidden" :value="JSON.stringify(publishers)" />
         <div class="container_line">
           {% bootstrap_field form.publisher_collection layout='vertical' %}
         </div>
@@ -225,7 +244,9 @@
           locations: [],
           optionsLocations: [],
           languages: [],
-          optionsLanguages:[]
+          optionsLanguages:[],
+          publishers:[],
+          optionsPublishers:[]
       },
       watch: {
       },
@@ -293,6 +314,18 @@
              'language'
             );
           },
+          onSearchPublishers(search, loading) {
+            loading(true);
+            this.searchPublishers(loading, search, this);
+          },
+          searchPublishers:function(loading, search, vm){
+            this.searchRelated(
+            loading, search, vm,
+             `/api/publisher/?ordering=code&search=${escape(search)}`,
+             'optionsPublishers',
+             'publisher'
+            );
+          },
           getRelated: function(url, field, entity){
             axios.get(url).then(
             res => {
@@ -336,6 +369,13 @@
               'language'
             );
           },
+          getPublishers: function(){
+            this.getRelated(
+              `/api/collection/${escape({{id}})}/publisher/`,
+              'publishers',
+              'publisher'
+            );
+          },
        },
        mounted: function () {
          {% if id %}
@@ -343,6 +383,7 @@
            this.getInformers();
            this.getLocations();
            this.getLanguages();
+           this.getPublishers();
          {% endif %}
        }
     })

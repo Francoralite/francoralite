@@ -60,4 +60,12 @@ class CollectionDetail(TemplateView):
                 # values of the Laguages
                 context['languages'] = response_languages.json
 
+            # Publishers
+            response_publishers = requests.get(
+                FRONT_HOST_URL + '/api/collection/' + context['id']
+                + '/publisher/')
+            if response_publishers.status_code == status.HTTP_200_OK:
+                # values of the Publishers
+                context['publishers'] = response_publishers.json
+
         return context
