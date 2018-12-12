@@ -8,15 +8,18 @@ import requests
 from requests.exceptions import RequestException
 
 
-def create_related_records(list_related, url_related, name_related, id_main):
+def create_related_records(list_related,
+                           url_related, name_related, name_main, id_main):
     for related in list_related:
-        write_related_record(related["id"], url_related, name_related, id_main)
+        write_related_record(related["id"],
+                             url_related, name_related, name_main, id_main)
 
 
-def write_related_record(id_related, url_related, name_related, id_main):
+def write_related_record(id_related,
+                         url_related, name_related, name_main, id_main):
     # Compose a collection-related record
     data = {}
-    data["collection"] = str(id_main)
+    data[name_main] = str(id_main)
     data[name_related] = str(id_related)
 
     # Create a related record
@@ -28,7 +31,24 @@ def write_related_record(id_related, url_related, name_related, id_main):
         raise Exception(response.status_code)
 
 
-def compare_related(selected, url_related, name_related, id_main):
+def compare_related(selected, url_related, name_related, name_main, id_main):
+    """
+    Comparison between items in a selected set and items in a related set.
+    Delete items that don't appear in the selected set.
+    Create items that don't appear in the related set.
+
+    Parameters
+    ----------
+    selected : list
+        List of the selected items.
+    url_related : string
+        url of the related entity.
+    name_related : string
+        Name of the related entity.
+    id_main : int
+        Id of the main entity.
+
+    """
     # Query the list of related records in the database
     response = requests.get(url_related)
     if response.status_code == status.HTTP_200_OK:
@@ -59,6 +79,9 @@ def compare_related(selected, url_related, name_related, id_main):
         list_create = set_selected.difference(set_related)
         for id in list_create:
             try:
-                write_related_record(id, url_related, name_related, id_main)
+                write_related_record(id,
+                                     url_related,
+                                     name_related,
+                                     name_main, id_main)
             except RequestException:
                 pass

@@ -180,7 +180,7 @@
           <v-select
             multiple
             v-model="publishers"
-            label="name"
+            label="value"
             :filterable="false"
             @search="onSearchPublishers"
             :options="optionsPublishers">
@@ -223,12 +223,97 @@
         <div class="container_line">
 
         </div>
+
+        <div>
+          <template>
+            <div v-for="(line, index) in lines"
+              v-bind:key="index">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class=container_line>
+                    <input v-model="line.id" hidden="True" type="number" />
+                    <span class="container_data one">
+                      <label class="control_label">{% trans "Nombre" %}</label>
+                      <input v-model="line.number" type="number"/>
+                    </span>
+                    <span class="container_data four">
+                      <label class="control_label">{% trans "Voix/Instrument" %}</label>
+                      <v-select
+                        single
+                        v-model="line.instrument"
+                        label="name"
+                        :filterable="false"
+                        @search="onSearchInstruments"
+                        :options="optionsInstruments">
+                          <template slot="option" slot-scope="option">
+                            <p>${ option.name }, ${ option.typology.number}</p>
+                          </template>
+                          <template slot="selected-option" slot-scope="option">
+                            ${ option.name }, ${ option.typology.number}
+                          </template>
+                        </v-select>
+                    </span>
+                    <span class="container_data one">
+                      <label class="control_label">{% trans "Nature émission vocale" %}</label>
+                      <select v-model="line.emit">
+                        <option v-for="option in optionsEmit" v-bind:value="option.id">
+                          ${option.name }
+                        </option>
+                      </select>
+                    </span>
+                  </div>
+                  <div class=container_line>
+                    <span class="container_data">
+                      <label class="control_label">{% trans "Musiciens" %}</label>
+                      <v-select
+                        multiple
+                          v-model="line.informers"
+                          label="first_name"
+                          :filterable="false"
+                          @search="onSearchInformers"
+                          :options="optionsInformers">
+                          <template slot="option" slot-scope="option">
+                            ${ option.first_name } ${ option.last_name } -
+                            <a :href="option.url"
+                              onclick="window.open(this.href); return false;">
+                              <i>Fiche...</i></a>
+                          </template>
+                          <template slot="selected-option" slot-scope="option">
+                            <a :href="option.url"
+                            onclick="window.open(this.href); return false;">
+                            ${ option.first_name } ${ option.last_name }</a>
+                          </template>
+                        </v-select>
+                        <input :name="'musicians'+index" :value="JSON.stringify(line.informers)" />
+                    </span>
+                  </div>
+                  <div class="center">
+                    <button type="button" @click="removeLine(index)"
+                      class="btn btn-default">
+                      <span class="glyphicon glyphicon-trash"></span>
+                      {% trans "Supprimer" %}
+                    </button>
+                    <button type="button"
+                      v-if="index + 1 === lines.length"
+                      @click="addLine" class="btn btn-default">
+                      <span class="glyphicon glyphicon-plus"></span>
+                      {% trans "Ajouter" %}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+        <input name="performances" :value="JSON.stringify(lines)" />
+
       </div>
 
       {% buttons_form %}
     </form>
   </div>
 </div>
+
 
 <script type="application/javascript">
     Vue.component('v-select', VueSelect.VueSelect)
@@ -246,9 +331,15 @@
           languages: [],
           optionsLanguages:[],
           publishers:[],
-          optionsPublishers:[]
+          optionsPublishers:[],
+          lines: [],
+          optionsEmit:[],
+          optionsInstruments: [],
       },
       watch: {
+        lines () {
+          this.blockRemoval = this.lines.length <= 1
+        }
       },
       computed: {
       },
@@ -268,114 +359,164 @@
         }),
         onSearchCollectors(search, loading) {
           loading(true);
-          this.searchCollectors(loading, search, this);
-        },
-         searchCollectors:function(loading, search, vm){
            this.searchRelated(
-           loading, search, vm,
+           loading, search, this,
             `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
             'optionsCollectors',
             'authority'
            );
          },
-         onSearchInformers(search, loading) {
-           loading(true);
-           this.searchInformers(loading, search, this);
-         },
-        searchInformers:function(loading, search, vm){
+        onSearchInformers(search, loading) {
+          loading(true);
           this.searchRelated(
-          loading, search, vm,
+          loading, search, this,
            `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
            'optionsInformers',
            'authority'
           );
         },
-          onSearchLocations(search, loading) {
+        onSearchLocations(search, loading) {
             loading(true);
-            this.searchLocations(loading, search, this);
-          },
-          searchLocations:function(loading, search, vm){
             this.searchRelated(
-            loading, search, vm,
-             `/api/locationgis/?ordering=code&search=${escape(search)}`,
-             'optionsLocations',
-             'location_gis'
+              loading, search, this,
+               `/api/locationgis/?ordering=code&search=${escape(search)}`,
+               'optionsLocations',
+               'location_gis'
             );
-          },
-          onSearchLanguages(search, loading) {
+        },
+        onSearchLanguages(search, loading) {
             loading(true);
-            this.searchLanguages(loading, search, this);
-          },
-          searchLanguages:function(loading, search, vm){
             this.searchRelated(
-            loading, search, vm,
-             `/api/language/?ordering=code&search=${escape(search)}`,
-             'optionsLanguages',
-             'language'
+              loading, search, this,
+               `/api/language/?ordering=code&search=${escape(search)}`,
+               'optionsLanguages',
+               'language'
             );
-          },
-          onSearchPublishers(search, loading) {
+        },
+        onSearchPublishers(search, loading) {
             loading(true);
-            this.searchPublishers(loading, search, this);
-          },
-          searchPublishers:function(loading, search, vm){
             this.searchRelated(
-            loading, search, vm,
-             `/api/publisher/?ordering=code&search=${escape(search)}`,
-             'optionsPublishers',
-             'publisher'
+              loading, search, this,
+               `/api/publisher/?ordering=code&search=${escape(search)}`,
+               'optionsPublishers',
+               'publisher'
             );
-          },
-          getRelated: function(url, field, entity){
-            axios.get(url).then(
-            res => {
-              for(i = 0; i < res.data.length; i++) {
-                res.data[i][entity].url= "/authority/"+res.data[i][entity].id;
-              }
-              var listRelated = [];
-              for( var item in res.data) {
-                // Fill the list of collectors
-                listRelated.push(res.data[item][entity]);
-              }
-              // Use the list of related to feeds the collectors select
-              this[field] = listRelated;
-            });
-          },
-          getCollectors: function(){
-            this.getRelated(
-              `/api/collection/${escape({{id}})}/collectors`,
-              'collectors',
-              'collector'
+        },
+        onSearchInstruments(search, loading) {
+            loading(true);
+            this.searchRelated(
+              loading, search, this,
+               `/api/instrument/?ordering=name&search=${escape(search)}`,
+               'optionsInstruments',
+               'instrument'
             );
-          },
-          getInformers: function(){
-            this.getRelated(
-              `/api/collection/${escape({{id}})}/informer`,
-              'informers',
-              'informer'
-            );
-          },
-          getLocations: function(){
-            this.getRelated(
-              `/api/collection/${escape({{id}})}/location/`,
-              'locations',
-              'location'
-            );
-          },
-          getLanguages: function(){
-            this.getRelated(
-              `/api/collection/${escape({{id}})}/language/`,
-              'languages',
-              'language'
-            );
-          },
-          getPublishers: function(){
-            this.getRelated(
-              `/api/collection/${escape({{id}})}/publisher/`,
-              'publishers',
-              'publisher'
-            );
-          },
+        },
+        getRelated: function(url, field, rel_entity, entity){
+          axios.get(url).then(
+          res => {
+            for(i = 0; i < res.data.length; i++) {
+              res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+            }
+            var listRelated = [];
+            for( var item in res.data) {
+              // Fill the list of related
+              listRelated.push(res.data[item][rel_entity]);
+            }
+            // Use the list of related to feeds the select
+            this[field] = listRelated;
+          });
+        },
+        getCollectors: function(){
+          this.getRelated(
+            `/api/collection/${escape({{id}})}/collectors`,
+            'collectors',
+            'collector',
+            'authority'
+          );
+        },
+        getInformers: function(){
+          this.getRelated(
+            `/api/collection/${escape({{id}})}/informer`,
+            'informers',
+            'informer',
+            'authority'
+          );
+        },
+        getLocations: function(){
+          this.getRelated(
+            `/api/collection/${escape({{id}})}/location/`,
+            'locations',
+            'location',
+            'location_gis'
+          );
+        },
+        getLanguages: function(){
+          this.getRelated(
+            `/api/collection/${escape({{id}})}/language/`,
+            'languages',
+            'language',
+            'language'
+          );
+        },
+        getPublishers: function(){
+          this.getRelated(
+            `/api/collection/${escape({{id}})}/publisher/`,
+            'publishers',
+            'publisher',
+            'publisher'
+          );
+        },
+        getLines: function(){
+          // Get all performances, one per line
+          axios.get(`/api/collection/${escape({{id}})}/performance/`).then(
+          res => {
+            // For each performance ...
+            for( var item in res.data) {
+              var rel_entity = 'musician'
+              var url = `/api/collection/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician/`;
+              var listRelated = []; // list of musicians
+              // ... Get all musicians for a line (performance)
+              axios.get(url).then(
+              res => {
+                console.log(res.data);
+                for(i = 0; i < res.data.length; i++) {
+                  res.data[i][rel_entity].url= "/authority/"+res.data[i][rel_entity].id;
+                }
+                for( var item2 in res.data) {
+                  // Fill the list of related
+                  listRelated.push(res.data[item2][rel_entity]);
+                }
+              });
+
+              // Fill the performances
+              this.lines.push(
+              {
+                number: res.data[item].number,
+                instrument: res.data[item].instrument,
+                emit: res.data[item].emit.id,
+                informers: listRelated,
+                id: res.data[item].id
+              });
+            }
+          });
+        },
+        addLine(){
+          let checkEmptyLines = this.lines.filter(line => line.number === null);
+          if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
+          this.lines.push({
+           number: "1"
+         });
+       },
+       removeLine (lineId) {
+         console.log(lineId);
+         console.log(this.blockRemoval);
+          if (!this.blockRemoval) this.lines.splice(lineId, 1)
+       },
+       getEmits: function(){
+         axios.get('/api/emit_vox/').then(response => {
+           this.optionsEmit = response.data;
+          });
+        },
        },
        mounted: function () {
          {% if id %}
@@ -384,6 +525,8 @@
            this.getLocations();
            this.getLanguages();
            this.getPublishers();
+           this.getEmits();
+           this.getLines();
          {% endif %}
        }
     })

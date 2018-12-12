@@ -13,7 +13,7 @@ from settings import FRONT_HOST_URL
 from telemeta_front.forms.collection import CollectionForm
 from django.shortcuts import render
 import json
-from .collection_related import compare_related
+from .related import compare_related
 
 
 class CollectionEdit(FormView):
@@ -73,7 +73,8 @@ class CollectionEdit(FormView):
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/collectors/'
                     compare_related(
-                        collectors, url_collectors, "collector", id)
+                        collectors, url_collectors, "collector",
+                        "collection", id)
 
                     # Informers
                     informers = json.loads(request.POST['informers'])
@@ -81,7 +82,8 @@ class CollectionEdit(FormView):
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/informer/'
                     compare_related(
-                        informers, url_informers, "informer", id)
+                        informers, url_informers, "informer",
+                        "collection", id)
 
                     # Locations
                     locations = json.loads(request.POST['locations'])
@@ -89,7 +91,8 @@ class CollectionEdit(FormView):
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/location/'
                     compare_related(
-                        locations, url_locations, "location", id)
+                        locations, url_locations, "location",
+                        "collection", id)
 
                     # Languages
                     languages = json.loads(request.POST['languages'])
@@ -97,7 +100,8 @@ class CollectionEdit(FormView):
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/language/'
                     compare_related(
-                        languages, url_languages, "language", id)
+                        languages, url_languages, "language",
+                        "collection", id)
 
                     # Publishers
                     publishers = json.loads(request.POST['publishers'])
@@ -105,7 +109,29 @@ class CollectionEdit(FormView):
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/publisher/'
                     compare_related(
-                        publishers, url_publishers, "publisher", id)
+                        publishers, url_publishers, "publisher",
+                        "collection", id)
+
+                    # Performances
+                    performances = json.loads(request.POST['performances'])
+                    index = 0
+                    for performance in performances:
+                        for performer in performance['informers']:
+                            url_musicians = \
+                                FRONT_HOST_URL + '/api/collection/' + \
+                                str(collection["id"]) + '/performance/' + \
+                                str(performance["id"]) + '/musician/'
+                            musicians = json.loads(
+                                    request.POST['musicians'+str(index)])
+                            compare_related(
+                                musicians, url_musicians, "musician",
+                                "performance_collection", performance["id"])
+                        index = index + 1
+                    # url_performances = \
+                    #     FRONT_HOST_URL + '/api/collection/' + \
+                    #     str(collection["id"]) + '/performance/'
+                    # compare_related(
+                    #     performances, url_performances, "performance", id)
 
                 return HttpResponseRedirect('/collection/')
 

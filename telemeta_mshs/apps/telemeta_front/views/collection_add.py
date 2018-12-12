@@ -13,7 +13,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.collection import CollectionForm
 import json
-from .collection_related import create_related_records
+from related import create_related_records
 
 
 class CollectionAdd(FormView):
@@ -57,7 +57,7 @@ class CollectionAdd(FormView):
                     # Create collectors
                     create_related_records(
                         collectors, url_collectors,
-                        "collector", collection["id"])
+                        "collector", "collection", collection["id"])
 
                     # Informers
                     informers = json.loads(request.POST['informers'])
@@ -68,7 +68,7 @@ class CollectionAdd(FormView):
                     # Create informers
                     create_related_records(
                         informers, url_informers,
-                        "informer", collection["id"])
+                        "informer", "collection", collection["id"])
 
                 return HttpResponseRedirect('/collection/')
 
