@@ -13,7 +13,7 @@ from settings import FRONT_HOST_URL
 from telemeta_front.forms.collection import CollectionForm
 from django.shortcuts import render
 import json
-from .related import compare_related
+from .related import query_related, write_relations
 
 
 class CollectionEdit(FormView):
@@ -72,66 +72,88 @@ class CollectionEdit(FormView):
                     url_collectors = \
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/collectors/'
-                    compare_related(
-                        collectors, url_collectors, "collector",
-                        "collection", id)
+                    write_relations(id,
+                                    "collection",
+                                    collectors,
+                                    url_collectors,
+                                    "collector")
 
                     # Informers
                     informers = json.loads(request.POST['informers'])
                     url_informers = \
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/informer/'
-                    compare_related(
-                        informers, url_informers, "informer",
-                        "collection", id)
-
+                    write_relations(id,
+                                    "collection",
+                                    informers,
+                                    url_informers,
+                                    "informer")
                     # Locations
                     locations = json.loads(request.POST['locations'])
                     url_locations = \
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/location/'
-                    compare_related(
-                        locations, url_locations, "location",
-                        "collection", id)
+                    write_relations(id,
+                                    "collection",
+                                    locations,
+                                    url_locations,
+                                    "location")
 
                     # Languages
                     languages = json.loads(request.POST['languages'])
                     url_languages = \
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/language/'
-                    compare_related(
-                        languages, url_languages, "language",
-                        "collection", id)
+                    write_relations(id,
+                                    "collection",
+                                    languages,
+                                    url_languages,
+                                    "language")
 
                     # Publishers
                     publishers = json.loads(request.POST['publishers'])
                     url_publishers = \
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/publisher/'
-                    compare_related(
-                        publishers, url_publishers, "publisher",
-                        "collection", id)
+                    write_relations(id,
+                                    "collection",
+                                    publishers,
+                                    url_publishers,
+                                    "publisher")
 
                     # Performances
-                    performances = json.loads(request.POST['performances'])
+                    performances_selected = json.loads(
+                        request.POST['performances'])
+                    url_performances = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/performance/'
+                    write_relations(id,
+                                    "collection",
+                                    performances_selected,
+                                    url_performances,
+                                    "")
                     index = 0
-                    for performance in performances:
-                        for performer in performance['informers']:
-                            url_musicians = \
-                                FRONT_HOST_URL + '/api/collection/' + \
-                                str(collection["id"]) + '/performance/' + \
-                                str(performance["id"]) + '/musician/'
-                            musicians = json.loads(
-                                    request.POST['musicians'+str(index)])
-                            compare_related(
-                                musicians, url_musicians, "musician",
-                                "performance_collection", performance["id"])
+                    # Request the performances ordered by ID
+                    performances = query_related(
+                        url_performances + "?ordering=id")
+
+                    for performance in performances_selected:
+                        if "id" not in performance:
+                            # The performance wasn't exist.
+                            # Search and retrieve the ID of the new performance
+                            # in the database
+                            performance["id"] = performances[index]["id"]
+
+                        url_musicians = \
+                            FRONT_HOST_URL + '/api/collection/' + \
+                            str(collection["id"]) + '/performance/' + \
+                            str(performance["id"]) + '/musician/'
+                        write_relations(performance["id"],
+                                        "performance_collection",
+                                        performance["informers"],
+                                        url_musicians,
+                                        "musician")
                         index = index + 1
-                    # url_performances = \
-                    #     FRONT_HOST_URL + '/api/collection/' + \
-                    #     str(collection["id"]) + '/performance/'
-                    # compare_related(
-                    #     performances, url_performances, "performance", id)
 
                 return HttpResponseRedirect('/collection/')
 

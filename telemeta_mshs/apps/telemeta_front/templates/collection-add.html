@@ -80,7 +80,8 @@
             </template>
         </v-select>
       </div>
-      <input name="collectors" type="hidden" :value="JSON.stringify(collectors)" />
+      <input name="collectors" type="hidden"
+        :value="JSON.stringify(collectors,replacerCollector)" />
 
 
       <!-- Informers -->
@@ -106,10 +107,10 @@
             </template>
         </v-select>
       </div>
-      <input name="informers" type="hidden" :value="JSON.stringify(informers)" />
+      <input name="informers" type="hidden"
+        :value="JSON.stringify(informers, replacerInformer)" />
 
       {% bootstrap_field form.descriptions layout='vertical' %}
-      {% bootstrap_field form.description layout='vertical' %}
       <div class="block-grey">
         <h2>{% trans "Enregistrement" %}</h2>
         <div class="container_line">
@@ -145,7 +146,8 @@
             </template>
           </v-select>
         </div>
-        <input name="locations" type="hidden" :value="JSON.stringify(locations)" />
+        <input name="locations" type="hidden"
+          :value="JSON.stringify(locations, replacerLocation)" />
         <div class="container_line">
           {% bootstrap_field form.location_details layout='vertical' %}
           {% bootstrap_field form.cultural_area layout='vertical' %}
@@ -170,7 +172,8 @@
           </template>
         </v-select>
       </div>
-      <input name="languages" type="hidden" :value="JSON.stringify(languages)" />
+      <input name="languages" type="hidden"
+        :value="JSON.stringify(languages,replacerLanguage)" />
 
       <div class="block-grey">
         <h2>{% trans "Éditeur" %}</h2>
@@ -192,7 +195,8 @@
               </template>
             </v-select>
         </div>
-        <input name="publishers" type="hidden" :value="JSON.stringify(publishers)" />
+        <input name="publishers" type="hidden"
+          :value="JSON.stringify(publishers, replacerPublisher)" />
         <div class="container_line">
           {% bootstrap_field form.publisher_collection layout='vertical' %}
         </div>
@@ -284,7 +288,9 @@
                             ${ option.first_name } ${ option.last_name }</a>
                           </template>
                         </v-select>
-                        <input :name="'musicians'+index" :value="JSON.stringify(line.informers)" />
+                        <input :name="'musicians'+index"
+                              type="hidden"
+                              :value="JSON.stringify(line.informers)" />
                     </span>
                   </div>
                   <div class="center">
@@ -297,15 +303,24 @@
                       v-if="index + 1 === lines.length"
                       @click="addLine" class="btn btn-default">
                       <span class="glyphicon glyphicon-plus"></span>
-                      {% trans "Ajouter" %}
+                      {% trans "Ajouter une voix/instrument" %}
                     </button>
                   </div>
                 </div>
               </div>
             </div>
+
+            <button type="button"
+              v-if="lines.length === 0"
+              @click="addLine" class="btn btn-default">
+              <span class="glyphicon glyphicon-plus"></span>
+              {% trans "Ajouter une voix/instrument" %}
+            </button>
+
           </template>
         </div>
-        <input name="performances" :value="JSON.stringify(lines)" />
+        <input name="performances" type="hidden"
+          :value="JSON.stringify(lines,replacerPerformance)" />
 
       </div>
 
@@ -478,7 +493,6 @@
               // ... Get all musicians for a line (performance)
               axios.get(url).then(
               res => {
-                console.log(res.data);
                 for(i = 0; i < res.data.length; i++) {
                   res.data[i][rel_entity].url= "/authority/"+res.data[i][rel_entity].id;
                 }
@@ -500,6 +514,53 @@
             }
           });
         },
+        replacerPerformance: function(key,value){
+          if(key=="instrument"){
+            return value.id;
+          };
+
+          if(key=="informers"){
+            if(value.length > 0){
+              musicians=[];
+              for(i = 0; i< value.length; i++){
+                musicians.push({
+                  musician: value[i].id
+                });
+              };
+              return musicians;
+            };
+            return undefined;
+          };
+
+          return value;
+        },
+        replacer: function(key,value,field){
+          if(value.length > 0){
+            items=[];
+            for(i = 0; i< value.length; i++){
+              var dict = {};
+              dict[field] = value[i].id;
+              items.push(dict);
+            };
+            return items;
+          };
+          return value;
+        },
+        replacerCollector: function(key,value){
+          return this.replacer(key,value,"collector");
+        },
+        replacerInformer: function(key,value){
+          return this.replacer(key,value,"informer");
+        },
+        replacerPublisher: function(key,value){
+          return this.replacer(key,value,"publisher");
+        },
+        replacerLanguage: function(key,value){
+          return this.replacer(key,value,"language");
+        },
+        replacerLocation: function(key,value){
+          return this.replacer(key,value,"location");
+        },
         addLine(){
           let checkEmptyLines = this.lines.filter(line => line.number === null);
           if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
@@ -508,8 +569,6 @@
          });
        },
        removeLine (lineId) {
-         console.log(lineId);
-         console.log(this.blockRemoval);
           if (!this.blockRemoval) this.lines.splice(lineId, 1)
        },
        getEmits: function(){
@@ -519,14 +578,16 @@
         },
        },
        mounted: function () {
+         this.getEmits();
          {% if id %}
            this.getCollectors();
            this.getInformers();
            this.getLocations();
            this.getLanguages();
            this.getPublishers();
-           this.getEmits();
            this.getLines();
+         {% else %}
+          this.addLine();
          {% endif %}
        }
     })
