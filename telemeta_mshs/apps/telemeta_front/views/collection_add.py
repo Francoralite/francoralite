@@ -13,7 +13,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.collection import CollectionForm
 import json
-from related import create_related_records
+from related import write_relations, query_related
 
 
 class CollectionAdd(FormView):
@@ -53,22 +53,83 @@ class CollectionAdd(FormView):
                     url_collectors = \
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/collectors/'
-
                     # Create collectors
-                    create_related_records(
-                        collectors, url_collectors,
-                        "collector", "collection", collection["id"])
+                    write_relations(collection["id"],
+                                    "collection", collectors,
+                                    url_collectors, "collector")
 
                     # Informers
                     informers = json.loads(request.POST['informers'])
                     url_informers = \
                         FRONT_HOST_URL + '/api/collection/' + \
                         str(collection["id"]) + '/informer/'
-
                     # Create informers
-                    create_related_records(
-                        informers, url_informers,
-                        "informer", "collection", collection["id"])
+                    write_relations(collection["id"],
+                                    "collection", informers,
+                                    url_informers, "informer")
+
+                    # Locations
+                    locations = json.loads(request.POST['locations'])
+                    url_locations = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/location/'
+                    # Create locations
+                    write_relations(collection["id"],
+                                    "collection", locations,
+                                    url_locations, "location")
+
+                    # Languages
+                    languages = json.loads(request.POST['languages'])
+                    url_languages = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/language/'
+                    # Create languages
+                    write_relations(collection["id"],
+                                    "collection", languages,
+                                    url_languages, "language")
+
+                    # Publishers
+                    publishers = json.loads(request.POST['publishers'])
+                    url_publishers = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/publisher/'
+                    # Create publishers
+                    write_relations(collection["id"],
+                                    "collection", publishers,
+                                    url_publishers, "publisher")
+
+                    # Performances
+                    performances_selected = json.loads(
+                        request.POST['performances'])
+                    url_performances = \
+                        FRONT_HOST_URL + '/api/collection/' + \
+                        str(collection["id"]) + '/performance/'
+                    # Create performances
+                    write_relations(collection["id"],
+                                    "collection", performances_selected,
+                                    url_performances, "")
+                    index = 0
+                    # Request the performances ordered by ID
+                    performances = query_related(
+                        url_performances + "?ordering=id")
+
+                    for performance in performances_selected:
+                        if "id" not in performance:
+                            # The performance wasn't exist.
+                            # Search and retrieve the ID of the new performance
+                            # in the database
+                            performance["id"] = performances[index]["id"]
+
+                        url_musicians = \
+                            FRONT_HOST_URL + '/api/collection/' + \
+                            str(collection["id"]) + '/performance/' + \
+                            str(performance["id"]) + '/musician/'
+                        write_relations(performance["id"],
+                                        "performance_collection",
+                                        performance["informers"],
+                                        url_musicians,
+                                        "musician")
+                        index = index + 1
 
                 return HttpResponseRedirect('/collection/')
 
