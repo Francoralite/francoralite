@@ -144,15 +144,16 @@ class CollectionEdit(FormView):
                             # in the database
                             performance["id"] = performances[index]["id"]
 
-                        url_musicians = \
-                            FRONT_HOST_URL + '/api/collection/' + \
-                            str(collection["id"]) + '/performance/' + \
-                            str(performance["id"]) + '/musician/'
-                        write_relations(performance["id"],
-                                        "performance_collection",
-                                        performance["informers"],
-                                        url_musicians,
-                                        "musician")
+                        if("informers" in performance):
+                            url_musicians = \
+                                FRONT_HOST_URL + '/api/collection/' + \
+                                str(collection["id"]) + '/performance/' + \
+                                str(performance["id"]) + '/musician/'
+                            write_relations(performance["id"],
+                                            "performance_collection",
+                                            performance["informers"],
+                                            url_musicians,
+                                            "musician")
                         index = index + 1
 
                 return HttpResponseRedirect('/collection/')
