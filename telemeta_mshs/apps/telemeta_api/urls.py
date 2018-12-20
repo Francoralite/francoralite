@@ -18,8 +18,14 @@ from .views import (
     media_item,
     ext_media_item,
     mediatype,
+    publisher,
     legal_rights,
-    recording_context
+    recording_context,
+    emit_vox,
+    hornbostelsachs,
+    instrument,
+    performance_collection,
+    performance_collection_musician
     )
 
 router = routers.SimpleRouter()
@@ -52,12 +58,27 @@ router.register(r'mission', mission.MissionViewSet, base_name='mission'),
 router.register(r'language',
                 language.LanguageViewSet,
                 base_name='language')
+router.register(r'publisher',
+                publisher.PublisherViewSet,
+                base_name='publisher')
 router.register(r'item',
                 media_item.MediaItemViewSet,
                 base_name='MediaItem')
 router.register(r'extitem',
                 ext_media_item.ExtMediaItemViewSet,
                 base_name='ExtMediaItem')
+router.register(r'emit_vox',
+                emit_vox.EmitVoxViewSet,
+                base_name='emit_vox')
+router.register(r'hornbostelsachs',
+                hornbostelsachs.HornbostelSachsViewSet,
+                base_name='hornbostelsachs')
+router.register(r'instrument',
+                instrument.InstrumentViewSet,
+                base_name='instrument')
+# router.register(r'performance_collection_musician',
+#                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
+#                 base_name='performance_collection_musician')
 
 
 # Nested routers
@@ -73,6 +94,13 @@ Collection_router.register(
     r'location', collection_location.CollectionLocationViewSet)
 Collection_router.register(
     r'language', collection_language.CollectionLanguageViewSet)
+Collection_router.register(
+    r'performance', performance_collection.PerformanceCollectionViewSet)
+Performance_router = routers.NestedSimpleRouter(
+    Collection_router, r'performance', lookup='performance')
+Performance_router.register(
+    r'musician',
+    performance_collection_musician.PerformanceCollectionMusicianViewSet)
 
 router.register(
     r'extitems', ext_media_item.ExtMediaItemViewSet)

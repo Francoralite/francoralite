@@ -21,16 +21,10 @@ class CollectionDetail(TemplateView):
 
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL+'/api/collection/'+context['id'])
+            FRONT_HOST_URL+'/api/collection/'+context['id']+'/complete/')
         if response.status_code == status.HTTP_200_OK:
             # Values of the collection
             context['collection'] = response.json
             context['form'] = CollectionForm()
-            # Obtain values of the collectors (authority related table)
-            response_collectors = requests.get(
-                FRONT_HOST_URL + '/api/collection/' + context['id']
-                + '/collectors/')
-            if response_collectors.status_code == status.HTTP_200_OK:
-                # values of the Collectors
-                context['collectors'] = response_collectors.json
+
         return context

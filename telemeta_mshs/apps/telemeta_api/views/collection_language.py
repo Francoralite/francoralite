@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.db.models.query import QuerySet
 from rest_framework import viewsets
 from ..models.collection_language import (
         CollectionLanguage as CollectionLanguageModel)
@@ -17,3 +18,11 @@ class CollectionLanguageViewSet(viewsets.ModelViewSet):
 
     queryset = CollectionLanguageModel.objects.all()
     serializer_class = CollectionLanguageSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if isinstance(queryset, QuerySet):
+            # Ensure queryset is re-evaluated on each request.
+            queryset = CollectionLanguageModel.objects.filter(
+                collection_id=self.kwargs['collection_pk'])
+        return queryset

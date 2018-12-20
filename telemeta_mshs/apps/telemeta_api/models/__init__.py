@@ -21,3 +21,8 @@ from .location import Location
 from .fond import Fond
 from .acquisition_mode import AcquisitionMode
 from .mission import Mission
+from .emit_vox import EmitVox
+from .hornbostelsachs import HornbostelSachs
+from .instrument import Instrument
+from .performance_collection_musician import PerformanceCollectionMusician
+from .performance_collection import PerformanceCollection

@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.db.models.query import QuerySet
 from rest_framework import viewsets
 from ..models.collection_informer import (
         CollectionInformer as CollectionInformerModel)
@@ -17,3 +18,11 @@ class CollectionInformerViewSet(viewsets.ModelViewSet):
 
     queryset = CollectionInformerModel.objects.all()
     serializer_class = CollectionInformerSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if isinstance(queryset, QuerySet):
+            # Ensure queryset is re-evaluated on each request.
+            queryset = CollectionInformerModel.objects.filter(
+                collection_id=self.kwargs['collection_pk'])
+        return queryset

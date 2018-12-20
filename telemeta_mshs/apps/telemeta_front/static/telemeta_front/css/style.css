@@ -1,5 +1,6 @@
 
 .container_line {
+  resize: horizontal;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -13,6 +14,18 @@
 .container_line  > * {
   flex: 1 auto;
   flex: 2 auto;
+}
+
+.four {
+  flex: 4;
+}
+
+.two {
+  flex: 2;
+}
+
+.one {
+  flex: 1;
 }
 
 .space-around {
