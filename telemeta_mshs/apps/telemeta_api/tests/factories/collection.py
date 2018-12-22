@@ -40,13 +40,13 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     recorded_to_year = factory.Faker('date')
     year_published = factory.Faker('year')
 
-    location = factory.SubFactory(LocationGisFactory)
+    # location = factory.SubFactory(LocationGisFactory)
     location_details = factory.Faker('paragraph', nb_sentences=3)
     cultural_area = factory.Faker('paragraph', nb_sentences=1)
     language = factory.Faker('word')
 
     # publisher = factory.SubFactory(PublisherFactory)
-    publisher = factory.Faker('word')
+    # publisher = factory.Faker('word')
     # publisher_collection = factory.SubFactory(PublisherCollectionFactory)
     publisher_collection = factory.Faker('word')
     booklet_author = factory.Faker('word')
@@ -57,5 +57,5 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     media_type = factory.SubFactory(MediaTypeFactory)
     physical_items_num = factory.Faker('pyint')
     auto_period_access = factory.Faker('boolean')
-    # legal_rights = factory.SubFactory(LegalRightsFactory)
+    legal_rights = factory.SubFactory(LegalRightsFactory)
     public_access = factory.Faker('word')

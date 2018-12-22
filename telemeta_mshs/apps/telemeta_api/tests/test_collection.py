@@ -23,8 +23,8 @@ from rest_framework.test import APITestCase
 from .factories.collection import CollectionFactory
 from ..models.collection import Collection
 from ..models.mission import Mission
-from ..models.location import Location
 from ..models.mediatype import MediaType
+from ..models.legal_rights import LegalRights
 
 
 # Expected structure for collection objects
@@ -39,11 +39,10 @@ COLLECTION_STRUCTURE = [
     ('recorded_from_year', str),
     ('recorded_to_year', str),
     ('year_published', int),
-    ('location', int),
+    ('legal_rights', dict),
     ('location_details', str),
     ('cultural_area', str),
     ('language', str),
-    ('publisher', str),
     ('publisher_collection', str),
     ('booklet_author', str),
     ('metadata_author', str),
@@ -150,13 +149,13 @@ class TestCollectionList(APITestCase):
         # Write the Mission object in the collection data object.
         data['mission'] = mission.id
 
-        loc = Location.objects.first()
-        # Write the Location object in the collection data object.
-        data['location'] = loc.id
-
         mediatype = MediaType.objects.first()
         # Write the MediaType object in the collection data object.
         data['media_type'] = mediatype.id
+
+        legalrights = LegalRights.objects.first()
+        # Write the MediaType object in the collection data object.
+        data['legal_rights'] = legalrights.id
 
         # related objects
         data['recorded_from_year'] = str(data['recorded_from_year'])
@@ -208,6 +207,7 @@ class TestCollectionList(APITestCase):
             kwargs={'pk': item.id})
         data['mission'] = data['mission']['id']
         data['media_type'] = data['media_type']['id']
+        data['legal_rights'] = data['legal_rights']['id']
         response = self.client.put(url, data, format='json')
 
         # Ensure new name returned

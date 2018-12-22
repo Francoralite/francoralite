@@ -11,6 +11,7 @@ CollectionLocation tests
 import factory
 import pytest
 import sys
+import random
 
 from django.forms.models import model_to_dict
 from django.core.management import call_command
@@ -50,7 +51,7 @@ class TestCollectionLocationList(APITestCase):
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        CollectionLocationFactory.create_batch(6)
+        CollectionLocationFactory.create_batch(1)
 
     def test_can_get_collection_location_list(self):
         """
@@ -62,14 +63,14 @@ class TestCollectionLocationList(APITestCase):
 
         # ORM side
         collection_locations = CollectionLocation.objects.all()
-        self.assertEqual(len(collection_locations), 6)
+        self.assertEqual(len(collection_locations), 1)
 
         # API side
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 6)
+        self.assertEqual(len(response.data), 1)
 
     @parameterized.expand(COLLECTIONLOCATION_STRUCTURE)
     def test_has_valid_collection_location_values(self,
@@ -128,16 +129,12 @@ class TestCollectionLocationList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
-        data['location'] = Location.objects.first()
-        data['collection'] = Collection.objects.first()
-        data['collection'] = data['collection'].__dict__['_original_state']
-        data['location'] = data['location'].__dict__['_original_state']
-        data['collection']['code'] = 'code1500'
+        data['location'] = Location.objects.first().id
+        data['collection'] = Collection.objects.first().id
 
         url = reverse('collectionlocation-list', kwargs={
             'collection_pk': 1})
         response = self.client.post(url, data, format='json')
-        print(response)
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

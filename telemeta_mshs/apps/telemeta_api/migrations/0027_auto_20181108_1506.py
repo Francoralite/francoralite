@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['value'],
-                'db_table': 'legal_rights',
+                'db_table': 'api_legal_rights',
                 'verbose_name': "droits d'utilisation",
             },
             bases=(models.Model, dirtyfields.dirtyfields.DirtyFieldsMixin),

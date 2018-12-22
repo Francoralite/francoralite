@@ -6,10 +6,8 @@ import factory
 from telemeta.models.enum import (
     Enumeration,
     RecordingContext,
-    Publisher,
     PublisherCollection,
     EthnicGroup,
-    LegalRight,
     AcquisitionMode,
     CopyType,
     MetadataAuthor,
@@ -26,6 +24,8 @@ from telemeta.models.enum import (
     Topic
     )
 from ...models.mediatype import MediaType
+from ...models.publisher import Publisher
+from ...models.legal_rights import LegalRights
 
 
 class EnumerationFactory(factory.django.DjangoModelFactory):
@@ -67,7 +67,7 @@ class EthnicGroupFactory(EnumerationFactory):
 
 class LegalRightsFactory(EnumerationFactory):
     class Meta:
-        model = LegalRight
+        model = LegalRights
 
 
 class AcquisitionModeFactory(EnumerationFactory):

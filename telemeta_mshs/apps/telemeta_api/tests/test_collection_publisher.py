@@ -21,7 +21,7 @@ from rest_framework.test import APITestCase
 
 from .factories.collection_publisher import CollectionPublisherFactory
 from ..models.collection_publisher import CollectionPublisher
-from ..models.authority import Authority
+from ..models.publisher import Publisher
 from ..models.collection import Collection
 
 # Expected structure for Collection_publisher objects
@@ -50,7 +50,7 @@ class TestCollectionPublisherList(APITestCase):
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        CollectionPublisherFactory.create_batch(6)
+        CollectionPublisherFactory.create_batch(1)
 
     def test_can_get_collection_publisher_list(self):
         """
@@ -62,14 +62,14 @@ class TestCollectionPublisherList(APITestCase):
 
         # ORM side
         collection_publishers = CollectionPublisher.objects.all()
-        self.assertEqual(len(collection_publishers), 6)
+        self.assertEqual(len(collection_publishers), 1)
 
         # API side
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 6)
+        self.assertEqual(len(response.data), 1)
 
     @parameterized.expand(COLLECTIONPUBLISHER_STRUCTURE)
     def test_has_valid_collection_publisher_values(self,
@@ -129,11 +129,8 @@ class TestCollectionPublisherList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
-        data['publisher'] = Authority.objects.first()
-        data['collection'] = Collection.objects.first()
-        data['collection'] = data['collection'].__dict__['_original_state']
-        data['publisher'] = data['publisher'].__dict__['_original_state']
-        data['collection']['code'] = 'code1500'
+        data['publisher'] = Publisher.objects.first().id
+        data['collection'] = Collection.objects.first().id
 
         url = reverse('collectionpublisher-list', kwargs={
             'collection_pk': 1})

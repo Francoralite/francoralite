@@ -30,7 +30,7 @@ COLLECTORS_FIELDS = sorted([item[0] for item in COLLECTORS_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestCollectionCokkecrosList(APITestCase):
+class TestCollectionCollectorsList(APITestCase):
     """
     This class manage all CollectionCollectors tests
     """
@@ -42,7 +42,7 @@ class TestCollectionCokkecrosList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
-        CollectionCollectorsFactory.create_batch(6)
+        CollectionCollectorsFactory.create_batch(1)
 
     def test_can_get_collectioncollectors_list(self):
         """
@@ -53,14 +53,14 @@ class TestCollectionCokkecrosList(APITestCase):
 
         # ORM side
         collectionscollectors = CollectionCollectors.objects.all()
-        self.assertEqual(len(collectionscollectors), 6)
+        self.assertEqual(len(collectionscollectors), 1)
 
         # API side
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 6)
+        self.assertEqual(len(response.data), 1)
 
     @parameterized.expand(COLLECTORS_STRUCTURE)
     def test_has_valid_collectioncollectors_values(self,
@@ -114,15 +114,12 @@ class TestCollectionCokkecrosList(APITestCase):
         #  Then they will be easily converted in JSON format.
         data = factory.build(dict, FACTORY_CLASS=CollectionCollectorsFactory)
 
-        data['collector'] = Authority.objects.first()
-        data['collection'] = Collection.objects.first()
-        data['collector'] = data['collector'].__dict__['_original_state']
-        data['collection'] = data['collection'].__dict__['_original_state']
-        data['collection']['code'] = 'code1500'
+        data['collector'] = Authority.objects.first().id
+        data['collection'] = Collection.objects.first().id
+
         url = reverse('collectioncollectors-list', kwargs={
             'collection_pk': 1})
         response = self.client.post(url, data, format='json')
-        print(response)
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

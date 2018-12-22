@@ -11,7 +11,7 @@ import factory
 from ...models.collection_publisher import CollectionPublisher
 
 from .collection import CollectionFactory
-from .authority import AuthorityFactory
+from .enumeration import PublisherFactory
 
 
 class CollectionPublisherFactory(factory.django.DjangoModelFactory):
@@ -27,4 +27,4 @@ class CollectionPublisherFactory(factory.django.DjangoModelFactory):
 
     # Nested/related factories
     collection = factory.SubFactory(CollectionFactory)
-    publisher = factory.SubFactory(AuthorityFactory)
+    publisher = factory.SubFactory(PublisherFactory)

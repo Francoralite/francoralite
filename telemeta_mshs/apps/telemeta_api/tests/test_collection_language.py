@@ -50,7 +50,7 @@ class TestCollectionLanguageList(APITestCase):
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        CollectionLanguageFactory.create_batch(6)
+        CollectionLanguageFactory.create_batch(1)
 
     def test_can_get_collection_language_list(self):
         """
@@ -61,14 +61,14 @@ class TestCollectionLanguageList(APITestCase):
 
         # ORM side
         collection_languages = CollectionLanguage.objects.all()
-        self.assertEqual(len(collection_languages), 6)
+        self.assertEqual(len(collection_languages), 1)
 
         # API side
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 6)
+        self.assertEqual(len(response.data), 1)
 
     @parameterized.expand(COLLECTIONLANGUAGE_STRUCTURE)
     def test_has_valid_collection_language_values(self,
@@ -127,11 +127,8 @@ class TestCollectionLanguageList(APITestCase):
 
         # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['language'] = Language.objects.first()
-        data['collection'] = Collection.objects.first()
-        data['collection'] = data['collection'].__dict__['_original_state']
-        data['language'] = data['language'].__dict__['_original_state']
-        data['collection']['code'] = 'code1500'
+        data['language'] = Language.objects.first().id
+        data['collection'] = Collection.objects.first().id
 
         url = reverse('collectionlanguage-list', kwargs={
             'collection_pk': 1})

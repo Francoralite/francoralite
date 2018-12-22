@@ -15,4 +15,4 @@ class Publisher(Enumeration):
     class Meta(MetaEnumeration):
         app_label = 'telemeta_api'
         db_table = 'publisher'
-        verbose_name = _(u"éditeur")
+        verbose_name = _(u"editeur")

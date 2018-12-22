@@ -50,7 +50,7 @@ class TestCollectionInformerList(APITestCase):
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        CollectionInformerFactory.create_batch(6)
+        CollectionInformerFactory.create_batch(1)
 
     def test_can_get_collection_informer_list(self):
         """
@@ -62,14 +62,14 @@ class TestCollectionInformerList(APITestCase):
 
         # ORM side
         collection_informers = CollectionInformer.objects.all()
-        self.assertEqual(len(collection_informers), 6)
+        self.assertEqual(len(collection_informers), 1)
 
         # API side
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 6)
+        self.assertEqual(len(response.data), 1)
 
     @parameterized.expand(COLLECTIONINFORMER_STRUCTURE)
     def test_has_valid_collection_informer_values(self,
@@ -128,11 +128,8 @@ class TestCollectionInformerList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.-
-        data['publisher'] = Authority.objects.first()
-        data['collection'] = Collection.objects.first()
-        data['collection'] = data['collection'].__dict__['_original_state']
-        data['publisher'] = data['publisher'].__dict__['_original_state']
-        data['collection']['code'] = 'code1500'
+        data['informer'] = Authority.objects.first().id
+        data['collection'] = Collection.objects.first().id
 
         url = reverse('collectioninformer-list', kwargs={
             'collection_pk': 1})

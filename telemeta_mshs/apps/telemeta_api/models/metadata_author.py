@@ -15,4 +15,4 @@ class MetadataAuthor(Enumeration):
     class Meta(MetaEnumeration):
         app_label = 'telemeta_api'
         db_table = 'metadata_author'
-        verbose_name = _(u"rédacteur de la fiche")
+        verbose_name = _(u"redacteur de la fiche")
