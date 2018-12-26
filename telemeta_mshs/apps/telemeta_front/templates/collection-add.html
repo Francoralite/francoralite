@@ -51,15 +51,14 @@
     {% endif %}
       {% csrf_token %}
 
-      <div class="container_line">
+
         {% bootstrap_field form.mission layout='vertical' %}
         {% bootstrap_field form.title layout='vertical' %}
         {% bootstrap_field form.alt_title layout='vertical' %}
-      </div>
 
       <!-- Collectors -->
       <div class="container_data">
-        <label class="control_label">{% trans "Enquêteurs" %}</label>
+        <label class="control_label">{% trans "Enquêteur(s)" %}</label>
         <v-select
           multiple
             v-model="collectors"
@@ -86,7 +85,7 @@
 
       <!-- Informers -->
       <div class="container_data">
-        <label class="control_label">{% trans "Informateurs" %}</label>
+        <label class="control_label">{% trans "Informateur(s)" %}</label>
         <v-select
           multiple
             v-model="informers"
@@ -217,8 +216,8 @@
         {% bootstrap_field form.comment layout='vertical' %}
       </div>
       {% bootstrap_field form.physical_items_num layout='vertical' %}
-      {% bootstrap_field form.auto_period_access layout='vertical' %}
       {% bootstrap_field form.media_type layout='vertical' %}
+      {% bootstrap_field form.auto_period_access layout='vertical' %}
       {% bootstrap_field form.legal_rights layout='vertical' %}
       {% bootstrap_field form.public_access layout='vertical' %}
 
@@ -268,14 +267,14 @@
                   </div>
                   <div class=container_line>
                     <span class="container_data">
-                      <label class="control_label">{% trans "Musiciens" %}</label>
+                      <label class="control_label">{% trans "Informateur(s)" %}</label>
                       <v-select
                         multiple
                           v-model="line.informers"
                           label="first_name"
                           :filterable="false"
-                          @search="onSearchInformers"
-                          :options="optionsInformers">
+                          @search="onSearchMusicians"
+                          :options="optionsMusicians">
                           <template slot="option" slot-scope="option">
                             ${ option.first_name } ${ option.last_name } -
                             <a :href="option.url"
@@ -341,6 +340,7 @@
           optionsCollectors: [],
           informers: [],
           optionsInformers: [],
+          optionsMusicians: [],
           locations: [],
           optionsLocations: [],
           languages: [],
@@ -390,6 +390,11 @@
            'authority'
           );
         },
+        onSearchMusicians(search, loading) {
+          loading(true);
+          this.optionsMusicians = this.informers
+          loading(false);
+        },
         onSearchLocations(search, loading) {
             loading(true);
             this.searchRelated(
@@ -427,6 +432,7 @@
             );
         },
         getRelated: function(url, field, rel_entity, entity){
+          // Get the data from a related table to display it in a field
           axios.get(url).then(
           res => {
             for(i = 0; i < res.data.length; i++) {

@@ -14,7 +14,7 @@ from .core import Core
 class CollectionForm(forms.Form):
     title = forms.CharField(label=_(u'Titre'), max_length=255, required=True)
     alt_title = forms.CharField(
-        label=_(u'Titre original'), max_length=255, required=False)
+        label=_(u'Titre original / Traduction'), max_length=255, required=False)
     record_from_year = forms.DateField(
         label=_(u'Date d\'enregistrement (depuis)'),
         required=False,
@@ -82,7 +82,7 @@ class CollectionForm(forms.Form):
         label=_(u'Commentaires'),
         widget=forms.Textarea, required=False)
 
-    descriptions = forms.CharField(label=_(u'Descriptions'),
+    descriptions = forms.CharField(label=_(u'Description'),
                                    widget=forms.Textarea, required=False)
     description = forms.CharField(label=_(u'Description'),
                                   widget=forms.Textarea, required=False)
