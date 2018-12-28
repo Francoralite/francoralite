@@ -20,6 +20,10 @@ from .views import (
     collection_delete,
 )
 
+from .views.enum import (
+    instrument, instrument_edit, instrument_delete,
+)
+
 
 urlpatterns = [
     url(r'^$', home_integration.HomePageView.as_view(), name="home"),
@@ -136,4 +140,20 @@ urlpatterns = [
     url(r'^collection/delete/(?P<id>[0-9]+)$',
         collection_delete.CollectionDelete.as_view(),
         name='collection-delete'),
+
+    # Instruments
+    url(r'^instrument/$', instrument.InstrumentView.as_view(),
+        name="instrument"),
+    # url(r'^fond/add/$',
+    #     fond_add.FondAdd.as_view(),
+    #     name='fond-add'),
+    # url(r'^fond/(?P<id>[0-9]+)/$',
+    #     fond_detail.FondDetail.as_view(),
+    #     name='fond-detail'),
+    url(r'^instrument/edit/(?P<id>[0-9]+)$',
+         instrument_edit.InstrumentEdit.as_view(),
+         name='instrument-edit'),
+    url(r'^instrument/delete/(?P<id>[0-9]+)$',
+        instrument_delete.InstrumentDelete.as_view(),
+        name='instrument-delete'),
 ]
