@@ -1,0 +1,49 @@
+{% extends "enum/instrument.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Voix/Instrument" %}
+    {% if instrument %}
+     : {{ instrument.name }}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  <a href="{% url "instrument-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </button>
+  </a>
+{% endblock %}
+
+{% block content %}
+{% if instrument %}
+
+  {% field_data form.name.label|safe instrument.name|safe %}
+  {% field_data form.notes.label|safe instrument.notes|markdown|safe %}
+  <span class="container_data">
+    <span class="libelle">{{ form.typology.label|safe }}</span>
+    <span class="donnee"> {{ instrument.typology.number|safe }} :
+      {{ instrument.typology.name|safe }}</span>
+  </span>
+
+{% else %}
+  <p>{% trans "Cet instrument n'existe pas." %}</p>
+{% endif %}
+{% endblock %}
