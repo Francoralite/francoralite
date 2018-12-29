@@ -52,7 +52,9 @@ def modal_delete():
 @register.inclusion_tag('inc/buttons-form.html', takes_context=True)
 def buttons_form(context):
     request = context['request']
-    url_back = request.META['HTTP_REFERER']
+    url_back = "#"
+    if 'HTTP_REFERER' in request.META:
+        url_back = request.META['HTTP_REFERER']
     return {'url_back': url_back}
 
 
