@@ -23,14 +23,17 @@
 <div class="col-md-8">
 </div>
 <div class="col-md-0">&nbsp;</div>
-</div>
 {% endblock %}
 
 {% block title_buttons %}
+  <a href="{% url "instrument-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une voix/instrument" %}
+    </button>
+  </a>
 {% endblock %}
 
-
-</div>
 {% block content %}
 <div class="fullpage">
 {% if instruments|length > 0 %}

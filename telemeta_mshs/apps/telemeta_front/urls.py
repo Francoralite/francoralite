@@ -21,7 +21,8 @@ from .views import (
 )
 
 from .views.enum import (
-    instrument, instrument_edit, instrument_delete, instrument_detail
+    instrument, instrument_edit, instrument_delete, instrument_detail,
+    instrument_add
 )
 
 
@@ -144,9 +145,9 @@ urlpatterns = [
     # Instruments
     url(r'^instrument/$', instrument.InstrumentView.as_view(),
         name="instrument"),
-    # url(r'^fond/add/$',
-    #     fond_add.FondAdd.as_view(),
-    #     name='fond-add'),
+    url(r'^instrument/add/$',
+     instrument_add.InstrumentAdd.as_view(),
+     name='instrument-add'),
     url(r'^instrument/(?P<id>[0-9]+)/$',
      instrument_detail.InstrumentDetail.as_view(),
      name='instrument-detail'),
