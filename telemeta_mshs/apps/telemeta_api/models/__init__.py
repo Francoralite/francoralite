@@ -26,3 +26,4 @@ from .hornbostelsachs import HornbostelSachs
 from .instrument import Instrument
 from .performance_collection_musician import PerformanceCollectionMusician
 from .performance_collection import PerformanceCollection
+from.musical_organization import MusicalOrganization
