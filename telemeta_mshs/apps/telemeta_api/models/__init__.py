@@ -28,3 +28,4 @@ from .performance_collection_musician import PerformanceCollectionMusician
 from .performance_collection import PerformanceCollection
 from .musical_organization import MusicalOrganization
 from .musical_group import MusicalGroup
+from .thematic import Thematic
