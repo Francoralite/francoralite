@@ -1,7 +1,4 @@
 language: python
     python:
       - "2.7"
-    script:
-      - pip install --no-cache-dir .[tests] --process-dependency-links
-      - pip uninstall south -y
-      - python manage.py test --settings=telemeta_mshs.settings.testing
+  
