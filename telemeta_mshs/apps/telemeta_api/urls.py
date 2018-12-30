@@ -26,7 +26,8 @@ from .views import (
     instrument,
     performance_collection,
     performance_collection_musician,
-    musical_organization
+    musical_organization,
+    musical_group
     )
 
 router = routers.SimpleRouter()
@@ -80,6 +81,9 @@ router.register(r'instrument',
 router.register(r'musical_organization',
                 musical_organization.MusicalOrganizationViewSet,
                 base_name='musicalorganization')
+router.register(r'musical_group',
+                musical_group.MusicalGroupViewSet,
+                base_name='musicalgroup')
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 base_name='performance_collection_musician')
