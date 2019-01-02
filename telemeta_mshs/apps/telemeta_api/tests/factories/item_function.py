@@ -4,20 +4,20 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 """
-MusicalGroup factory to execute tests
+ItemFunction factory to execute tests
 """
 
 import factory
-from ...models.musical_group import MusicalGroup
+from ...models.item_function import ItemFunction
 
 
-class MusicalGroupFactory(factory.django.DjangoModelFactory):
+class ItemFunctionFactory(factory.django.DjangoModelFactory):
     """
-    MusicalGroup factory
+    ItemFunction factory
     """
 
     class Meta:
-        model = MusicalGroup
+        model = ItemFunction
 
     name = factory.Faker('sentence', nb_words=3)
     notes = factory.Faker('paragraph', nb_sentences=1)

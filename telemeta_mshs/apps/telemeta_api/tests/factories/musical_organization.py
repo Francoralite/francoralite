@@ -19,5 +19,5 @@ class MusicalOrganizationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = MusicalOrganization
 
-    name = factory.Faker('word')
+    name = factory.Faker('sentence', nb_words=3)
     notes = factory.Faker('paragraph', nb_sentences=1)

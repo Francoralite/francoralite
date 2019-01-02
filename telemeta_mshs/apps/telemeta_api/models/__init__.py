@@ -30,3 +30,4 @@ from .musical_organization import MusicalOrganization
 from .musical_group import MusicalGroup
 from .thematic import Thematic
 from .dance import Dance
+from .item_function import ItemFunction

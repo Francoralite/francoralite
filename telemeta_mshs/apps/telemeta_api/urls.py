@@ -29,7 +29,8 @@ from .views import (
     musical_organization,
     musical_group,
     thematic,
-    dance
+    dance,
+    item_function
     )
 
 router = routers.SimpleRouter()
@@ -92,6 +93,9 @@ router.register(r'thematic',
 router.register(r'dance',
                 dance.DanceViewSet,
                 base_name='dance')
+router.register(r'item_function',
+                item_function.ItemFunctionViewSet,
+                base_name='itemfunction')
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 base_name='performance_collection_musician')

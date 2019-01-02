@@ -21,5 +21,5 @@ class AcquisitionModeFactory(factory.django.DjangoModelFactory):
         model = AcquisitionMode
         django_get_or_create = ('value',)
 
-    value = factory.Faker('word')
-    notes = factory.Faker('word')
+    value = factory.Faker('sentence', nb_words=3)
+    notes = factory.Faker('paragraph', nb_sentences=1)
