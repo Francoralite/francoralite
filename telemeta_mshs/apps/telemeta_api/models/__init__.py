@@ -26,3 +26,10 @@ from .hornbostelsachs import HornbostelSachs
 from .instrument import Instrument
 from .performance_collection_musician import PerformanceCollectionMusician
 from .performance_collection import PerformanceCollection
+from .musical_organization import MusicalOrganization
+from .musical_group import MusicalGroup
+from .thematic import Thematic
+from .dance import Dance
+from .item_function import ItemFunction
+from .domain_tale import DomainTale
+from .domain_music import DomainMusic

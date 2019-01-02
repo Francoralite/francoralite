@@ -14,5 +14,5 @@ class LegalRights(Enumeration):
 
     class Meta(MetaEnumeration):
         app_label = 'telemeta_api'
-        db_table = 'legal_rights'
+        db_table = 'api_legal_rights'
         verbose_name = _(u"droits d'utilisation")
