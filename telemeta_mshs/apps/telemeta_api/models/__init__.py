@@ -32,3 +32,4 @@ from .thematic import Thematic
 from .dance import Dance
 from .item_function import ItemFunction
 from .domain_tale import DomainTale
+from .domain_music import DomainMusic
