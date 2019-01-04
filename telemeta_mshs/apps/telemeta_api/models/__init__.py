@@ -34,3 +34,4 @@ from .item_function import ItemFunction
 from .domain_tale import DomainTale
 from .domain_music import DomainMusic
 from .domain_vocal import DomainVocal
+from .domain_song import DomainSong
