@@ -32,7 +32,8 @@ from .views import (
     dance,
     item_function,
     domain_tale,
-    domain_music
+    domain_music,
+    domain_vocal
     )
 
 router = routers.SimpleRouter()
@@ -104,6 +105,9 @@ router.register(r'domain_tale',
 router.register(r'domain_music',
                 domain_music.DomainMusicViewSet,
                 base_name='domainmusic')
+router.register(r'domain_vocal',
+                domain_vocal.DomainVocalViewSet,
+                base_name='domainvocal')
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 base_name='performance_collection_musician')
