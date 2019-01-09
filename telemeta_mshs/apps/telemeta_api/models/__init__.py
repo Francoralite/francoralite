@@ -10,6 +10,7 @@ from .metadata_author import MetadataAuthor
 from .publisher import Publisher
 from .recording_context import RecordingContext
 from .ext_media_item import ExtMediaItem
+from .item import Item
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer

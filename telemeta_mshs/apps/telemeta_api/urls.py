@@ -15,8 +15,7 @@ from .views import (
     location,
     location_gis,
     language,
-    media_item,
-    ext_media_item,
+    item,
     mediatype,
     publisher,
     legal_rights,
@@ -71,11 +70,8 @@ router.register(r'publisher',
                 publisher.PublisherViewSet,
                 base_name='publisher')
 router.register(r'item',
-                media_item.MediaItemViewSet,
-                base_name='MediaItem')
-router.register(r'extitem',
-                ext_media_item.ExtMediaItemViewSet,
-                base_name='ExtMediaItem')
+                item.ItemViewSet,
+                base_name='item')
 router.register(r'emit_vox',
                 emit_vox.EmitVoxViewSet,
                 base_name='emit_vox')
@@ -118,6 +114,7 @@ router.register(r'domain_song',
 
 
 # Nested routers
+# Collection's nested ------------------------------------
 Collection_router = routers.NestedSimpleRouter(
     router, r'collection', lookup='collection')
 Collection_router.register(
@@ -138,5 +135,6 @@ Performance_router.register(
     r'musician',
     performance_collection_musician.PerformanceCollectionMusicianViewSet)
 
-router.register(
-    r'extitems', ext_media_item.ExtMediaItemViewSet)
+# Item's nested ------------------------------------
+# Item_router = routers.NestedSimpleRouter(
+#     router, r'item', lookup='item')
