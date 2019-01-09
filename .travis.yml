@@ -1,4 +1,32 @@
+env:
+  - DJANGO_VERSION=1.8
+
 language: python
-    python:
-      - "2.7"
-  
+python:
+  - "2.7"
+
+sudo: required
+
+services:
+  - docker
+
+# Install Telemeta
+install:
+  - git clone https://github.com/lluc/telemeta-integration.git
+  - git submodule update --recursive --init
+  - docker-compose pull
+  - docker-compose build
+
+script:
+  - docker-compose up -d
+  - sleep 30
+  - docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip install --no-cache-dir .[tests] --process-dependency-links'
+  - docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip uninstall south -y'
+  - docker-compose exec app bash -c 'PYTEST_ADDOPTS='-k "not testByChangeTimeOn"' PYTHONPATH=telemeta_mshs/apps python manage.py test --settings=telemeta_mshs.settings.testing -v 3'
+after_script:
+  - docker-compose stop
+  - docker-compose down
+
+
+after_failure:
+  - docker-compose logs
