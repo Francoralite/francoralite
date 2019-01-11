@@ -18,6 +18,7 @@ from .views import (
     item,
     item_collector,
     item_informer,
+    item_domain_song,
     mediatype,
     publisher,
     legal_rights,
@@ -144,3 +145,5 @@ Item_router.register(
     r'collector', item_collector.ItemCollectorViewSet)
 Item_router.register(
     r'informer', item_informer.ItemInformerViewSet)
+Item_router.register(
+    r'domain_song', item_domain_song.ItemDomainSongViewSet)
