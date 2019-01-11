@@ -16,6 +16,7 @@ from .views import (
     location_gis,
     language,
     item,
+    item_collector,
     mediatype,
     publisher,
     legal_rights,
@@ -136,5 +137,7 @@ Performance_router.register(
     performance_collection_musician.PerformanceCollectionMusicianViewSet)
 
 # Item's nested ------------------------------------
-# Item_router = routers.NestedSimpleRouter(
-#     router, r'item', lookup='item')
+Item_router = routers.NestedSimpleRouter(
+     router, r'item', lookup='item')
+Item_router.register(
+    r'collector', item_collector.ItemCollectorViewSet)

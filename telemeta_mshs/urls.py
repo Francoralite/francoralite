@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^api/', include(telemeta_api_urls.router.urls)),
     url(r'^api/', include(telemeta_api_urls.Collection_router.urls)),
     url(r'^api/', include(telemeta_api_urls.Performance_router.urls)),
+    url(r'^api/', include(telemeta_api_urls.Item_router.urls)),
     url(r'^docs/', schema_view, name="docs"),
 
     # Languages
