@@ -12,6 +12,7 @@ from .recording_context import RecordingContext
 from .ext_media_item import ExtMediaItem
 from .item import Item
 from .item_collector import ItemCollector
+from .item_informer import ItemInformer
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer

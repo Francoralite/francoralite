@@ -4,29 +4,29 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 from rest_framework import serializers
+from .asymetric_related_field import AsymetricRelatedField
 
 # Add nested/related serializers
 from .item import ItemSerializer
 from .authority import AuthoritySerializer
-from .asymetric_related_field import AsymetricRelatedField
 
-from ..models.item_collector import (
-    ItemCollector as ItemCollectorModel)
+from ..models.item_informer import (
+    ItemInformer as ItemInformerModel)
 
 
-class ItemCollectorSerializer(serializers.ModelSerializer):
+class ItemInformerSerializer(serializers.ModelSerializer):
     """
-    Common serializer for all ItemCollector actions
+    Common serializer for all ItemInformer actions
     """
 
     # Fields of the serializer
     item = AsymetricRelatedField.from_serializer(
         ItemSerializer, kwargs={'required': True})
-    collector = AsymetricRelatedField.from_serializer(
+    informer = AsymetricRelatedField.from_serializer(
         AuthoritySerializer, kwargs={'required': True})
 
     class Meta:
-        model = ItemCollectorModel
+        model = ItemInformerModel
         fields = '__all__'
 
     # TODO : use it with with a complete create
@@ -34,7 +34,7 @@ class ItemCollectorSerializer(serializers.ModelSerializer):
     #     """
     #     Overriding the default create method of the Model serializer.
     #     :param validated_data: data containing all the details
-    #            of ItemCollector
+    #            of ItemInformer
     #     :return: returns a successfully created ext_collection record
     #     """
     #
@@ -47,9 +47,9 @@ class ItemCollectorSerializer(serializers.ModelSerializer):
     #     # Create an oject collector (Authority) with the data converted in dict
     #     collector = AuthorityModel.objects.create(**collector_data)
     #
-    #     # Create an oject item_collectors
-    #     item_collectors = \
-    #         ItemCollectorModel.objects.create(
+    #     # Create an oject item_informers
+    #     item_informers = \
+    #         ItemInformerModel.objects.create(
     #             collection=collection, collector=collector, **validated_data)
     #
-    #     return item_collectors
+    #     return item_informers

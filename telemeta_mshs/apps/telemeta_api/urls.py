@@ -17,6 +17,7 @@ from .views import (
     language,
     item,
     item_collector,
+    item_informer,
     mediatype,
     publisher,
     legal_rights,
@@ -141,3 +142,5 @@ Item_router = routers.NestedSimpleRouter(
      router, r'item', lookup='item')
 Item_router.register(
     r'collector', item_collector.ItemCollectorViewSet)
+Item_router.register(
+    r'informer', item_informer.ItemInformerViewSet)
