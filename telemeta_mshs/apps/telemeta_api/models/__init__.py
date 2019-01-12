@@ -2,6 +2,8 @@
 Manage these import to have models discoverables from Django makemigrations
 """
 
+from .account import Account
+from .account_manager import AccountManager
 from .authority import Authority
 from .coupe import Coupe
 from .mediatype import MediaType

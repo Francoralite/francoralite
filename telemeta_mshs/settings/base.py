@@ -3,8 +3,8 @@ import os
 import sys
 
 # Original Telemeta application settings
-# from .telemeta_settings import *  # noqa
 from telemeta_settings import *  # noqa
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'registration',
     'rest_framework',
+    'rest_framework.authtoken',
     'djcelery',
     'haystack',
     'djangobower',
@@ -65,6 +66,15 @@ USE_X_FORWARDED_HOST = True
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.LimitOffsetPagination',
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
 }
 
 ROOT_URLCONF = 'telemeta_mshs.urls'
