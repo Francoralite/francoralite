@@ -15,8 +15,10 @@ from .views import (
     location,
     location_gis,
     language,
-    media_item,
-    ext_media_item,
+    item,
+    item_collector,
+    item_informer,
+    item_domain_song,
     mediatype,
     publisher,
     legal_rights,
@@ -32,7 +34,9 @@ from .views import (
     dance,
     item_function,
     domain_tale,
-    domain_music
+    domain_music,
+    domain_vocal,
+    domain_song
     )
 
 router = routers.SimpleRouter()
@@ -69,11 +73,8 @@ router.register(r'publisher',
                 publisher.PublisherViewSet,
                 base_name='publisher')
 router.register(r'item',
-                media_item.MediaItemViewSet,
-                base_name='MediaItem')
-router.register(r'extitem',
-                ext_media_item.ExtMediaItemViewSet,
-                base_name='ExtMediaItem')
+                item.ItemViewSet,
+                base_name='item')
 router.register(r'emit_vox',
                 emit_vox.EmitVoxViewSet,
                 base_name='emit_vox')
@@ -104,12 +105,19 @@ router.register(r'domain_tale',
 router.register(r'domain_music',
                 domain_music.DomainMusicViewSet,
                 base_name='domainmusic')
+router.register(r'domain_vocal',
+                domain_vocal.DomainVocalViewSet,
+                base_name='domainvocal')
+router.register(r'domain_song',
+                domain_song.DomainSongViewSet,
+                base_name='domainsong')
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 base_name='performance_collection_musician')
 
 
 # Nested routers
+# Collection's nested ------------------------------------
 Collection_router = routers.NestedSimpleRouter(
     router, r'collection', lookup='collection')
 Collection_router.register(
@@ -130,5 +138,12 @@ Performance_router.register(
     r'musician',
     performance_collection_musician.PerformanceCollectionMusicianViewSet)
 
-router.register(
-    r'extitems', ext_media_item.ExtMediaItemViewSet)
+# Item's nested ------------------------------------
+Item_router = routers.NestedSimpleRouter(
+     router, r'item', lookup='item')
+Item_router.register(
+    r'collector', item_collector.ItemCollectorViewSet)
+Item_router.register(
+    r'informer', item_informer.ItemInformerViewSet)
+Item_router.register(
+    r'domain_song', item_domain_song.ItemDomainSongViewSet)

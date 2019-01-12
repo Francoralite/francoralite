@@ -10,6 +10,10 @@ from .metadata_author import MetadataAuthor
 from .publisher import Publisher
 from .recording_context import RecordingContext
 from .ext_media_item import ExtMediaItem
+from .item import Item
+from .item_collector import ItemCollector
+from .item_informer import ItemInformer
+from .item_domain_song import ItemDomainSong
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer
@@ -33,3 +37,5 @@ from .dance import Dance
 from .item_function import ItemFunction
 from .domain_tale import DomainTale
 from .domain_music import DomainMusic
+from .domain_vocal import DomainVocal
+from .domain_song import DomainSong
