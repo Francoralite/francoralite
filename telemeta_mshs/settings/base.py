@@ -31,7 +31,7 @@ INSTALLED_APPS = (
     'registration',
     'rest_framework',
     'rest_framework.authtoken',
-    'restdjangorestframework_simplejwt',
+    'rest_framework_simplejwt',
     'djcelery',
     'haystack',
     'djangobower',

@@ -13,7 +13,7 @@ from .apps.telemeta_api import urls as telemeta_api_urls
 from .apps.telemeta_front import urls as telemeta_front_urls
 
 # JWT
-from restframework_simplejwt.views import (
+from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
@@ -49,10 +49,10 @@ urlpatterns = [
     url(r'^docs/', schema_view, name="docs"),
 
     # JWT
-    # url(r'^api/token/$', TokenObtainPairView.as_view(),
-    #     name='token_obtain_pair'),
-    # url(r'^api/token/refresh/$', TokenRefreshView.as_view(),
-    #     name='token_refresh'),
+    url(r'^api/token/$', TokenObtainPairView.as_view(),
+        name='token_obtain_pair'),
+    url(r'^api/token/refresh/$', TokenRefreshView.as_view(),
+        name='token_refresh'),
 
     # Languages
     url(r'^i18n/', include('django.conf.urls.i18n')),
