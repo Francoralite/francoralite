@@ -38,6 +38,7 @@ setup(
     'django-jqchat',
     'django-rest-swagger==2.1.2',
     'djangorestframework==3.6.4',
+    'djangorestframework_simplejwt==3.3',
     'django-rest-auth==0.3.3',
     'drf-nested-routers==0.90.0',
     'django-filter==1.0.0',

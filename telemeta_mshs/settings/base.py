@@ -31,6 +31,7 @@ INSTALLED_APPS = (
     'registration',
     'rest_framework',
     'rest_framework.authtoken',
+    'restdjangorestframework_simplejwt',
     'djcelery',
     'haystack',
     'djangobower',
@@ -68,8 +69,7 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.LimitOffsetPagination',
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',

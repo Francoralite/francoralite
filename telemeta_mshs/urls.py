@@ -12,6 +12,12 @@ from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
 from .apps.telemeta_api import urls as telemeta_api_urls
 from .apps.telemeta_front import urls as telemeta_front_urls
 
+# JWT
+from restframework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 # Create our schema's view w/ the get_schema_view() helper method.
 #   Pass in the proper Renderers for swagger
 schema_view = get_schema_view(
@@ -41,6 +47,12 @@ urlpatterns = [
     url(r'^api/', include(telemeta_api_urls.Performance_router.urls)),
     url(r'^api/', include(telemeta_api_urls.Item_router.urls)),
     url(r'^docs/', schema_view, name="docs"),
+
+    # JWT
+    # url(r'^api/token/$', TokenObtainPairView.as_view(),
+    #     name='token_obtain_pair'),
+    # url(r'^api/token/refresh/$', TokenRefreshView.as_view(),
+    #     name='token_refresh'),
 
     # Languages
     url(r'^i18n/', include('django.conf.urls.i18n')),
