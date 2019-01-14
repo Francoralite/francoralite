@@ -1,0 +1,10 @@
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% if 'telemeta_api.change_'|add:entity in perms %}
+<a href="{% url entity|add:'-edit' id=id %}">
+<button type="button" class="btn btn-default">
+  <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+</button>
+</a>
+{% endif %}

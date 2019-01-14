@@ -1,0 +1,10 @@
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% if 'telemeta_api.add_'|add:entity in perms %}
+<a href="{% url entity|add:'-add' %}">
+<button type="button" class="btn btn-default">
+  <span class="glyphicon glyphicon-plus"></span> {% trans  word|default:"Ajouter" %}
+</button>
+</a>
+{% endif %}

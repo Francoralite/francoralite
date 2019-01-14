@@ -25,6 +25,7 @@
 {% endblock %}
 
 {% block content %}
+{% if perms.telemeta_api.add_institution %}
 <div class="container">
   {% if id %}
   <form action="/institution/edit/{{id}}" method="POST">
@@ -40,5 +41,8 @@
 </div>
 
 {% markdown_editor "id_notes" %}
+{% else %}
+{% trans "Vous ne disposez pas de droits pour cette action." %}
+{% endif %}
 
 {% endblock %}

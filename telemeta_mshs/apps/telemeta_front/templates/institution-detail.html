@@ -26,17 +26,8 @@
 {% endblock %}
 
 {% block title_buttons %}
-  <a href="{% url "fond-add" %}">
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-plus"></span>
-      {% trans "Créer un fonds" %}
-    </button>
-  </a>
-  <a href="{% url "institution-edit" id=id %}">
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-edit"></span>{% trans "Modifier" %}
-    </button>
-  </a>
+    {% include "inc/button_append.html" with entity="fond" word="Créer un fonds" %}
+    {% include "inc/button_edit.html" with entity="institution" id=id %}
 {% endblock %}
 
 {% block content %}
@@ -66,17 +57,7 @@
             {% endif %}
           <td>
             {% buttons %}
-            <a href="{% url "fond-edit" id=fond.id %}">
-                  <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-                  </button>
-            </a>
-            <button type="button" class="btn btn-default"
-                data-toggle="modal" data-target="#modalDelete"
-                data-name="{{fond.title}}"
-                data-url="{% url "fond-delete" id=fond.id %}">
-                  <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
-            </button>
+              {% include "inc/buttons_list.html" with entity="fond" id=fond.id name=fond.title %}
             {% endbuttons %}
           </td>
         </tr>

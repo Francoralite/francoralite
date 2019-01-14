@@ -27,11 +27,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-    <a href="{% url "institution-add" %}">
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}</span>
-    </button>
-    </a>
+  {% include "inc/button_append.html" with entity="institution" %}
 {% endblock %}
 
 
@@ -53,19 +49,7 @@
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
       <td>
-        {% buttons %}
-        <a href="{% url "institution-edit" id=institution.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-              </button>
-        </a>
-        <button type="button" class="btn btn-default"
-            data-toggle="modal" data-target="#modalDelete"
-            data-name="{{institution.name}}"
-            data-url="{% url "institution-delete" id=institution.id %}">
-              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
-        </button>
-        {% endbuttons %}
+        {% include "inc/buttons_list.html" with entity="institution" id=institution.id name=institution.name %}
       </td>
   </tr>
   {% endfor %}
