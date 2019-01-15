@@ -12,9 +12,11 @@ from django.core.urlresolvers import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
+from rest_framework_simplejwt.state import User
 
 from .factories.institution import InstitutionFactory
 from ..models.institution import Institution
+
 
 # Expected structure for Institution objects
 INSTITUTION_STRUCTURE = [
@@ -40,6 +42,16 @@ class TestInstitutionList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
+        u = User.objects.create_user(
+            username='testuser',
+            password='testpassword')
+        print("+++++++++++++ SetUp")
+        print(u)
+
+        response = self.client.login(username='testuser', password='12345')
+        # assert token key exists
+        print(response)
+
         InstitutionFactory.create_batch(6)
 
     def test_can_get_institution_list(self):
@@ -54,6 +66,8 @@ class TestInstitutionList(APITestCase):
 
         # API side
         response = self.client.get(url)
+        print("++++++++++ Response")
+        print(response)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -106,6 +120,8 @@ class TestInstitutionList(APITestCase):
         data = factory.build(dict, FACTORY_CLASS=InstitutionFactory)
         url = reverse('institution-list')
         response = self.client.post(url, data, format='json')
+        print("++++++++++ Response")
+        print(response)
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
