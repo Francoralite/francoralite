@@ -13,6 +13,7 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.state import User
+from django.conf import settings
 
 from .factories.institution import InstitutionFactory
 from ..models.institution import Institution
@@ -42,15 +43,27 @@ class TestInstitutionList(APITestCase):
 
         call_command('telemeta-setup-enumerations')
 
-        u = User.objects.create_user(
-            username='testuser',
-            password='testpassword')
-        print("+++++++++++++ SetUp")
-        print(u)
+        user_name = 'testuser'
+        password = 'testpassword'
+        # Create a User
+        User.objects.create_user(
+            username=user_name,
+            password=password)
 
-        response = self.client.login(username='testuser', password='12345')
-        # assert token key exists
-        print(response)
+        self.client.login(
+            username=user_name, password=password)
+        # User data
+        data = {}
+        data["username"] = user_name
+        data["password"] = password
+
+        # Create token
+        url = settings.FRONT_HOST_URL + "/api/token/"
+        response = self.client.post(url, data)
+        self.token = response.data["access"]
+        self.headers = {}
+        self.headers['Authorization'] = 'Bearer ' + self.token
+        print(self.headers['Authorization'])
 
         InstitutionFactory.create_batch(6)
 
@@ -118,9 +131,12 @@ class TestInstitutionList(APITestCase):
         """
 
         data = factory.build(dict, FACTORY_CLASS=InstitutionFactory)
+
         url = reverse('institution-list')
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(
+            url, data, headers=self.headers, format='json')
         print("++++++++++ Response")
+        print(response.status_code)
         print(response)
 
         # Check only expected attributes returned
