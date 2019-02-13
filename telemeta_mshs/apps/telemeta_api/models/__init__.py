@@ -16,6 +16,7 @@ from .item_informer import ItemInformer
 from .item_domain_song import ItemDomainSong
 from .item_domain_music import ItemDomainMusic
 from .item_domain_vocal import ItemDomainVocal
+from .item_domain_tale import ItemDomainTale
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer

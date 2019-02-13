@@ -21,6 +21,7 @@ from .views import (
     item_domain_song,
     item_domain_music,
     item_domain_vocal,
+    item_domain_tale,
     mediatype,
     publisher,
     legal_rights,
@@ -153,3 +154,5 @@ Item_router.register(
     r'domain_music', item_domain_music.ItemDomainMusicViewSet)
 Item_router.register(
     r'domain_vocal', item_domain_vocal.ItemDomainVocalViewSet)
+Item_router.register(
+    r'domain_tale', item_domain_tale.ItemDomainTaleViewSet)
