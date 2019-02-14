@@ -37,7 +37,6 @@ from .musical_organization import MusicalOrganization
 from .musical_group import MusicalGroup
 from .thematic import Thematic
 from .dance import Dance
-from .item_function import ItemFunction
 from .domain_tale import DomainTale
 from .domain_music import DomainMusic
 from .domain_vocal import DomainVocal

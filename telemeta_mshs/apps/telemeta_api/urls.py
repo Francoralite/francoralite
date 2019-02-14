@@ -35,7 +35,6 @@ from .views import (
     musical_group,
     thematic,
     dance,
-    item_function,
     domain_tale,
     domain_music,
     domain_vocal,
@@ -100,9 +99,6 @@ router.register(r'thematic',
 router.register(r'dance',
                 dance.DanceViewSet,
                 base_name='dance')
-router.register(r'item_function',
-                item_function.ItemFunctionViewSet,
-                base_name='itemfunction')
 router.register(r'domain_tale',
                 domain_tale.DomainTaleViewSet,
                 base_name='domaintale')
