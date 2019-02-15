@@ -24,6 +24,7 @@ from .views import (
     item_domain_tale,
     item_usefulness,
     item_dance,
+    item_thematic,
     mediatype,
     publisher,
     legal_rights,
@@ -162,3 +163,5 @@ Item_router.register(
     r'usefulness', item_usefulness.ItemUsefulnessViewSet)
 Item_router.register(
     r'dance', item_dance.ItemDanceViewSet)
+Item_router.register(
+    r'thematic', item_thematic.ItemThematicViewSet)
