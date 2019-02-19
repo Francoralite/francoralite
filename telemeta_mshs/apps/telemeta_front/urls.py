@@ -28,6 +28,9 @@ from .views.enum import (
     musical_organization, musical_organization_edit,
     musical_organization_delete, musical_organization_detail,
     musical_organization_add,
+    musical_group, musical_group_edit,
+    musical_group_delete, musical_group_detail,
+    musical_group_add,
 )
 
 
@@ -195,4 +198,21 @@ urlpatterns = [
     url(r'^musical_organization/delete/(?P<id>[0-9]+)$',
         musical_organization_delete.MusicalOrganizationDelete.as_view(),
         name='musical_organization-delete'),
+
+    # Musical Group
+    url(r'^musical_group/$',
+        musical_group.MusicalGroupView.as_view(),
+        name="musical_group"),
+    url(r'^musical_group/add/$',
+        musical_group_add.MusicalGroupAdd.as_view(),
+        name='musical_group-add'),
+    url(r'^musical_group/(?P<id>[0-9]+)/$',
+        musical_group_detail.MusicalGroupDetail.as_view(),
+        name='musical_group-detail'),
+    url(r'^musical_group/edit/(?P<id>[0-9]+)$',
+         musical_group_edit.MusicalGroupEdit.as_view(),
+         name='musical_group-edit'),
+    url(r'^musical_group/delete/(?P<id>[0-9]+)$',
+        musical_group_delete.MusicalGroupDelete.as_view(),
+        name='musical_group-delete'),
 ]
