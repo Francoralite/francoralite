@@ -55,8 +55,19 @@
                                 {% trans "Enumérations" %}</a>
                                 <ul>
                                   <li>
+                                    <a href="{% url "musical_group" %}">{% trans "Formation (musicale)" %}</a>
+                                  </li>
+                                  <li>
+                                  <li>
+                                    <a href="{% url "domain_song" %}">{% trans "Genre de chanson" %}</a>
+                                  </li>
+                                  <li>
                                     <a href="{% url "instrument" %}">{% trans "Voix/Intruments" %}</a>
                                   </li>
+                                  <li>
+                                    <a href="{% url "musical_organization" %}">{% trans "Organisation musicale" %}</a>
+                                  </li>
+
                                 </ul>
                             </li>
 

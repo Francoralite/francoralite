@@ -6,18 +6,18 @@
 
 from rest_framework import serializers
 
-from ..models.item_function import (
-    ItemFunction as ItemFunctionModel)
+from ..models.usefulness import (
+    Usefulness as UsefulnessModel)
 
 
-class ItemFunctionSerializer(serializers.ModelSerializer):
+class UsefulnessSerializer(serializers.ModelSerializer):
     """
-    Common serializer for all ItemFunction actions
+    Common serializer for all Usefulness actions
     """
 
     name = serializers.CharField(required=True)
     notes = serializers.CharField(required=False)
 
     class Meta:
-        model = ItemFunctionModel
+        model = UsefulnessModel
         fields = '__all__'

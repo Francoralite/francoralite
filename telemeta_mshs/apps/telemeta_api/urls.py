@@ -19,6 +19,14 @@ from .views import (
     item_collector,
     item_informer,
     item_domain_song,
+    item_domain_music,
+    item_domain_vocal,
+    item_domain_tale,
+    item_usefulness,
+    item_dance,
+    item_thematic,
+    item_musical_organization,
+    item_musical_group,
     mediatype,
     publisher,
     legal_rights,
@@ -32,11 +40,11 @@ from .views import (
     musical_group,
     thematic,
     dance,
-    item_function,
     domain_tale,
     domain_music,
     domain_vocal,
-    domain_song
+    domain_song,
+    usefulness,
     )
 
 router = routers.SimpleRouter()
@@ -96,9 +104,6 @@ router.register(r'thematic',
 router.register(r'dance',
                 dance.DanceViewSet,
                 base_name='dance')
-router.register(r'item_function',
-                item_function.ItemFunctionViewSet,
-                base_name='itemfunction')
 router.register(r'domain_tale',
                 domain_tale.DomainTaleViewSet,
                 base_name='domaintale')
@@ -111,6 +116,9 @@ router.register(r'domain_vocal',
 router.register(r'domain_song',
                 domain_song.DomainSongViewSet,
                 base_name='domainsong')
+router.register(r'usefulness',
+                usefulness.UsefulnessViewSet,
+                base_name='usefulness')
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 base_name='performance_collection_musician')
@@ -147,3 +155,21 @@ Item_router.register(
     r'informer', item_informer.ItemInformerViewSet)
 Item_router.register(
     r'domain_song', item_domain_song.ItemDomainSongViewSet)
+Item_router.register(
+    r'domain_music', item_domain_music.ItemDomainMusicViewSet)
+Item_router.register(
+    r'domain_vocal', item_domain_vocal.ItemDomainVocalViewSet)
+Item_router.register(
+    r'domain_tale', item_domain_tale.ItemDomainTaleViewSet)
+Item_router.register(
+    r'usefulness', item_usefulness.ItemUsefulnessViewSet)
+Item_router.register(
+    r'dance', item_dance.ItemDanceViewSet)
+Item_router.register(
+    r'thematic', item_thematic.ItemThematicViewSet)
+Item_router.register(
+    r'musical_organization',
+    item_musical_organization.ItemMusicalOrganizationViewSet)
+Item_router.register(
+    r'musical_group',
+    item_musical_group.ItemMusicalGroupViewSet)

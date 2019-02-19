@@ -22,7 +22,15 @@ from .views import (
 
 from .views.enum import (
     instrument, instrument_edit, instrument_delete, instrument_detail,
-    instrument_add
+    instrument_add,
+    domain_song, domain_song_edit, domain_song_delete, domain_song_detail,
+    domain_song_add,
+    musical_organization, musical_organization_edit,
+    musical_organization_delete, musical_organization_detail,
+    musical_organization_add,
+    musical_group, musical_group_edit,
+    musical_group_delete, musical_group_detail,
+    musical_group_add,
 )
 
 
@@ -157,4 +165,54 @@ urlpatterns = [
     url(r'^instrument/delete/(?P<id>[0-9]+)$',
         instrument_delete.InstrumentDelete.as_view(),
         name='instrument-delete'),
+
+    # Domain Song
+    url(r'^domain_song/$', domain_song.DomainSongView.as_view(),
+        name="domain_song"),
+    url(r'^domain_song/add/$',
+     domain_song_add.DomainSongAdd.as_view(),
+     name='domain_song-add'),
+    url(r'^domain_song/(?P<id>[0-9]+)/$',
+     domain_song_detail.DomainSongDetail.as_view(),
+     name='domain_song-detail'),
+    url(r'^domain_song/edit/(?P<id>[0-9]+)$',
+         domain_song_edit.DomainSongEdit.as_view(),
+         name='domain_song-edit'),
+    url(r'^domain_song/delete/(?P<id>[0-9]+)$',
+        domain_song_delete.DomainSongDelete.as_view(),
+        name='domain_song-delete'),
+
+    # Musical Organization
+    url(r'^musical_organization/$',
+        musical_organization.MusicalOrganizationView.as_view(),
+        name="musical_organization"),
+    url(r'^musical_organization/add/$',
+        musical_organization_add.MusicalOrganizationAdd.as_view(),
+        name='musical_organization-add'),
+    url(r'^musical_organization/(?P<id>[0-9]+)/$',
+        musical_organization_detail.MusicalOrganizationDetail.as_view(),
+        name='musical_organization-detail'),
+    url(r'^musical_organization/edit/(?P<id>[0-9]+)$',
+         musical_organization_edit.MusicalOrganizationEdit.as_view(),
+         name='musical_organization-edit'),
+    url(r'^musical_organization/delete/(?P<id>[0-9]+)$',
+        musical_organization_delete.MusicalOrganizationDelete.as_view(),
+        name='musical_organization-delete'),
+
+    # Musical Group
+    url(r'^musical_group/$',
+        musical_group.MusicalGroupView.as_view(),
+        name="musical_group"),
+    url(r'^musical_group/add/$',
+        musical_group_add.MusicalGroupAdd.as_view(),
+        name='musical_group-add'),
+    url(r'^musical_group/(?P<id>[0-9]+)/$',
+        musical_group_detail.MusicalGroupDetail.as_view(),
+        name='musical_group-detail'),
+    url(r'^musical_group/edit/(?P<id>[0-9]+)$',
+         musical_group_edit.MusicalGroupEdit.as_view(),
+         name='musical_group-edit'),
+    url(r'^musical_group/delete/(?P<id>[0-9]+)$',
+        musical_group_delete.MusicalGroupDelete.as_view(),
+        name='musical_group-delete'),
 ]

@@ -9,9 +9,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class ItemFunction(models.Model):
+class Usefulness(models.Model):
     # Description of the table
-    "Table of function for the items"
+    "Usefulness is used to specify the utility of an item. E.g.: labor's song"
 
     # List of the fields
     name = models.CharField(_('Nom'), unique=True, max_length=255)
@@ -19,8 +19,8 @@ class ItemFunction(models.Model):
 
     class Meta:
         app_label = 'telemeta_api'
-        db_table = 'api_item_function'
-        verbose_name_plural = _('item_functions')
+        db_table = 'api_usefulness'
+        verbose_name_plural = _('usefulnesses')
         ordering = ['name']
 
     def __unicode__(self):

@@ -1,0 +1,86 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title %}
+<div class="col-md-4">
+  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
+    style="vertical-align:middle" />
+    <h1>{% trans "Genre de chanson" %}</h1>
+</div>
+<div class="col-md-8">
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
+{% endblock %}
+
+{% block title_buttons %}
+  <a href="{% url "domain_song-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un genre de chanson" %}
+    </button>
+  </a>
+{% endblock %}
+
+
+</div>
+{% block content %}
+<div class="fullpage">
+{% if domain_songs|length > 0 %}
+  <!-- Table to display the domain_songs --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+  </tr>
+  {% for domain_song in domain_songs %}
+  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td class="highlight">
+          <a href="/domain_song/{{domain_song.id }}/">
+            {{ domain_song.name|upper }}</a>
+      </td>
+      <td>
+        {% if domain_song.notes %}
+          {{ domain_song.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      <td>
+        {% buttons %}
+        <a href="{% url "domain_song-edit" id=domain_song.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{domain_song.title}}"
+            data-url="{% url "domain_song-delete" id=domain_song.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endbuttons %}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% modal_delete %}
+
+{% else %}
+    <p>{% trans "Il n'y a pas de genre de chanson" %}</p>
+{% endif %}
+</div>
+{% endblock %}

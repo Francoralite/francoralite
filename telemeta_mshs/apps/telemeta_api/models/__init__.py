@@ -14,6 +14,14 @@ from .item import Item
 from .item_collector import ItemCollector
 from .item_informer import ItemInformer
 from .item_domain_song import ItemDomainSong
+from .item_domain_music import ItemDomainMusic
+from .item_domain_vocal import ItemDomainVocal
+from .item_domain_tale import ItemDomainTale
+from .item_usefulness import ItemUsefulness
+from .item_dance import ItemDance
+from .item_thematic import ItemThematic
+from .item_musical_organization import ItemMusicalOrganization
+from .item_musical_group import ItemMusicalGroup
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer
@@ -34,8 +42,8 @@ from .musical_organization import MusicalOrganization
 from .musical_group import MusicalGroup
 from .thematic import Thematic
 from .dance import Dance
-from .item_function import ItemFunction
 from .domain_tale import DomainTale
 from .domain_music import DomainMusic
 from .domain_vocal import DomainVocal
 from .domain_song import DomainSong
+from .usefulness import Usefulness

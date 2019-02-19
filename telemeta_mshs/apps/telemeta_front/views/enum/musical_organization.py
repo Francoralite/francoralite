@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
+
+
+from django.views.generic.base import TemplateView
+import requests
+from settings import FRONT_HOST_URL
+from telemeta_front.forms.musical_organization import MusicalOrganizationForm
+
+
+class MusicalOrganizationView(TemplateView):
+    template_name = "../templates/enum/musical_organization.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            MusicalOrganizationView, self).get_context_data(**kwargs)
+        context['musical_organizations'] = requests.get(
+            FRONT_HOST_URL + '/api/musical_organization/').json
+        context['form'] = MusicalOrganizationForm
+        return context

@@ -4,20 +4,20 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 """
-ItemFunction factory to execute tests
+Usefulness factory to execute tests
 """
 
 import factory
-from ...models.item_function import ItemFunction
+from ...models.usefulness import Usefulness
 
 
-class ItemFunctionFactory(factory.django.DjangoModelFactory):
+class UsefulnessFactory(factory.django.DjangoModelFactory):
     """
-    ItemFunction factory
+    Usefulness factory
     """
 
     class Meta:
-        model = ItemFunction
+        model = Usefulness
 
     name = factory.Faker('sentence', nb_words=3)
     notes = factory.Faker('paragraph', nb_sentences=1)

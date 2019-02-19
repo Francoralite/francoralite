@@ -1,0 +1,46 @@
+
+{% extends "enum/musical_organization.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Organisation Musicale" %}
+    {% if musical_organization %}
+     : {{ musical_organization.name }}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  <a href="{% url "musical_organization-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </button>
+  </a>
+{% endblock %}
+
+{% block content %}
+{% if musical_organization %}
+
+{% field_data form.name.label|safe musical_organization.name|safe %}
+{% field_data form.notes.label|safe musical_organization.notes|markdown|safe %}
+
+
+{% else %}
+  <p>{% trans "Cette organisation musicale n'existe pas." %}</p>
+{% endif %}
+{% endblock %}

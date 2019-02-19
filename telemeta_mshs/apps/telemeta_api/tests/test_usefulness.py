@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-ItemFunction tests
+Usefulness tests
 """
 
 import factory
@@ -19,25 +19,25 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.item_function import ItemFunctionFactory
-from ..models.item_function import ItemFunction
+from .factories.usefulness import UsefulnessFactory
+from ..models.usefulness import Usefulness
 
-# Expected structure for Item_function objects
-ITEMFUNCTION_STRUCTURE = [
+# Expected structure for Usefulness objects
+USEFULNESS_STRUCTURE = [
     ('id', int),
     ('name', str),
     ('notes', str),
 ]
 
 # Expected keys for MODEL objects
-ITEMFUNCTION_FIELDS = sorted(
-    [item[0] for item in ITEMFUNCTION_STRUCTURE])
+USEFULNESS_FIELDS = sorted(
+    [item[0] for item in USEFULNESS_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestItemFunctionList(APITestCase):
+class TestUsefulnessList(APITestCase):
     """
-    This class manage all ItemFunction tests
+    This class manage all Usefulness tests
     """
 
     def setUp(self):
@@ -48,17 +48,17 @@ class TestItemFunctionList(APITestCase):
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        ItemFunctionFactory.create_batch(6)
+        UsefulnessFactory.create_batch(6)
 
-    def test_can_get_item_function_list(self):
+    def test_can_get_usefulness_list(self):
         """
-        Ensure ItemFunction objects exists
+        Ensure Usefulness objects exists
         """
-        url = reverse('itemfunction-list')
+        url = reverse('usefulness-list')
 
         # ORM side
-        item_functions = ItemFunction.objects.all()
-        self.assertEqual(len(item_functions), 6)
+        usefulnesss = Usefulness.objects.all()
+        self.assertEqual(len(usefulnesss), 6)
 
         # API side
         response = self.client.get(url)
@@ -67,61 +67,61 @@ class TestItemFunctionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
 
-    @parameterized.expand(ITEMFUNCTION_STRUCTURE)
-    def test_has_valid_item_function_values(
+    @parameterized.expand(USEFULNESS_STRUCTURE)
+    def test_has_valid_usefulness_values(
             self, attribute, attribute_type):
         """
-        Ensure ItemFunction objects have valid values
+        Ensure Usefulness objects have valid values
         """
 
-        url = reverse('itemfunction-list')
+        url = reverse('usefulness-list')
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        for item_function in response.data:
+        for usefulness in response.data:
             # Check only expected attributes returned
             self.assertEqual(
                 sorted(
-                    item_function.keys()), ITEMFUNCTION_FIELDS)
+                    usefulness.keys()), USEFULNESS_FIELDS)
 
             # Ensure type of each attribute
             if attribute_type == str:
                 if sys.version_info.major == 2:
                     self.assertIsInstance(
-                        item_function[attribute], basestring)
+                        usefulness[attribute], basestring)
                 else:
                     self.assertIsInstance(
-                        item_function[attribute], str)
+                        usefulness[attribute], str)
             else:
                 self.assertIsInstance(
-                    item_function[attribute], attribute_type)
-            self.assertIsNot(item_function[attribute], '')
+                    usefulness[attribute], attribute_type)
+            self.assertIsNot(usefulness[attribute], '')
 
-    def test_get_an_item_function(self):
+    def test_get_an_usefulness(self):
         """
-        Ensure we can get an ItemFunction objects
+        Ensure we can get an Usefulness objects
         using an existing id
         """
 
-        item = ItemFunction.objects.first()
-        url = reverse('itemfunction-detail',
+        item = Usefulness.objects.first()
+        url = reverse('usefulness-detail',
                       kwargs={'pk': item.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
-    def test_create_an_item_function(self):
+    def test_create_an_usefulness(self):
         """
-        Ensure we can create an ItemFunction object
+        Ensure we can create an Usefulness object
         """
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=ItemFunctionFactory)
-        url = reverse('itemfunction-list')
+            FACTORY_CLASS=UsefulnessFactory)
+        url = reverse('usefulness-list')
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -129,10 +129,10 @@ class TestItemFunctionList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            ITEMFUNCTION_FIELDS)
+            USEFULNESS_FIELDS)
 
         url = reverse(
-            'itemfunction-detail',
+            'usefulness-detail',
             kwargs={'pk': response.data['id']}
         )
         response_get = self.client.get(url)
@@ -140,23 +140,23 @@ class TestItemFunctionList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-    def test_update_an_item_function(self):
+    def test_update_an_usefulness(self):
         """
-        Ensure we can update an ItemFunction object
+        Ensure we can update an Usefulness object
         """
 
-        item = ItemFunction.objects.first()
+        item = Usefulness.objects.first()
         self.assertNotEqual(item.name, 'foobar_test_put')
 
         # Get existing object from API
         url_get = reverse(
-            'itemfunction-detail',
+            'usefulness-detail',
             kwargs={'pk': item.id})
         data = self.client.get(url_get).data
 
         data['name'] = 'foobar_test_put'
         url = reverse(
-            'itemfunction-detail',
+            'usefulness-detail',
             kwargs={'pk': item.id})
         response = self.client.put(url, data, format='json')
 
@@ -165,22 +165,22 @@ class TestItemFunctionList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            ITEMFUNCTION_FIELDS)
+            USEFULNESS_FIELDS)
 
         self.assertEqual(response.data['name'], 'foobar_test_put')
 
-    def test_patch_an_item_function(self):
+    def test_patch_an_usefulness(self):
         """
-        Ensure we can patch an ItemFunction object
+        Ensure we can patch an Usefulness object
         """
 
-        item = ItemFunction.objects.first()
+        item = Usefulness.objects.first()
 
         self.assertNotEqual(item.name, 'foobar_test_patch')
 
         data = {'name': 'foobar_test_patch'}
         url = reverse(
-            'itemfunction-detail',
+            'usefulness-detail',
             kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='json')
 
@@ -189,28 +189,28 @@ class TestItemFunctionList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            ITEMFUNCTION_FIELDS)
+            USEFULNESS_FIELDS)
 
         self.assertEqual(response.data['name'], 'foobar_test_patch')
 
-    def test_delete_an_item_function(self):
+    def test_delete_an_usefulness(self):
         """
-        Ensure we can delete an ItemFunction object
+        Ensure we can delete an Usefulness object
         """
 
-        item = ItemFunction.objects.first()
+        item = Usefulness.objects.first()
 
         # Delete this object
         url = reverse(
-            'itemfunction-detail',
+            'usefulness-detail',
             kwargs={'pk': item.id})
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        # Ensure ItemFunction removed
+        # Ensure Usefulness removed
         url_get = reverse(
-            'itemfunction-detail',
+            'usefulness-detail',
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
