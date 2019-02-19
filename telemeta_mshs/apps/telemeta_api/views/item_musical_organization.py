@@ -6,23 +6,24 @@
 
 from django.db.models.query import QuerySet
 from rest_framework import viewsets
-from ..models.item_thematic import (
-        ItemThematic as ItemThematicModel)
-from ..serializers.item_thematic import ItemThematicSerializer
+from ..models.item_musical_organization import (
+        ItemMusicalOrganization as ItemMusicalOrganizationModel)
+from ..serializers.item_musical_organization import (
+    ItemMusicalOrganizationSerializer)
 
 
-class ItemThematicViewSet(viewsets.ModelViewSet):
+class ItemMusicalOrganizationViewSet(viewsets.ModelViewSet):
     """
-    ItemThematic management
+    ItemMusicalOrganization management
     """
 
-    queryset = ItemThematicModel.objects.all()
-    serializer_class = ItemThematicSerializer
+    queryset = ItemMusicalOrganizationModel.objects.all()
+    serializer_class = ItemMusicalOrganizationSerializer
 
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):
             # Ensure queryset is re-evaluated on each request.
-            queryset = ItemThematicModel.objects.filter(
+            queryset = ItemMusicalOrganizationModel.objects.filter(
                item_id=self.kwargs['item_pk'])
         return queryset
