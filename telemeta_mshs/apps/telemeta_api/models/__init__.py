@@ -21,6 +21,7 @@ from .item_usefulness import ItemUsefulness
 from .item_dance import ItemDance
 from .item_thematic import ItemThematic
 from .item_musical_organization import ItemMusicalOrganization
+from .item_musical_group import ItemMusicalGroup
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer

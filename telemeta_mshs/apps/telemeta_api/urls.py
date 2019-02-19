@@ -26,6 +26,7 @@ from .views import (
     item_dance,
     item_thematic,
     item_musical_organization,
+    item_musical_group,
     mediatype,
     publisher,
     legal_rights,
@@ -169,3 +170,6 @@ Item_router.register(
 Item_router.register(
     r'musical_organization',
     item_musical_organization.ItemMusicalOrganizationViewSet)
+Item_router.register(
+    r'musical_group',
+    item_musical_group.ItemMusicalGroupViewSet)
