@@ -1,0 +1,94 @@
+
+{% extends "item.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Item" %}
+    {% if item %}
+     : {{ item.code }} - {{  item.title}}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  <a href="{% url "item-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </button>
+  </a>
+{% endblock %}
+
+{% block content %}
+{% if item %}
+
+<div class="container_line">
+  <span class="container_data">
+    <span class="libelle"> {{form.collection.label|safe}}</span>
+    <span class="donnee">
+      <a href="{% url "collection-detail" id=item.collection.id %}">
+        {{item.collection.title|safe}}
+      </a>
+    </span>
+  </span>
+  {% field_data form.code_partner.label|safe item.code_partner|safe %}
+  {% field_data form.code.label|safe item.code|upper|safe %}
+  {% field_data form.title.label|safe item.title|safe %}
+  {% field_data form.public_access.label|safe item.public_access|safe %}
+</div>
+
+<div class="container_line">
+  {% field_data form.descriptions.label|safe item.descriptions|markdown|safe %}
+</div>
+
+<div class="block-grey">
+  <h2>{% trans "Période" %}</h2>
+  {% trans "Années d'enregistrement" %}
+  <div class="container_line">
+    <span class="container_data">
+      <span class="libelle"> {% trans 'Depuis' %}</span>
+      <span class="donnee"></span>
+    </span>
+    <span class="container_data">
+      <span class="libelle"> {% trans "Jusqu\'à" %}</span>
+      <span class="donnee"></span>
+    </span>
+    <span class="container_data">
+      <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
+      <span class="donnee"></span>
+    </span>
+  </div>
+</div>
+
+<div class="block-grey">
+  <h2>{% trans "Personnes" %}</h2>
+  <span class="container_data">
+    <span class="libelle"> {% trans 'Collecteurs' %}</span>
+    <span class="donnee"></span>
+  </span>
+  <span class="container_data">
+    <span class="libelle"> {% trans 'Informateurs' %}</span>
+    <span class="donnee"></span>
+  </span>
+</div>
+
+
+{% else %}
+  <p>{% trans "Ce item n'existe pas." %}</p>
+{% endif %}
+{% endblock %}
+

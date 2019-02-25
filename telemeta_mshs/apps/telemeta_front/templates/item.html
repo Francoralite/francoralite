@@ -1,0 +1,77 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title %}
+<div class="col-md-4">
+  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
+    style="vertical-align:middle" />
+    <h1>{% trans "Items" %}</h1>
+</div>
+<div class="col-md-8">
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+
+</div>
+{% block content %}
+<div class="fullpage">
+{% if items|length > 0 %}
+  <!-- Table to display the items --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+  </tr>
+  {% for item in items %}
+  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td class="highlight">
+          <a href="/item/{{item.id }}/">
+            {{ item.code|upper }}</a>
+      </td>
+      <!--  FIXIT : affichage des champs -->
+      <td>{{ item.title|safe }}</td>
+      <td>
+        {% buttons %}
+        <a href="{% url "item-edit" id=item.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{item.title}}"
+            data-url="{% url "item-delete" id=item.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endbuttons %}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% modal_delete %}
+
+{% else %}
+    <p>{% trans "Il n'y a pas de items" %}</p>
+{% endif %}
+</div>
+{% endblock %}
