@@ -6,6 +6,7 @@
 
 
 from rest_framework import viewsets
+from rest_framework.parsers import MultiPartParser
 from ..models.item import Item as ItemModel
 from ..serializers.item import ItemSerializer
 
@@ -14,6 +15,6 @@ class ItemViewSet(viewsets.ModelViewSet):
     """
     Item management
     """
-
+    parser_classes = (MultiPartParser,)
     queryset = ItemModel.objects.all()
     serializer_class = ItemSerializer

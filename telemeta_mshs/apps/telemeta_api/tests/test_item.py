@@ -24,6 +24,7 @@ from ..models.item import Item
 from ..models.collection import Collection
 from ..models.mediatype import MediaType
 from ..models.coupe import Coupe
+from .fake_data.fake_sound import create_tmp_sound
 
 # Expected structure for Item objects
 # FIXIT ----
@@ -41,6 +42,7 @@ ITEM_STRUCTURE = [
     ('date_edit', str),
     ('media_type', dict),
     ('approx_duration', str),
+    ('file', str),
     ('timbre', str),
     ('timbre_ref', str),
     ('melody', str),
@@ -135,6 +137,14 @@ class TestItemList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
+    def _create_tmp_file(self):
+        file_name = '/tmp/test_upload.txt'
+        f = open(file_name, 'w')
+        f.write('test123\n')
+        f.close()
+        f = open(file_name, 'r')
+        return f
+
     def test_create_an_item(self):
         """
         Ensure we can create an Item object
@@ -156,8 +166,11 @@ class TestItemList(APITestCase):
         # Write the Coupe object in the item data object.
         data['coupe'] = coupe.id
 
+        # Create a fake file.
+        data['file'] = create_tmp_sound()
+
         url = reverse('item-list')
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(url, data, format='multipart')
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -193,11 +206,13 @@ class TestItemList(APITestCase):
         data['collection'] = data['collection']['id']
         data['media_type'] = data['media_type']['id']
         data['coupe'] = data['coupe']['id']
+        # Create a fake file.
+        data['file'] = create_tmp_sound()
 
         url = reverse(
             'item-detail',
             kwargs={'pk': item.id})
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(url, data, format='multipart')
 
         # Ensure new name returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -219,7 +234,7 @@ class TestItemList(APITestCase):
         url = reverse(
             'item-detail',
             kwargs={'pk': item.id})
-        response = self.client.patch(url, data, format='json')
+        response = self.client.patch(url, data, format='multipart')
 
         # Ensure new name returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)

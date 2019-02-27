@@ -37,6 +37,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
     date_edit = factory.LazyFunction(datetime.datetime.now)
     media_type = factory.SubFactory(MediaTypeFactory)
     approx_duration = factory.Faker('time_delta')
+    file = factory.Faker('file_name', extension="mp3")
 
     # Description -----------------------
     timbre = factory.Faker('word')
