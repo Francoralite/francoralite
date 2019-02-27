@@ -65,5 +65,9 @@
   </form>
 </div>
 
-{{ form.media.js }}
+{% block player %}
+  {{ block.super }}
 {% endblock %}
+
+{{ form.media.js }}
+{% endblock content %}
