@@ -4,6 +4,8 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
+import os
+import mimetypes
 
 from django.db import models
 from django.core.validators import RegexValidator
@@ -107,6 +109,27 @@ class Item(models.Model):
         db_table = 'item'
         verbose_name_plural = _('items')
         ordering = ['code', 'title']
+
+    @property
+    def public_id(self):
+        if self.code:
+            return self.code
+        return str(self.id)
+
+    @property
+    def mime_type(self):
+        if not self.mimetype:
+            if self.file:
+                if os.path.exists(self.file.path):
+                    self.mimetype = mimetypes.guess_type(self.file.path)[0]
+                    self.save()
+                    return self.mimetype
+                else:
+                    return 'none'
+            else:
+                return 'none'
+        else:
+            return _('none')
 
     def __unicode__(self):
         # FIXIT------------------

@@ -265,3 +265,25 @@ class TestItemList(APITestCase):
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_timeside_analyze(self):
+        """
+        Ensure we can retrieve analysis data of an item's sound
+        """
+
+        # Retrieve a valid item's code
+        item = Item.objects.first()
+        code = item.code
+
+        # Retrieve some analysis data
+        duration = str(item.approx_duration)
+
+        # The code is right --> there is some data
+        response = self.client.get('/api/timeside/' + code + '/analyze/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['duration'], duration)
+
+        # The code is wrong/not-present --> there is no data
+        response = self.client.get('/api/timeside/1/analyze/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
