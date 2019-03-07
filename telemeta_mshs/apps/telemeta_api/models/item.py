@@ -134,3 +134,20 @@ class Item(models.Model):
     def __unicode__(self):
         # FIXIT------------------
         return self.title
+
+    def get_source(self):
+        source = None
+        source_type = None
+        if self.file and os.path.exists(self.file.path):
+            source = self.file.path
+            source_type = 'file'
+        elif self.url:
+            source = self.url
+            source_type = 'url'
+        return source, source_type
+
+    def size(self):
+        if self.file and os.path.exists(self.file.path):
+            return self.file.size
+        else:
+            return 0

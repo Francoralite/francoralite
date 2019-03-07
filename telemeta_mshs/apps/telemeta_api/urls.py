@@ -46,7 +46,7 @@ from .views import (
     domain_vocal,
     domain_song,
     usefulness,
-    timeside,
+    timeside_item,
     )
 
 router = routers.SimpleRouter()
@@ -126,7 +126,7 @@ router.register(r'usefulness',
 #                 base_name='performance_collection_musician')
 
 router.register(r'timeside',
-                timeside.TimeSideViewSet,
+                timeside_item.TimeSideViewSet,
                 base_name='timeside')
 
 # Nested routers

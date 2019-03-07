@@ -188,6 +188,8 @@ class TestItemList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
+        # Test if related ItemAnalyzis are presents
+
     def test_update_an_item(self):
         """
         Ensure we can update an Item object
@@ -276,11 +278,13 @@ class TestItemList(APITestCase):
         code = item.code
 
         # Retrieve some analysis data
+        # FIXIT ------------------------
         duration = str(item.approx_duration)
 
         # The code is right --> there is some data
         response = self.client.get('/api/timeside/' + code + '/analyze/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print(str(response.data))
         self.assertEqual(response.data['duration'], duration)
 
         # The code is wrong/not-present --> there is no data
