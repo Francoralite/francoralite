@@ -56,7 +56,7 @@ ITEM_STRUCTURE = [
     ('incipit', str),
     ('refrain', str),
     ('jingle', str),
-    ('coupe', dict)
+    ('coupe', dict),
 ]
 
 # Expected keys for MODEL objects

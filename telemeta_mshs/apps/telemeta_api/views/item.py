@@ -153,27 +153,27 @@ class ItemViewSet(viewsets.ModelViewSet):
     """
     Override the create method, to create itemanalysis records
     """
-    def perform_create(self, serializer):
-        # file_obj = self.validated_data['file']
-        request = (serializer.context['request'])
-        file_obj = request.FILES['file']
-
-        instance = serializer.save()
-        raise Exception(instance)
-        serializer.data['file'].save(file_obj.name, file_obj)
-
-        # Test if there is a file
-        if file_obj:
-
-            # initialyze parameters
-            encoders_id = ['mp3_encoder']
-            mime_type = ''
-
-            # Initialize lists
-            analyzers_sub = []
-            encoders_sub = []
-
-            self.analyze(request)
-
-
-        self.mime_type = mime_type
+    # def perform_create(self, serializer):
+    #     # file_obj = self.validated_data['file']
+    #     request = (serializer.context['request'])
+    #     file_obj = request.FILES['file']
+    #
+    #     instance = serializer.save()
+    #     raise Exception(instance)
+    #     serializer.data['file'].save(file_obj.name, file_obj)
+    #
+    #     # Test if there is a file
+    #     if file_obj:
+    #
+    #         # initialyze parameters
+    #         encoders_id = ['mp3_encoder']
+    #         mime_type = ''
+    #
+    #         # Initialize lists
+    #         analyzers_sub = []
+    #         encoders_sub = []
+    #
+    #         self.analyze(request)
+    #
+    #
+    #     self.mime_type = mime_type
