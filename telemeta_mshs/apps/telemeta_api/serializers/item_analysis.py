@@ -23,7 +23,7 @@ class ItemAnalysisSerializer(serializers.ModelSerializer):
     analyzer_id = serializers.CharField(required=True)
     name = serializers.CharField()
     value = serializers.CharField()
-    unit = serializers.CharField()
+    unit = serializers.CharField(allow_blank=True)
 
     class Meta:
         model = ItemAnalysisModel

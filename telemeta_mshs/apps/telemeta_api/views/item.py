@@ -12,7 +12,11 @@ import datetime
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser
 from ..models.item import Item as ItemModel
+from ..models.item_transcoding_flag import (
+    ItemTranscodingFlag as ItemTranscodingFlagModel
+)
 from ..serializers.item import ItemSerializer
+from ..serializers.item_analysis import ItemAnalysisSerializer
 from .item_analysis import ItemAnalysisViewSet
 import timeside.core
 from telemeta.cache import TelemetaCache
@@ -69,45 +73,74 @@ class ItemViewSet(viewsets.ModelViewSet):
 
         if os.path.exists(source):
             mime_type = mimetypes.guess_type(source)[0]
-            print(mime_type)
-            analysis = ItemAnalysisViewSet(
-                item=item, name='MIME type',
-                analyzer_id='mime_type',
-                unit='', value=mime_type)
-            print(analysis.__dict__.values())
-            # analysis.save()
-            analysis = ItemAnalysisViewSet(
-                item=item, name='Size',
-                analyzer_id='size',
-                unit='', value=item.size())
-            # analysis.save()
-            print(analysis.__dict__.values())
+            analysis = ItemAnalysisSerializer(
+                data={
+                    'element_type': 'analysis',
+                    'item': item.id,
+                    'name': 'MIME type',
+                    'analyzer_id': 'mime_type',
+                    'unit': '',
+                    'value': mime_type}
+            )
+            analysis.is_valid()
+            analysis.save()
+            analysis = ItemAnalysisSerializer(
+                data={
+                    'element_type': 'analysis',
+                    'item': item.id,
+                    'name': 'Size',
+                    'analyzer_id': 'size',
+                    'unit': '',
+                    'value': item.size()}
+            )
+            analysis.is_valid()
+            analysis.save()
 
-        analysis = ItemAnalysisViewSet(
-            item=item, name='Channels',
-            analyzer_id='channels',
-            unit='', value=decoder.input_channels)
-        # analysis.save()
-        print(analysis.__dict__.values())
-        analysis = ItemAnalysisViewSet(
-            item=item, name='Samplerate',
-            analyzer_id='samplerate', unit='Hz',
-            value=unicode(decoder.input_samplerate))
-        # analysis.save()
-        print(analysis.__dict__.values())
-        analysis = ItemAnalysisViewSet(
-            item=item, name='Resolution',
-            analyzer_id='resolution', unit='bits',
-            value=unicode(decoder.input_width))
-        # analysis.save()
-        print(analysis.__dict__.values())
-        analysis = ItemAnalysisViewSet(
-            item=item, name='Duration',
-            analyzer_id='duration', unit='s',
-            value=unicode(datetime.timedelta(
-                0, decoder.input_duration)))
-        # analysis.save()
-        print(analysis.__dict__.values())
+        analysis = ItemAnalysisSerializer(
+            data={
+                'element_type': 'analysis',
+                'item': item.id,
+                'name': 'Channels',
+                'analyzer_id': 'channels',
+                'unit': '',
+                'value': decoder.input_channels}
+        )
+        analysis.is_valid()
+        analysis.save()
+        analysis = ItemAnalysisSerializer(
+            data={
+                'element_type': 'analysis',
+                'item': item.id,
+                'name': 'Samplerate',
+                'analyzer_id': 'samplerate',
+                'unit': 'Hz',
+                'value': decoder.input_channels}
+        )
+        analysis.is_valid()
+        analysis.save()
+        analysis = ItemAnalysisSerializer(
+            data={
+                'element_type': 'analysis',
+                'item': item.id,
+                'name': 'Resolution',
+                'analyzer_id': 'resolution',
+                'unit': 'bits',
+                'value': unicode(decoder.input_width)}
+        )
+        analysis.is_valid()
+        analysis.save()
+        analysis = ItemAnalysisSerializer(
+            data={
+                'element_type': 'analysis',
+                'item': item.id,
+                'name': 'Duration',
+                'analyzer_id': 'duration',
+                'unit': 's',
+                'value': unicode(datetime.timedelta(
+                    0, decoder.input_duration))}
+        )
+        analysis.is_valid()
+        analysis.save()
 
         for analyzer in analyzers_sub:
             for key in analyzer.results.keys():
@@ -115,65 +148,71 @@ class ItemViewSet(viewsets.ModelViewSet):
                 value = result.data_object.value
                 if value.shape[0] == 1:
                     value = value[0]
-                analysis = ItemAnalysisViewSet(
-                    item=item, name=result.name,
-                    analyzer_id=result.id, unit=result.unit,
-                    value=unicode(value))
-                # analysis.save()
-                print(analysis.__dict__)
+                analysis = ItemAnalysisSerializer(
+                    data={
+                        'element_type': 'analysis',
+                        'item': item.id,
+                        'name': result.name,
+                        'analyzer_id': result.id,
+                        'unit': result.unit,
+                        'value': unicode(value)}
+                )
+                analysis.is_valid()
+                analysis.save()
 
         for encoder in encoders_sub:
+            # Retrieve the transcoded_flag record
             is_transcoded_flag = self.get_is_transcoded_flag(
                 item=item, mime_type=mime_type)
+            # Boolean value to True : the item is transcoded.
             is_transcoded_flag.value = True
-            # is_transcoded_flag.save()
-            print(is_transcoded_flag.__dict__)
+            is_transcoded_flag.save()
 
         print(decoder.__dict__)
+        print(item.__dict__)
+        self.mime_type = mime_type
 
-    # def get_is_transcoded_flag(self, item, mime_type):
-    #     try:
-    #         is_transcoded_flag, c = \
-    #             MediaItemTranscodingFlag.objects.get_or_create(
-    #             item=item,
-    #             mime_type=mime_type,
-    #             defaults={'value': False})
-    #     except MediaItemTranscodingFlag.MultipleObjectsReturned:
-    #         flags = MediaItemTranscodingFlag.objects.filter(
-    #             item=item,
-    #             mime_type=mime_type)
-    #         value = all([f.value for f in flags])
-    #         is_transcoded_flag = flags[0]
-    #         is_transcoded_flag.value = value
-    #         is_transcoded_flag.save()
-    #         for f in flags[1:]:
-    #             f.delete()
-    #     return is_transcoded_flag
+    def get_is_transcoded_flag(self, item, mime_type):
+        try:
+            # Create a ItemTranscodingFlag record.
+            # The item is not transcoded : value=False
+            is_transcoded_flag, c = \
+                    ItemTranscodingFlagModel.objects.get_or_create(
+                        item=item,
+                        mime_type=mime_type,
+                        defaults={'value': False})
+        except ItemTranscodingFlagModel.MultipleObjectsReturned:
+            # ... So, the record exists ...
+            # Searching related records, corresponding to the mime_type
+            flags = ItemTranscodingFlagModel.objects.filter(
+                item=item,
+                mime_type=mime_type)
+            # Value is True if ALL flags.valu are True
+            value = all([f.value for f in flags])
+            # Use the first ItemTranscodingFlag record
+            is_transcoded_flag = flags[0]
+            # Set with the new value
+            is_transcoded_flag.value = value
+            # Save it
+            is_transcoded_flag.save()
+            # Delete the others records
+            for f in flags[1:]:
+                f.delete()
+        # Return the record with the right values
+        return is_transcoded_flag
 
     """
-    Override the create method, to create itemanalysis records
+    Override the create method, to create related records
     """
-    # def perform_create(self, serializer):
-    #     # file_obj = self.validated_data['file']
-    #     request = (serializer.context['request'])
-    #     file_obj = request.FILES['file']
-    #
-    #     instance = serializer.save()
-    #     raise Exception(instance)
-    #     serializer.data['file'].save(file_obj.name, file_obj)
-    #
-    #     # Test if there is a file
-    #     if file_obj:
-    #
-    #         # initialyze parameters
-    #         encoders_id = ['mp3_encoder']
-    #         mime_type = ''
-    #
-    #         # Initialize lists
-    #         analyzers_sub = []
-    #         encoders_sub = []
-    #
-    #         self.analyze(request)
-    #
-    #
-    #     self.mime_type = mime_type
+    def perform_create(self, serializer):
+        # Save the serializer -> create an id
+        serializer.save()
+        # Retrieve the item
+        id = serializer.data['id']
+        item = ItemModel.objects.get(pk=id)
+
+        # Test if there is a saved item record
+        if item:
+            # Create many related records, regards to a
+            #    related sound in the TimeSide player.
+            self.analyze(item)

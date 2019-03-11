@@ -187,8 +187,31 @@ class TestItemList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
+        item = response.data
 
+        # Item Analysis ----------------------------------
         # Test if related ItemAnalyzis are presents
+        url = reverse('itemanalysis-list', kwargs={
+            'item_pk': item['id']})
+        response = self.client.get(url)
+
+        self.assertIsInstance(response.data, list)
+        # Number of analysis per item
+        self.assertEqual(len(response.data), 12)
+        for data_analysis in response.data:
+            # number of feature per analysis
+            self.assertEqual(len(data_analysis), 7)
+
+        # Transcoding ------------------------------------
+        # Test if related ItemTrancodingFlags are presents
+        url = reverse('itemtranscodingflag-list', kwargs={
+            'item_pk':  item['id']})
+        response = self.client.get(url)
+
+        self.assertIsInstance(response.data, list)
+        for transcoding_flag in response.data:
+            # number of feature per transcoding_flag
+            self.assertEqual(len(transcoding_flag), 5)
 
     def test_update_an_item(self):
         """
@@ -284,7 +307,6 @@ class TestItemList(APITestCase):
         # The code is right --> there is some data
         response = self.client.get('/api/timeside/' + code + '/analyze/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        print(str(response.data))
         self.assertEqual(response.data['duration'], duration)
 
         # The code is wrong/not-present --> there is no data

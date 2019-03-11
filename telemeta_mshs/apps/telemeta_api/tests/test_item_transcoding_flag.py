@@ -128,9 +128,6 @@ class TestItemTranscodingFlagList(APITestCase):
             dict,
             FACTORY_CLASS=ItemTranscodingFlagFactory)
         data['item'] = Item.objects.first().id
-        print("---------------------")
-        print(data)
-        print("---------------------")
 
         url = reverse('itemtranscodingflag-list', kwargs={
             'item_pk': Item.objects.first().id})
