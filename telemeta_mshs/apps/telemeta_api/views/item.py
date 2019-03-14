@@ -8,6 +8,8 @@ import os
 import settings
 import mimetypes
 import datetime
+from django.http import Http404
+
 
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser
@@ -17,8 +19,8 @@ from ..models.item_transcoding_flag import (
 )
 from ..serializers.item import ItemSerializer
 from ..serializers.item_analysis import ItemAnalysisSerializer
-from .item_analysis import ItemAnalysisViewSet
 import timeside.core
+from telemeta.views.core import serve_media
 from telemeta.cache import TelemetaCache
 
 
@@ -31,6 +33,19 @@ class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
 
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+    MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
+    CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
+    cache_data = TelemetaCache(
+        getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
+
+    # using the settings parameters
+    default_grapher_id = getattr(
+         settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_centroid'))
+    default_grapher_sizes = getattr(
+        settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
+
+    graphers = timeside.core.processor.processors(
+        timeside.core.api.IGrapher)
     decoders = timeside.core.processor.processors(
         timeside.core.api.IDecoder)
     analyzers = timeside.core.processor.processors(
@@ -46,6 +61,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         # Initialize lists
         encoders_id = ['mp3_encoder']  # list of the encoders
         analyzers_sub = []
+        graphers_sub = []
         encoders_sub = []
 
         source = item.get_source()[0]
@@ -59,6 +75,20 @@ class ItemViewSet(viewsets.ModelViewSet):
             analyzers_sub.append(subpipe)
             pipe = pipe | subpipe
 
+        default_grapher = self.get_grapher(self.default_grapher_id)
+        # grapher : compose the path and filenam for each spectrogram
+        for size in self.default_grapher_sizes:
+            width = size.split('x')[0]  # extract firt part --> width
+            height = size.split('x')[1]  # extract second part --> height
+            image_file = '.'.join(
+                [item.public_id, self.default_grapher_id, size.replace(
+                    'x', '_'), 'png'])
+            path = self.cache_data.dir + os.sep + image_file
+            graph = default_grapher(width=int(width), height=int(height))
+            graphers_sub.append({'graph': graph, 'path': path})
+            # Append the process to the pipe
+            pipe |= graph
+
         # For each encoder create a file in the export directory
         for proc_id in encoders_id:
             encoder_cls = timeside.core.get_processor(proc_id)
@@ -69,7 +99,17 @@ class ItemViewSet(viewsets.ModelViewSet):
             encoders_sub.append(encoder)
             pipe |= encoder
 
+        # Execute the pipe
         pipe.run()
+
+        # grapher : write the files
+        for grapher in graphers_sub:
+            # Add a watermak on the spectrogram
+            grapher['graph'].watermark('timeside', opacity=.6, margin=(5, 5))
+            # Write/create the PNG file
+            f = open(grapher['path'], 'w')
+            grapher['graph'].render(grapher['path'])
+            f.close()
 
         if os.path.exists(source):
             mime_type = mimetypes.guess_type(source)[0]
@@ -168,8 +208,6 @@ class ItemViewSet(viewsets.ModelViewSet):
             is_transcoded_flag.value = True
             is_transcoded_flag.save()
 
-        print(decoder.__dict__)
-        print(item.__dict__)
         self.mime_type = mime_type
 
     def get_is_transcoded_flag(self, item, mime_type):
@@ -200,6 +238,91 @@ class ItemViewSet(viewsets.ModelViewSet):
                 f.delete()
         # Return the record with the right values
         return is_transcoded_flag
+
+    def get_graphers(self):
+        graphers = []
+        # FIXME --------
+        # user = self.request.user
+        # graphers_access = (user.is_staff
+        #                    or user.is_superuser
+        #                    or user.has_perm('can_run_analysis'))
+        graphers_access = True
+        for grapher in self.graphers:
+            # If not access rights --> got to the next iteration
+            if (not graphers_access
+                    and grapher.id() not in self.public_graphers):
+                continue
+            print('...... grapher.id()')
+            print(str(grapher.id()))
+            if grapher.id() == self.default_grapher_id:
+                print('>>>> grapher_1')
+                graphers.insert(
+                    0, {'name': grapher.name(), 'id': grapher.id()})
+            elif not hasattr(grapher, '_staging'):
+                print('>>>> grapher_2')
+                graphers.append(
+                    {'name': grapher.name(), 'id': grapher.id()})
+            elif not grapher._staging:
+                print('>>>> grapher_3')
+                graphers.append(
+                    {'name': grapher.name(), 'id': grapher.id()})
+        return graphers
+
+    def get_grapher(self, id):
+        print(self.graphers)
+        for grapher in self.graphers:
+            print(grapher)
+            print('id:'+str(id))
+            if grapher.id() == id:
+                break
+        return grapher
+
+    def item_visualize(self, public_id, grapher_id, width, height):
+        try:
+            width = int(width)
+            height = int(height)
+        except Exception:
+            pass
+
+        if not isinstance(width, int) or not isinstance(height, int):
+            size = self.default_grapher_sizes[0]
+            width = int(size.split('x')[0])
+            height = int(size.split('x')[1])
+
+        item = ItemModel.objects.get(code=public_id)
+        mime_type = 'image/png'
+
+        source, source_type = item.get_source()
+
+        grapher = self.get_grapher(grapher_id)
+
+        if grapher.id() != grapher_id:
+            raise Http404
+
+        size = str(width) + '_' + str(height)
+        image_file = '.'.join([public_id, grapher_id, size, 'png'])
+
+        # FIX waveform grapher name change
+        old_image_file = '.'.join([public_id, 'waveform', size, 'png'])
+        if 'waveform_centroid' in grapher_id and \
+                self.cache_data.exists(old_image_file):
+            image_file = old_image_file
+
+        path = self.cache_data.dir + os.sep + image_file
+        if not self.cache_data.exists(image_file):
+            source, _ = item.get_source()
+            if source:
+                decoder = timeside.core.get_processor('file_decoder')(source)
+                graph = grapher(width=width, height=height)
+                (decoder | graph).run()
+                graph.watermark('timeside', opacity=.6, margin=(5, 5))
+                # f = open(path, 'w')
+                graph.render(output=path)
+                # f.close()
+                self.cache_data.add_file(image_file)
+
+        response = serve_media(path, content_type=mime_type)
+        return response
 
     """
     Override the create method, to create related records

@@ -11,6 +11,11 @@ Item tests
 import factory
 import pytest
 import sys
+import os
+import settings
+import time
+
+from telemeta.cache import TelemetaCache
 
 from django.forms.models import model_to_dict
 from django.core.management import call_command
@@ -212,6 +217,18 @@ class TestItemList(APITestCase):
         for transcoding_flag in response.data:
             # number of feature per transcoding_flag
             self.assertEqual(len(transcoding_flag), 5)
+
+        # Grapher ----------------------------------------
+        default_grapher_id = getattr(
+             settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_centroid'))
+        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
+        CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
+        cache_data = TelemetaCache(
+            getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
+        list_file = os.listdir(cache_data.dir)
+        self.assertEqual(
+            item['code'] + '.' + default_grapher_id +
+            '.346_130.png' in list_file, True)
 
     def test_update_an_item(self):
         """
