@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from ..models.item import Item
 from ..models.item_analysis import ItemAnalysis
 from ..serializers.timeside_item import TimeSideSerializer
+from .item import ItemViewSet
+import settings
 
 
 class TimeSideViewSet(viewsets.ViewSet):
@@ -36,6 +38,14 @@ class TimeSideViewSet(viewsets.ViewSet):
     """
     serializer_class = TimeSideSerializer
 
+    # using the settings parameters
+    default_grapher_id = getattr(
+         settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_centroid'))
+    default_grapher_sizes = getattr(
+        settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
+    default_width = int(default_grapher_sizes[0].split('x')[0])
+    default_height = int(default_grapher_sizes[0].split('x')[1])
+
     @detail_route()
     def analyze(self, request, pk=None):
         data = dict()  # data to return
@@ -49,6 +59,37 @@ class TimeSideViewSet(viewsets.ViewSet):
 
             for analysis in analyses:
                 data[analysis.name] = analysis.value
+        except BaseException:
+            # Nothing to return
+            pass
+
+        return Response(data)
+
+    @detail_route()
+    def visualize(self, request, pk=None):
+        grapher_id = self.request.query_params.get(
+            'grapher_id', self.default_grapher_id)
+        width_img = self.request.query_params.get(
+            'width', self.default_width)
+        height_img = self.request.query_params.get(
+            'height', self.default_height)
+
+        data = dict()  # data to return
+        data['grapher'] = grapher_id
+        data['width'] = width_img
+        data['height'] = height_img
+        try:
+            # Search an item with the right code field
+            item = Item.objects.get(pk=pk)
+            vs = ItemViewSet()
+            vs.item_visualize(
+                public_id=item.code,
+                grapher_id=grapher_id,
+                width=width_img,
+                height=height_img)
+            data['item'] = str(item.id)
+            data['code'] = str(item.code)
+
         except BaseException:
             # Nothing to return
             pass
