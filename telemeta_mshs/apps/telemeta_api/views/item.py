@@ -252,27 +252,19 @@ class ItemViewSet(viewsets.ModelViewSet):
             if (not graphers_access
                     and grapher.id() not in self.public_graphers):
                 continue
-            print('...... grapher.id()')
-            print(str(grapher.id()))
             if grapher.id() == self.default_grapher_id:
-                print('>>>> grapher_1')
                 graphers.insert(
                     0, {'name': grapher.name(), 'id': grapher.id()})
             elif not hasattr(grapher, '_staging'):
-                print('>>>> grapher_2')
                 graphers.append(
                     {'name': grapher.name(), 'id': grapher.id()})
             elif not grapher._staging:
-                print('>>>> grapher_3')
                 graphers.append(
                     {'name': grapher.name(), 'id': grapher.id()})
         return graphers
 
     def get_grapher(self, id):
-        print(self.graphers)
         for grapher in self.graphers:
-            print(grapher)
-            print('id:'+str(id))
             if grapher.id() == id:
                 break
         return grapher
@@ -339,3 +331,7 @@ class ItemViewSet(viewsets.ModelViewSet):
             # Create many related records, regards to a
             #    related sound in the TimeSide player.
             self.analyze(item)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        self.analyze(instance)

@@ -13,7 +13,7 @@ import pytest
 import sys
 import os
 import settings
-import time
+from types import NoneType
 
 from telemeta.cache import TelemetaCache
 
@@ -121,9 +121,17 @@ class TestItemList(APITestCase):
             # Ensure type of each attribute
             if attribute_type == str:
                 if sys.version_info.major == 2:
-                    self.assertIsInstance(item[attribute], basestring)
+                    try:
+                        self.assertIsInstance(item[attribute], basestring)
+                    except AssertionError:
+                        # Because of serializer.DurationField
+                        self.assertIsInstance(item[attribute], NoneType)
                 else:
-                    self.assertIsInstance(item[attribute], str)
+                    try:
+                        self.assertIsInstance(item[attribute], str)
+                    except AssertionError:
+                        # Because of serializer.DurationField
+                        self.assertIsInstance(item[attribute], NoneType)
             else:
                 self.assertIsInstance(item[attribute], attribute_type)
             self.assertIsNot(item[attribute], '')
@@ -235,6 +243,7 @@ class TestItemList(APITestCase):
         Ensure we can update an Item object
         """
 
+        # item = Item.objects.last()
         item = Item.objects.first()
         self.assertNotEqual(item.title, 'foobar_test_put')
 
@@ -250,6 +259,11 @@ class TestItemList(APITestCase):
         data['coupe'] = data['coupe']['id']
         # Create a fake file.
         data['file'] = create_tmp_sound()
+
+        response = self.client.get(
+            '/api/timeside/' + data['code'] + '/analyze/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data['approx_duration'] = '00:20'
 
         url = reverse(
             'item-detail',

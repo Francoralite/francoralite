@@ -13,6 +13,7 @@ from ...models.item import Item
 from .collection import CollectionFactory
 from .mediatype import MediaTypeFactory
 from .coupe import CoupeFactory
+from ..fake_data.fake_sound import create_tmp_sound
 
 
 class ItemFactory(factory.django.DjangoModelFactory):
@@ -37,7 +38,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
     date_edit = factory.LazyFunction(datetime.datetime.now)
     media_type = factory.SubFactory(MediaTypeFactory)
     approx_duration = factory.Faker('time_delta')
-    file = factory.Faker('file_name', extension="mp3")
+    file = create_tmp_sound()  # factory.Faker('file_name', extension="mp3")
 
     # Description -----------------------
     timbre = factory.Faker('word')

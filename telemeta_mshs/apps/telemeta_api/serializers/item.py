@@ -39,8 +39,6 @@ class ItemSerializer(serializers.ModelSerializer):
     media_type = AsymetricRelatedField.from_serializer(
         MediaTypeSerializer, kwargs={'required': False})
     approx_duration = serializers.DurationField(required=False)
-    # file = serializers.CharField(
-    #     allow_null=True, allow_blank=True, required=False)
     file = serializers.FileField(max_length=1024)
 
     # Description -----------------------
