@@ -329,18 +329,48 @@ class TestItemList(APITestCase):
 
         # Retrieve a valid item's code
         item = Item.objects.first()
-        code = item.code
 
         # Retrieve some analysis data
         # FIXIT ------------------------
         duration = str(item.approx_duration)
 
         # The code is right --> there is some data
-        response = self.client.get('/api/timeside/' + code + '/analyze/')
+        response = self.client.get('/api/timeside/' +
+                                   str(item.id) + '/analyze/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['duration'], duration)
 
         # The code is wrong/not-present --> there is no data
-        response = self.client.get('/api/timeside/1/analyze/')
+        response = self.client.get('/api/timeside/0/analyze/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+
+    def test_timeside_visualize(self):
+        """
+        Test if the spectrogram's image exists
+        """
+
+        # Retrieve a valid item's code
+        item = Item.objects.first()
+        id = str(item.id)
+        code = str(item.code)
+
+        # Call to the visualize endpoint
+        response = self.client.get('/api/timeside/' + id + '/visualize/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.data
+
+        # Grapher ----------------------------------------
+        default_grapher_id = data['grapher']
+
+        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
+        CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
+        cache_data = TelemetaCache(
+            getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
+        list_file = os.listdir(cache_data.dir)
+
+        # Test if the file exists
+        self.assertEqual(
+            code + '.' + default_grapher_id +
+            '.' + str(data['width']) + '_' +
+            str(data['height']) + '.png' in list_file, True)

@@ -52,7 +52,7 @@ class TimeSideViewSet(viewsets.ViewSet):
 
         try:
             # Search an item with the right code field
-            item = Item.objects.get(code=pk)
+            item = Item.objects.get(pk=pk)
             # Extract some data of the item
             data['duration'] = str(item.approx_duration)
             analyses = ItemAnalysis.objects.all()  # filter(item_id=item.id)
@@ -67,6 +67,7 @@ class TimeSideViewSet(viewsets.ViewSet):
 
     @detail_route()
     def visualize(self, request, pk=None):
+        # Parameters to be send to this endpoint
         grapher_id = self.request.query_params.get(
             'grapher_id', self.default_grapher_id)
         width_img = self.request.query_params.get(
