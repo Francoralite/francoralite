@@ -20,7 +20,6 @@ class ItemAnalysisFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ItemAnalysis
 
-    # FIXIT------------------
     element_type = "analysis"
     item = factory.SubFactory(ItemFactory)
     analyzer_id = factory.Faker('word')

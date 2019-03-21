@@ -29,6 +29,7 @@ from .views import (
     item_musical_group,
     item_analysis,
     item_transcoding_flag,
+    item_marker,
     mediatype,
     publisher,
     legal_rights,
@@ -185,3 +186,6 @@ Item_router.register(
 Item_router.register(
     r'itemtranscodingflag',
     item_transcoding_flag.ItemTranscodingFlagViewSet)
+Item_router.register(
+    r'marker',
+    item_marker.ItemMarkerViewSet)

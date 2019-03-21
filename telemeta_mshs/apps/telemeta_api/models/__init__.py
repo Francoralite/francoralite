@@ -24,6 +24,7 @@ from .item_musical_organization import ItemMusicalOrganization
 from .item_musical_group import ItemMusicalGroup
 from .item_analysis import ItemAnalysis
 from .item_transcoding_flag import ItemTranscodingFlag
+from .item_marker import ItemMarker
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer
