@@ -1,0 +1,114 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="{{ STATIC_URL }}SoundManager2/script/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}timeside/js/timeside.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}telemeta/js/playerLoader.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}telemeta/js/divmarker.js" type="text/javascript"></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}timeside/skins/lab/style.css" />
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/player.css" />
+{% endblock %}
+
+{% block title %}
+<div class="col-md-4">
+  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
+    style="vertical-align:middle" />
+    <h1>{% trans "Items" %}</h1>
+</div>
+<div class="col-md-8">
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+
+</div>
+{% block content %}
+<div class="fullpage">
+{% if items|length > 0 %}
+  <!-- Table to display the items --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+  </tr>
+  {% for item in items %}
+  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td class="highlight">
+          <a href="/item/{{item.id }}/">
+            {{ item.code|upper }}</a>
+      </td>
+      <!--  FIXIT : affichage des champs -->
+      <td>{{ item.title|safe }}</td>
+      <td>
+        {% buttons %}
+        <a href="{% url "item-edit" id=item.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{item.title}}"
+            data-url="{% url "item-delete" id=item.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endbuttons %}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% block player %}
+<div id="player_maximized" class="ts-skin-lab">
+   <div id="player_header">
+      <a href="#" class="toggle">{% trans "Réduire"  %}</a>
+      <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+   </div>
+   <div class="wazing"></div>
+</div>
+
+<div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
+  <div id="player_minimized" class="ts-skin-lab">
+      <a href="#" class="toggle">Maximize</a>
+      <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+      <div class="wazing"></div>
+      <div id="player" class="ts-player">
+      </div>
+  </div>
+</div>
+
+
+<div id="tabs_container">
+  <!-- this div will be hidden when everything is fully loaded-->
+  <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+      <span id="loading_span_text">Loading...</span></span>
+  <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichier" %}</a><!--
+   do not let space here as it appears in the document!!!!!
+ --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
+</div>
+
+{% endblock player %}
+
+{% modal_delete %}
+
+{% else %}
+    <p>{% trans "Il n'y a pas d'items" %}</p>
+{% endif %}
+</div>
+{% endblock %}

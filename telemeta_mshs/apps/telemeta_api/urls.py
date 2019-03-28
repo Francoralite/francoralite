@@ -27,6 +27,9 @@ from .views import (
     item_thematic,
     item_musical_organization,
     item_musical_group,
+    item_analysis,
+    item_transcoding_flag,
+    item_marker,
     mediatype,
     publisher,
     legal_rights,
@@ -45,6 +48,7 @@ from .views import (
     domain_vocal,
     domain_song,
     usefulness,
+    timeside_item,
     )
 
 router = routers.SimpleRouter()
@@ -123,6 +127,9 @@ router.register(r'usefulness',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 base_name='performance_collection_musician')
 
+router.register(r'timeside',
+                timeside_item.TimeSideViewSet,
+                base_name='timeside')
 
 # Nested routers
 # Collection's nested ------------------------------------
@@ -173,3 +180,12 @@ Item_router.register(
 Item_router.register(
     r'musical_group',
     item_musical_group.ItemMusicalGroupViewSet)
+Item_router.register(
+    r'analysis',
+    item_analysis.ItemAnalysisViewSet)
+Item_router.register(
+    r'itemtranscodingflag',
+    item_transcoding_flag.ItemTranscodingFlagViewSet)
+Item_router.register(
+    r'marker',
+    item_marker.ItemMarkerViewSet)

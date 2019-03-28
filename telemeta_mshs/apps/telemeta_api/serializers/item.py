@@ -39,6 +39,7 @@ class ItemSerializer(serializers.ModelSerializer):
     media_type = AsymetricRelatedField.from_serializer(
         MediaTypeSerializer, kwargs={'required': False})
     approx_duration = serializers.DurationField(required=False)
+    file = serializers.FileField(max_length=1024)
 
     # Description -----------------------
     timbre = serializers.CharField(
@@ -71,7 +72,7 @@ class ItemSerializer(serializers.ModelSerializer):
     jingle = serializers.CharField(
         allow_null=True, allow_blank=True, required=False)
     coupe = AsymetricRelatedField.from_serializer(
-        CoupeSerializer, kwargs={'required': False})
+         CoupeSerializer, kwargs={'required': False})
 
     # Text / references -----------------
     #

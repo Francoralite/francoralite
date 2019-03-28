@@ -18,6 +18,8 @@ from .views import (
     mission, mission_add, mission_detail, mission_edit, mission_delete,
     collection, collection_add, collection_detail, collection_edit,
     collection_delete,
+    item, item_add, item_detail, item_edit,
+    item_delete,
 )
 
 from .views.enum import (
@@ -149,6 +151,22 @@ urlpatterns = [
     url(r'^collection/delete/(?P<id>[0-9]+)$',
         collection_delete.CollectionDelete.as_view(),
         name='collection-delete'),
+
+    # Items
+    url(r'^item/$', item.ItemView.as_view(),
+        name="item"),
+    url(r'^institution/(?P<id_institution>[0-9]+)/fond/(?P<id_fond>[0-9]+)/mission/(?P<id_mission>[0-9]+)/collection/(?P<id_collection>[0-9]+)/item/add/$',  # noqa
+        item_add.ItemAdd.as_view(),
+        name='item-add'),
+    url(r'^item/(?P<id>[0-9]+)/$',
+        item_detail.ItemDetail.as_view(),
+        name='item-detail'),
+    url(r'^item/edit/(?P<id>[0-9]+)$',
+        item_edit.ItemEdit.as_view(),
+        name='item-edit'),
+    url(r'^item/delete/(?P<id>[0-9]+)$',
+        item_delete.ItemDelete.as_view(),
+        name='item-delete'),
 
     # Instruments
     url(r'^instrument/$', instrument.InstrumentView.as_view(),
