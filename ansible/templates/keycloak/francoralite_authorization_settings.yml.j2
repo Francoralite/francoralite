@@ -3,7 +3,7 @@
 allowRemoteResourceManagement: False
 policyEnforcementMode: 'ENFORCING'
 policies:
-  - name: 'telemeta-users-pol'
+  - name: 'francoralite-users-pol'
     scopes:
 {% for endpoint in _keycloak_endpoints %}
       - "{{ endpoint.name }}:view"
@@ -12,8 +12,8 @@ policies:
     logic: 'POSITIVE'
     decisionStrategy: 'AFFIRMATIVE'
     config:
-      roles: "[{\"id\":\"telemeta-users\",\"required\":true}]"
-  - name: 'telemeta-contributors-pol'
+      roles: "[{\"id\":\"francoralite-users\",\"required\":true}]"
+  - name: 'francoralite-contributors-pol'
     scopes:
 {% for endpoint in _keycloak_endpoints %}
 {% if endpoint.contributors_authorized | default(False) %}
@@ -27,8 +27,8 @@ policies:
     logic: 'POSITIVE'
     decisionStrategy: 'AFFIRMATIVE'
     config:
-      roles: "[{\"id\":\"telemeta-contributors\",\"required\":true}]"
-  - name: 'telemeta-administrators-pol'
+      roles: "[{\"id\":\"francoralite-contributors\",\"required\":true}]"
+  - name: 'francoralite-administrators-pol'
     scopes:
 {% for endpoint in _keycloak_endpoints %}
       - "{{ endpoint.name }}:view"
@@ -40,7 +40,7 @@ policies:
     logic: 'POSITIVE'
     decisionStrategy: 'AFFIRMATIVE'
     config:
-      roles: "[{\"id\":\"telemeta-administrators\",\"required\":true}]"
+      roles: "[{\"id\":\"francoralite-administrators\",\"required\":true}]"
 resources:
 {% for endpoint in _keycloak_endpoints %}
   - name: "{{ endpoint.name }}"

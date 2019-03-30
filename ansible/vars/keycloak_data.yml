@@ -18,7 +18,7 @@ _keycloak_client_base:
   auth_realm: 'master'
   auth_username: "{{ keycloak_admin_username }}"
   auth_password: "{{ keycloak_admin_password }}"
-  realm: 'telemeta'
+  realm: 'francoralite'
   authorization_services_enabled: True
   attributes: {}
   clientAuthenticatorType: 'client-secret'
@@ -38,22 +38,24 @@ _keycloak_client_base:
 
 # List of keycloak clients
 _keycloak_clients:
-  - client_id: 'telemeta'
-    base_url: 'http://telemeta-api/*'
+  - client_id: 'francoralite'
+    directAccessGrantsEnabled: True
+    fullScopeAllowed: False
+    base_url: 'http://francoralite-api/*'
     enabled: True
-    name: 'Réseau Assos API'
-    authorization_settings: "{{ lookup('template', 'templates/keycloak/telemeta_authorization_settings.yml.j2') | from_yaml }}"
+    name: 'Francoralite API'
+    authorization_settings: "{{ lookup('template', 'templates/keycloak/francoralite_authorization_settings.yml.j2') | from_yaml }}"
     redirect_uris:
-      - 'http://telemeta-api/*'
-      - 'http://telemeta-api/**/*'
-    root_url: 'http://telemeta-api/'
+      - 'http://francoralite-api/*'
+      - 'http://francoralite-api/**/*'
+    root_url: 'http://francoralite-api/'
     web_origins:
       - 'localhost'
       - 'localhost:3000'
       - 'localhost:8000'
-      - 'http://telemeta-api'
+      - 'http://francoralite-api'
 
-# List of RA API endpoints
+# List of Francoralite API endpoints
 _keycloak_endpoints:
   - name: "acquisition_mode"
   - name: "authority"

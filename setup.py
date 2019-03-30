@@ -82,7 +82,7 @@ setup(
     'django-leaflet==0.24.0',
     'django-geojson==2.11.0',
     'django-cors-headers==2.4.1',
-    'python-keycloak==0.16.0-telemeta',
+    'python-keycloak==0.16.0',
     'python-jose==3.0.1',
   ],
   extras_require = {
@@ -98,7 +98,7 @@ setup(
     ],
   },
   dependency_links = [
-    'git+https://github.com/achaussier/python-keycloak@8a483aa4f10114edd8ebd69a460c33cb766bd80d#egg=python-keycloak-0.16.0-telemeta',
+    'git+https://github.com/achaussier/python-keycloak.git@8a483aa4f10114edd8ebd69a460c33cb766bd80d#egg=python-keycloak-0.16.0',
     'git+https://github.com/django-haystack/django-haystack.git@v2.5.1#egg=django-haystack-2.5.1',
     'git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev',
     'git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat-0',
