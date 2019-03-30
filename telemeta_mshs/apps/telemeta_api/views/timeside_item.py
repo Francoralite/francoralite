@@ -46,6 +46,14 @@ class TimeSideViewSet(viewsets.ViewSet):
     default_width = int(default_grapher_sizes[0].split('x')[0])
     default_height = int(default_grapher_sizes[0].split('x')[1])
 
+    keycloak_scopes = {
+        'GET': 'timeside_item:view',
+        'POST': 'timeside_item:add',
+        'PATCH': 'timeside_item:update',
+        'PUT': 'timeside_item:update',
+        'DELETE': 'timeside_item:delete'
+    }
+
     @detail_route()
     def analyze(self, request, pk=None):
         data = dict()  # data to return

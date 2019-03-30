@@ -18,3 +18,11 @@ class UsefulnessViewSet(viewsets.ModelViewSet):
 
     queryset = UsefulnessModel.objects.all()
     serializer_class = UsefulnessSerializer
+
+    keycloak_scopes = {
+        'GET': 'usefulness:view',
+        'POST': 'usefulness:add',
+        'PATCH': 'usefulness:update',
+        'PUT': 'usefulness:update',
+        'DELETE': 'usefulness:delete'
+    }

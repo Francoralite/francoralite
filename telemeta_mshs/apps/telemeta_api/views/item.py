@@ -51,6 +51,14 @@ class ItemViewSet(viewsets.ModelViewSet):
     analyzers = timeside.core.processor.processors(
         timeside.core.api.IAnalyzer)
     value_analyzers = timeside.core.processor.processors(
+
+    keycloak_scopes = {
+        'GET': 'item:view',
+        'POST': 'item:add',
+        'PATCH': 'item:update',
+        'PUT': 'item:update',
+        'DELETE': 'item:delete'
+    }
         timeside.core.api.IValueAnalyzer)
 
     def analyze(self, item):

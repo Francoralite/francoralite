@@ -19,6 +19,14 @@ class CollectionLanguageViewSet(viewsets.ModelViewSet):
     queryset = CollectionLanguageModel.objects.all()
     serializer_class = CollectionLanguageSerializer
 
+    keycloak_scopes = {
+        'GET': 'collection_language:view',
+        'POST': 'collection_language:add',
+        'PATCH': 'collection_language:update',
+        'PUT': 'collection_language:update',
+        'DELETE': 'collection_language:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

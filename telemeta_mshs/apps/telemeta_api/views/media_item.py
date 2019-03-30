@@ -16,3 +16,11 @@ class MediaItemViewSet(viewsets.ModelViewSet):
 
     queryset = MediaItemModel.objects.all()
     serializer_class = MediaItemSerializer
+
+    keycloak_scopes = {
+        'GET': 'media_item:view',
+        'POST': 'media_item:add',
+        'PATCH': 'media_item:update',
+        'PUT': 'media_item:update',
+        'DELETE': 'media_item:delete'
+    }

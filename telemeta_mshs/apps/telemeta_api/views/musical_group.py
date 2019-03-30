@@ -18,3 +18,11 @@ class MusicalGroupViewSet(viewsets.ModelViewSet):
 
     queryset = MusicalGroupModel.objects.all()
     serializer_class = MusicalGroupSerializer
+
+    keycloak_scopes = {
+        'GET': 'musical_group:view',
+        'POST': 'musical_group:add',
+        'PATCH': 'musical_group:update',
+        'PUT': 'musical_group:update',
+        'DELETE': 'musical_group:delete'
+    }

@@ -18,3 +18,11 @@ class MusicalOrganizationViewSet(viewsets.ModelViewSet):
 
     queryset = MusicalOrganizationModel.objects.all()
     serializer_class = MusicalOrganizationSerializer
+
+    keycloak_scopes = {
+        'GET': 'musical_organization:view',
+        'POST': 'musical_organization:add',
+        'PATCH': 'musical_organization:update',
+        'PUT': 'musical_organization:update',
+        'DELETE': 'musical_organization:delete'
+    }

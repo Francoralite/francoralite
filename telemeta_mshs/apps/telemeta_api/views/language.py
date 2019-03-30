@@ -17,3 +17,11 @@ class LanguageViewSet(viewsets.ModelViewSet):
 
     queryset = LanguageModel.objects.all()
     serializer_class = LanguageSerializer
+
+    keycloak_scopes = {
+        'GET': 'language:view',
+        'POST': 'language:add',
+        'PATCH': 'language:update',
+        'PUT': 'language:update',
+        'DELETE': 'language:delete'
+    }

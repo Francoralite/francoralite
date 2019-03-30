@@ -15,3 +15,11 @@ class LocationGISViewSet(viewsets.ModelViewSet):
     filter_fields = ()
     ordering = ('name',)
     search_fields = ('name',)
+
+    keycloak_scopes = {
+        'GET': 'location_gis:view',
+        'POST': 'location_gis:add',
+        'PATCH': 'location_gis:update',
+        'PUT': 'location_gis:update',
+        'DELETE': 'location_gis:delete'
+    }

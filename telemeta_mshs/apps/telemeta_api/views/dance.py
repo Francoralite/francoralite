@@ -18,3 +18,11 @@ class DanceViewSet(viewsets.ModelViewSet):
 
     queryset = DanceModel.objects.all()
     serializer_class = DanceSerializer
+
+    keycloak_scopes = {
+        'GET': 'dance:view',
+        'POST': 'dance:add',
+        'PATCH': 'dance:update',
+        'PUT': 'dance:update',
+        'DELETE': 'dance:delete'
+    }

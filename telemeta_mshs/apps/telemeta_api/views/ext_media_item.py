@@ -17,3 +17,11 @@ class ExtMediaItemViewSet(viewsets.ModelViewSet):
 
     queryset = ExtMediaItemModel.objects.all()
     serializer_class = ExtMediaItemSerializer
+
+    keycloak_scopes = {
+        'GET': 'ext_media_item:view',
+        'POST': 'ext_media_item:add',
+        'PATCH': 'ext_media_item:update',
+        'PUT': 'ext_media_item:update',
+        'DELETE': 'ext_media_item:delete'
+    }

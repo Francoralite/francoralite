@@ -18,3 +18,11 @@ class DomainTaleViewSet(viewsets.ModelViewSet):
 
     queryset = DomainTaleModel.objects.all()
     serializer_class = DomainTaleSerializer
+
+    keycloak_scopes = {
+        'GET': 'domain_tale:view',
+        'POST': 'domain_tale:add',
+        'PATCH': 'domain_tale:update',
+        'PUT': 'domain_tale:update',
+        'DELETE': 'domain_tale:delete'
+    }
