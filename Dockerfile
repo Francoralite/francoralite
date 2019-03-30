@@ -1,6 +1,13 @@
 FROM parisson/timeside:latest-dev
 
-#RUN apt-get update && apt-get install -y python-tk python-gst0.10
+ENV KEYCLOAK_DEFAULT_ACCESS ALLOW
+ENV KEYCLOAK_REALM telemeta
+ENV KEYCLOAK_SERVER_URL http://keycloak:8080/auth/
+ENV KEYCLOAK_METHOD_VALIDATE_TOKEN DECODE
+ENV KEYCLOAK_CLIENT_PUBLIC_KEY abcd123
+ENV KEYCLOAK_CLIENT_ID telemeta
+ENV KEYCLOAK_CLIENT_SECRET_KEY abc123
+ENV KEYCLOAK_AUTHORIZATION_CONFIG /tmp/authorization_config.json
 
 
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs

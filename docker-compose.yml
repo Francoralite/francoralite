@@ -67,10 +67,12 @@ services:
       - './telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py'
       - './telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py'
       - './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
+      - './etc/keycloak/auth.json:/tmp/authorization_config.json'
     volumes_from:
       - 'data'
     env_file:
       - './telemeta_mshs/apps/Telemeta/env/debug.env'
+      - './env/app.env'
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
       interval: '10s'
