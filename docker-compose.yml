@@ -72,7 +72,7 @@ services:
       - 'data'
     env_file:
       - './telemeta_mshs/apps/Telemeta/env/debug.env'
-      - './env/app.env'
+      - './francoralite-env/app.env'
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
       interval: '10s'
@@ -129,7 +129,7 @@ services:
         max-size: "${LOGGING_MAX_SIZE}"
         max-file: "${LOGGING_MAX_FILE}"
     env_file:
-      - './env/keycloak.env'
+      - './francoralite-env/keycloak.env'
     networks:
       - 'keycloak'
       - 'services'
@@ -147,7 +147,7 @@ services:
         max-size: "${LOGGING_MAX_SIZE}"
         max-file: "${LOGGING_MAX_FILE}"
     env_file:
-      - './env/keycloak_database.env'
+      - './francoralite-env/keycloak_database.env'
     networks:
       - 'keycloak'
     volumes:
