@@ -1,4 +1,6 @@
 from rest_framework_nested import routers
+from django.conf.urls import url
+from jsonrpc import jsonrpc_site
 from .views import (
     authority,
     coupe,
@@ -50,6 +52,10 @@ from .views import (
     usefulness,
     timeside_item,
     )
+
+urlpatterns = [
+    url(r'^jsonrpc/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch)
+]
 
 router = routers.SimpleRouter()
 router.register(r'institution',

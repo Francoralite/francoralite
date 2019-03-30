@@ -12,7 +12,7 @@ from django.http import Http404
 
 
 from rest_framework import viewsets
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import FormParser, MultiPartParser
 from ..models.item import Item as ItemModel
 from ..models.item_transcoding_flag import (
     ItemTranscodingFlag as ItemTranscodingFlagModel
@@ -28,7 +28,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     """
     Item management
     """
-    parser_classes = (MultiPartParser,)
+    parser_classes = (FormParser, MultiPartParser,)
     queryset = ItemModel.objects.all()
     serializer_class = ItemSerializer
 

@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'registration',
     'rest_framework',
+    'rest_framework_xml',
     'djcelery',
     'haystack',
     'djangobower',
