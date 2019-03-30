@@ -51,6 +51,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     analyzers = timeside.core.processor.processors(
         timeside.core.api.IAnalyzer)
     value_analyzers = timeside.core.processor.processors(
+        timeside.core.api.IValueAnalyzer)
 
     keycloak_scopes = {
         'GET': 'item:view',
@@ -59,7 +60,6 @@ class ItemViewSet(viewsets.ModelViewSet):
         'PUT': 'item:update',
         'DELETE': 'item:delete'
     }
-        timeside.core.api.IValueAnalyzer)
 
     def analyze(self, item):
 
