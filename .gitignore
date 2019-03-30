@@ -86,3 +86,6 @@ worker.py
 # Vim
 *.swo
 *.swp
+
+# Ansible
+*.retry

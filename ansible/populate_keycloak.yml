@@ -1,0 +1,12 @@
+---
+
+- name: 'Populate Keycloak clients'
+  hosts: 'localhost'
+  tasks:
+    - name: 'KEYCLOAK | Manage RA clients'
+      become: False
+      keycloak_client: "{{ _keycloak_client_base | combine(item) }}"
+      delegate_to: '127.0.0.1'
+      loop: "{{ _keycloak_clients }}"
+  vars_files:
+    - './vars/keycloak_data.yml'
