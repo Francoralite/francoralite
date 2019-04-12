@@ -5,15 +5,20 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.views.generic.base import TemplateView
-import requests
-from settings import FRONT_HOST_URL
+import telemeta_front.tools as tools
 
 
 class InstitutionView(TemplateView):
     template_name = "../templates/institution.html"
+    keycloak_scopes = {
+        'GET': 'institution:view'}
 
     def get_context_data(self, **kwargs):
-        context = super(InstitutionView, self).get_context_data(**kwargs)
-        context['institutions'] = requests.get(
-            FRONT_HOST_URL+'/api/institution/').json
+        try:
+            context = super(InstitutionView, self).get_context_data(**kwargs)
+            context['institutions'] = tools.request_api('/api/institution')
+        except Exception as err:
+            context['institutions'] = []
+            context['error'] = err.message
+
         return context

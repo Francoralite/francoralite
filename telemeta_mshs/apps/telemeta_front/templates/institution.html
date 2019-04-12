@@ -27,17 +27,21 @@
 {% endblock %}
 
 {% block title_buttons %}
+{% if user.is_authenticated %}
     <a href="{% url "institution-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}</span>
     </button>
     </a>
+{% endif %}
 {% endblock %}
 
 
 </div>
 {% block content %}
 <div class="fullpage">
+  <a href="{% url 'oidc_authentication_init' %}">Authenticate</a>
+<!-- If there is some institution (number of elements > 0 ) -->
 {% if institutions|length > 0 %}
   <!-- Table to display the institutions --->
   <table class="listing">
@@ -53,19 +57,21 @@
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
       <td>
+        {% if user.is_authenticated %}
         {% buttons %}
         <a href="{% url "institution-edit" id=institution.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
+              <button type="button" class="btn btn-default"
+                data-toggle="modal" data-target="#modalDelete"
+                data-name="{{institution.name}}"
+                data-url="{% url "institution-delete" id=institution.id %}">
+                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+            {% endbuttons %}
         </a>
-        <button type="button" class="btn btn-default"
-            data-toggle="modal" data-target="#modalDelete"
-            data-name="{{institution.name}}"
-            data-url="{% url "institution-delete" id=institution.id %}">
-              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
-        </button>
-        {% endbuttons %}
+        {% endif %}
       </td>
   </tr>
   {% endfor %}
@@ -74,7 +80,11 @@
 {% modal_delete %}
 
 {% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
     <p>{% trans "Il n'y a pas d'institutions" %}</p>
+  {% endif %}
 {% endif %}
 </div>
 {% endblock %}

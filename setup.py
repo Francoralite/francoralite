@@ -84,8 +84,9 @@ setup(
     'django-cors-headers==2.4.1',
     'python-keycloak==0.16.0',
     'python-jose==3.0.1',
+    'mozilla-django-oidc==1.0.0',
   ],
-  extras_require = {
+  extras_require={
     'tests': [
       'factory_boy==2.10.0',
       'ipython==5.5.0',

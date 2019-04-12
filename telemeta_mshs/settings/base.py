@@ -8,6 +8,7 @@ from telemeta_settings import *  # noqa
 
 INSTALLED_APPS = (
     'django.contrib.auth',
+    'mozilla_django_oidc',  # Load after auth
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -54,7 +55,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'telemeta_mshs.middleware.keycloak_mw.KeycloakMiddleware',
+    # 'telemeta_mshs.middleware.keycloak_mw.KeycloakMiddleware',
+    # TODO : use it ?
 )
 
 DATABASES = {
@@ -101,10 +103,13 @@ KEYCLOAK_CONFIG = {
     'KEYCLOAK_REALM': os.getenv('KEYCLOAK_REALM', 'francoralite'),
     'KEYCLOAK_CLIENT_ID': os.getenv('KEYCLOAK_CLIENT_ID', 'francoralite'),
     'KEYCLOAK_DEFAULT_ACCESS': os.getenv('KEYCLOAK_DEFAULT_ACCESS', 'ALLOW'),
-    'KEYCLOAK_AUTHORIZATION_CONFIG': os.getenv('KEYCLOAK_AUTHORIZATION_CONFIG', '/tmp/authorization_config.json'),
+    'KEYCLOAK_AUTHORIZATION_CONFIG': os.getenv(
+        'KEYCLOAK_AUTHORIZATION_CONFIG', '/tmp/authorization_config.json'),
     'KEYCLOAK_METHOD_VALIDATE_TOKEN': 'DECODE',
-    'KEYCLOAK_SERVER_URL': os.getenv('KEYCLOAK_SERVER_URL', 'http://keycloak:8080/auth/'),
-    'KEYCLOAK_CLIENT_SECRET_KEY': os.getenv('KEYCLOAK_CLIENT_SECRET_KEY', 'ade263c9-5aca-46d4-965f-6e2d188a2515'),
+    'KEYCLOAK_SERVER_URL': os.getenv(
+        'KEYCLOAK_SERVER_URL', 'http://keycloak:8080/auth/'),
+    'KEYCLOAK_CLIENT_SECRET_KEY': os.getenv(
+        'KEYCLOAK_CLIENT_SECRET_KEY', 'ade263c9-5aca-46d4-965f-6e2d188a2515'),
     'KEYCLOAK_CLIENT_PUBLIC_KEY': KEYCLOAK_RSA_PUBLIC_KEY,
 }
 
@@ -116,3 +121,30 @@ CORS_ORIGIN_WHITELIST = (
     os.getenv('API_EXTERNAL_IP_ADDRESS', '1.2.3.4'),
     os.getenv('API_APP_EXTERNAL_URL', 'localhost'),
 )
+
+AUTHENTICATION_BACKENDS = (
+    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+)
+OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_RP_CLIENT_ID = os.getenv('KEYCLOAK_CLIENT_ID', 'francoralite')
+OIDC_RP_CLIENT_SECRET = os.getenv(
+    'KEYCLOAK_CLIENT_SECRET_KEY', 'ade263c9-5aca-46d4-965f-6e2d188a2515')
+OIDC_CREATE_USER = True
+
+OIDC_OP_AUTHORIZATION_ENDPOINT = os.getenv(
+    'KEYCLOAK_SERVER_URL', 'http://keycloak:8080/auth/') +\
+    "realms/francoralite/protocol/openid-connect/auth"
+OIDC_OP_TOKEN_ENDPOINT = os.getenv(
+    'KEYCLOAK_SERVER_URL', 'http://keycloak:8080/auth/') +\
+    "realms/francoralite/protocol/openid-connect/token"
+OIDC_OP_USER_ENDPOINT = os.getenv(
+    'KEYCLOAK_SERVER_URL', 'http://keycloak:8080/auth/') +\
+    "realms/francoralite/protocol/openid-connect/userinfo"
+OIDC_OP_JWKS_ENDPOINT = os.getenv(
+    'KEYCLOAK_SERVER_URL', 'http://keycloak:8080/auth/') +\
+    "realms/francoralite/protocol/openid-connect/certs"
+
+LOGIN_REDIRECT_URL = "http://localhost/"
+LOGOUT_REDIRECT_URL = os.getenv(
+    'KEYCLOAK_SERVER_URL', 'http://keycloak:8080/auth/') +\
+    "realms/francoralite/protocol/openid-connect/logout"
