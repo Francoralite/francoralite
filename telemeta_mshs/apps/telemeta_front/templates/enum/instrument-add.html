@@ -29,6 +29,7 @@
 {% endblock %}
 
 {% block content %}
+{% if not error|length %}
 {{ form.media }}
 <div class="container">
     <div id="app">
@@ -116,4 +117,7 @@
 
 {% markdown_editor "id_notes" %}
 {{ form.media.js }}
+{% else %}
+  {% display_error error %}
+{% endif %}
 {% endblock %}

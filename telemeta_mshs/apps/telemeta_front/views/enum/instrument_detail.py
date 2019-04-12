@@ -6,10 +6,7 @@
 
 
 from django.views.generic.base import TemplateView
-from rest_framework import status
-import requests
-
-from settings import FRONT_HOST_URL
+import telemeta_front.tools as tools
 from telemeta_front.forms.instrument import InstrumentForm
 
 
@@ -17,14 +14,13 @@ class InstrumentDetail(TemplateView):
     template_name = "../templates/enum/instrument-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(InstrumentDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL+'/api/instrument/' + context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            # Values of the collection
-            context['instrument'] = response.json
+        try:
+            context = super(InstrumentDetail, self).get_context_data(**kwargs)
+            context['instruments'] = tools.request_api(
+                '/api/instrument/' + context['id'])
             context['form'] = InstrumentForm()
-
+        except Exception as err:
+            context['instruments'] = {}
+            context['error'] = err.message
+            context['form'] = InstrumentForm()
         return context
