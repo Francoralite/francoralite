@@ -24,14 +24,23 @@
         {% block logo %}
             <a href="{% url "telemeta-home" %}">
               <img src="{% static "telemeta_front/images/logo_universite_poitiers.jpg" %}"
-               alt="Université de Poitiers"/>
+               alt={% trans "Université de Poitiers" %}/>
             </a>
             <img src="{% static "telemeta_front/images/logo_francoralite.png" %}"
               alt="Francoralité" />
         {% endblock %}
-        <div>
-          {{user}}
         </div>
+        <div id="auth_info" style="right : 1.1em;">
+        {% if user.is_authenticated %}
+             <img src="/static/telemeta/images/user.png" alt="user" style="vertical-align:middle"/>
+              {% trans "Bienvenue" %},
+             <a href="">{{user}}</a>                            |
+             <a href="/logout/">{% trans "Déconnexion" %}
+             <img src="/static/telemeta/images/logout.png" alt="logout"
+                  style="vertical-align:middle"/></a>
+        {% else %}
+          <a href="{% url 'oidc_authentication_init' %}">{% trans "Se connecter" %}</a>
+        {% endif %}
         </div>
 
         <div id="menu">
