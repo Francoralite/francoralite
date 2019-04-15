@@ -6,17 +6,20 @@
 
 
 from django.views.generic.base import TemplateView
-import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.domain_song import DomainSongForm
+import telemeta_front.tools as tools
 
 
 class DomainSongView(TemplateView):
     template_name = "../templates/enum/domain_song.html"
 
+    keycloak_scopes = {'GET': 'domain_song:view'}
+
     def get_context_data(self, **kwargs):
-        context = super(DomainSongView, self).get_context_data(**kwargs)
-        context['domain_songs'] = requests.get(
-            FRONT_HOST_URL + '/api/domain_song/').json
-        context['form'] = DomainSongForm
+        try:
+            context = super(DomainSongView, self).get_context_data(**kwargs)
+            context['domain_songs'] = tools.request_api('/api/domain_song/')
+        except Exception as err:
+            context['domain_songs']
+            context['error'] = err.message
+
         return context

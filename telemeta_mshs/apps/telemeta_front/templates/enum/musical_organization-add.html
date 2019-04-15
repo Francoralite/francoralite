@@ -25,9 +25,9 @@
 {% block title %}
    {{ block.super}}
    {% if id %}
-   {% trans "Modification" %}
+    {% trans "Modification" %}
    {% else %}
-   {% trans "Création" %}
+    {% trans "Création" %}
    {% endif %}
 {% endblock %}
 
@@ -36,23 +36,27 @@
 
 {% block content %}
 {{ form.media }}
-<div class="container">
-  {% if id %}
-  <form action="{%url "musical_organization-edit" id %}" method="POST">
-  {% else %}
-  <form action="{%url "musical_organization-add" %}" method="POST">
-  {% endif %}
-    {% csrf_token %}
-    {% bootstrap_field form.name layout='vertical' %}
-    {% bootstrap_field form.notes layout='vertical' %}
-
+{% if not error|length %}
+  <div class="container">
     {% if id %}
-    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
+    <form action="{%url "musical_organization-edit" id %}" method="POST">
     {% else %}
-    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+    <form action="{%url "musical_organization-add" %}" method="POST">
     {% endif %}
-  </form>
-</div>
+      {% csrf_token %}
+      {% bootstrap_field form.name layout='vertical' %}
+      {% bootstrap_field form.notes layout='vertical' %}
 
-{{ form.media.js }}
+      {% if id %}
+      {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
+      {% else %}
+      {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+      {% endif %}
+    </form>
+  </div>
+
+  {{ form.media.js }}
+  {% else %}
+    {% display_error error %}
+{% endif %}
 {% endblock %}
