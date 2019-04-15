@@ -56,7 +56,7 @@ def display_error(error="0"):
         if error == APPLICATION_ERRORS[key]:
             code = template.loader.get_template(value)
 
-    if error != "0":
+    if error != "0" and error != '':
         # Display the code of the error
         html = "<i>err-" + error + "</i>"
         # Render the template to HTML source code
