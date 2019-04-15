@@ -17,6 +17,10 @@ install:
   - docker-compose pull
   - docker-compose build
 
+
+before_script:
+  - docker network create services
+
 script:
   - docker-compose up -d
   - sleep 30
