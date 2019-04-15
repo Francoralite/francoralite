@@ -47,9 +47,14 @@ def field_data_bool(label, data):
 
 @register.simple_tag
 def display_error(error="0"):
+    url_error = {
+        'HTTP_API_401': 'inc/non_authentified.html',
+        'HTTP_API_404': 'inc/not_present.html',
+    }
     code = ""
-    if error == APPLICATION_ERRORS['HTTP_API_401']:
-        code = template.loader.get_template('inc/non_authentified.html')
+    for key, value in url_error.iteritems():
+        if error == APPLICATION_ERRORS[key]:
+            code = template.loader.get_template(value)
 
     if error != "0":
         # Display the code of the error

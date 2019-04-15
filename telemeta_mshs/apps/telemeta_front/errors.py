@@ -8,4 +8,5 @@
 APPLICATION_ERRORS = {
     'HTTP_API_401': '01_401',
     'HTTP_API_403': '01_403',
+    'HTTP_API_404': '01_404',
 }
