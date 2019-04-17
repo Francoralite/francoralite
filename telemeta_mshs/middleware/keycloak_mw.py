@@ -18,19 +18,60 @@
 
 import re
 import logging
+import requests
 from django.conf import settings
 from django.http.response import JsonResponse
-from django.contrib.auth import authenticate
 from keycloak import KeycloakOpenID
 from keycloak.exceptions import KeycloakInvalidTokenError
-from rest_framework.exceptions import \
-    PermissionDenied, AuthenticationFailed, NotAuthenticated
-from django.utils.functional import SimpleLazyObject
-from keycloak_response import HttpResponseNotAuthorized
+from rest_framework.exceptions import PermissionDenied, AuthenticationFailed
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from mozilla_django_oidc.utils import absolutify, import_from_settings
+from django.utils.crypto import get_random_string
+from urllib import urlencode
 
 
 logger = logging.getLogger(__name__)
+
+
+def get_permissions(self, token, method_token_info='introspect', **kwargs):
+    """
+    Get permission by user token
+
+    :param token: user token
+    :param method_token_info: Decode token method
+    :param kwargs: parameters for decode
+    :return: permissions list
+    """
+
+    if not self.authorization.policies:
+        raise Exception(
+            "Keycloak settings not found. Load Authorization Keycloak settings."
+        )
+
+    token_info = self._token_info(token, method_token_info, **kwargs)
+
+    if method_token_info == 'introspect' and not token_info['active']:
+        raise KeycloakInvalidTokenError(
+            "Token expired or invalid."
+        )
+
+    user_resources = token_info['resource_access'].get(self.client_id)
+    if not user_resources:
+        return None
+
+    permissions = []
+
+    for policy_name, policy in self.authorization.policies.items():
+        for role in user_resources['roles']:
+            policy_roles = [item.name for item in policy.roles]
+            if role in policy_roles:
+                permissions += policy.permissions
+
+    return list(set(permissions))
+
+
+KeycloakOpenID.get_permissions = get_permissions
 
 
 class KeycloakMiddleware(object):
@@ -190,31 +231,17 @@ class KeycloakMiddleware(object):
             if expr.match(path):
                 logger.debug('** exclude path : display template')
                 return None
-
             # Exclude every URL pointing to the API service,
             #   for authenticate
             expr = re.compile("^oidc/(authenticate|callback)/$")
             if expr.match(path):
                 logger.debug('** exclude path : authenticate')
                 return None
-
         try:
             view_scopes = view_func.cls.keycloak_scopes
         except AttributeError:
             logger.debug('Allowing free acesss, since no authorization configuration (keycloak_scopes) found for this request route :%s', request) # noqa
             return None
-
-        if 'HTTP_AUTHORIZATION' not in request.META:
-            return JsonResponse(
-                {"detail": unicode(NotAuthenticated.default_detail)},
-                status=NotAuthenticated.status_code)
-            # raise Exception(unicode(NotAuthenticated.default_detail))
-            # return JsonResponse({"detail": NotAuthenticated.default_detail},
-            #                status=401)
-            #                status=NotAuthenticated.status_code)
-
-        auth_header = request.META.get('HTTP_AUTHORIZATION').split()
-        token = auth_header[1] if len(auth_header) == 2 else auth_header[0]
 
         # Get default if method is not defined.
         required_scope = view_scopes.get(request.method, None) \
@@ -228,16 +255,22 @@ class KeycloakMiddleware(object):
                 status=PermissionDenied.status_code)
 
         try:
-            user_permissions = self.keycloak.get_permissions(
-                token,
-                method_token_info=self.method_validate_token.lower(),
-                key=self.client_public_key)
+            # Get Token
+            token = self.keycloak.token("contributeur", "password")
+            # FIXIT : récupération via Mozilla-Django-OIDC. Request[session]...
+
+            self.keycloak.load_authorization_config(
+                "/srv/app/etc/keycloak/auth.json")
+            permissions = self.keycloak.get_permissions(
+                token['access_token'],
+                method_token_info='decode',
+                key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
         except KeycloakInvalidTokenError:
             return JsonResponse(
                 {"detail": unicode(AuthenticationFailed.default_detail)},
                 status=AuthenticationFailed.status_code)
 
-        for perm in user_permissions:
+        for perm in permissions:
             if required_scope in perm.scopes:
                 return None
 
@@ -281,75 +314,7 @@ class KeycloakMiddleware(object):
             logger.debug('** exclude path : authenticate')
             return None
 
-        # if self.header_key not in request.META:
-        #     # TODO : redirection to the login page
-        #     response = HttpResponseRedirect('http://localhost:8080/auth/realms/francoralite/protocol/openid-connect/auth?client_id=francoralite&redirect_uri=http://localhost/oidc/authenticate&response_type=code&scope=openid')
-        #     return response
-        # if self.header_key not in request.META:
-        #     response = HttpResponseRedirect(
-        #         'http://localhost:8080/auth/realms/francoralite/protocol/openid-connect/auth?client_id=francoralite&redirect_uri=http://localhost/institution/edit/1&response_type=code&scope=openid')
-        #     return response
-
-        request.realm = SimpleLazyObject(lambda: self._realm())
-        user = authenticate(
-            request=request,
-            access_token=request.META[self.header_key].split(' ')[1])
-        request.user = user
-
-    def process_response(self, request, response):
-
-        path = request.path_info.lstrip('/')
-
-        # Exclude every URL pointing to the API service
-        expr = re.compile("^api/.*$")
-        if expr.match(path):
-            logger.debug('** exclude path : API, not template')
+        if not request.user.is_authenticated():
+            response = HttpResponseRedirect(
+                reverse('oidc_authentication_init'))
             return response
-
-        # Home page
-        if path == "":
-            return response
-
-        # Exclude every URL pointing to a list.
-        # e.g: institution/  --> list of the institutions
-        expr = re.compile("^[a-z0-9_]*/$")
-        if expr.match(path):
-            logger.debug('** exclude path : list template')
-            return response
-
-        # Exclude every URL pointing to a detail.
-        # e.g: institution/1/  --> detail of an institution
-        expr = re.compile("^[a-z0-9_]*/[0-9]*/$")
-        if expr.match(path):
-            logger.debug('** exclude path : detail template')
-            return response
-
-        if self.set_session_state_cookie:
-            return self.set_session_state_cookie_(request, response)
-
-        return response
-
-    def set_session_state_cookie_(self, request, response):
-
-        if not request.user.is_authenticated \
-                or not hasattr(request.user, 'oidc_profile'):
-            return response
-
-        jwt = request.user.oidc_profile.jwt
-        if not jwt:
-            return response
-
-        cookie_name = getattr(
-            settings,
-            'KEYCLOAK_SESSION_STATE_COOKIE_NAME',
-            'session_state')
-
-        # Set a browser readable cookie which expires when the refresh
-        # token expires.
-        response.set_cookie(
-            cookie_name, value=jwt['session_state'],
-            expires=request.user.oidc_profile.refresh_expires_before,
-            httponly=False
-        )
-
-        return response

@@ -55,8 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    # 'telemeta_mshs.middleware.keycloak_mw.KeycloakMiddleware',
-    # TODO : use it ?
+    'telemeta_mshs.middleware.keycloak_mw.KeycloakMiddleware',
 )
 
 DATABASES = {
