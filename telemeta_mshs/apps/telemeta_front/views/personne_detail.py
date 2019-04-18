@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 from rest_framework import status
 import requests
 
@@ -12,7 +12,7 @@ from settings import FRONT_HOST_URL
 from telemeta_front.forms.personne import PersonneForm
 
 
-class PersonneDetail(TemplateView):
+class PersonneDetail(FrancoraliteTemplateView):
     template_name = "../templates/personne-detail.html"
 
     def get_context_data(self, **kwargs):

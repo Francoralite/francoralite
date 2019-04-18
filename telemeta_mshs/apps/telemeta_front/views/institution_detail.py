@@ -4,11 +4,11 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import telemeta_front.tools as tools
 
 
-class InstitutionDetail(TemplateView):
+class InstitutionDetail(FrancoraliteTemplateView):
     template_name = "../templates/institution-detail.html"
 
     def get_context_data(self, **kwargs):

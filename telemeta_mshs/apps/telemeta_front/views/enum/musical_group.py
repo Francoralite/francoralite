@@ -5,11 +5,11 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.base import TemplateView
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import telemeta_front.tools as tools
 
 
-class MusicalGroupView(TemplateView):
+class MusicalGroupView(FrancoraliteTemplateView):
     template_name = "../templates/enum/musical_group.html"
 
     keycloak_scope = {

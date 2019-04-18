@@ -5,12 +5,12 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.base import TemplateView
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import telemeta_front.tools as tools
 from telemeta_front.forms.instrument import InstrumentForm
 
 
-class InstrumentDetail(TemplateView):
+class InstrumentDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/instrument-detail.html"
 
     def get_context_data(self, **kwargs):

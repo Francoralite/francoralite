@@ -4,11 +4,11 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import telemeta_front.tools as tools
 
 
-class InstrumentView(TemplateView):
+class InstrumentView(FrancoraliteTemplateView):
     template_name = "../templates/enum/instrument.html"
     keycloak_scopes = {
         'GET': 'instrument:view'}

@@ -4,13 +4,13 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 
 from telemeta_front.forms.fond import FondForm
 import telemeta_front.tools as tools
 
 
-class FondDetail(TemplateView):
+class FondDetail(FrancoraliteTemplateView):
     template_name = "../templates/fond-detail.html"
 
     def get_context_data(self, **kwargs):
