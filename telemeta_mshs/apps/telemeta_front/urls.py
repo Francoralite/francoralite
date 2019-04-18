@@ -33,6 +33,8 @@ from .views.enum import (
     domain_tale_add,
     domain_vocal, domain_vocal_edit, domain_vocal_delete, domain_vocal_detail,
     domain_vocal_add,
+    dance, dance_edit, dance_delete, dance_detail,
+    dance_add,
     musical_organization, musical_organization_edit,
     musical_organization_delete, musical_organization_detail,
     musical_organization_add,
@@ -255,6 +257,21 @@ urlpatterns = [
         domain_vocal_delete.DomainVocalDelete.as_view(),
         name='domain_vocal-delete'),
 
+    # Dance
+    url(r'^dance/$', dance.DanceView.as_view(),
+        name="dance"),
+    url(r'^dance/add/$',
+     dance_add.DanceAdd.as_view(),
+     name='dance-add'),
+    url(r'^dance/(?P<id>[0-9]+)/$',
+     dance_detail.DanceDetail.as_view(),
+     name='dance-detail'),
+    url(r'^dance/edit/(?P<id>[0-9]+)$',
+         dance_edit.DanceEdit.as_view(),
+         name='dance-edit'),
+    url(r'^dance/delete/(?P<id>[0-9]+)$',
+        dance_delete.DanceDelete.as_view(),
+        name='dance-delete'),
 
     # Musical Organization
     url(r'^musical_organization/$',
