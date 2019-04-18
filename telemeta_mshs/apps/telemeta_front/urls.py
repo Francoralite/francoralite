@@ -38,6 +38,8 @@ from .views.enum import (
     musical_organization, musical_organization_edit,
     musical_organization_delete, musical_organization_detail,
     musical_organization_add,
+    hornbostelsachs, hornbostelsachs_edit, hornbostelsachs_delete,
+    hornbostelsachs_detail, hornbostelsachs_add,
     musical_group, musical_group_edit,
     musical_group_delete, musical_group_detail,
     musical_group_add,
@@ -289,6 +291,22 @@ urlpatterns = [
     url(r'^musical_organization/delete/(?P<id>[0-9]+)$',
         musical_organization_delete.MusicalOrganizationDelete.as_view(),
         name='musical_organization-delete'),
+
+    # hornbostelsachs
+    url(r'^hornbostelsachs/$', hornbostelsachs.Hornbostelsachs.as_view(),
+        name="hornbostelsachs"),
+    url(r'^hornbostelsachs/add/$',
+     hornbostelsachs_add.HornbostelsachsAdd.as_view(),
+     name='hornbostelsachs-add'),
+    url(r'^hornbostelsachs/(?P<id>[0-9]+)/$',
+     hornbostelsachs_detail.HornbostelsachsDetail.as_view(),
+     name='hornbostelsachs-detail'),
+    url(r'^hornbostelsachs/edit/(?P<id>[0-9]+)$',
+         hornbostelsachs_edit.HornbostelsachsEdit.as_view(),
+         name='hornbostelsachs-edit'),
+    url(r'^hornbostelsachs/delete/(?P<id>[0-9]+)$',
+        hornbostelsachs_delete.HornbostelsachsDelete.as_view(),
+        name='hornbostelsachs-delete'),
 
     # Musical Group
     url(r'^musical_group/$',
