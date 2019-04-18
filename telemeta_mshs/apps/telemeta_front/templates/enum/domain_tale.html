@@ -19,7 +19,7 @@
 <div class="col-md-4">
   <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
     style="vertical-align:middle" />
-    <h1>{% trans "Genre de chanson" %}</h1>
+    <h1>{% trans "Genre de conte" %}</h1>
 </div>
 <div class="col-md-8">
 </div>
@@ -32,7 +32,7 @@
   <a href="{% url "domain_tale-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
-      {% trans "Créer un genre de chanson" %}
+      {% trans "Créer un genre de conte" %}
     </button>
   </a>
 {% endif %}
@@ -88,7 +88,7 @@
   {% if error|length %}
       {% display_error error %}
     {% else %}
-      <p>{% trans "Il n'y a pas de genre de chanson" %}</p>
+      <p>{% trans "Il n'y a pas de genre de conte" %}</p>
     {% endif %}
 {% endif %}
 </div>
