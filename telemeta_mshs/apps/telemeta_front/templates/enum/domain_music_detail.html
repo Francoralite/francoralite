@@ -1,0 +1,51 @@
+
+{% extends "enum/domain_music.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Genre de chanson" %}
+    {% if domain_music %}
+     : {{ domain_music.name }}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  {% if user.is_authenticated %}
+  <a href="{% url "domain_music-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </button>
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if not error|length %}
+{% if domain_music %}
+
+  {% field_data form.name.label|safe domain_music.name|safe %}
+  {% field_data form.notes.label|safe domain_music.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Ce genre n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

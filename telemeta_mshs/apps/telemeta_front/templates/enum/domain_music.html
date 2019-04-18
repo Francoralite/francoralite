@@ -19,7 +19,7 @@
 <div class="col-md-4">
   <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
     style="vertical-align:middle" />
-    <h1>{% trans "Genre de chanson" %}</h1>
+    <h1>{% trans "Genre de musique" %}</h1>
 </div>
 <div class="col-md-8">
 </div>
@@ -29,10 +29,10 @@
 
 {% block title_buttons %}
 {% if user.is_authenticated %}
-  <a href="{% url "domain_song-add" %}">
+  <a href="{% url "domain_music-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
-      {% trans "Créer un genre de chanson" %}
+      {% trans "Créer un genre de musique" %}
     </button>
   </a>
 {% endif %}
@@ -42,37 +42,37 @@
 </div>
 {% block content %}
 <div class="fullpage">
-  <!-- If there is some domain song (number of elements > 0 ) -->
-{% if domain_songs|length > 0 %}
-  <!-- Table to display the domain_songs --->
+  <!-- If there is some domain music (number of elements > 0 ) -->
+{% if domain_musics|length > 0 %}
+  <!-- Table to display the domain_musics --->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
   </tr>
-  {% for domain_song in domain_songs %}
+  {% for domain_music in domain_musics %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
-          <a href="/domain_song/{{domain_song.id }}/">
-            {{ domain_song.name|upper }}</a>
+          <a href="/domain_music/{{domain_music.id }}/">
+            {{ domain_music.name|upper }}</a>
       </td>
       <td>
-        {% if domain_song.notes %}
-          {{ domain_song.notes|markdown|safe }}
+        {% if domain_music.notes %}
+          {{ domain_music.notes|markdown|safe }}
         {% endif %}
       </td>
       <td>
         {% if user.is_authenticated %}
         {% buttons %}
-        <a href="{% url "domain_song-edit" id=domain_song.id %}">
+        <a href="{% url "domain_music-edit" id=domain_music.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
-            data-name="{{domain_song.title}}"
-            data-url="{% url "domain_song-delete" id=domain_song.id %}">
+            data-name="{{domain_music.title}}"
+            data-url="{% url "domain_music-delete" id=domain_music.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endbuttons %}
@@ -88,7 +88,7 @@
   {% if error|length %}
       {% display_error error %}
     {% else %}
-      <p>{% trans "Il n'y a pas de genre de chanson" %}</p>
+      <p>{% trans "Il n'y a pas de genre de musique" %}</p>
     {% endif %}
 {% endif %}
 </div>

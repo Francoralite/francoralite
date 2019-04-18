@@ -10,24 +10,24 @@ from rest_framework import status
 import requests
 from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
-from telemeta_front.forms.domain_song import DomainSongForm
+from telemeta_front.forms.domain_music import DomainMusicForm
 from django.shortcuts import render
 
 
-class DomainSongEdit(FormView):
-    template_name = "../templates/enum/domain_song-add.html"
-    form_class = DomainSongForm
-    success_url = '/domain_song/'
+class DomainMusicEdit(FormView):
+    template_name = "../templates/enum/domain_music-add.html"
+    form_class = DomainMusicForm
+    success_url = '/domain_music/'
 
     def get_context_data(self, **kwargs):
-        context = super(DomainSongEdit, self).get_context_data(**kwargs)
+        context = super(DomainMusicEdit, self).get_context_data(**kwargs)
 
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/domain_song/' + str(id))
+            FRONT_HOST_URL + '/api/domain_music/' + str(id))
         if response.status_code == status.HTTP_200_OK:
-            context['domain_song'] = response.json
+            context['domain_music'] = response.json
         return context
 
     def get(self, request, *args, **kwargs):
@@ -35,31 +35,31 @@ class DomainSongEdit(FormView):
         id = kwargs.get('id')
 
         # Obtain values of the record
-        domain_song = requests.get(
-            FRONT_HOST_URL + '/api/domain_song/' + str(id))
-        form = DomainSongForm(initial=domain_song.json())
+        domain_music = requests.get(
+            FRONT_HOST_URL + '/api/domain_music/' + str(id))
+        form = DomainMusicForm(initial=domain_music.json())
 
         return render(request,
-                      '../templates/enum/domain_song-add.html',
+                      '../templates/enum/domain_music-add.html',
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
 
-        form = DomainSongForm(request.POST)
+        form = DomainMusicForm(request.POST)
         id = kwargs.get('id')
 
         if form.is_valid():
             try:
                 response = requests.patch(
-                    FRONT_HOST_URL + '/api/domain_song/' + str(id) + '/',
+                    FRONT_HOST_URL + '/api/domain_music/' + str(id) + '/',
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/domain_song/edit' + str(id)
+                    return HttpResponseRedirect('/domain_music/edit' + str(id)
                                                 + '/')
-                return HttpResponseRedirect('/domain_song/')
+                return HttpResponseRedirect('/domain_music/')
 
             except RequestException:
-                return HttpResponseRedirect('/domain_song/edit')
+                return HttpResponseRedirect('/domain_music/edit')
 
-        return HttpResponseRedirect('/domain_song/edit')
+        return HttpResponseRedirect('/domain_music/edit')

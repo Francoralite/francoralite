@@ -27,6 +27,8 @@ from .views.enum import (
     instrument_add,
     domain_song, domain_song_edit, domain_song_delete, domain_song_detail,
     domain_song_add,
+    domain_music, domain_music_edit, domain_music_delete, domain_music_detail,
+    domain_music_add,
     musical_organization, musical_organization_edit,
     musical_organization_delete, musical_organization_detail,
     musical_organization_add,
@@ -199,6 +201,22 @@ urlpatterns = [
     url(r'^domain_song/delete/(?P<id>[0-9]+)$',
         domain_song_delete.DomainSongDelete.as_view(),
         name='domain_song-delete'),
+
+    # Domain Music
+    url(r'^domain_music/$', domain_music.DomainMusicView.as_view(),
+        name="domain_music"),
+    url(r'^domain_music/add/$',
+     domain_music_add.DomainMusicAdd.as_view(),
+     name='domain_music-add'),
+    url(r'^domain_music/(?P<id>[0-9]+)/$',
+     domain_music_detail.DomainMusicDetail.as_view(),
+     name='domain_music-detail'),
+    url(r'^domain_music/edit/(?P<id>[0-9]+)$',
+         domain_music_edit.DomainMusicEdit.as_view(),
+         name='domain_music-edit'),
+    url(r'^domain_music/delete/(?P<id>[0-9]+)$',
+        domain_music_delete.DomainMusicDelete.as_view(),
+        name='domain_music-delete'),
 
     # Musical Organization
     url(r'^musical_organization/$',
