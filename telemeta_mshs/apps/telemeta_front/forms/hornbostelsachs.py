@@ -9,11 +9,11 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class HornbostelsachsForm(forms.Form):
-    name = forms.CharField(
-        label=_(u'Titre'),
+    number = forms.CharField(
+        label=_(u'Numéro'),
         max_length=255, required=True)
-    notes = forms.CharField(
-        label=_(u'Notes'),
+    name = forms.CharField(
+        label=_(u'Nom'),
         widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):

@@ -18,9 +18,9 @@
 {% block title %}
   <h1>
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "classification hornbostelsachs" %}
+    {% trans "classification Hornbostel-Sachs" %}
     {% if hornbostelsachs %}
-     : {{ hornbostelsachs.name }}
+     : {{ hornbostelsachs.number }}
     {% endif %}
   </h1>
 {% endblock %}
@@ -39,8 +39,8 @@
 {% if not error|length %}
 {% if hornbostelsachs %}
 
+  {% field_data form.number.label|safe hornbostelsachs.number|safe %}
   {% field_data form.name.label|safe hornbostelsachs.name|safe %}
-  {% field_data form.notes.label|safe hornbostelsachs.notes|markdown|safe %}
 
 {% else %}
   <p>{% trans "Ce genre n'existe pas." %}</p>

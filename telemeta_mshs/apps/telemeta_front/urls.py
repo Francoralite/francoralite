@@ -293,7 +293,7 @@ urlpatterns = [
         name='musical_organization-delete'),
 
     # hornbostelsachs
-    url(r'^hornbostelsachs/$', hornbostelsachs.Hornbostelsachs.as_view(),
+    url(r'^hornbostelsachs/$', hornbostelsachs.HornbostelsachsView.as_view(),
         name="hornbostelsachs"),
     url(r'^hornbostelsachs/add/$',
      hornbostelsachs_add.HornbostelsachsAdd.as_view(),

@@ -19,7 +19,7 @@
 <div class="col-md-4">
   <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
     style="vertical-align:middle" />
-    <h1>{% trans "classification hornbostelsachs" %}</h1>
+    <h1>{% trans "classification Hornbostel-Sachs" %}</h1>
 </div>
 <div class="col-md-8">
 </div>
@@ -32,7 +32,7 @@
   <a href="{% url "hornbostelsachs-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
-      {% trans "classification hornbostelsachs" %}
+      {% trans "Ajouter une entrée à la classification" %}
     </button>
   </a>
 {% endif %}
@@ -47,18 +47,18 @@
   <!-- Table to display the hornbostelsachss --->
   <table class="listing">
   <tr>
-      <th class="highlight">{% trans "Nom" %}</th>
-      <th>{% trans "Notes" %}</th>
+      <th class="highlight">{% trans "Numéro" %}</th>
+      <th>{% trans "Nom" %}</th>
   </tr>
   {% for hornbostelsachs in hornbostelsachss %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
           <a href="/hornbostelsachs/{{hornbostelsachs.id }}/">
-            {{ hornbostelsachs.name|upper }}</a>
+            {{ hornbostelsachs.number|safe }}</a>
       </td>
       <td>
-        {% if hornbostelsachs.notes %}
-          {{ hornbostelsachs.notes|markdown|safe }}
+        {% if hornbostelsachs.name %}
+          {{ hornbostelsachs.name|safe }}
         {% endif %}
       </td>
       <td>
@@ -88,7 +88,7 @@
   {% if error|length %}
       {% display_error error %}
     {% else %}
-      <p>{% trans "Il n'y a pas de classification hornbostelsachs" %}</p>
+      <p>{% trans "Il n'y a pas de classification Hornbostel-Sachs" %}</p>
     {% endif %}
 {% endif %}
 </div>

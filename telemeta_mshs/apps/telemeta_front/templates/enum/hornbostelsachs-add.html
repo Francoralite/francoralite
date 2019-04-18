@@ -45,8 +45,8 @@
   <form action="{%url "hornbostelsachs-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
+    {% bootstrap_field form.number layout='vertical' %}
     {% bootstrap_field form.name layout='vertical' %}
-    {% bootstrap_field form.notes layout='vertical' %}
 
     {% if id %}
     {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
