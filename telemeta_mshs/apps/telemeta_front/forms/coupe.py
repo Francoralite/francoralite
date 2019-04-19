@@ -9,8 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class CoupeForm(forms.Form):
-    name = forms.CharField(
-        label=_(u'Titre'),
+    value = forms.CharField(
+        label=_(u'Nom'),
         max_length=255, required=True)
     notes = forms.CharField(
         label=_(u'Notes'),
