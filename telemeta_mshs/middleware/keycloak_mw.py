@@ -46,7 +46,7 @@ def get_permissions(self, token, method_token_info='introspect', **kwargs):
 
     if not self.authorization.policies:
         raise Exception(
-            "Keycloak settings not found. Load Authorization Keycloak settings."
+            "Keycloak settings not found. Load Authorization Keycloak settings." # noqa
         )
 
     token_info = self._token_info(token, method_token_info, **kwargs)
@@ -237,6 +237,13 @@ class KeycloakMiddleware(object):
             if expr.match(path):
                 logger.debug('** exclude path : authenticate')
                 return None
+
+            # Exclude every URL pointing to a list.
+            # e.g: institution/  --> list of the institutions
+            expr = re.compile("^[a-z0-9_]*/$")
+            if expr.match(path):
+                logger.debug('** exclude path : list template')
+                return
         try:
             view_scopes = view_func.cls.keycloak_scopes
         except AttributeError:
@@ -256,20 +263,19 @@ class KeycloakMiddleware(object):
 
         try:
             # Get Token
-            token = self.keycloak.token("contributeur", "password")
-            # FIXIT : récupération via Mozilla-Django-OIDC. Request[session]...
+            access_token = request.session['oidc_access_token']
 
             self.keycloak.load_authorization_config(
                 "/srv/app/etc/keycloak/auth.json")
+            # Get permissions
             permissions = self.keycloak.get_permissions(
-                token['access_token'],
+                access_token,
                 method_token_info='decode',
                 key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
-        except KeycloakInvalidTokenError:
+        except Exception:
             return JsonResponse(
                 {"detail": unicode(AuthenticationFailed.default_detail)},
                 status=AuthenticationFailed.status_code)
-
         for perm in permissions:
             if required_scope in perm.scopes:
                 return None
