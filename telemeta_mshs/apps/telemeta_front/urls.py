@@ -35,6 +35,8 @@ from .views.enum import (
     domain_vocal_add,
     dance, dance_edit, dance_delete, dance_detail,
     dance_add,
+    emit_vox, emit_vox_edit, emit_vox_delete, emit_vox_detail,
+    emit_vox_add,
     musical_organization, musical_organization_edit,
     musical_organization_delete, musical_organization_detail,
     musical_organization_add,
@@ -307,6 +309,22 @@ urlpatterns = [
     url(r'^hornbostelsachs/delete/(?P<id>[0-9]+)$',
         hornbostelsachs_delete.HornbostelsachsDelete.as_view(),
         name='hornbostelsachs-delete'),
+
+    # Emit vox
+    url(r'^emit_vox/$', emit_vox.EmitVoxView.as_view(),
+        name="emit_vox"),
+    url(r'^emit_vox/add/$',
+        emit_vox_add.EmitVoxAdd.as_view(),
+        name='emit_vox-add'),
+    url(r'^emit_vox/(?P<id>[0-9]+)/$',
+     emit_vox_detail.EmitVoxDetail.as_view(),
+     name='emit_vox-detail'),
+    url(r'^emit_vox/edit/(?P<id>[0-9]+)$',
+         emit_vox_edit.EmitVoxEdit.as_view(),
+         name='emit_vox-edit'),
+    url(r'^emit_vox/delete/(?P<id>[0-9]+)$',
+        emit_vox_delete.EmitVoxDelete.as_view(),
+        name='emit_vox-delete'),
 
     # Musical Group
     url(r'^musical_group/$',
