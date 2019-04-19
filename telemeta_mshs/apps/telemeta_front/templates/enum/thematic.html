@@ -42,7 +42,7 @@
 </div>
 {% block content %}
 <div class="fullpage">
-  <!-- If there is some domain song (number of elements > 0 ) -->
+  <!-- If there is some thematics (number of elements > 0 ) -->
 {% if thematics|length > 0 %}
   <!-- Table to display the thematics --->
   <table class="listing">
@@ -88,7 +88,7 @@
   {% if error|length %}
       {% display_error error %}
     {% else %}
-      <p>{% trans "Il n'y a pas de genre de chanson" %}</p>
+      <p>{% trans "Il n'y a pas de thématiques" %}</p>
     {% endif %}
 {% endif %}
 </div>
