@@ -53,6 +53,8 @@ from .views.enum import (
     coupe_add,
     legal_rights, legal_rights_edit, legal_rights_delete, legal_rights_detail,
     legal_rights_add,
+    mediatype, mediatype_edit, mediatype_delete, mediatype_detail,
+    mediatype_add,
 )
 
 
@@ -414,4 +416,21 @@ urlpatterns = [
     url(r'^legal_rights/delete/(?P<id>[0-9]+)$',
         legal_rights_delete.LegalRightsDelete.as_view(),
         name='legal_rights-delete'),
+
+
+    # mediatype
+    url(r'^mediatype/$', mediatype.MediaTypeView.as_view(),
+        name="mediatype"),
+    url(r'^mediatype/add/$',
+     mediatype_add.MediaTypeAdd.as_view(),
+     name='mediatype-add'),
+    url(r'^mediatype/(?P<id>[0-9]+)/$',
+        mediatype_detail.MediaTypeDetail.as_view(),
+        name='mediatype-detail'),
+    url(r'^mediatype/edit/(?P<id>[0-9]+)$',
+        mediatype_edit.MediaTypeEdit.as_view(),
+        name='mediatype-edit'),
+    url(r'^mediatype/delete/(?P<id>[0-9]+)$',
+        mediatype_delete.MediaTypeDelete.as_view(),
+        name='mediatype-delete'),
 ]
