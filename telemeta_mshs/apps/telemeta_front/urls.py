@@ -45,6 +45,8 @@ from .views.enum import (
     musical_group, musical_group_edit,
     musical_group_delete, musical_group_detail,
     musical_group_add,
+    thematic, thematic_edit, thematic_delete, thematic_detail,
+    thematic_add,
 )
 
 
@@ -325,6 +327,22 @@ urlpatterns = [
     url(r'^emit_vox/delete/(?P<id>[0-9]+)$',
         emit_vox_delete.EmitVoxDelete.as_view(),
         name='emit_vox-delete'),
+
+    # thematic
+    url(r'^thematic/$', thematic.ThematicView.as_view(),
+        name="thematic"),
+    url(r'^thematic/add/$',
+        thematic_add.ThematicAdd.as_view(),
+        name='thematic-add'),
+    url(r'^thematic/(?P<id>[0-9]+)/$',
+     thematic_detail.ThematicDetail.as_view(),
+     name='thematic-detail'),
+    url(r'^thematic/edit/(?P<id>[0-9]+)$',
+         thematic_edit.ThematicEdit.as_view(),
+         name='thematic-edit'),
+    url(r'^emit_vox/delete/(?P<id>[0-9]+)$',
+        thematic_delete.ThematicDelete.as_view(),
+        name='thematic-delete'),
 
     # Musical Group
     url(r'^musical_group/$',
