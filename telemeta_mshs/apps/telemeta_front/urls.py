@@ -49,6 +49,8 @@ from .views.enum import (
     thematic_add,
     usefulness, usefulness_edit, usefulness_delete, usefulness_detail,
     usefulness_add,
+    coupe, coupe_edit, coupe_delete, coupe_detail,
+    coupe_add,
 )
 
 
@@ -378,4 +380,20 @@ urlpatterns = [
     url(r'^usefulness/delete/(?P<id>[0-9]+)$',
         usefulness_delete.UsefulnessDelete.as_view(),
         name='usefulness-delete'),
+
+    # Coupe
+    url(r'^coupe/$', coupe.CoupeView.as_view(),
+        name="coupe"),
+    url(r'^coupe/add/$',
+     coupe_add.CoupeAdd.as_view(),
+     name='coupe-add'),
+    url(r'^coupe/(?P<id>[0-9]+)/$',
+     coupe_detail.CoupeDetail.as_view(),
+     name='coupe-detail'),
+    url(r'^coupe/edit/(?P<id>[0-9]+)$',
+         coupe_edit.CoupeEdit.as_view(),
+         name='coupe-edit'),
+    url(r'^coupe/delete/(?P<id>[0-9]+)$',
+        coupe_delete.CoupeDelete.as_view(),
+        name='coupe-delete'),
 ]
