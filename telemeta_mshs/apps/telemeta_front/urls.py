@@ -47,6 +47,8 @@ from .views.enum import (
     musical_group_add,
     thematic, thematic_edit, thematic_delete, thematic_detail,
     thematic_add,
+    usefulness, usefulness_edit, usefulness_delete, usefulness_detail,
+    usefulness_add,
 )
 
 
@@ -360,4 +362,20 @@ urlpatterns = [
     url(r'^musical_group/delete/(?P<id>[0-9]+)$',
         musical_group_delete.MusicalGroupDelete.as_view(),
         name='musical_group-delete'),
+
+    # usefulness
+    url(r'^usefulness/$', usefulness.UsefulnessView.as_view(),
+        name="usefulness"),
+    url(r'^usefulness/add/$',
+     usefulness_add.UsefulnessAdd.as_view(),
+     name='usefulness-add'),
+    url(r'^usefulness/(?P<id>[0-9]+)/$',
+     usefulness_detail.UsefulnessDetail.as_view(),
+     name='usefulness-detail'),
+    url(r'^usefulness/edit/(?P<id>[0-9]+)$',
+         usefulness_edit.UsefulnessEdit.as_view(),
+         name='usefulness-edit'),
+    url(r'^usefulness/delete/(?P<id>[0-9]+)$',
+        usefulness_delete.UsefulnessDelete.as_view(),
+        name='usefulness-delete'),
 ]
