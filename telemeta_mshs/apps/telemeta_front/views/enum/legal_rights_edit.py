@@ -25,7 +25,7 @@ class LegalRightsEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/legal_rights/' + str(id))
+            FRONT_HOST_URL + '/api/legalrights/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['legal_rights'] = response.json
         return context
@@ -36,7 +36,7 @@ class LegalRightsEdit(FormView):
 
         # Obtain values of the record
         legal_rights = requests.get(
-            FRONT_HOST_URL + '/api/legal_rights/' + str(id))
+            FRONT_HOST_URL + '/api/legalrights/' + str(id))
         form = LegalRightsForm(initial=legal_rights.json())
 
         return render(request,
@@ -51,7 +51,7 @@ class LegalRightsEdit(FormView):
         if form.is_valid():
             try:
                 response = requests.patch(
-                    FRONT_HOST_URL + '/api/legal_rights/' + str(id) + '/',
+                    FRONT_HOST_URL + '/api/legalrights/' + str(id) + '/',
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
