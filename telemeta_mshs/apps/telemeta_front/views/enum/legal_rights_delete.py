@@ -17,7 +17,7 @@ class LegalRightsDelete(View):
         id = kwargs.get('id')
         try:
             requests.delete(
-                FRONT_HOST_URL + '/api/legal_rights/' + str(id)
+                FRONT_HOST_URL + '/api/legalrights/' + str(id)
                 )
             return HttpResponseRedirect('/legal_rights/')
 

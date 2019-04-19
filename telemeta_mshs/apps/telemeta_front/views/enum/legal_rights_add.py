@@ -26,7 +26,7 @@ class LegalRightsAdd(FormView):
 
             try:
                 requests.post(
-                    FRONT_HOST_URL + '/api/legal_rights/',
+                    FRONT_HOST_URL + '/api/legalrights/',
                     data=form.cleaned_data
                 )
                 return HttpResponseRedirect('/legal_rights/')
