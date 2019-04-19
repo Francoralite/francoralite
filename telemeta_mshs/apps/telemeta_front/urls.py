@@ -51,6 +51,8 @@ from .views.enum import (
     usefulness_add,
     coupe, coupe_edit, coupe_delete, coupe_detail,
     coupe_add,
+    legal_rights, legal_rights_edit, legal_rights_delete, legal_rights_detail,
+    legal_rights_add,
 )
 
 
@@ -396,4 +398,20 @@ urlpatterns = [
     url(r'^coupe/delete/(?P<id>[0-9]+)$',
         coupe_delete.CoupeDelete.as_view(),
         name='coupe-delete'),
+
+    # LegalRights
+    url(r'^legal_rights/$', legal_rights.LegalRightsView.as_view(),
+        name="legal_rights"),
+    url(r'^legal_rights/add/$',
+     legal_rights_add.LegalRightsAdd.as_view(),
+     name='legal_rights-add'),
+    url(r'^legal_rights/(?P<id>[0-9]+)/$',
+     legal_rights_detail.LegalRightsDetail.as_view(),
+     name='legal_rights-detail'),
+    url(r'^legal_rights/edit/(?P<id>[0-9]+)$',
+         legal_rights_edit.LegalRightsEdit.as_view(),
+         name='legal_rights-edit'),
+    url(r'^legal_rights/delete/(?P<id>[0-9]+)$',
+        legal_rights_delete.LegalRightsDelete.as_view(),
+        name='legal_rights-delete'),
 ]
