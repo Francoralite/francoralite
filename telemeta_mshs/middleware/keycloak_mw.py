@@ -227,11 +227,6 @@ class KeycloakMiddleware(object):
 
             # Exclude every URL pointing to the API service,
             #   for a detail queryset.
-            expr = re.compile("^api/[a-z0-9_]*/[0-9]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : display template')
-                return None
-
             expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|)$")
             if expr.match(path):
                 logger.debug('** exclude path : display template')
