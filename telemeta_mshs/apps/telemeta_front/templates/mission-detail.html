@@ -26,113 +26,119 @@
 {% endblock %}
 
 {% block title_buttons %}
-  <a href="{% url "collection-add" id_institution=mission.fonds.institution.id id_fond=mission.fonds.id id_mission=id %}">
+  {% if user.is_authenticated %}
+    <a href="{% url "collection-add" id_institution=mission.fonds.institution.id id_fond=mission.fonds.id id_mission=id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        {% trans "Créer une enquête" %}
+      </button>
+    </a>
+    <a href="{% url "mission-edit" id=id %}">
     <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-plus"></span>
-      {% trans "Créer une enquête" %}
+      <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
     </button>
-  </a>
-  <a href="{% url "mission-edit" id=id %}">
-  <button type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
-  </button>
-  </a>
+    </a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-{% if mission %}
-<ul class="nav nav-tabs" role="tablist">
-   <li class="active">
-     <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
-   </li>
-   <li>
-     <a href="#tab_collection" role="tab" data-toggle="tab">{% trans "Enquêtes" %}</a>
-   </li>
-</ul>
+{% if not error|length %}
+  {% if mission %}
+  <ul class="nav nav-tabs" role="tablist">
+     <li class="active">
+       <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
+     </li>
+     <li>
+       <a href="#tab_collection" role="tab" data-toggle="tab">{% trans "Enquêtes" %}</a>
+     </li>
+  </ul>
 
-<div class="tab-content">
-  <div class="tab-pane fade in active" id="tab_general">
-    <div class="container_line">
-        <span class="container_data">
-          <span class="libelle"> {{form.fonds.label|safe}}</span>
-        <span class="donnee">
-          <a href="{% url "fond-detail" id=mission.fonds.id %}">
-            {{mission.fonds.title|safe}}
-          </a>
-        </span>
-      </span>
-      {% field_data form.code_partner.label|safe mission.code_partner|safe %}
-      {% field_data form.code.label mission.code|upper|safe %}
-      {% field_data form.title.label|safe mission.title|safe %}
-      {% field_data form.public_access.label|safe mission.public_access|public_access|safe %}
-    </div>
-
-    <div class="container_line">
-      {% field_data form.descriptions.label|safe mission.descriptions|markdown|safe %}
-    </div>
-
-    <div class="block-grey">
-      <h2>{% trans "Période" %}</h2>
-      {% trans "Années d'enregistrement" %}
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="tab_general">
       <div class="container_line">
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Depuis' %}</span>
-          <span class="donnee"></span>
+          <span class="container_data">
+            <span class="libelle"> {{form.fonds.label|safe}}</span>
+          <span class="donnee">
+            <a href="{% url "fond-detail" id=mission.fonds.id %}">
+              {{mission.fonds.title|safe}}
+            </a>
+          </span>
         </span>
-        <span class="container_data">
-          <span class="libelle"> {% trans "Jusqu\'à" %}</span>
-          <span class="donnee"></span>
-        </span>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
-          <span class="donnee"></span>
-        </span>
+        {% field_data form.code_partner.label|safe mission.code_partner|safe %}
+        {% field_data form.code.label mission.code|upper|safe %}
+        {% field_data form.title.label|safe mission.title|safe %}
+        {% field_data form.public_access.label|safe mission.public_access|public_access|safe %}
       </div>
-    </div>
 
-    <div class="block-grey">
-      <h2>{% trans "Personnes" %}</h2>
-      <span class="container_data">
-        <span class="libelle"> {% trans 'Collecteurs' %}</span>
-        <span class="donnee"></span>
-      </span>
-      <span class="container_data">
-        <span class="libelle"> {% trans 'Informateurs' %}</span>
-        <span class="donnee"></span>
-      </span>
-    </div>
+      <div class="container_line">
+        {% field_data form.descriptions.label|safe mission.descriptions|markdown|safe %}
+      </div>
 
-  </div>
-
-    <div class="tab-pane fade in" id="tab_collection">
-      {% if collections|length > 0 %}
-        <!-- Table to display the collections --->
-        <table class="listing">
-        <tr>
-            <th class="highlight">{% trans "cote" %}</th>
-            <th>{% trans "Nom" %}</th>
-            <th>{% trans "Description" %}</th>
-        </tr>
-        {% for collection in collections %}
-        <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-            <td class="highlight">
-                <a href="/collection/{{collection.id }}/">
-                {{ collection.code|upper }}</a>
-            </td>
-            <td>{{ collection.title|safe }}</td>
-            <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
-          </tr>
-          {% endfor %}
-        </table>
-      {% else %}
-        <div class="block-grey">
-        {% trans "Cette mission ne possède pas d'enquête."%}
+      <div class="block-grey">
+        <h2>{% trans "Période" %}</h2>
+        {% trans "Années d'enregistrement" %}
+        <div class="container_line">
+          <span class="container_data">
+            <span class="libelle"> {% trans 'Depuis' %}</span>
+            <span class="donnee"></span>
+          </span>
+          <span class="container_data">
+            <span class="libelle"> {% trans "Jusqu\'à" %}</span>
+            <span class="donnee"></span>
+          </span>
+          <span class="container_data">
+            <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
+            <span class="donnee"></span>
+          </span>
         </div>
-      {% endif %}
       </div>
-  </div>
 
+      <div class="block-grey">
+        <h2>{% trans "Personnes" %}</h2>
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Collecteurs' %}</span>
+          <span class="donnee"></span>
+        </span>
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Informateurs' %}</span>
+          <span class="donnee"></span>
+        </span>
+      </div>
+
+    </div>
+
+      <div class="tab-pane fade in" id="tab_collection">
+        {% if collections|length > 0 %}
+          <!-- Table to display the collections --->
+          <table class="listing">
+          <tr>
+              <th class="highlight">{% trans "cote" %}</th>
+              <th>{% trans "Nom" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+          {% for collection in collections %}
+          <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+              <td class="highlight">
+                  <a href="/collection/{{collection.id }}/">
+                  {{ collection.code|upper }}</a>
+              </td>
+              <td>{{ collection.title|safe }}</td>
+              <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% else %}
+          <div class="block-grey">
+          {% trans "Cette mission ne possède pas d'enquête."%}
+          </div>
+        {% endif %}
+        </div>
+    </div>
+
+  {% else %}
+    <p>{% trans "Cette mission n'existe pas." %}</p>
+  {% endif %}
 {% else %}
-  <p>{% trans "Cette mission n'existe pas." %}</p>
+  {% display_error error %}
 {% endif %}
 {% endblock %}

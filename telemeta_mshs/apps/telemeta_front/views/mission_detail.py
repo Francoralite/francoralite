@@ -6,10 +6,7 @@
 
 
 from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
-from rest_framework import status
-import requests
-
-from settings import FRONT_HOST_URL
+import telemeta_front.tools as tools
 from telemeta_front.forms.mission import MissionForm
 
 
@@ -17,15 +14,18 @@ class MissionDetail(FrancoraliteTemplateView):
     template_name = "../templates/mission-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(MissionDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL+'/api/mission/'+context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            context['mission'] = response.json
+        try:
+            context = super(MissionDetail, self).get_context_data(**kwargs)
+            # Obtain values of the record mission
+            context['mission'] = tools.request_api(
+                '/api/mission/' + context['id'])
+            # Obtain values of related colections
+            context['collections'] = tools.request_api(
+                '/api/collection/?mission=' + context['id'])
             context['form'] = MissionForm()
-            context['collections'] = requests.get(
-                FRONT_HOST_URL + '/api/collection/?mission=' + context['id']
-                ).json
+        except Exception as err:
+            context['mission'] = {}
+            context['colections'] = []
+            context['error'] = err.message
+        return context
         return context
