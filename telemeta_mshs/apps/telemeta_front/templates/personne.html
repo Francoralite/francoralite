@@ -26,11 +26,13 @@
 {% endblock %}
 
 {% block title_buttons %}
+  {% if user.is_authenticated %}
     <a href="{% url "personne-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}</span>
     </button>
     </a>
+  {% endif %}
 {% endblock %}
 
 
@@ -71,6 +73,7 @@
         {% endif %}
       </td>
       <td>
+        {% if user.is_authenticated %}
         {% buttons %}
         <a href="{% url "personne-edit" id=personne.id %}">
               <button type="button" class="btn btn-default">
@@ -84,6 +87,7 @@
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endbuttons %}
+        {% endif %}
       </td>
   </tr>
   {% endfor %}
@@ -92,10 +96,11 @@
 {% modal_delete %}
 
 {% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
     <p>{% trans "Il n'y a pas de personnes" %}</p>
+    {% endif %}
 {% endif %}
 </div>
-
-
-
 {% endblock %}
