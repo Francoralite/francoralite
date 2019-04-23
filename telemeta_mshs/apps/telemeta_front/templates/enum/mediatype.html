@@ -43,14 +43,14 @@
 {% block content %}
 <div class="fullpage">
   <!-- If there is some mediatype (number of elements > 0 ) -->
-{% if mediatype|length > 0 %}
+{% if mediatypes|length > 0 %}
   <!-- Table to display the mediatype --->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
   </tr>
-  {% for mediatype in mediatype %}
+  {% for mediatype in mediatypes %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
       <td class="highlight">
           <a href="/mediatype/{{mediatype.id }}/">
