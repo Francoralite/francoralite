@@ -37,11 +37,13 @@
 {% endblock %}
 
 {% block title_buttons %}
+{% if user.is_authenticated %}
     <a href="{% url "location_gis-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
     </button>
     </a>
+{% endif %}
 {% endblock %}
 
 

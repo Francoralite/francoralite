@@ -5,10 +5,8 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
-from rest_framework import status
-import requests
+import telemeta_front.tools as tools
 
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.location_gis import LocationForm
 
 
@@ -16,12 +14,13 @@ class LocationDetail(FrancoraliteTemplateView):
     template_name = "../templates/location-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(LocationDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL + '/api/locationgis/' + context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            context['location'] = response.json
+        try:
+            context = super(LocationDetail, self).get_context_data(**kwargs)
+            # Obtain values of the record location
+            context['location'] = tools.request_api(
+                '/api/locationgis/' + context['id'])
             context['form'] = LocationForm
+        except Exception as err:
+            context['institution'] = {}
+            context['error'] = err.message
         return context
