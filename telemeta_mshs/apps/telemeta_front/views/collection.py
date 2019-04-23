@@ -6,17 +6,21 @@
 
 
 from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
-import requests
-from settings import FRONT_HOST_URL
+import telemeta_front.tools as tools
 from telemeta_front.forms.collection import CollectionForm
 
 
 class CollectionView(FrancoraliteTemplateView):
     template_name = "../templates/collection.html"
+    keycloak_scopes = {
+        'GET': 'collection:view'}
 
     def get_context_data(self, **kwargs):
-        context = super(CollectionView, self).get_context_data(**kwargs)
-        context['collections'] = requests.get(
-            FRONT_HOST_URL + '/api/collection/').json
-        context['form'] = CollectionForm
+        try:
+            context = super(CollectionView, self).get_context_data(**kwargs)
+            context['collections'] = tools.request_api('/api/collection/')
+            context['form'] = CollectionForm
+        except Exception as err:
+            context['collections'] = []
+            context['error'] = err.message
         return context

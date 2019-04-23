@@ -231,6 +231,12 @@ class KeycloakMiddleware(object):
             if expr.match(path):
                 logger.debug('** exclude path : display template')
                 return None
+
+            expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|)$")
+            if expr.match(path):
+                logger.debug('** exclude path : display template')
+                return None
+
             # Exclude every URL pointing to the API service,
             #   for authenticate
             expr = re.compile("^oidc/(authenticate|callback)/$")
