@@ -23,3 +23,11 @@ class MissionViewSet(viewsets.ModelViewSet):
     filter_fields = ('fonds',)
     ordering = ('fonds', 'code',)
     search_fields = ('fonds', 'code', 'title')
+
+    keycloak_scopes = {
+        'GET': 'mission:view',
+        'POST': 'mission:add',
+        'PATCH': 'mission:update',
+        'PUT': 'mission:update',
+        'DELETE': 'mission:delete'
+    }

@@ -17,3 +17,11 @@ class ItemAnalysisViewSet(viewsets.ModelViewSet):
 
     queryset = ItemAnalysisModel.objects.all()
     serializer_class = ItemAnalysisSerializer
+
+    keycloak_scopes = {
+        'GET': 'item_analysis:view',
+        'POST': 'item_analysis:add',
+        'PATCH': 'item_analysis:update',
+        'PUT': 'item_analysis:update',
+        'DELETE': 'item_analysis:delete'
+    }

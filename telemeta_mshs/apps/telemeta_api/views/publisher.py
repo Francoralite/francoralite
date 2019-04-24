@@ -17,3 +17,11 @@ class PublisherViewSet(viewsets.ModelViewSet):
 
     queryset = PublisherModel.objects.all()
     serializer_class = PublisherSerializer
+
+    keycloak_scopes = {
+        'GET': 'publisher:view',
+        'POST': 'publisher:add',
+        'PATCH': 'publisher:update',
+        'PUT': 'publisher:update',
+        'DELETE': 'publisher:delete'
+    }

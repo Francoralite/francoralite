@@ -19,6 +19,13 @@ class ItemMarkerViewSet(viewsets.ModelViewSet):
 
     queryset = ItemMarkerModel.objects.all()
     serializer_class = ItemMarkerSerializer
+    keycloak_scopes = {
+        'GET': 'item_marker:view',
+        'POST': 'item_marker:add',
+        'PATCH': 'item_marker:update',
+        'PUT': 'item_marker:update',
+        'DELETE': 'item_marker:delete'
+        }
 
     @jsonrpc_method('telemeta.get_markers')
     def get_markers(request, item_id):

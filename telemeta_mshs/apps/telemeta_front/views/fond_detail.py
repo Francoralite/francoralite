@@ -4,27 +4,27 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
-from rest_framework import status
-import requests
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.fond import FondForm
+import telemeta_front.tools as tools
 
 
-class FondDetail(TemplateView):
+class FondDetail(FrancoraliteTemplateView):
     template_name = "../templates/fond-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(FondDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL+'/api/fond/'+context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            context['fond'] = response.json
+        try:
+            context = super(FondDetail, self).get_context_data(**kwargs)
+            # Obtain values of the record fond
+            context['fond'] = tools.request_api(
+                '/api/fond/' + context['id'])
+            # Obtain values of related fonds
+            context['missions'] = tools.request_api(
+                '/api/mission/?fonds=' + context['id'])
+        except Exception as err:
+            context['fond'] = {}
+            context['missions'] = []
             context['form'] = FondForm()
-            context['missions'] = requests.get(
-                FRONT_HOST_URL + '/api/mission/?fonds=' + context['id']
-                ).json
+            context['error'] = err.message
         return context

@@ -17,3 +17,11 @@ class EnumerationViewSet(viewsets.ModelViewSet):
 
     queryset = PhysicalFormat.objects.all()
     serializer_class = EnumerationSerializer
+
+    keycloak_scopes = {
+        'GET': 'enumeration:view',
+        'POST': 'enumeration:add',
+        'PATCH': 'enumeration:update',
+        'PUT': 'enumeration:update',
+        'DELETE': 'enumeration:delete'
+    }

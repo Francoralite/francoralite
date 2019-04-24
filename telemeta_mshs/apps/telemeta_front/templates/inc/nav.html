@@ -6,9 +6,9 @@
 
                         <ul id="nav">
                             {% if user.is_authenticated %}
-                                <li><a href="{% url "telemeta-desk-lists" %}" class="blue">{% trans "Desk" %}</a></li>
+                                <li><a href="" class="blue">{% trans "Bureau" %}</a></li>
                             {% else %}
-                                <li><a href="{% url "home" %}" class="blue">Accueil</a></li>
+                                <li><a href="{% url "home" %}" class="blue">{% trans "Accueil" %}</a></li>
                             {% endif %}
 
                             <li><a href="{% url "institution" %}" class="green">Institutions</a>
@@ -62,12 +62,54 @@
                                     <a href="{% url "domain_song" %}">{% trans "Genre de chanson" %}</a>
                                   </li>
                                   <li>
-                                    <a href="{% url "instrument" %}">{% trans "Voix/Intruments" %}</a>
+                                    <a href="{% url "domain_music" %}">{% trans "Genre de musique" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "domain_tale" %}">{% trans "Genre de conte" %}</a>
+                                  </li>
+                                  <li>
+                                  <li>
+                                    <a href="{% url "domain_vocal" %}">{% trans "Genre vocal" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "dance" %}">{% trans "Danse" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "emit_vox" %}">{% trans "Nature de l'émission vocale" %}</a>
+                                  </li>
+                                  <li>
+                                  <a href="{% url "instrument" %}">{% trans "Voix/Intruments" %}</a>
                                   </li>
                                   <li>
                                     <a href="{% url "musical_organization" %}">{% trans "Organisation musicale" %}</a>
                                   </li>
-
+                                  <li>
+                                    <a href="{% url "hornbostelsachs" %}">{% trans "Hornbostel–Sachs" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "thematic" %}">{% trans "Thématique" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "usefulness" %}">{% trans "Utilité" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "coupe" %}">{% trans "Coupe" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "legal_rights" %}">{% trans "Droits légaux" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "mediatype" %}">{% trans "Type de média" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "metadata_author" %}">{% trans "Meta donnée auteur" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "publisher" %}">{% trans "Éditeur" %}</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url "recording_context" %}">{% trans "Contexte d'enregistrement" %}</a>
+                                  </li>
                                 </ul>
                             </li>
 
@@ -109,9 +151,5 @@
                                 </li>
                             {% endif %}
 
-                            {% if user.is_authenticated and user.is_staff %}
-                                <li><a href="{% url "telemeta-home" %}admin/django/" class="violet">{% trans "Admin" %}</a>
-                                </li>
-                            {% endif %}
 
                         </ul>

@@ -36,6 +36,7 @@
 {% endblock %}
 
 {% block content %}
+{% if not error|length %}
 {{ form.media }}
 <div class="container">
   {% if id %}
@@ -62,4 +63,7 @@
 {% markdown_editor "id_descriptions" %}
 
 {{ form.media.js }}
+{% else %}
+  {% display_error error %}
+{% endif %}
 {% endblock %}

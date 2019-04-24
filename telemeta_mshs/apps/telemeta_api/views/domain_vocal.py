@@ -18,3 +18,11 @@ class DomainVocalViewSet(viewsets.ModelViewSet):
 
     queryset = DomainVocalModel.objects.all()
     serializer_class = DomainVocalSerializer
+
+    keycloak_scopes = {
+        'GET': 'domain_vocal:view',
+        'POST': 'domain_vocal:add',
+        'PATCH': 'domain_vocal:update',
+        'PUT': 'domain_vocal:update',
+        'DELETE': 'domain_vocal:delete'
+    }

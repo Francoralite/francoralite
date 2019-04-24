@@ -18,3 +18,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
     queryset = UserModel.objects.all()
     serializer_class = CurrentUserSerializer
+
+    keycloak_scopes = {
+        'GET': 'user:view',
+        'POST': 'user:add',
+        'PATCH': 'user:update',
+        'PUT': 'user:update',
+        'DELETE': 'user:delete'
+    }

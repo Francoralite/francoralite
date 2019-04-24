@@ -3,6 +3,7 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load data_display %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -36,6 +37,7 @@
 
 {% block content %}
 {{ form.media }}
+{% if not error|length %}
 <div class="container">
   {% if id %}
   <form action="{%url "domain_song-edit" id %}" method="POST">
@@ -45,7 +47,7 @@
     {% csrf_token %}
     {% bootstrap_field form.name layout='vertical' %}
     {% bootstrap_field form.notes layout='vertical' %}
-    
+
     {% if id %}
     {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
     {% else %}
@@ -53,6 +55,10 @@
     {% endif %}
   </form>
 </div>
+
+{% else %}
+  {% display_error error %}
+{% endif %}
 
 {{ form.media.js }}
 {% endblock %}

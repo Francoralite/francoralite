@@ -10,3 +10,11 @@ class InstitutionViewSet(viewsets.ModelViewSet):
 
     queryset = InstitutionModel.objects.all()
     serializer_class = InstitutionSerializer
+
+    keycloak_scopes = {
+        'GET': 'institution:view',
+        'POST': 'institution:add',
+        'PATCH': 'institution:update',
+        'PUT': 'institution:update',
+        'DELETE': 'institution:delete'
+    }

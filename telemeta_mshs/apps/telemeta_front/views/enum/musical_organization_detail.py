@@ -5,25 +5,24 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.base import TemplateView
-from rest_framework import status
-import requests
-
-from settings import FRONT_HOST_URL
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_front.tools as tools
 from telemeta_front.forms.musical_organization import MusicalOrganizationForm
 
 
-class MusicalOrganizationDetail(TemplateView):
+class MusicalOrganizationDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/musical_organization-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(
-            MusicalOrganizationDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL+'/api/musical_organization/'+context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            context['musical_organization'] = response.json
+        try:
+            context = super(MusicalOrganizationDetail, self).get_context_data(
+                **kwargs)
+            # Obtain values of the record
+            context['musical_organization'] = tools.request_api(
+                '/api/musical_organization/' + context['id'])
             context['form'] = MusicalOrganizationForm()
+        except Exception as err:
+            context['musical_organization'] = {}
+            context['form'] = MusicalOrganizationForm()
+            context['error'] = err.message
         return context

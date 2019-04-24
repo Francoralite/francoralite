@@ -19,6 +19,14 @@ class ItemMusicalGroupViewSet(viewsets.ModelViewSet):
     queryset = ItemMusicalGroupModel.objects.all()
     serializer_class = ItemMusicalGroupSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_musical_group:view',
+        'POST': 'item_musical_group:add',
+        'PATCH': 'item_musical_group:update',
+        'PUT': 'item_musical_group:update',
+        'DELETE': 'item_musical_group:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

@@ -17,3 +17,11 @@ class AuthorityViewSet(viewsets.ModelViewSet):
         'is_author', 'is_composer', 'is_editor')
     ordering = ('first_name', 'last_name',)
     search_fields = ('first_name', 'last_name')
+
+    keycloak_scopes = {
+        'GET': 'authority:view',
+        'POST': 'authority:add',
+        'PATCH': 'authority:update',
+        'PUT': 'authority:update',
+        'DELETE': 'authority:delete'
+    }

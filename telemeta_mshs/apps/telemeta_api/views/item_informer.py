@@ -19,6 +19,14 @@ class ItemInformerViewSet(viewsets.ModelViewSet):
     queryset = ItemInformerModel.objects.all()
     serializer_class = ItemInformerSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_informer:view',
+        'POST': 'item_informer:add',
+        'PATCH': 'item_informer:update',
+        'PUT': 'item_informer:update',
+        'DELETE': 'item_informer:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

@@ -5,26 +5,22 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.base import TemplateView
-from rest_framework import status
-import requests
-
-from settings import FRONT_HOST_URL
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_front.tools as tools
 from telemeta_front.forms.collection import CollectionForm
 
 
-class CollectionDetail(TemplateView):
+class CollectionDetail(FrancoraliteTemplateView):
     template_name = "../templates/collection-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(CollectionDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL+'/api/collection/'+context['id']+'/complete/')
-        if response.status_code == status.HTTP_200_OK:
-            # Values of the collection
-            context['collection'] = response.json
+        try:
+            context = super(CollectionDetail, self).get_context_data(**kwargs)
+            # Obtain values of the record collection
+            context['collection'] = tools.request_api(
+                '/api/collection/'+context['id']+'/complete/')
             context['form'] = CollectionForm()
-
+        except Exception as err:
+            context['collection'] = {}
+            context['error'] = err.message
         return context

@@ -1,0 +1,51 @@
+
+{% extends "enum/emit_vox.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title %}
+  <h1>
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "nature des emissions vocales" %}
+    {% if emit_vox %}
+     : {{ emit_vox.name }}
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block title_buttons %}
+  {% if user.is_authenticated %}
+  <a href="{% url "emit_vox-edit" id=id %}">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </button>
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if not error|length %}
+{% if emit_vox %}
+
+  {% field_data form.name.label|safe emit_vox.name|safe %}
+  {% field_data form.notes.label|safe emit_vox.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Ce genre n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

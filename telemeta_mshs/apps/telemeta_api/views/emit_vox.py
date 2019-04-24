@@ -23,3 +23,11 @@ class EmitVoxViewSet(viewsets.ModelViewSet):
     filter_fields = ()
     ordering = ('name')
     search_fields = ('name')
+
+    keycloak_scopes = {
+        'GET': 'emit_vox:view',
+        'POST': 'emit_vox:add',
+        'PATCH': 'emit_vox:update',
+        'PUT': 'emit_vox:update',
+        'DELETE': 'emit_vox:delete'
+    }

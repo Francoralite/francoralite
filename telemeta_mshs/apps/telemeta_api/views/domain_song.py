@@ -18,3 +18,11 @@ class DomainSongViewSet(viewsets.ModelViewSet):
 
     queryset = DomainSongModel.objects.all()
     serializer_class = DomainSongSerializer
+
+    keycloak_scopes = {
+        'GET': 'domain_song:view',
+        'POST': 'domain_song:add',
+        'PATCH': 'domain_song:update',
+        'PUT': 'domain_song:update',
+        'DELETE': 'domain_song:delete'
+    }

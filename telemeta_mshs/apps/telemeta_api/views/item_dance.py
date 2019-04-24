@@ -19,6 +19,14 @@ class ItemDanceViewSet(viewsets.ModelViewSet):
     queryset = ItemDanceModel.objects.all()
     serializer_class = ItemDanceSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_dance:view',
+        'POST': 'item_dance:add',
+        'PATCH': 'item_dance:update',
+        'PUT': 'item_dance:update',
+        'DELETE': 'item_dance:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

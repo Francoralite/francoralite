@@ -19,6 +19,14 @@ class ItemDomainTaleViewSet(viewsets.ModelViewSet):
     queryset = ItemDomainTaleModel.objects.all()
     serializer_class = ItemDomainTaleSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_domain_tale:view',
+        'POST': 'item_domain_tale:add',
+        'PATCH': 'item_domain_tale:update',
+        'PUT': 'item_domain_tale:update',
+        'DELETE': 'item_domain_tale:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

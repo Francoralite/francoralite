@@ -3,101 +3,155 @@
 # Docker compose to build Telemeta meta project
 
 version: '2.1'
+
+networks:
+  keycloak: {}
+  telemeta: {}
+  services:
+    external:
+      name: 'services'
+
 services:
   data:
-    image: debian:jessie
+    image: 'debian:jessie'
+    networks:
+      - 'telemeta'
     volumes:
-       - ./data/media/:/srv/media
-       - ./data/backup/:/srv/backup
-       - ./data/static:/srv/static
-       - ./data/bower:/srv/bower
-       - ./data/log/nginx:/var/log/nginx
-       - ./data/log/uwsgi:/var/log/uwsgi
+       - './data/media/:/srv/media'
+       - './data/backup/:/srv/backup'
+       - './data/static:/srv/static'
+       - './data/bower:/srv/bower'
+       - './data/log/nginx:/var/log/nginx'
+       - './data/log/uwsgi:/var/log/uwsgi'
     command: 'true'
 
   db:
-    image: mysql:8.0.2
+    image: 'mysql:8.0.2'
     volumes:
-      - ./telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts
-      - ./data/mysql/:/var/lib/mysql
+      - './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
+      - './data/mysql/:/var/lib/mysql'
+    networks:
+      - 'telemeta'
     volumes_from:
-      - data
+      - 'data'
     env_file:
-      - ./telemeta_mshs/apps/Telemeta/env/prod.env
+      - './telemeta_mshs/apps/Telemeta/env/prod.env'
     healthcheck:
       test: ["CMD-SHELL", "mysql -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SHOW DATABASES;'"]
-      interval: 30s
-      timeout: 2s
+      interval: '30s'
+      timeout: '2s'
       retries: 3
 
   broker:
-    image: redis
+    image: 'redis'
+    networks:
+      - 'telemeta'
 
   search:
-    image: elasticsearch:1
+    image: 'elasticsearch:1'
+    networks:
+      - 'telemeta'
 
   app:
     build:
       context: .
+    networks:
+      - 'services'
+      - 'telemeta'
     volumes:
-      - ./:/srv/app
-      - ./scripts:/srv/scripts
-      - ./telemeta_mshs/apps/Telemeta/app/enumeration:/srv/app/enumeration
-      - ./telemeta_mshs/apps/Telemeta/app/fixtures:/srv/app/fixtures
-      - ./telemeta_mshs/settings/base.py:/srv/app/settings.py
-      - ./telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py
-      - ./telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py
-      - ./telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt
+      - './:/srv/app'
+      - './scripts:/srv/scripts'
+      - './telemeta_mshs/apps/Telemeta/app/enumeration:/srv/app/enumeration'
+      - './telemeta_mshs/apps/Telemeta/app/fixtures:/srv/app/fixtures'
+      - './telemeta_mshs/settings/base.py:/srv/app/settings.py'
+      - './telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py'
+      - './telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py'
+      - './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
+      - './etc/keycloak/auth.json:/tmp/authorization_config.json'
     volumes_from:
-      - data
+      - 'data'
     env_file:
-      - ./telemeta_mshs/apps/Telemeta/env/debug.env
+      - './telemeta_mshs/apps/Telemeta/env/debug.env'
+      - './francoralite-env/app.env'
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
-      interval: 10s
-      timeout: 2s
+      interval: '10s'
+      timeout: '2s'
       retries: 20
-    command: /bin/bash /srv/scripts/start_api.sh
+    command: '/bin/bash /srv/scripts/start_api.sh'
     depends_on:
       db:
-        condition: service_healthy
-    links:
-      - broker
-      - db
-      - search
+        condition: 'service_healthy'
 
   worker:
     build:
       context: .
+    networks:
+      - 'telemeta'
     volumes_from:
-      - app
+      - 'app'
     env_file:
-      - ./telemeta_mshs/apps/Telemeta/env/prod.env
-    command: /bin/bash /srv/scripts/start_worker.sh
+      - './telemeta_mshs/apps/Telemeta/env/prod.env'
+    command: '/bin/bash /srv/scripts/start_worker.sh'
     depends_on:
       app:
-        condition: service_healthy
-    links:
-      - broker
-      - db
+        condition: 'service_healthy'
 
   nginx:
-    image: nginx
+    image: 'nginx'
+    depends_on:
+      - 'app'
+      - 'keycloak'
+      - 'phpmyadmin'
+    networks:
+      - 'services'
     ports:
-      - '8000:80'
+      - '80:80'
     volumes:
-      - ./etc/nginx.conf:/etc/nginx/conf.d/default.conf
+      - './etc/nginx.conf:/etc/nginx/conf.d/default.conf'
     volumes_from:
-      - data
-    links:
-      - app
-      - phpmyadmin
+      - 'data'
 
   phpmyadmin:
-      image: nazarpc/phpmyadmin
-      ports:
-        - '1234:80'
-      links:
-        - db:mysql
-      environment:
-        - ABSOLUTE_URI=http://localhost:8000/phpmyadmin/
+    image: 'nazarpc/phpmyadmin'
+    networks:
+      - 'services'
+      - 'telemeta'
+    environment:
+      - ABSOLUTE_URI=http://localhost:8000/phpmyadmin/
+
+  keycloak:
+    image: "${KEYCLOAK_IMAGE}:${KEYCLOAK_VERSION}"
+    restart: 'unless-stopped'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: "${LOGGING_MAX_SIZE}"
+        max-file: "${LOGGING_MAX_FILE}"
+    env_file:
+      - './francoralite-env/keycloak.env'
+    networks:
+      - 'keycloak'
+      - 'services'
+    depends_on:
+      - 'keycloak_db'
+    ports:
+      - '8080:8080'
+
+  keycloak_db:
+    image: "${POSTGRES_IMAGE}:${POSTGRES_VERSION}"
+    restart: 'unless-stopped'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: "${LOGGING_MAX_SIZE}"
+        max-file: "${LOGGING_MAX_FILE}"
+    env_file:
+      - './francoralite-env/keycloak_database.env'
+    networks:
+      - 'keycloak'
+    volumes:
+      - 'keycloak_db:/var/lib/postgresql/data'
+
+volumes:
+  keycloak_db: {}

@@ -5,24 +5,23 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.base import TemplateView
-from rest_framework import status
-import requests
-
-from settings import FRONT_HOST_URL
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 from telemeta_front.forms.domain_song import DomainSongForm
+import telemeta_front.tools as tools
 
 
-class DomainSongDetail(TemplateView):
+class DomainSongDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/domain_song-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(DomainSongDetail, self).get_context_data(**kwargs)
+        try:
+            context = super(DomainSongDetail, self).get_context_data(**kwargs)
+            context['domain_song'] = tools.request_api(
+                '/api/domain_song/' + context['id'])
+            context['form'] = DomainSongForm()
 
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL+'/api/domain_song/'+context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            context['domain_song'] = response.json
+        except Exception as err:
+            context['domain_song'] = {}
+            context['error'] = err.message
             context['form'] = DomainSongForm()
         return context

@@ -18,3 +18,11 @@ class ItemTranscodingFlagViewSet(viewsets.ModelViewSet):
 
     queryset = ItemTranscodingFlagModel.objects.all()
     serializer_class = ItemTranscodingFlagSerializer
+
+    keycloak_scopes = {
+        'GET': 'item_transcoding_flag:view',
+        'POST': 'item_transcoding_flag:add',
+        'PATCH': 'item_transcoding_flag:update',
+        'PUT': 'item_transcoding_flag:update',
+        'DELETE': 'item_transcoding_flag:delete'
+    }

@@ -5,18 +5,23 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.base import TemplateView
-import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.musical_group import MusicalGroupForm
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_front.tools as tools
 
 
-class MusicalGroupView(TemplateView):
+class MusicalGroupView(FrancoraliteTemplateView):
     template_name = "../templates/enum/musical_group.html"
 
+    keycloak_scope = {
+        'GET': 'musical_group:view'}
+
     def get_context_data(self, **kwargs):
-        context = super(MusicalGroupView, self).get_context_data(**kwargs)
-        context['musical_groups'] = requests.get(
-            FRONT_HOST_URL + '/api/musical_group/').json
-        context['form'] = MusicalGroupForm
+        try:
+            context = super(MusicalGroupView, self).get_context_data(**kwargs)
+            context['musical_groups'] = tools.request_api(
+                '/api/musical_group/')
+        except Exception as err:
+            context['musical_group'] = []
+            context['error'] = err.message
+
         return context

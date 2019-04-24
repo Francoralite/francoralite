@@ -1,0 +1,95 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title %}
+<div class="col-md-4">
+  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
+    style="vertical-align:middle" />
+    <h1>{% trans "classification Hornbostel-Sachs" %}</h1>
+</div>
+<div class="col-md-8">
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
+{% endblock %}
+
+{% block title_buttons %}
+{% if user.is_authenticated %}
+  <a href="{% url "hornbostelsachs-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Ajouter une entrée à la classification" %}
+    </button>
+  </a>
+{% endif %}
+{% endblock %}
+
+
+</div>
+{% block content %}
+<div class="fullpage">
+  <!-- If there is some classification hornbostelsachs(number of elements > 0 ) -->
+{% if hornbostelsachss|length > 0 %}
+  <!-- Table to display the hornbostelsachss --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Numéro" %}</th>
+      <th>{% trans "Nom" %}</th>
+  </tr>
+  {% for hornbostelsachs in hornbostelsachss %}
+  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td class="highlight">
+          <a href="/hornbostelsachs/{{hornbostelsachs.id }}/">
+            {{ hornbostelsachs.number|safe }}</a>
+      </td>
+      <td>
+        {% if hornbostelsachs.name %}
+          {{ hornbostelsachs.name|safe }}
+        {% endif %}
+      </td>
+      <td>
+        {% if user.is_authenticated %}
+        {% buttons %}
+        <a href="{% url "hornbostelsachs-edit" id=hornbostelsachs.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{hornbostelsachs.title}}"
+            data-url="{% url "hornbostelsachs-delete" id=hornbostelsachs.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endbuttons %}
+        {% endif %}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% modal_delete %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de classification Hornbostel-Sachs" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

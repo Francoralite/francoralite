@@ -24,3 +24,11 @@ class PerformanceCollectionViewSet(viewsets.ModelViewSet):
     filter_fields = ('collection', 'instrument')
     ordering = ('collection', 'instrument', 'number')
     search_fields = ('number')
+
+    keycloak_scopes = {
+        'GET': 'performance_collection:view',
+        'POST': 'performance_collection:add',
+        'PATCH': 'performance_collection:update',
+        'PUT': 'performance_collection:update',
+        'DELETE': 'performance_collection:delete'
+    }

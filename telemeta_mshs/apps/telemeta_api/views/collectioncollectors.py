@@ -18,6 +18,14 @@ class CollectionCollectorsViewSet(viewsets.ModelViewSet):
     queryset = CollectionCollectorsModel.objects.all()
     serializer_class = CollectionCollectorsSerializer
 
+    keycloak_scopes = {
+        'GET': 'collection_collectors:view',
+        'POST': 'collection_collectors:add',
+        'PATCH': 'collection_collectors:update',
+        'PUT': 'collection_collectors:update',
+        'DELETE': 'collection_collectors:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

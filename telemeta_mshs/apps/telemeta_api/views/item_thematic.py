@@ -19,6 +19,14 @@ class ItemThematicViewSet(viewsets.ModelViewSet):
     queryset = ItemThematicModel.objects.all()
     serializer_class = ItemThematicSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_thematic:view',
+        'POST': 'item_thematic:add',
+        'PATCH': 'item_thematic:update',
+        'PUT': 'item_thematic:update',
+        'DELETE': 'item_thematic:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):
