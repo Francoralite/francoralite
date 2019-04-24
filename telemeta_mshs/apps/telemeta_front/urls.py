@@ -57,6 +57,8 @@ from .views.enum import (
     mediatype_add,
     metadata_author, metadata_author_edit, metadata_author_delete,
     metadata_author_detail, metadata_author_add,
+    publisher, publisher_edit, publisher_delete, publisher_detail,
+    publisher_add,
 )
 
 
@@ -436,7 +438,7 @@ urlpatterns = [
         mediatype_delete.MediaTypeDelete.as_view(),
         name='mediatype-delete'),
 
-    # LegalRights
+    # metadata_author
     url(r'^metadata_author/$', metadata_author.MetadataAuthorView.as_view(),
         name="metadata_author"),
     url(r'^metadata_author/add/$',
@@ -451,4 +453,20 @@ urlpatterns = [
     url(r'^metadata_author/delete/(?P<id>[0-9]+)$',
         metadata_author_delete.MetadataAuthorDelete.as_view(),
         name='metadata_author-delete'),
+
+    # Publisher
+    url(r'^publisher/$', publisher.PublisherView.as_view(),
+        name="publisher"),
+    url(r'^publisher/add/$',
+     publisher_add.PublisherAdd.as_view(),
+     name='publisher-add'),
+    url(r'^publisher/(?P<id>[0-9]+)/$',
+        publisher_detail.PublisherDetail.as_view(),
+        name='publisher-detail'),
+    url(r'^publisher/edit/(?P<id>[0-9]+)$',
+        publisher_edit.PublisherEdit.as_view(),
+        name='publisher-edit'),
+    url(r'^publisher/delete/(?P<id>[0-9]+)$',
+        publisher_delete.PublisherDelete.as_view(),
+        name='publisher-delete'),
 ]
