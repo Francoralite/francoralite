@@ -25,7 +25,7 @@ class RecordingContextEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/recording_context/' + str(id))
+            FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['recording_context'] = response.json
         return context
@@ -36,7 +36,7 @@ class RecordingContextEdit(FormView):
 
         # Obtain values of the record
         recording_context = requests.get(
-            FRONT_HOST_URL + '/api/recording_context/' + str(id))
+            FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
         form = RecordingContextForm(initial=recording_context.json())
 
         return render(request,
@@ -51,12 +51,12 @@ class RecordingContextEdit(FormView):
         if form.is_valid():
             try:
                 response = requests.patch(
-                    FRONT_HOST_URL + '/api/recording_context/' + str(id) + '/',
+                    FRONT_HOST_URL + '/api/recordingcontext/' + str(id) + '/',
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/recording_context/edit' + str(id)
-                                                + '/')
+                    return HttpResponseRedirect(
+                        '/recording_context/edit' + str(id) + '/')
                 return HttpResponseRedirect('/recording_context/')
 
             except RequestException:

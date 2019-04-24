@@ -26,7 +26,7 @@ class RecordingContextAdd(FormView):
 
             try:
                 requests.post(
-                    FRONT_HOST_URL + '/api/recording_context/',
+                    FRONT_HOST_URL + '/api/recordingcontext/',
                     data=form.cleaned_data
                 )
                 return HttpResponseRedirect('/recording_context/')

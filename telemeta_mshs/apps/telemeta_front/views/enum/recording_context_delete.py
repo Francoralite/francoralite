@@ -17,7 +17,7 @@ class RecordingContextDelete(View):
         id = kwargs.get('id')
         try:
             requests.delete(
-                FRONT_HOST_URL + '/api/recording_context/' + str(id)
+                FRONT_HOST_URL + '/api/recordingcontext/' + str(id)
                 )
             return HttpResponseRedirect('/recording_context/')
 
