@@ -59,6 +59,8 @@ from .views.enum import (
     metadata_author_detail, metadata_author_add,
     publisher, publisher_edit, publisher_delete, publisher_detail,
     publisher_add,
+    recording_context, recording_context_edit, recording_context_delete,
+    recording_context_detail, recording_context_add,
 )
 
 
@@ -469,4 +471,21 @@ urlpatterns = [
     url(r'^publisher/delete/(?P<id>[0-9]+)$',
         publisher_delete.PublisherDelete.as_view(),
         name='publisher-delete'),
+
+    # Recording context
+    url(r'^recording_context/$', recording_context.RecordingContextView.
+        as_view(),
+        name="recording_context"),
+    url(r'^recording_context/add/$',
+     recording_context_add.RecordingContextAdd.as_view(),
+     name='recording_context-add'),
+    url(r'^recording_context/(?P<id>[0-9]+)/$',
+        recording_context_detail.RecordingContextDetail.as_view(),
+        name='recording_context-detail'),
+    url(r'^recording_context/edit/(?P<id>[0-9]+)$',
+        recording_context_edit.RecordingContextEdit.as_view(),
+        name='recording_context-edit'),
+    url(r'^recording_context/delete/(?P<id>[0-9]+)$',
+        recording_context_delete.RecordingContextDelete.as_view(),
+        name='recording_context-delete'),
 ]
