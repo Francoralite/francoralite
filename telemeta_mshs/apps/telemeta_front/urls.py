@@ -55,6 +55,8 @@ from .views.enum import (
     legal_rights_add,
     mediatype, mediatype_edit, mediatype_delete, mediatype_detail,
     mediatype_add,
+    metadata_author, metadata_author_edit, metadata_author_delete,
+    metadata_author_detail, metadata_author_add,
 )
 
 
@@ -433,4 +435,20 @@ urlpatterns = [
     url(r'^mediatype/delete/(?P<id>[0-9]+)$',
         mediatype_delete.MediaTypeDelete.as_view(),
         name='mediatype-delete'),
+
+    # LegalRights
+    url(r'^metadata_author/$', metadata_author.MetadataAuthorView.as_view(),
+        name="metadata_author"),
+    url(r'^metadata_author/add/$',
+     metadata_author_add.MetadataAuthorAdd.as_view(),
+     name='metadata_author-add'),
+    url(r'^metadata_author/(?P<id>[0-9]+)/$',
+     metadata_author_detail.MetadataAuthorDetail.as_view(),
+     name='metadata_author-detail'),
+    url(r'^legal_rights/edit/(?P<id>[0-9]+)$',
+         metadata_author_edit.MetadataAuthorEdit.as_view(),
+         name='metadata_author-edit'),
+    url(r'^metadata_author/delete/(?P<id>[0-9]+)$',
+        metadata_author_delete.MetadataAuthorDelete.as_view(),
+        name='metadata_author-delete'),
 ]
