@@ -1392,6 +1392,18 @@ a:focus,div:focus{
 	position: relative;
 }
 
+.has-children .has-children > a::after {
+	/*background:url(../images/next.png) no-repeat;*/
+	content: " ▶";
+	color: white;
+	position: absolute;
+	right: 10px;
+}
+
+.has-children .has-children:hover > a::after {
+	color: #6a0307;
+}
+
 .has-children:hover > .sous-menu {
 	display: flex;
 	color: #6a0307;
