@@ -14,9 +14,20 @@
 
 
 {% block stylesheets %}
-  {{ block.super }}
+{{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/telemeta-more.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/style.css" %}" />
+<!--  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/admin.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/jquery.autocomplete.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/jquery-ui.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/list-sorttable.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/player.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/search.css" %}" />
+  -->
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/francoralite.css" %}" />
 {% endblock %}
 
 {% block header %}
