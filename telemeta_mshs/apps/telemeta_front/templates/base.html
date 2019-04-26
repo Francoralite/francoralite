@@ -41,6 +41,15 @@
               alt="Francoralité" />
         {% endblock %}
         </div>
+        <div id="quick_search">
+            <form action="/search/" id="_quickSearchForm" method="get">
+                <div class="input-group">
+                    <input class="form-control" id="id_q" name="q" type="text"/><span
+                        class="input-group-btn"><button type="submit" id="btn" class="btn btn-default"><span
+                        class="glyphicon glyphicon-search"></span></button></span>
+                </div>
+            </form>
+        </div>
         <div id="auth_info" style="right : 1.1em;">
         {% if user.is_authenticated %}
              <img src="/static/telemeta/images/user.png" alt="user" style="vertical-align:middle"/>

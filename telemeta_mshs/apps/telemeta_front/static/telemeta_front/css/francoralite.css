@@ -314,14 +314,14 @@ label.disabled { color: #d7d7d7 }
 /* Quick search */
 #quick_search {
     position: absolute;
-    top: 1.2em;
-    left: 35%;
+    top: 8%;
+    left: 50%;
 
     padding: 0.5em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
-    width: 270px;
+    width: 300px;
 }
 
 #quick_search form {
@@ -334,7 +334,7 @@ label.disabled { color: #d7d7d7 }
     -moz-border-radius: 5px 0px 0px 5px;
     -webkit-border-radius: 5px 0px 0px 5px;
     border-radius: 5px 0px 0px 5px;
-    width: 215px;
+    width: 250px;
     padding-left: 0.5em;
     border-color:#6a0307;
 }
@@ -1119,17 +1119,18 @@ a.image-link {
 
 #btn{
     font-weight: bold;
-    color:#ffffff;
-    background-color:#6a0307;
-    border-color:#6a0307;
-
+    color: #ffffff;
+    background: #6a0307;
+    border-color: #6a0307;
+	margin-top: 2px;
+	margin-left: -2px;
 }
 
 #btn:hover{
     font-weight: bold;
-    color:#6a0307;
-    background-color:#ffffff;
-    border-color:#6a0307;
+    color: #6a0307;
+    background-color: #ffffff;
+    border-color: #6a0307;
 
 }
 
@@ -1327,8 +1328,9 @@ a:focus,div:focus{
     margin-top: 0.1em;
 }
 
-
-
+#mapid {
+    z-index: 1;
+}
 
 /* menu reconstruit par Laurence */
 
