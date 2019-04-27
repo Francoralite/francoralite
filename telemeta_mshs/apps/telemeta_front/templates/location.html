@@ -114,6 +114,8 @@
   </script>
 
 
-{% modal_delete %}
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
 </div>
 {% endblock %}
