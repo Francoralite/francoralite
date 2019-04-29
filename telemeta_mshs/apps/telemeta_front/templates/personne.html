@@ -93,7 +93,9 @@
   {% endfor %}
 </table>
 
-{% modal_delete %}
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
 
 {% else %}
   {% if error|length %}

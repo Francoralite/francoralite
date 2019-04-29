@@ -89,7 +89,9 @@
       </table>
       </div>
 
-        {% modal_delete %}
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
     {% else %}
       {% trans "Il n'a pas de fonds pour cette institution." %}
     {% endif %}

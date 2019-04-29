@@ -105,7 +105,9 @@
 
 {% endblock player %}
 
-{% modal_delete %}
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
 
 {% else %}
     <p>{% trans "Il n'y a pas d'items" %}</p>
