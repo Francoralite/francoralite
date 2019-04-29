@@ -9,9 +9,11 @@ import settings
 import mimetypes
 import datetime
 from django.http import Http404
+from celery import shared_task
 
 
 from rest_framework import viewsets
+from rest_framework.decorators import detail_route
 from rest_framework.parsers import FormParser, MultiPartParser
 from ..models.item import Item as ItemModel
 from ..models.item_transcoding_flag import (
@@ -48,6 +50,8 @@ class ItemViewSet(viewsets.ModelViewSet):
         timeside.core.api.IGrapher)
     decoders = timeside.core.processor.processors(
         timeside.core.api.IDecoder)
+    encoders = timeside.core.processor.processors(
+        timeside.core.api.IEncoder)
     analyzers = timeside.core.processor.processors(
         timeside.core.api.IAnalyzer)
     value_analyzers = timeside.core.processor.processors(
@@ -323,6 +327,128 @@ class ItemViewSet(viewsets.ModelViewSet):
 
         response = serve_media(path, content_type=mime_type)
         return response
+
+    def item_transcode(self, item, extension):
+        for encoder in self.encoders:
+            if encoder.file_extension() == extension:
+                break
+
+        if encoder.file_extension() != extension:
+            raise Http404('Unknown export file extension: %s' % extension)
+
+        mime_type = encoder.mime_type()
+        file = item.public_id + '.' + encoder.file_extension()
+
+        source, source_type = item.get_source()
+
+        # is_transcoded_flag = self.get_is_transcoded_flag(
+        #     item=item, mime_type=mime_type)
+
+        # format = item.mime_type
+        # dc_metadata = dublincore.express_item(item).to_list()
+        # mapping = DublinCoreToFormatMetadata(extension)
+        # if not extension in mapping.unavailable_extensions:
+        #     metadata = mapping.get_metadata(dc_metadata)
+        # else:
+        #     metadata = None
+        metadata = None
+
+        # if mime_type in format and source_type == 'file':
+        if source_type == 'file':
+            # source > stream
+            if metadata:
+                proc = encoder(source, overwrite=True)
+                proc.set_metadata(metadata)
+                try:
+                    # FIXME: should test if metadata writer is available
+                    proc.write_metadata()
+                except Exception:
+                    pass
+            return (source, mime_type)
+        else:
+            media = self.cache_export.dir + os.sep + file
+            # if not is_transcoded_flag.value:
+            #     try:
+            #         progress_flag = MediaItemTranscodingFlag.objects.get(
+            #             item=item,
+            #             mime_type=mime_type + '/transcoding')
+            #         if progress_flag.value:
+            #             # The media is being transcoded
+            #             # return None
+            #             return (None, None)
+            #
+            #         else:
+            #             # wait for the transcode to begin
+            #             time.sleep(1)
+            #             return (None, None)  # self.item_transcode(item, extension)
+            #
+            #     except MediaItemTranscodingFlag.DoesNotExist:
+            #         pass
+
+            # source > encoder > stream
+
+            # Sent the transcoding task synchronously to the worker
+            self.task_transcode.apply_async(kwargs={
+                'source': source,
+                'media': media,
+                'encoder_id': encoder.id(),
+                'item_public_id': item.public_id,
+                'mime_type': mime_type,
+                'metadata': metadata})
+
+            self.cache_export.add_file(file)
+            if not os.path.exists(media):
+                return (None, None)
+            # else:
+            #     # cache > stream
+            #     if not os.path.exists(media):
+            #         is_transcoded_flag.value = False
+            #         is_transcoded_flag.save()
+            #         return self.item_transcode(item, extension)
+
+        return (media, mime_type)
+
+    @detail_route(
+        methods=['get'],
+        url_path='download/(?P<file_name>[a-zA-Z0-9_.]+)', # noqa
+        url_name='sound_download')
+    def download(self, request, pk=None, file_name=""):
+        item = ItemModel.objects.get(id=pk)
+        media = self.item_transcode(item=item, extension="mp3")
+        response = serve_media(media[0], content_type=media[1])
+        return response
+
+    @shared_task
+    def task_transcode(source, media, encoder_id,
+                       item_public_id, mime_type,
+                       metadata=None):
+        # # Get or Set transcoding status flag
+        # item = MediaItem.objects.get(public_id=item_public_id)
+        # transcoded_flag = MediaItemTranscodingFlag.objects.get(
+        #     item=item,
+        #     mime_type=mime_type)
+        # progress_flag, c = MediaItemTranscodingFlag.objects.get_or_create(
+        #     item=item,
+        #     mime_type=mime_type + '/transcoding')
+
+        # progress_flag.value = False
+        # progress_flag.save()
+        # Transcode
+        decoder = timeside.core.get_processor('file_decoder')(source)
+        encoder = timeside.core.get_processor(encoder_id)(media,
+                                                          streaming=False,
+                                                          overwrite=True)
+        if metadata:
+            encoder.set_metadata(metadata)
+        pipe = decoder | encoder
+
+        # progress_flag.value = True
+        # progress_flag.save()
+        pipe.run()
+
+        # transcoded_flag.value = True
+        # transcoded_flag.save()
+        # progress_flag.delete()
 
     """
     Override the create method, to create related records

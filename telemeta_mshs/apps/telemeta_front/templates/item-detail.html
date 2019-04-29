@@ -9,7 +9,7 @@
   <script type="text/javascript">
       Timeside.load({
           container:        "#player",
-          sound:            "/api/item/download/{{item.code}}.mp3",
+          sound:            "/api/item/{{item.id}}/download/{{item.code}}.mp3",
           soundDuration:    2000,
           soundImage:       function(width,height){
                     var player_image_url = visualizers["waveform_centroid"];

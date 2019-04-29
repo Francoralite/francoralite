@@ -231,6 +231,10 @@ class KeycloakMiddleware(object):
             if expr.match(path):
                 logger.debug('** exclude path : display template')
                 return None
+            expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
+            if expr.match(path):
+                logger.debug('** exclude path : download MP3 streaming')
+                return None
 
             # Exclude every URL pointing to the API service,
             #   for authenticate
