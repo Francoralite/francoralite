@@ -314,7 +314,7 @@ label.disabled { color: #d7d7d7 }
 /* Quick search */
 #quick_search {
     position: absolute;
-    top: 8%;
+    top: 35px;
     left: 50%;
 
     padding: 0.5em;
