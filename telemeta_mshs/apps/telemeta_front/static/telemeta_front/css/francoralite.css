@@ -314,9 +314,8 @@ label.disabled { color: #d7d7d7 }
 /* Quick search */
 #quick_search {
     position: absolute;
-    top: 35px;
-    left: 50%;
-
+    top: 53px;
+    right: 25px;
     padding: 0.5em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
@@ -354,7 +353,7 @@ label.disabled { color: #d7d7d7 }
     color: #FFF;
     font-weight: bold;
     position: absolute;
-    top: 1.2em;
+    top: 10px;
     /*right: 1.1em;*/
     margin-right: 1em;
     font-size: 0.9em;
