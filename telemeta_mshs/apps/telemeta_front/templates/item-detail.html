@@ -12,14 +12,7 @@
           sound:            "/api/item/{{item.id}}/download/{{item.code}}.mp3",
           soundDuration:    2000,
           soundImage:       function(width,height){
-                    var player_image_url = visualizers["waveform_centroid"];
-                    console.log(player_image_url);
-                    var _src_ = null;
-                    if (player_image_url && (width || height)) {
-                        _src_ = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
-                    }
-                    _src_ = "/media/cache/data/upoi_afe_0000_0000_001.waveform_centroid.346_130.png";
-                    console.log(_src_);
+                    _src_ = "/api/timeside/{{item.id}}/soundimage/waveform_centroid/"+(width+2)+"x"+height+"/"
                     return _src_;
                 },
           imageSize:        {width: 346,height: 130}

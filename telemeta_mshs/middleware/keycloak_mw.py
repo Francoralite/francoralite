@@ -235,6 +235,11 @@ class KeycloakMiddleware(object):
             if expr.match(path):
                 logger.debug('** exclude path : download MP3 streaming')
                 return None
+            expr = re.compile(
+                "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*/$")
+            if expr.match(path):
+                logger.debug('** exclude path : visualize sound image')
+                return None
 
             # Exclude every URL pointing to the API service,
             #   for authenticate

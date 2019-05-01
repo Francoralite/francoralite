@@ -16,6 +16,7 @@ from .item import ItemViewSet
 import os
 import settings
 from telemeta.cache import TelemetaCache
+from telemeta.views.core import serve_media
 
 
 class TimeSideViewSet(viewsets.ViewSet):
@@ -99,6 +100,10 @@ class TimeSideViewSet(viewsets.ViewSet):
 
     @detail_route()
     def visualize(self, request, pk=None):
+        """
+        Return values to obtain a graph ( sound image, spectrogram)
+        """
+
         # Parameters to be send to this endpoint
         grapher_id = self.request.query_params.get(
             'grapher_id', self.default_grapher_id)
@@ -147,4 +152,5 @@ class TimeSideViewSet(viewsets.ViewSet):
             + '.' + grapher + '.' \
             + width + '_' + height + '.png'
 
-        return Response(image)
+        response = serve_media(image, content_type="image/png")
+        return response
