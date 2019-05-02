@@ -8,6 +8,7 @@ User factory to execute tests
 """
 
 import factory
+import factory.fuzzy
 from django.contrib.auth.models import User
 
 
@@ -17,7 +18,8 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = User
 
     email = 'admin@admin.com'
-    username = 'admin'
+    # username = 'admin'
+    username = factory.fuzzy.FuzzyText(length=20, prefix='user_')
     password = factory.PostGenerationMethodCall('set_password', 'adm1n')
 
     is_superuser = True

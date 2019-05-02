@@ -4,16 +4,18 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
-import requests
-from settings import FRONT_HOST_URL
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_front.tools as tools
 
 
-class LocationView(TemplateView):
+class LocationView(FrancoraliteTemplateView):
     template_name = "../templates/location.html"
 
     def get_context_data(self, **kwargs):
-        context = super(LocationView, self).get_context_data(**kwargs)
-        context['locations'] = requests.get(
-            FRONT_HOST_URL+'/api/locationgis/').json
+        try:
+            context = super(LocationView, self).get_context_data(**kwargs)
+            context['locations'] = tools.request_api('/api/locationgis')
+        except Exception as err:
+            context['locations'] = []
+            context['error'] = err.message
         return context

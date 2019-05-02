@@ -26,16 +26,19 @@
 {% endblock %}
 
 {% block title_buttons %}
+{% if user.is_authenticated %}
   <a href="{% url "instrument-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une voix/instrument" %}
     </button>
   </a>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 <div class="fullpage">
+  <!-- If there is some instruments (number of elements > 0 ) -->
 {% if instruments|length > 0 %}
   <!-- Table to display the instruments --->
   <table class="listing">
@@ -59,6 +62,7 @@
         {{ instrument.typology.number|safe}} : {{ instrument.typology.name|safe}}
         </td>
       <td>
+        {% if user.is_authenticated %}
         {% buttons %}
         <a href="{% url "instrument-edit" id=instrument.id %}">
               <button type="button" class="btn btn-default">
@@ -72,15 +76,21 @@
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endbuttons %}
+        {% endif %}
       </td>
   </tr>
   {% endfor %}
 </table>
 
-{% modal_delete %}
-
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
 {% else %}
-    <p>{% trans "Il n'y a pas de voix/instruments" %}</p>
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+      <p>{% trans "Il n'y a pas de voix/instruments" %}</p>
+  {% endif %}
 {% endif %}
 </div>
 {% endblock %}

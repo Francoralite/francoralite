@@ -8,14 +8,25 @@
 
 {% block javascript %}
   {{ block.super }}
+  <script src="{% static "telemeta_front/js/application.js" %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
 {% endblock %}
 
 
 {% block stylesheets %}
-  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/telemeta-more.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/style.css" %}" />
+<!--  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/admin.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/jquery.autocomplete.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/jquery-ui.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/list-sorttable.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/player.css" %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/search.css" %}" />
+  -->
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/francoralite.css" %}" />
 {% endblock %}
 
 {% block header %}
@@ -24,11 +35,32 @@
         {% block logo %}
             <a href="{% url "telemeta-home" %}">
               <img src="{% static "telemeta_front/images/logo_universite_poitiers.jpg" %}"
-               alt="Université de Poitiers"/>
+               alt={% trans "Université de Poitiers" %}/>
             </a>
             <img src="{% static "telemeta_front/images/logo_francoralite.png" %}"
               alt="Francoralité" />
         {% endblock %}
+        </div>
+        <div id="quick_search">
+            <form action="/search/" id="_quickSearchForm" method="get">
+                <div class="input-group">
+                    <input class="form-control" id="id_q" name="q" type="text"/><span
+                        class="input-group-btn"><button type="submit" id="btn" class="btn btn-default"><span
+                        class="glyphicon glyphicon-search"></span></button></span>
+                </div>
+            </form>
+        </div>
+        <div id="auth_info" style="right : 1.1em;">
+        {% if user.is_authenticated %}
+             <img src="/static/telemeta/images/user.png" alt="user" style="vertical-align:middle"/>
+              {% trans "Bienvenue" %},
+             <a href="">{{user}}</a>                            |
+             <a href="/logout/">{% trans "Déconnexion" %}
+             <img src="/static/telemeta/images/logout.png" alt="logout"
+                  style="vertical-align:middle"/></a>
+        {% else %}
+          <a href="{% url 'oidc_authentication_init' %}">{% trans "Se connecter" %}</a>
+        {% endif %}
         </div>
 
         <div id="menu">

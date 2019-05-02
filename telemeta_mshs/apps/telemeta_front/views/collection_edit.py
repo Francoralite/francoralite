@@ -14,23 +14,29 @@ from telemeta_front.forms.collection import CollectionForm
 from django.shortcuts import render
 import json
 from .related import query_related, write_relations
+import telemeta_front.tools as tools
 
 
 class CollectionEdit(FormView):
     template_name = "../templates/collection-add.html"
     form_class = CollectionForm
     success_url = '/collection/'
+    keycloak_scopes = {
+            'GET': 'collection:view',
+            'POST': 'collection:add',
+            'PATCH': 'collection:update',
+            'PUT': 'collection:update'}
 
     def get_context_data(self, **kwargs):
-        context = super(CollectionEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL + '/api/extcollection/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['collection'] = response.json
-
+        try:
+            context = super(CollectionEdit, self).get_context_data(**kwargs)
+            id = kwargs.get('id')
+            # Obtain values of the record
+            context['collection'] = tools.request_api(
+                '/api/collection/' + str(id))
+        except Exception as err:
+            context['collection'] = {}
+            context['error'] = err.message
         return context
 
     def get(self, request, *args, **kwargs):

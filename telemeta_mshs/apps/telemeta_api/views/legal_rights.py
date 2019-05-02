@@ -10,3 +10,11 @@ class LegalRightsViewSet(viewsets.ModelViewSet):
 
     queryset = LegalRightsModel.objects.all()
     serializer_class = LegalRightsSerializer
+
+    keycloak_scopes = {
+        'GET': 'legal_rights:view',
+        'POST': 'legal_rights:add',
+        'PATCH': 'legal_rights:update',
+        'PUT': 'legal_rights:update',
+        'DELETE': 'legal_rights:delete'
+    }

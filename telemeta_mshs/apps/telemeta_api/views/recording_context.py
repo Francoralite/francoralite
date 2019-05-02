@@ -10,3 +10,11 @@ class RecordingContextViewSet(viewsets.ModelViewSet):
 
     queryset = RecordingContextModel.objects.all()
     serializer_class = RecordingContextSerializer
+
+    keycloak_scopes = {
+        'GET': 'recording_context:view',
+        'POST': 'recording_context:add',
+        'PATCH': 'recording_context:update',
+        'PUT': 'recording_context:update',
+        'DELETE': 'recording_context:delete'
+    }

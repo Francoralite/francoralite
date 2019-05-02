@@ -4,16 +4,20 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
-import requests
-from settings import FRONT_HOST_URL
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_front.tools as tools
 
 
-class InstrumentView(TemplateView):
+class InstrumentView(FrancoraliteTemplateView):
     template_name = "../templates/enum/instrument.html"
+    keycloak_scopes = {
+        'GET': 'instrument:view'}
 
     def get_context_data(self, **kwargs):
-        context = super(InstrumentView, self).get_context_data(**kwargs)
-        context['instruments'] = requests.get(
-            FRONT_HOST_URL+'/api/instrument/').json
+        try:
+            context = super(InstrumentView, self).get_context_data(**kwargs)
+            context['instruments'] = tools.request_api('/api/instrument/')
+        except Exception as err:
+            context['instruments'] = []
+            context['error'] = err.message
         return context

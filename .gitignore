@@ -82,3 +82,10 @@ worker.py
 
 # Testing
 .pytest_cache/
+
+# Vim
+*.swo
+*.swp
+
+# Ansible
+*.retry

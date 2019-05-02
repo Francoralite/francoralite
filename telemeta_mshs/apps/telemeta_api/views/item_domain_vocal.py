@@ -19,6 +19,14 @@ class ItemDomainVocalViewSet(viewsets.ModelViewSet):
     queryset = ItemDomainVocalModel.objects.all()
     serializer_class = ItemDomainVocalSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_domain_vocal:view',
+        'POST': 'item_domain_vocal:add',
+        'PATCH': 'item_domain_vocal:update',
+        'PUT': 'item_domain_vocal:update',
+        'DELETE': 'item_domain_vocal:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

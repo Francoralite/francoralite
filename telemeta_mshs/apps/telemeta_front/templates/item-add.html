@@ -1,0 +1,73 @@
+
+{% extends "item.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-select/2.5.1/vue-select.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title %}
+   {{ block.super}}
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block content %}
+{{ form.media }}
+<div class="container">
+  {% if id %}
+  <form action="{%url "item-edit" id %}" method="POST">
+  {% else %}
+  <form action="{{request.path}}" method="POST">
+  {% endif %}
+    {% csrf_token %}
+    <!-- FIXIT  champs en saisie -->
+
+    <div class="block-grey">
+      <h2></h2>
+      <div class="container_line">
+
+      </div>
+    </div>
+
+    {% if id %}
+    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
+    {% else %}
+    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
+    {% endif %}
+  </form>
+</div>
+
+{% block player %}
+  {{ block.super }}
+{% endblock %}
+
+{{ form.media.js }}
+{% endblock content %}

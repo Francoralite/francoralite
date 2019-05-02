@@ -23,3 +23,11 @@ class InstrumentViewSet(viewsets.ModelViewSet):
     filter_fields = ('name', 'typology')
     ordering = ('name', 'typology')
     search_fields = ('name', 'notes')
+
+    keycloak_scopes = {
+        'GET': 'instrument:view',
+        'POST': 'instrument:add',
+        'PATCH': 'instrument:update',
+        'PUT': 'instrument:update',
+        'DELETE': 'instrument:delete'
+    }

@@ -64,6 +64,14 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = CollectionModel.objects.all()
     serializer_class = CollectionSerializer
 
+    keycloak_scopes = {
+        'GET': 'collection:view',
+        'POST': 'collection:add',
+        'PATCH': 'collection:update',
+        'PUT': 'collection:update',
+        'DELETE': 'collection:delete'
+    }
+
     def collect(self, id_main, data, entity):
         items = entity["model"].objects.filter(
             collection=id_main)

@@ -5,18 +5,22 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.base import TemplateView
-import requests
-from settings import FRONT_HOST_URL
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_front.tools as tools
 from telemeta_front.forms.mission import MissionForm
 
 
-class MissionView(TemplateView):
+class MissionView(FrancoraliteTemplateView):
     template_name = "../templates/mission.html"
+    keycloak_scopes = {
+        'GET': 'mission:view'}
 
     def get_context_data(self, **kwargs):
-        context = super(MissionView, self).get_context_data(**kwargs)
-        context['missions'] = requests.get(
-            FRONT_HOST_URL + '/api/mission/').json
-        context['form'] = MissionForm
+        try:
+            context = super(MissionView, self).get_context_data(**kwargs)
+            context['missions'] = tools.request_api('/api/mission')
+            context['form'] = MissionForm
+        except Exception as err:
+            context['missions'] = []
+            context['error'] = err.message
         return context

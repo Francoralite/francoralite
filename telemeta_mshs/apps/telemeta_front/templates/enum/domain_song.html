@@ -28,18 +28,21 @@
 {% endblock %}
 
 {% block title_buttons %}
+{% if user.is_authenticated %}
   <a href="{% url "domain_song-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un genre de chanson" %}
     </button>
   </a>
+{% endif %}
 {% endblock %}
 
 
 </div>
 {% block content %}
 <div class="fullpage">
+  <!-- If there is some domain song (number of elements > 0 ) -->
 {% if domain_songs|length > 0 %}
   <!-- Table to display the domain_songs --->
   <table class="listing">
@@ -59,6 +62,7 @@
         {% endif %}
       </td>
       <td>
+        {% if user.is_authenticated %}
         {% buttons %}
         <a href="{% url "domain_song-edit" id=domain_song.id %}">
               <button type="button" class="btn btn-default">
@@ -72,15 +76,22 @@
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endbuttons %}
+        {% endif %}
       </td>
   </tr>
   {% endfor %}
 </table>
 
-{% modal_delete %}
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
 
 {% else %}
-    <p>{% trans "Il n'y a pas de genre de chanson" %}</p>
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de genre de chanson" %}</p>
+    {% endif %}
 {% endif %}
 </div>
 {% endblock %}

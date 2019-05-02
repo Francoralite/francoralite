@@ -1,0 +1,133 @@
+---
+
+#
+# General
+#
+_keycloak_admin_username: 'admin'
+_keycloak_admin_password: 'password'
+_keycloak_hostname: 'localhost:8080'
+_keycloak_protocol: 'http'
+
+
+#
+# Base content for client
+#
+_keycloak_client_base:
+  auth_client_id: 'admin-cli'
+  auth_keycloak_url: "{{ keycloak_protocol }}://{{ keycloak_hostname }}/auth"
+  auth_realm: 'master'
+  auth_username: "{{ keycloak_admin_username }}"
+  auth_password: "{{ keycloak_admin_password }}"
+  realm: 'francoralite'
+  authorization_services_enabled: True
+  attributes: {}
+  clientAuthenticatorType: 'client-secret'
+  fullScopeAllowed: False
+  serviceAccountsEnabled: True
+  standardFlowEnabled: True
+  surrogateAuthRequired: False
+  protocolMappers:
+    - name: "{{ item.client_id }}-pm-audience"
+      config:
+        access.token.claim: 'true'
+        id.token.claim: 'false'
+        included.client.audience: "{{ item.client_id }}"
+      consentRequired: false
+      protocol: 'openid-connect'
+      protocolMapper: 'oidc-audience-mapper'
+
+# List of keycloak clients
+_keycloak_clients:
+  - client_id: 'francoralite'
+    directAccessGrantsEnabled: True
+    fullScopeAllowed: False
+    base_url: 'http://francoralite-api/*'
+    enabled: True
+    name: 'Francoralite API'
+    authorization_settings: "{{ lookup('template', 'templates/keycloak/francoralite_authorization_settings.yml.j2') | from_yaml }}"
+    redirect_uris:
+      - 'http://francoralite-api/*'
+      - 'http://francoralite-api/**/*'
+    root_url: 'http://francoralite-api/'
+    web_origins:
+      - 'localhost'
+      - 'localhost:3000'
+      - 'localhost:8000'
+      - 'http://francoralite-api'
+
+# List of Francoralite API endpoints
+_keycloak_endpoints:
+  - name: "acquisition_mode"
+  - name: "authority"
+    contributors_authorized: True
+  - name: "collectioncollectors"
+    contributors_authorized: True
+  - name: "collection_informer"
+    contributors_authorized: True
+  - name: "collection_language"
+    contributors_authorized: True
+  - name: "collection_location"
+    contributors_authorized: True
+  - name: "collection_publisher"
+    contributors_authorized: True
+  - name: "collection"
+    contributors_authorized: True
+  - name: "coupe"
+  - name: "dance"
+  - name: "domain_music"
+  - name: "domain_song"
+  - name: "domain_tale"
+  - name: "domain_vocal"
+  - name: "emit_vox"
+  - name: "enumeration"
+  - name: "ext_media_item"
+  - name: "fond"
+    contributors_authorized: True
+  - name: "hornbostelsachs"
+  - name: "institution"
+  - name: "instrument"
+  - name: "item_analysis"
+  - name: "item_collector"
+    contributors_authorized: True
+  - name: "item_dance"
+    contributors_authorized: True
+  - name: "item_domain_music"
+    contributors_authorized: True
+  - name: "item_domain_song"
+    contributors_authorized: True
+  - name: "item_domain_tale"
+    contributors_authorized: True
+  - name: "item_domain_vocal"
+  - name: "item_informer"
+    contributors_authorized: True
+  - name: "item_marker"
+  - name: "item_musical_group"
+  - name: "item_musical_organization"
+  - name: "item"
+    contributors_authorized: True
+  - name: "item_thematic"
+    contributors_authorized: True
+  - name: "item_transcoding_flag"
+  - name: "item_usefulness"
+    contributors_authorized: True
+  - name: "language"
+  - name: "legal_rights"
+  - name: "location_gis"
+  - name: "location"
+    contributors_authorized: True
+  - name: "media_item"
+  - name: "mediatype"
+  - name: "mission"
+    contributors_authorized: True
+  - name: "musical_group"
+  - name: "musical_organization"
+  - name: "performance_collection_musician"
+    contributors_authorized: True
+  - name: "performance_collection"
+    contributors_authorized: True
+  - name: "publisher"
+  - name: "recording_context"
+  - name: "thematic"
+  - name: "timeside_item"
+  - name: "usefulness"
+  - name: "user"

@@ -23,3 +23,11 @@ class HornbostelSachsViewSet(viewsets.ModelViewSet):
     filter_fields = ('number',)
     ordering = ('number', 'name',)
     search_fields = ('number', 'name')
+
+    keycloak_scopes = {
+        'GET': 'hornbostelsachs:view',
+        'POST': 'hornbostelsachs:add',
+        'PATCH': 'hornbostelsachs:update',
+        'PUT': 'hornbostelsachs:update',
+        'DELETE': 'hornbostelsachs:delete'
+    }

@@ -49,6 +49,7 @@
       </td>
       <td>{{ collection.title|safe }}</td>
       <td>
+        {% if user.is_authenticated %}
         {% buttons %}
         <a href="{% url "collection-edit" id=collection.id %}">
               <button type="button" class="btn btn-default">
@@ -62,15 +63,22 @@
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endbuttons %}
+        {% endif %}
       </td>
   </tr>
   {% endfor %}
 </table>
 
-{% modal_delete %}
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
 
 {% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
     <p>{% trans "Il n'y a pas d'enquêtes" %}</p>
+  {% endif %}
 {% endif %}
 </div>
 {% endblock %}

@@ -12,6 +12,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.institution import InstitutionForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class InstitutionEdit(FormView):
@@ -20,14 +21,15 @@ class InstitutionEdit(FormView):
     success_url = '/institution/'
 
     def get_context_data(self, **kwargs):
-        context = super(InstitutionEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL + '/api/institution/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['institution'] = response.json
+        try:
+            context = super(InstitutionEdit, self).get_context_data(**kwargs)
+            id = kwargs.get('id')
+            # Obtain values of the record
+            context['institution'] = tools.request_api(
+                '/api/institution/' + str(id))
+        except Exception as err:
+            context['institution'] = {}
+            context['error'] = err.message
         return context
 
     def get(self, request, *args, **kwargs):

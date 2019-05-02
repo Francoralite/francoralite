@@ -1,0 +1,9 @@
+---
+
+#
+# General
+#
+keycloak_admin_username: "{{ _keycloak_admin_username }}"
+keycloak_admin_password: "{{ _keycloak_admin_password }}"
+keycloak_hostname: "{{ _keycloak_hostname }}"
+keycloak_protocol: "{{ _keycloak_protocol }}"

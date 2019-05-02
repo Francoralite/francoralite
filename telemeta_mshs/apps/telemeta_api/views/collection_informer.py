@@ -19,6 +19,14 @@ class CollectionInformerViewSet(viewsets.ModelViewSet):
     queryset = CollectionInformerModel.objects.all()
     serializer_class = CollectionInformerSerializer
 
+    keycloak_scopes = {
+        'GET': 'collection_informer:view',
+        'POST': 'collection_informer:add',
+        'PATCH': 'collection_informer:update',
+        'PUT': 'collection_informer:update',
+        'DELETE': 'collection_informer:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

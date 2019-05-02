@@ -24,3 +24,11 @@ class PerformanceCollectionMusicianViewSet(viewsets.ModelViewSet):
     filter_fields = ('performance_collection', 'musician')
     ordering = ('performance_collection', 'musician')
     search_fields = ()
+
+    keycloak_scopes = {
+        'GET': 'performance_collection_musician:view',
+        'POST': 'performance_collection_musician:add',
+        'PATCH': 'performance_collection_musician:update',
+        'PUT': 'performance_collection_musician:update',
+        'DELETE': 'performance_collection_musician:delete'
+    }

@@ -4,12 +4,12 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import requests
 from settings import FRONT_HOST_URL
 
 
-class LocationView(TemplateView):
+class LocationView(FrancoraliteTemplateView):
     template_name = "../templates/location.html"
 
     def get_context_data(self, **kwargs):

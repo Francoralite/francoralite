@@ -1,0 +1,97 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title %}
+<div class="col-md-4">
+  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
+    style="vertical-align:middle" />
+    <h1>{% trans "Contexte d'enregistrement" %}</h1>
+</div>
+<div class="col-md-8">
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
+{% endblock %}
+
+{% block title_buttons %}
+{% if user.is_authenticated %}
+  <a href="{% url "recording_context-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un contexte d'enregistrement" %}
+    </button>
+  </a>
+{% endif %}
+{% endblock %}
+
+
+</div>
+{% block content %}
+<div class="fullpage">
+  <!-- If there is some recording_context (number of elements > 0 ) -->
+{% if recording_contexts|length > 0 %}
+  <!-- Table to display the recording_context --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+  </tr>
+  {% for recording_context in recording_contexts %}
+  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td class="highlight">
+          <a href="/recording_context/{{recording_context.id }}/">
+            {{ recording_context.value|upper }}</a>
+      </td>
+      <td>
+        {% if recording_context.notes %}
+          {{ recording_context.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      <td>
+        {% if user.is_authenticated %}
+        {% buttons %}
+        <a href="{% url "recording_context-edit" id=recording_context.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{recording_context.title}}"
+            data-url="{% url "recording_context-delete" id=recording_context.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endbuttons %}
+        {% endif %}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de contexte d'enregistrement" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

@@ -19,6 +19,14 @@ class ItemUsefulnessViewSet(viewsets.ModelViewSet):
     queryset = ItemUsefulnessModel.objects.all()
     serializer_class = ItemUsefulnessSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_usefulness:view',
+        'POST': 'item_usefulness:add',
+        'PATCH': 'item_usefulness:update',
+        'PUT': 'item_usefulness:update',
+        'DELETE': 'item_usefulness:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

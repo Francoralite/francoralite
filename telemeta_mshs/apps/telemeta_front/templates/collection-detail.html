@@ -26,161 +26,216 @@
 {% endblock %}
 
 {% block title_buttons %}
+ {% if user.is_authenticated %}
+  <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un item" %}
+    </button>
+  </a>
   <a href="{% url "collection-edit" id=id %}">
   <button type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </button>
   </a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-{% if collection %}
+{% if not error|length %}
+  {% if collection %}
 
-<div class="container_line">
-  <span class="container_data">
-    <span class="libelle"> {{form.mission.label|safe}}</span>
-    <span class="donnee">
-      <a href="{% url "mission-detail" id=collection.mission.id %}">
-        {{collection.mission.title|safe}}
-      </a>
-    </span>
-  </span>
-  {% field_data form.code_partner.label|safe collection.code_partner|safe %}
-  {% field_data form.code.label|safe collection.code|upper|safe %}
-  {% field_data form.title.label|safe collection.title|safe %}
-  {% field_data form.public_access.label|safe collection.public_access|public_access|safe %}
-</div>
+  <ul class="nav nav-tabs" role="tablist">
+     <li class="active">
+       <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
+     </li>
+     <li>
+       <a href="#tab_item" role="tab" data-toggle="tab">{% trans "Items" %}</a>
+     </li>
+  </ul>
 
-<div class="container_line">
-  {% field_data form.descriptions.label|safe collection.descriptions|markdown|safe %}
-</div>
-
-<div class="block-grey">
-  <h2>{% trans "Période" %}</h2>
-  {% trans "Années d'enregistrement" %}
-  <div class="container_line">
-    <span class="container_data">
-      <span class="libelle"> {% trans 'Depuis' %}</span>
-      <span class="donnee"></span>
-    </span>
-    <span class="container_data">
-      <span class="libelle"> {% trans "Jusqu\'à" %}</span>
-      <span class="donnee"></span>
-    </span>
-    <span class="container_data">
-      <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
-      <span class="donnee"></span>
-    </span>
-  </div>
-</div>
-
-<div class="block-grey">
-  <h2>{% trans "Personnes" %}</h2>
-  <span class="container_data">
-    <span class="libelle"> {% trans 'Collecteurs' %}</span>
-    <span class="donnee">
-      {% for collector in collection.collectors %}
-        {% if not forloop.first %} | {% endif %}
-        <a href="{% url "personne-detail" id=collector.id %}"
-        onclick="window.open(this.href); return false;">
-          {{collector.first_name}} {{collector.last_name}}
-        </a>
-      {% endfor %}
-      </span>
-  </span>
-  <span class="container_data">
-    <span class="libelle"> {% trans 'Informateurs' %}</span>
-    <span class="donnee">
-      {% for informer in collection.informers %}
-        {% if not forloop.first %} | {% endif %}
-        <a href="{% url "personne-detail" id=informer.id %}"
-        onclick="window.open(this.href); return false;">
-          {{informer.first_name}} {{informer.last_name}}
-        </a>
-      {% endfor %}
-    </span>
-  </span>
-</div>
-
-<div class="block-grey">
-  <h2>{% trans "Localisation" %}</h2>
-  <span class="container_data">
-    <span class="libelle"> {% trans 'Lieux' %}</span>
-    <span class="donnee">
-      {% for location in collection.locations %}
-        {% if not forloop.first %} | {% endif %}
-        <a href="{% url "location_gis-detail" id=location.id %}"
-        onclick="window.open(this.href); return false;">
-          {{location.code}}
-        </a>
-      {% endfor %}
-    </span>
-  </span>
-  {% field_data form.location_details.label|safe collection.location_details|markdown|safe %}
-  {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
-</div>
-
-<span class="container_data">
-  <span class="libelle"> {% trans 'Langues' %}</span>
-  <span class="donnee">
-    {% for language in collection.languages %}
-      {% if not forloop.first %} | {% endif %}
-        {{language.name}}
-    {% endfor %}
-  </span>
-</span>
-
-<span class="container_data">
-  <span class="libelle"> {% trans 'Editeurs' %}</span>
-  <span class="donnee">
-    {% for publisher in collection.publishers %}
-      {% if not forloop.first %} | {% endif %}
-        {{publisher.value}}
-    {% endfor %}
-  </span>
-</span>
-
-
-<div class="block-grey">
-  <h2>{% trans "Voix/Instruments" %}</h2>
-  <span class="container_data">
-    {% for performance in collection.performances %}
-    <div class="container_line">
+  <!-- Onglet Fiche en cours -->
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="tab_general">
+      <div class="container_line">
         <span class="container_data">
-          <span class="libelle">{% trans 'Nombre' %}</span>
-          <span class="donnee">{{performance.number}}</span>
-        </span>
-        <span class="container_data">
-          <span class="libelle">{% trans 'Instrument' %}</span>
-          <span class="donnee">{{performance.instrument.name}}</span>
-        </span>
-        <span class="container_data">
-          <span class="libelle">{% trans 'Typologie Horn-Bostel' %}</span>
-          <span class="donnee">{{performance.instrument.typology.number}} :
-          {{performance.instrument.typology.name}}</span>
-        </span>
-        <span class="container_data">
-          <span class="libelle">{% trans "Nature de l'émission vocale" %}</span>
-          <span class="donnee">{{performance.emit.name}}</span>
-        </span>
-        <span class="container_data">
-          <span class="libelle">{% trans 'Musiciens' %}</span>
-          {{performers}}
+          <span class="libelle"> {{form.mission.label|safe}}</span>
           <span class="donnee">
-            {% for musician in performance.musicians %}
+            <a href="{% url "mission-detail" id=collection.mission.id %}">
+              {{collection.mission.title|safe}}
+            </a>
+          </span>
+        </span>
+        {% field_data form.code_partner.label|safe collection.code_partner|safe %}
+        {% field_data form.code.label|safe collection.code|upper|safe %}
+        {% field_data form.title.label|safe collection.title|safe %}
+        {% field_data form.public_access.label|safe collection.public_access|public_access|safe %}
+      </div>
+
+      <div class="container_line">
+        {% field_data form.descriptions.label|safe collection.descriptions|markdown|safe %}
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Période" %}</h2>
+        {% trans "Années d'enregistrement" %}
+        <div class="container_line">
+          <span class="container_data">
+            <span class="libelle"> {% trans 'Depuis' %}</span>
+            <span class="donnee"></span>
+          </span>
+          <span class="container_data">
+            <span class="libelle"> {% trans "Jusqu\'à" %}</span>
+            <span class="donnee"></span>
+          </span>
+          <span class="container_data">
+            <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
+            <span class="donnee"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Personnes" %}</h2>
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Collecteurs' %}</span>
+          <span class="donnee">
+            {% for collector in collection.collectors %}
               {% if not forloop.first %} | {% endif %}
-              {{musician.first_name}}  {{musician.last_name}}
+              <a href="{% url "personne-detail" id=collector.id %}"
+              onclick="window.open(this.href); return false;">
+                {{collector.first_name}} {{collector.last_name}}
+              </a>
+            {% endfor %}
+            </span>
+        </span>
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Informateurs' %}</span>
+          <span class="donnee">
+            {% for informer in collection.informers %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "personne-detail" id=informer.id %}"
+              onclick="window.open(this.href); return false;">
+                {{informer.first_name}} {{informer.last_name}}
+              </a>
             {% endfor %}
           </span>
         </span>
+      </div>
 
+      <div class="block-grey">
+        <h2>{% trans "Localisation" %}</h2>
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Lieux' %}</span>
+          <span class="donnee">
+            {% for location in collection.locations %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "location_gis-detail" id=location.id %}"
+              onclick="window.open(this.href); return false;">
+                {{location.code}}
+              </a>
+            {% endfor %}
+          </span>
+        </span>
+        {% field_data form.location_details.label|safe collection.location_details|markdown|safe %}
+        {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
+      </div>
+
+      <span class="container_data">
+        <span class="libelle"> {% trans 'Langues' %}</span>
+        <span class="donnee">
+          {% for language in collection.languages %}
+            {% if not forloop.first %} | {% endif %}
+              {{language.name}}
+          {% endfor %}
+        </span>
+      </span>
+
+      <span class="container_data">
+        <span class="libelle"> {% trans 'Editeurs' %}</span>
+        <span class="donnee">
+          {% for publisher in collection.publishers %}
+            {% if not forloop.first %} | {% endif %}
+              {{publisher.value}}
+          {% endfor %}
+        </span>
+      </span>
+
+
+      <div class="block-grey">
+        <h2>{% trans "Voix/Instruments" %}</h2>
+        <span class="container_data">
+          {% for performance in collection.performances %}
+          <div class="container_line">
+              <span class="container_data">
+                <span class="libelle">{% trans 'Nombre' %}</span>
+                <span class="donnee">{{performance.number}}</span>
+              </span>
+              <span class="container_data">
+                <span class="libelle">{% trans 'Instrument' %}</span>
+                <span class="donnee">{{performance.instrument.name}}</span>
+              </span>
+              <span class="container_data">
+                <span class="libelle">{% trans 'Typologie Horn-Bostel' %}</span>
+                <span class="donnee">{{performance.instrument.typology.number}} :
+                {{performance.instrument.typology.name}}</span>
+              </span>
+              <span class="container_data">
+                <span class="libelle">{% trans "Nature de l'émission vocale" %}</span>
+                <span class="donnee">{{performance.emit.name}}</span>
+              </span>
+              <span class="container_data">
+                <span class="libelle">{% trans 'Musiciens' %}</span>
+                {{performers}}
+                <span class="donnee">
+                  {% for musician in performance.musicians %}
+                    {% if not forloop.first %} | {% endif %}
+                    {{musician.first_name}}  {{musician.last_name}}
+                  {% endfor %}
+                </span>
+              </span>
+
+          </div>
+          {% endfor %}
+        </span>
+      </div>
     </div>
-    {% endfor %}
-  </span>
-</div>
 
 
+    <!-- Onglet des items -->
+    <div class="tab-pane fade in" id="tab_item">
+      {% if items|length > 0 %}
+        <!-- Table to display the collections --->
+        <table class="listing">
+        <tr>
+            <th class="highlight">{% trans "cote" %}</th>
+            <th>{% trans "Nom" %}</th>
+            <th>{% trans "Description" %}</th>
+        </tr>
+        {% for item in items %}
+        <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+            <td class="highlight">
+                <a href="/collection/{{collection.id }}/">
+                {{ collection.code|upper }}</a>
+            </td>
+            <td>{{ collection.title|safe }}</td>
+            <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+          </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <div class="block-grey">
+        {% trans "Cette enquête ne possède pas d'item."%}
+        </div>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+    <p>{% trans "Cette enquête n'existe pas." %}</p>
+  {% endif %}
 {% else %}
-  <p>{% trans "Cette enquête n'existe pas." %}</p>
+  {% display_error error %}
 {% endif %}
 {% endblock %}

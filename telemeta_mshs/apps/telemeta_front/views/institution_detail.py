@@ -4,25 +4,24 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.base import TemplateView
-from rest_framework import status
-import requests
-
-from settings import FRONT_HOST_URL
+from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_front.tools as tools
 
 
-class InstitutionDetail(TemplateView):
+class InstitutionDetail(FrancoraliteTemplateView):
     template_name = "../templates/institution-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(InstitutionDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL + '/api/institution/' + context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            context['institution'] = response.json
-            context['fonds'] = requests.get(
-                FRONT_HOST_URL + '/api/fond/?institution=' + context['id']
-                ).json
+        try:
+            context = super(InstitutionDetail, self).get_context_data(**kwargs)
+            # Obtain values of the record institution
+            context['institution'] = tools.request_api(
+                '/api/institution/' + context['id'])
+            # Obtain values of related fonds
+            context['fonds'] = tools.request_api(
+                '/api/fond/?institution=' + context['id'])
+        except Exception as err:
+            context['institution'] = {}
+            context['fonds'] = []
+            context['error'] = err.message
         return context

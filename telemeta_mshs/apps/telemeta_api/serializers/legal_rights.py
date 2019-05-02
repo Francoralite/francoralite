@@ -11,7 +11,7 @@ class LegalRightsSerializer(serializers.ModelSerializer):
     """
 
     value = serializers.CharField(required=True)
-    notes = serializers.CharField()
+    notes = serializers.CharField(required=False)
 
     class Meta:
         model = LegalRightsModel

@@ -28,18 +28,21 @@
 {% endblock %}
 
 {% block title_buttons %}
+{% if user.is_authenticated %}
   <a href="{% url "musical_group-add" %}">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une formation" %}
     </button>
   </a>
+{% endif %}
 {% endblock %}
 
 
 </div>
 {% block content %}
 <div class="fullpage">
+  <!-- If there is some musical_group (number of elements > 0 ) -->
 {% if musical_groups|length > 0 %}
   <!-- Table to display the musical_groups --->
   <table class="listing">
@@ -59,6 +62,7 @@
         {% endif %}
       </td>
       <td>
+        {% if user.is_authenticated %}
         {% buttons %}
         <a href="{% url "musical_group-edit" id=musical_group.id %}">
               <button type="button" class="btn btn-default">
@@ -72,15 +76,21 @@
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endbuttons %}
+        {% endif %}
       </td>
   </tr>
   {% endfor %}
 </table>
 
-{% modal_delete %}
-
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
 {% else %}
-    <p>{% trans "Il n'y a pas de formation" %}</p>
+  {% if error|length %}
+     {% display_error error %}
+  {% else %}
+      <p>{% trans "Il n'y a pas de formation" %}</p>
+  {% endif %}
 {% endif %}
 </div>
 {% endblock %}

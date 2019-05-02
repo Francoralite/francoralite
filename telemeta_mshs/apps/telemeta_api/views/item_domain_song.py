@@ -19,6 +19,14 @@ class ItemDomainSongViewSet(viewsets.ModelViewSet):
     queryset = ItemDomainSongModel.objects.all()
     serializer_class = ItemDomainSongSerializer
 
+    keycloak_scopes = {
+        'GET': 'item_domain_song:view',
+        'POST': 'item_domain_song:add',
+        'PATCH': 'item_domain_song:update',
+        'PUT': 'item_domain_song:update',
+        'DELETE': 'item_domain_song:delete'
+    }
+
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):

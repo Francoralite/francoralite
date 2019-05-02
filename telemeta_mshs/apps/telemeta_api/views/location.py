@@ -16,3 +16,11 @@ class LocationViewSet(viewsets.ModelViewSet):
         'name', 'latitude', 'longitude')
     ordering = ('code', 'name',)
     search_fields = ('code', 'name')
+
+    keycloak_scopes = {
+        'GET': 'location:view',
+        'POST': 'location:add',
+        'PATCH': 'location:update',
+        'PUT': 'location:update',
+        'DELETE': 'location:delete'
+    }

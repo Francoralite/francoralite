@@ -18,3 +18,11 @@ class ThematicViewSet(viewsets.ModelViewSet):
 
     queryset = ThematicModel.objects.all()
     serializer_class = ThematicSerializer
+
+    keycloak_scopes = {
+        'GET': 'thematic:view',
+        'POST': 'thematic:add',
+        'PATCH': 'thematic:update',
+        'PUT': 'thematic:update',
+        'DELETE': 'thematic:delete'
+    }

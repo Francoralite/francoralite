@@ -12,22 +12,29 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.fond import FondForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class FondEdit(FormView):
     template_name = "../templates/fond-add.html"
     form_class = FondForm
     success_url = '/fond/'
+    keycloak_scopes = {
+            'GET': 'fond:view',
+            'POST': 'fond:add',
+            'PATCH': 'fond:update',
+            'PUT': 'fond:update'}
 
     def get_context_data(self, **kwargs):
-        context = super(FondEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL + '/api/fond/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['fond'] = response.json
+        try:
+            context = super(FondEdit, self).get_context_data(**kwargs)
+            id = kwargs.get('id')
+            # Obtain values of the record
+            context['fond'] = tools.request_api(
+                '/api/fond/' + str(id))
+        except Exception as err:
+            context['fond'] = {}
+            context['error'] = err.message
         return context
 
     def get(self, request, *args, **kwargs):

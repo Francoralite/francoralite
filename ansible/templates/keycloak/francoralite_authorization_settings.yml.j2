@@ -1,0 +1,69 @@
+---
+
+allowRemoteResourceManagement: False
+policyEnforcementMode: 'ENFORCING'
+policies:
+  - name: 'francoralite-users-pol'
+    scopes:
+{% for endpoint in _keycloak_endpoints %}
+      - "{{ endpoint.name }}:view"
+{% endfor %}
+    type: 'role'
+    logic: 'POSITIVE'
+    decisionStrategy: 'AFFIRMATIVE'
+    config:
+      roles: "[{\"id\":\"francoralite-users\",\"required\":true}]"
+  - name: 'francoralite-contributors-pol'
+    scopes:
+{% for endpoint in _keycloak_endpoints %}
+{% if endpoint.contributors_authorized | default(False) %}
+      - "{{ endpoint.name }}:view"
+      - "{{ endpoint.name }}:add"
+      - "{{ endpoint.name }}:update"
+      - "{{ endpoint.name }}:delete"
+{% endif %}
+{% endfor %}
+    type: 'role'
+    logic: 'POSITIVE'
+    decisionStrategy: 'AFFIRMATIVE'
+    config:
+      roles: "[{\"id\":\"francoralite-contributors\",\"required\":true}]"
+  - name: 'francoralite-administrators-pol'
+    scopes:
+{% for endpoint in _keycloak_endpoints %}
+      - "{{ endpoint.name }}:view"
+      - "{{ endpoint.name }}:add"
+      - "{{ endpoint.name }}:update"
+      - "{{ endpoint.name }}:delete"
+{% endfor %}
+    type: 'role'
+    logic: 'POSITIVE'
+    decisionStrategy: 'AFFIRMATIVE'
+    config:
+      roles: "[{\"id\":\"francoralite-administrators\",\"required\":true}]"
+resources:
+{% for endpoint in _keycloak_endpoints %}
+  - name: "{{ endpoint.name }}"
+    displayName: "{{ endpoint.name | capitalize }}"
+    uri: "/api/{{ endpoint.name }}/{id}"
+    scopes:
+      - name: "{{ endpoint.name }}:delete"
+        displayName: "{{ endpoint.name | capitalize }} - Delete"
+      - name: "{{ endpoint.name }}:add"
+        displayName: "{{ endpoint.name | capitalize }} - Add"
+      - name: "{{ endpoint.name }}:update"
+        displayName: "{{ endpoint.name | capitalize }} - Update"
+      - name: "{{ endpoint.name }}:view"
+        displayName: "{{ endpoint.name | capitalize }} - View"
+{% endfor %}
+scopes:
+{% for endpoint in _keycloak_endpoints %}
+  - name: "{{ endpoint.name }}:delete"
+    displayName: "{{ endpoint.name | capitalize }} - Delete"
+  - name: "{{ endpoint.name }}:view"
+    displayName: "{{ endpoint.name | capitalize }} - View"
+  - name: "{{ endpoint.name }}:add"
+    displayName: "{{ endpoint.name | capitalize }} - Add"
+  - name: "{{ endpoint.name }}:update"
+    displayName: "{{ endpoint.name | capitalize }} - Update"
+{% endfor %}

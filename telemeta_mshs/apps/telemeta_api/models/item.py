@@ -4,6 +4,8 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
+import os
+import mimetypes
 
 from django.db import models
 from django.core.validators import RegexValidator
@@ -51,6 +53,8 @@ class Item(models.Model):
         blank=True, null=True, on_delete=models.SET_NULL)
     approx_duration = models.DurationField(
         _(u'durée estimée'),  null=True, blank=True)
+    file = models.FileField(_('fichier son'), upload_to='items/%Y/%m/%d',
+                            db_column="filename", max_length=1024)
 
     # Description -----------------------
 
@@ -106,6 +110,44 @@ class Item(models.Model):
         verbose_name_plural = _('items')
         ordering = ['code', 'title']
 
+    @property
+    def public_id(self):
+        if self.code:
+            return self.code
+        return str(self.id)
+
+    @property
+    def mime_type(self):
+        if not self.mimetype:
+            if self.file:
+                if os.path.exists(self.file.path):
+                    self.mimetype = mimetypes.guess_type(self.file.path)[0]
+                    self.save()
+                    return self.mimetype
+                else:
+                    return 'none'
+            else:
+                return 'none'
+        else:
+            return _('none')
+
     def __unicode__(self):
         # FIXIT------------------
         return self.title
+
+    def get_source(self):
+        source = None
+        source_type = None
+        if self.file and os.path.exists(self.file.path):
+            source = self.file.path
+            source_type = 'file'
+        elif self.url:
+            source = self.url
+            source_type = 'url'
+        return source, source_type
+
+    def size(self):
+        if self.file and os.path.exists(self.file.path):
+            return self.file.size
+        else:
+            return 0
