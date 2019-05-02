@@ -241,6 +241,12 @@ class KeycloakMiddleware(object):
                 logger.debug('** exclude path : visualize sound image')
                 return None
 
+            expr = re.compile(
+                "^api/.*$")
+            if expr.match(path):
+                logger.debug('** exclude path : ALL !!!')
+                return None
+
             # Exclude every URL pointing to the API service,
             #   for authenticate
             expr = re.compile("^oidc/(authenticate|callback)/$")
