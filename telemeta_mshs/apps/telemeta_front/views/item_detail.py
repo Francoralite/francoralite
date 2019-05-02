@@ -25,4 +25,12 @@ class ItemDetail(FrancoraliteTemplateView):
         if response.status_code == status.HTTP_200_OK:
             context['item'] = response.json
             context['form'] = ItemForm()
+
+        # Obtain gaphers of the record
+        context['graphers'] = []
+        response = requests.get(
+            FRONT_HOST_URL+'/api/timeside/' + context['id'] + '/visualize/')
+        if response.status_code == status.HTTP_200_OK:
+            context['graphers'].append(response.json)
+
         return context

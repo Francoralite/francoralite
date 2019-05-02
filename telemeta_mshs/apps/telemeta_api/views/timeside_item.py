@@ -5,13 +5,18 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 from rest_framework import viewsets
+from django.http import HttpResponse
+from rest_framework_xml.renderers import XMLRenderer
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from ..models.item import Item
 from ..models.item_analysis import ItemAnalysis
 from ..serializers.timeside_item import TimeSideSerializer
 from .item import ItemViewSet
+import os
 import settings
+from telemeta.cache import TelemetaCache
+from telemeta.views.core import serve_media
 
 
 class TimeSideViewSet(viewsets.ViewSet):
@@ -36,6 +41,7 @@ class TimeSideViewSet(viewsets.ViewSet):
         Exception: description
 
     """
+
     serializer_class = TimeSideSerializer
 
     # using the settings parameters
@@ -52,29 +58,52 @@ class TimeSideViewSet(viewsets.ViewSet):
         'PATCH': 'timeside_item:update',
         'PUT': 'timeside_item:update',
         'DELETE': 'timeside_item:delete'
-    }
+        }
 
-    @detail_route()
+    # Convert a dict to a XML string
+    def to_xml(self, dico):
+        import xml.etree.ElementTree as ET
+        root = ET.Element('telemeta')
+        root.tag = 'data'
+        for key in dico.keys():
+            child = ET.SubElement(root, "data")
+            child.set("id", key)
+            child.set("name", key)
+            child.set("unit", "")
+            child.set("value", dico[key])
+
+        return ET.tostring(root, method="xml")
+
+    @detail_route(url_name="timeside-analyze")
     def analyze(self, request, pk=None):
         data = dict()  # data to return
 
-        try:
-            # Search an item with the right code field
-            item = Item.objects.get(pk=pk)
-            # Extract some data of the item
-            data['duration'] = str(item.approx_duration)
-            analyses = ItemAnalysis.objects.all()  # filter(item_id=item.id)
+        # try:
+        #     # Search an item with the right code field
+        #     item = Item.objects.get(pk=pk)
+        #     # Extract some data of the item
+        #     data['duration'] = str(item.approx_duration)
+        #     analyses = ItemAnalysis.objects.all()  # filter(item_id=item.id)
+        #
+        #     for analysis in analyses:
+        #         data[analysis.name] = analysis.value
+        # except BaseException:
+        #     # Nothing to return
+        #     pass
+        item = Item.objects.get(pk=pk)
+        data['duration'] = str(item.approx_duration)
+        # FIXIT -----------------------------------------
+        xml = self.to_xml(data)
 
-            for analysis in analyses:
-                data[analysis.name] = analysis.value
-        except BaseException:
-            # Nothing to return
-            pass
-
-        return Response(data)
+        # Yeeeeessssssssssssssssss   !!!!!!!!!!!!!!!!!
+        return HttpResponse(xml, content_type="application/xml")
 
     @detail_route()
     def visualize(self, request, pk=None):
+        """
+        Return values to obtain a graph ( sound image, spectrogram)
+        """
+
         # Parameters to be send to this endpoint
         grapher_id = self.request.query_params.get(
             'grapher_id', self.default_grapher_id)
@@ -104,3 +133,24 @@ class TimeSideViewSet(viewsets.ViewSet):
             pass
 
         return Response(data)
+
+    @detail_route(
+        methods=['get'],
+        url_path='soundimage/(?P<grapher>[A-Za-z0-9_.]+)/(?P<width>[0-9]+)x(?P<height>[0-9]+)', # noqa
+        url_name='sound_image')
+    def sound_image(self, request,
+                    pk=None, grapher="", width="", height=""):
+
+        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
+        CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
+        cache_data = TelemetaCache(
+            getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
+        # list_file = os.listdir(cache_data.dir)
+
+        item = Item.objects.get(id=pk)
+        image = str(cache_data.dir) + '/' + item.code \
+            + '.' + grapher + '.' \
+            + width + '_' + height + '.png'
+
+        response = serve_media(image, content_type="image/png")
+        return response

@@ -227,9 +227,18 @@ class KeycloakMiddleware(object):
 
             # Exclude every URL pointing to the API service,
             #   for a detail queryset.
-            expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|)$")
+            expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|analyze/|)$")
             if expr.match(path):
                 logger.debug('** exclude path : display template')
+                return None
+            expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
+            if expr.match(path):
+                logger.debug('** exclude path : download MP3 streaming')
+                return None
+            expr = re.compile(
+                "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*/$")
+            if expr.match(path):
+                logger.debug('** exclude path : visualize sound image')
                 return None
 
             # Exclude every URL pointing to the API service,

@@ -6,6 +6,74 @@
 
 {% block javascript %}
   {{ block.super }}
+  <script type="text/javascript">
+      Timeside.load({
+          container:        "#player",
+          sound:            "/api/item/{{item.id}}/download/{{item.code}}.mp3",
+          soundDuration:    2000,
+          soundImage:       function(width,height){
+                    _src_ = "/api/timeside/{{item.id}}/soundimage/waveform_centroid/"+(width+2)+"x"+height+"/"
+                    return _src_;
+                },
+          imageSize:        {width: 346,height: 130}
+         }
+      );
+      {% if item.file or item.url %}
+        //initializing soundManager default properties
+        soundManager.flashVersion = 9;
+        soundManager.url = "{{ STATIC_URL }}SoundManager2/swf/";
+        soundManager.debugMode = false;
+        soundManager.useHTML5Audio = true;
+        soundManager.preferFlash = false;
+        soundManager.html5PollingInterval = 50;
+
+        //initializing the visualizers to be passed to the player
+        {% block graphers %}
+        var visualizers = {};
+        {% for g in graphers %}
+            visualizers["{{g.grapher}}"] = "/api/timeside/{{g.item}}/visualize/";
+        {% endfor %}
+        visualizers["Waveform spectral"] = "upoi_afe_0000_0000_001.waveform_centroid.346_130";
+        {% endblock graphers %}
+
+        {% if user.is_superuser %}
+             loadPlayer('/api/timeside/{{item.id}}/analyze/',
+              "/api/item/download/{{item.code}}.mp3",
+              undefined, '{{item.id}}', visualizers,
+              CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+              true); //true because superuser
+        {% else %}
+           loadPlayer('/api/timeside/{{item.id}}/analyze/',
+             "/api/item/download/{{item.code}}.mp3",
+             undefined, '{{item.id}}', visualizers,
+             CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+             false); //false because not superuser
+        {% endif %}
+      {% endif %}
+      //playlists:
+      /*
+      {% if user.is_authenticated %}
+          {% for playlist in playlists %}
+          	{% if forloop.counter0 in rang_item_playlist %}
+                  	    playlistUtils.addPlaylist('{{ playlist.playlist.title }}'+ gettrans('(playlisted)'),'{{playlist.playlist.public_id}}');
+          	{% else %}
+          	            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+          	{% endif %}
+          {% endfor %}
+              jQuery(window).ready(function(){
+                  var anchor = jQuery('#_add_to_playlist');
+                  if(anchor.length){
+                      anchor.unbind('click').click(function(){
+                          playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
+                          //playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}');
+                          return false;
+                      });
+                  }
+                  playlistUtils.messageOk();
+              });
+      {% endif %}
+      */
+  </script>
 {% endblock %}
 
 
@@ -86,7 +154,66 @@
   </span>
 </div>
 
+  {% block player %}
+
+  <div id="player_maximized" class="ts-skin-lab">
+     <div id="player_header">
+      <a href="#" class="toggle">{% trans "Réduire"  %}</a>
+      <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+     </div>
+      <div class="wazing"></div>
+  </div>
+  <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
+      <div id="player_minimized" class="ts-skin-lab">
+          <a href="#" class="toggle">{% trans "Agrandir"  %}</a>
+          <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+          <div class="wazing"></div>
+          <div id="player" class="ts-player">
+          </div>
+      </div>
+
+  <!--{% if "video" in mime_type %}
+   {% include "telemeta/inc/mediaitem_video.html" %}
+   <script>
+   (function(){
+       var v = document.getElementsByTagName('video')[0]
+       var t = Timeside;
+       v.addEventListener('timeupdate',function(event){
+           t.player.setSoundPosition(v.currentTime);
+           },false);
+           })();
+   </script>
+  {% endif %}
+-->
+      <!-- </div> -->
+      <div id="tabs_container">
+          <!-- this div will be hidden when everything is fully loaded-->
+          <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+              <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
+          <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
+           do not let space here as it appears in the document!!!!!
+         --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
+      </div>
+
+      <div class="markers" id="markers_div_id"></div>
+
+      <div class="analyzer" id="analyzer_div_id">
+          <table width="100%">
+              <tr class="analyzer-title">
+                  <td>{% trans "Property" %}</td>
+                  <td>{% trans "Value" %}</td>
+                  <td>{% trans "Unit" %}</td>
+              </tr>
+          </table>
+      </div>
+
+      <!--</div>-->
+
+  </div>
+
+  {% endblock player %}
+
 {% else %}
   <p>{% trans "Ce item n'existe pas." %}</p>
 {% endif %}
-{% endblock %}
+{% endblock content %}
