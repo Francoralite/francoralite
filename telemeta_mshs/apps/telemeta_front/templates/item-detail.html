@@ -94,126 +94,232 @@
 {% endblock %}
 
 {% block title_buttons %}
+{% if user.is_authenticated %}
+ <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}">
+   <button type="button" class="btn btn-default">
+     <span class="glyphicon glyphicon-plus"></span>
+     {% trans "Créer un item" %}
+   </button>
+ </a>
   <a href="{% url "item-edit" id=id %}">
   <button type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
   </button>
   </a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-{% if item %}
+{% if not error|length %}
+  {% if item %}
 
-<div class="container_line">
-  <span class="container_data">
-    <span class="libelle"> {{form.collection.label|safe}}</span>
-    <span class="donnee">
-      <a href="{% url "collection-detail" id=item.collection.id %}">
-        {{item.collection.title|safe}}
-      </a>
-    </span>
-  </span>
-  {% field_data form.code_partner.label|safe item.code_partner|safe %}
-  {% field_data form.code.label|safe item.code|upper|safe %}
-  {% field_data form.title.label|safe item.title|safe %}
-  {% field_data form.public_access.label|safe item.public_access|safe %}
-</div>
-
-<div class="container_line">
-  {% field_data form.descriptions.label|safe item.descriptions|markdown|safe %}
-</div>
-
-<div class="block-grey">
-  <h2>{% trans "Période" %}</h2>
-  {% trans "Années d'enregistrement" %}
   <div class="container_line">
     <span class="container_data">
-      <span class="libelle"> {% trans 'Depuis' %}</span>
-      <span class="donnee"></span>
+      <span class="libelle"> {{form.collection.label|safe}}</span>
+      <span class="donnee">
+        <a href="{% url "collection-detail" id=item.collection.id %}">
+          {{item.collection.title|safe}}
+        </a>
+      </span>
+    </span>
+    {% field_data form.code_partner.label|safe item.code_partner|safe %}
+    {% field_data form.code.label|safe item.code|upper|safe %}
+    {% field_data form.title.label|safe item.title|safe %}
+    {% field_data form.public_access.label|safe item.public_access|safe %}
+  </div>
+
+  <div class="container_line">
+    {% field_data form.descriptions.label|safe item.descriptions|markdown|safe %}
+  </div>
+
+  <div class="block-grey">
+    <h2>{% trans "Période" %}</h2>
+    {% trans "Années d'enregistrement" %}
+    <div class="container_line">
+      <span class="container_data">
+        <span class="libelle"> {% trans 'Depuis' %}</span>
+        <span class="donnee"></span>
+      </span>
+      <span class="container_data">
+        <span class="libelle"> {% trans "Jusqu\'à" %}</span>
+        <span class="donnee"></span>
+      </span>
+      <span class="container_data">
+        <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
+        <span class="donnee"></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="block-grey">
+    <h2>{% trans "Personnes" %}</h2>
+    <span class="container_data">
+      <span class="libelle"> {% trans 'Collecteurs' %}</span>
+      <span class="donnee">
+        {% for collector in item.collectors %}
+          {% if not forloop.first %} | {% endif %}
+          <a href="{% url "personne-detail" id=collector.id %}"
+          onclick="window.open(this.href); return false;">
+            {{collector.first_name}} {{collector.last_name}}
+          </a>
+        {% endfor %}
+      </span>
     </span>
     <span class="container_data">
-      <span class="libelle"> {% trans "Jusqu\'à" %}</span>
-      <span class="donnee"></span>
+      <span class="libelle"> {% trans 'Informateurs' %}</span>
+      <span class="donnee">
+        {% for informer in item.informers %}
+          {% if not forloop.first %} | {% endif %}
+          <a href="{% url "personne-detail" id=informer.id %}"
+          onclick="window.open(this.href); return false;">
+            {{informer.first_name}} {{informer.last_name}}
+          </a>
+        {% endfor %}
+      </span>
     </span>
+  </div>
+
+    {% block player %}
+
+    <div id="player_maximized" class="ts-skin-lab">
+       <div id="player_header">
+        <a href="#" class="toggle">{% trans "Réduire"  %}</a>
+        <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+       </div>
+        <div class="wazing"></div>
+    </div>
+    <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
+        <div id="player_minimized" class="ts-skin-lab">
+            <a href="#" class="toggle">{% trans "Agrandir"  %}</a>
+            <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+            <div class="wazing"></div>
+            <div id="player" class="ts-player">
+            </div>
+        </div>
+
+    <!--{% if "video" in mime_type %}
+     {% include "telemeta/inc/mediaitem_video.html" %}
+     <script>
+     (function(){
+         var v = document.getElementsByTagName('video')[0]
+         var t = Timeside;
+         v.addEventListener('timeupdate',function(event){
+             t.player.setSoundPosition(v.currentTime);
+             },false);
+             })();
+     </script>
+    {% endif %}
+  -->
+        <!-- </div> -->
+        <div id="tabs_container">
+            <!-- this div will be hidden when everything is fully loaded-->
+            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+                <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
+            <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
+             do not let space here as it appears in the document!!!!!
+           --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
+        </div>
+
+        <div class="markers" id="markers_div_id"></div>
+
+        <div class="analyzer" id="analyzer_div_id">
+            <table width="100%">
+                <tr class="analyzer-title">
+                    <td>{% trans "Property" %}</td>
+                    <td>{% trans "Value" %}</td>
+                    <td>{% trans "Unit" %}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!--</div>-->
+
+    </div>
+
+    {% endblock player %}
+
+    <div class="block-grey">
+      <h2>{% trans "Localisation" %}</h2>
+      <span class="container_data">
+        <span class="libelle"> {% trans 'Lieux' %}</span>
+        <span class="donnee">
+          {% for location in item.locations %}
+            {% if not forloop.first %} | {% endif %}
+            <a href="{% url "location_gis-detail" id=location.id %}"
+            onclick="window.open(this.href); return false;">
+              {{location.code}}
+            </a>
+          {% endfor %}
+        </span>
+      </span>
+      {% field_data form.location_details.label|safe item.location_details|markdown|safe %}
+      {% field_data form.cultural_area.label|safe item.cultural_area|safe %}
+    </div>
+
     <span class="container_data">
-      <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
-      <span class="donnee"></span>
+      <span class="libelle"> {% trans 'Langues' %}</span>
+      <span class="donnee">
+        {% for language in item.languages %}
+          {% if not forloop.first %} | {% endif %}
+            {{language.name}}
+        {% endfor %}
+      </span>
     </span>
+
+    <span class="container_data">
+      <span class="libelle"> {% trans 'Editeurs' %}</span>
+      <span class="donnee">
+        {% for publisher in item.publishers %}
+          {% if not forloop.first %} | {% endif %}
+            {{publisher.value}}
+        {% endfor %}
+      </span>
+    </span>
+
+
+    <div class="block-grey">
+      <h2>{% trans "Voix/Instruments" %}</h2>
+      <span class="container_data">
+        {% for performance in item.performances %}
+        <div class="container_line">
+            <span class="container_data">
+              <span class="libelle">{% trans 'Nombre' %}</span>
+              <span class="donnee">{{performance.number}}</span>
+            </span>
+            <span class="container_data">
+              <span class="libelle">{% trans 'Instrument' %}</span>
+              <span class="donnee">{{performance.instrument.name}}</span>
+            </span>
+            <span class="container_data">
+              <span class="libelle">{% trans 'Typologie Horn-Bostel' %}</span>
+              <span class="donnee">{{performance.instrument.typology.number}} :
+              {{performance.instrument.typology.name}}</span>
+            </span>
+            <span class="container_data">
+              <span class="libelle">{% trans "Nature de l'émission vocale" %}</span>
+              <span class="donnee">{{performance.emit.name}}</span>
+            </span>
+            <span class="container_data">
+              <span class="libelle">{% trans 'Musiciens' %}</span>
+              {{performers}}
+              <span class="donnee">
+                {% for musician in performance.musicians %}
+                  {% if not forloop.first %} | {% endif %}
+                  {{musician.first_name}}  {{musician.last_name}}
+                {% endfor %}
+              </span>
+            </span>
+
+        </div>
+        {% endfor %}
+      </span>
+    </div>
   </div>
-</div>
 
-<div class="block-grey">
-  <h2>{% trans "Personnes" %}</h2>
-  <span class="container_data">
-    <span class="libelle"> {% trans 'Collecteurs' %}</span>
-    <span class="donnee"></span>
-  </span>
-  <span class="container_data">
-    <span class="libelle"> {% trans 'Informateurs' %}</span>
-    <span class="donnee"></span>
-  </span>
-</div>
-
-  {% block player %}
-
-  <div id="player_maximized" class="ts-skin-lab">
-     <div id="player_header">
-      <a href="#" class="toggle">{% trans "Réduire"  %}</a>
-      <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-     </div>
-      <div class="wazing"></div>
-  </div>
-  <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
-      <div id="player_minimized" class="ts-skin-lab">
-          <a href="#" class="toggle">{% trans "Agrandir"  %}</a>
-          <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-          <div class="wazing"></div>
-          <div id="player" class="ts-player">
-          </div>
-      </div>
-
-  <!--{% if "video" in mime_type %}
-   {% include "telemeta/inc/mediaitem_video.html" %}
-   <script>
-   (function(){
-       var v = document.getElementsByTagName('video')[0]
-       var t = Timeside;
-       v.addEventListener('timeupdate',function(event){
-           t.player.setSoundPosition(v.currentTime);
-           },false);
-           })();
-   </script>
+  {% else %}
+    <p>{% trans "Cet item n'existe pas." %}</p>
+    {% endif %}
+  {% else %}
+    {% display_error error %}
   {% endif %}
--->
-      <!-- </div> -->
-      <div id="tabs_container">
-          <!-- this div will be hidden when everything is fully loaded-->
-          <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
-              <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
-          <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
-           do not let space here as it appears in the document!!!!!
-         --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
-      </div>
-
-      <div class="markers" id="markers_div_id"></div>
-
-      <div class="analyzer" id="analyzer_div_id">
-          <table width="100%">
-              <tr class="analyzer-title">
-                  <td>{% trans "Property" %}</td>
-                  <td>{% trans "Value" %}</td>
-                  <td>{% trans "Unit" %}</td>
-              </tr>
-          </table>
-      </div>
-
-      <!--</div>-->
-
-  </div>
-
-  {% endblock player %}
-
-{% else %}
-  <p>{% trans "Ce item n'existe pas." %}</p>
-{% endif %}
-{% endblock content %}
+  {% endblock %}
