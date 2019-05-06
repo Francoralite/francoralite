@@ -95,7 +95,7 @@
 
 {% block title_buttons %}
 {% if user.is_authenticated %}
- <a href="{% url "item-add" id_institution=collection.collection.fonds.institution.id id_fond=collection.collection.fonds.id id_collection=collection.collection.id id_collection=id %}">
+ <a href="{% url "item-add" id_institution=item.collection.mission.fonds.institution.id id_fond=item.collection.mission.fonds.id id_mission=item.collection.mission.id id_collection=item.collection.id %}">
    <button type="button" class="btn btn-default">
      <span class="glyphicon glyphicon-plus"></span>
      {% trans "Créer un item" %}
