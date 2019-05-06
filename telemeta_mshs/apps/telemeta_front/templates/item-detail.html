@@ -95,7 +95,7 @@
 
 {% block title_buttons %}
 {% if user.is_authenticated %}
- <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}">
+ <a href="{% url "item-add" id_institution=collection.collection.fonds.institution.id id_fond=collection.collection.fonds.id id_collection=collection.collection.id id_collection=id %}">
    <button type="button" class="btn btn-default">
      <span class="glyphicon glyphicon-plus"></span>
      {% trans "Créer un item" %}
@@ -125,7 +125,6 @@
     {% field_data form.code_partner.label|safe item.code_partner|safe %}
     {% field_data form.code.label|safe item.code|upper|safe %}
     {% field_data form.title.label|safe item.title|safe %}
-    {% field_data form.public_access.label|safe item.public_access|safe %}
   </div>
 
   <div class="container_line">

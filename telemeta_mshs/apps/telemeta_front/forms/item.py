@@ -62,7 +62,8 @@ class ItemForm(forms.Form):
             label=_(u'Rédacteur(s) fiche ou registre'), required=False)
     code_partner = forms.CharField(
             label=_('Cote dans l\'institution partenaire'), required=False)
-
+    code = forms.CharField(
+            label=_('Cote'), required=False)
     booklet_description = forms.CharField(
             label=_(u'Documentation associée'),
             widget=forms.Textarea, required=False)
@@ -80,43 +81,29 @@ class ItemForm(forms.Form):
     description = forms.CharField(label=_(u'Description'),
                                   widget=forms.Textarea, required=False)
 
+    def __init__(self, *args, **kwargs):
+        super(ItemForm, self).__init__(*args, **kwargs)
 
-def __init__(self, *args, **kwargs):
-    super(ItemForm, self).__init__(*args, **kwargs)
+        self.fields['recording_context'] = forms.ChoiceField(
+            label=_(u'Contexte d\'enregistrement'),
+            choices=Core.get_choices(
+                entity="recordingcontext", label_field="value"),
+            required=True)
 
-    PUBLIC_ACCESS_CHOICES = (
-        ('none', _(u'Aucun')),
-        ('metadata', _(u'Meta-données')),
-        ('partial', _(u'Partiel')),
-        ('full', _(u'Complet'))
-        )
+        self.fields['media_type'] = forms.ChoiceField(
+            label=_(u'Type de média'),
+            choices=Core.get_choices(
+                entity="mediatype", label_field="value"),
+            required=True)
 
-    self.fields['public_access'] = forms.ChoiceField(
-        label=_(u'Type d\'accès'),
-        choices=PUBLIC_ACCESS_CHOICES,
-        initial="metadata",
-        required=True)
+        self.fields['collection'] = forms.ChoiceField(
+            label=_(u'Collection'),
+            choices=Core.get_choices(
+                entity="collection", label_field="title"),
+            required=True)
 
-    self.fields['recording_context'] = forms.ChoiceField(
-        label=_(u'Contexte d\'enregistrement'),
-        choices=Core.get_choices(
-            entity="recordingcontext", label_field="value"),
-        required=True)
-
-    self.fields['media_type'] = forms.ChoiceField(
-        label=_(u'Type de média'),
-        choices=Core.get_choices(
-            entity="mediatype", label_field="value"),
-        required=True)
-
-    self.fields['mission'] = forms.ChoiceField(
-        label=_(u'Mission'),
-        choices=Core.get_choices(
-            entity="mission", label_field="title"),
-        required=True)
-
-    self.fields['legal_rights'] = forms.ChoiceField(
-        label=_(u'Droits d\'utilisation'),
-        choices=Core.get_choices(
-            entity="legalrights", label_field="value"),
-        required=True)
+        self.fields['legal_rights'] = forms.ChoiceField(
+            label=_(u'Droits d\'utilisation'),
+            choices=Core.get_choices(
+                entity="legalrights", label_field="value"),
+            required=True)
