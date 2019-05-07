@@ -6,89 +6,75 @@
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from bootstrap_datepicker.widgets import DatePicker
 from .core import Core
 
 
 class ItemForm(forms.Form):
+    # General ----------------------------------------------------
+
     title = forms.CharField(label=_(u'Titre'), max_length=255, required=True)
-    alt_title = forms.CharField(label=_(u'Titre original / Traduction'),
-                                max_length=255, required=False)
-
-    record_from_year = forms.DateField(
-        label=_(u'Date d\'enregistrement (depuis)'),
-        required=False,
-        widget=DatePicker(
-              options={
-                    "format": "yyyy-mm-dd",
-                    "language": "fr",
-                    "autoclose": True
-                }
-            )
-        )
-    record_to_year = forms.DateField(
-        label=_(u'Date d\'enregistrement (jusqu\'à)'),
-        required=False,
-        widget=DatePicker(
-              options={
-                    "format": "yyyy-mm-dd",
-                    "language": "fr",
-                    "autoclose": True
-                }
-            )
-        )
-
-    year_published = forms.IntegerField(
-            label=_(u'Année de parution'),
-            widget=forms.TextInput(
-                attrs={
-                     'data-mask': '9999',
-                     'style': 'text-transform:uppercase;'
-                 }
-            ), required=False)
-
-    location_details = forms.CharField(
-            label=_(u'Précisions sur le lieu'),
-            widget=forms.Textarea, required=False)
-    cultural_area = forms.CharField(
-            label=_(u'Aire culturelle'), required=False)
-    language = forms.CharField(
-            label=_(u'Langue(s)'), required=False)
-    publisher_item = forms.CharField(
-            label=_(u'éditeur item'), required=False)
-    booklet_author = forms.CharField(
-            label=_(u'Auteur de la notice éditée'), required=False)
-    metadata_author = forms.CharField(
-            label=_(u'Rédacteur(s) fiche ou registre'), required=False)
-    code_partner = forms.CharField(
-            label=_('Cote dans l\'institution partenaire'), required=False)
-    code = forms.CharField(
-            label=_('Cote'), required=False)
-    booklet_description = forms.CharField(
-            label=_(u'Documentation associée'),
-            widget=forms.Textarea, required=False)
-    physical_items_num = forms.IntegerField(
-            label=_(u'Nombre de composants (support/pièce)'), required=False)
-    auto_period_access = forms.BooleanField(
-            label=_(u'Accès automatique après la date glissante'),
-            required=False)
-    comment = forms.CharField(
-            label=_(u'Commentaires'),
-            widget=forms.Textarea, required=False)
-
-    descriptions = forms.CharField(label=_(u'Description'),
-                                   widget=forms.Textarea, required=False)
+    alt_title = forms.CharField(
+        label=_(u'Autre(s) titre(s)'),
+        max_length=255, required=False)
+    trans_title = forms.CharField(
+        label=_(u'Traduction(s) titre(s)'),
+        max_length=255, required=False)
     description = forms.CharField(label=_(u'Description'),
                                   widget=forms.Textarea, required=False)
+    #   Données d'archivage
+    code = forms.CharField(
+        label=_('Cote'),
+        widget=forms.TextInput(
+            attrs={
+                 'style': 'text-transform:uppercase;',
+                 'placeholder': 'format : aaaa_aaa_9999_9999_999',
+                 'pattern': '^[A-Za-z]{4}_[A-Za-z]{3}_[A-Za-z0-9]{4}_[0-9]{4}_[0-9]{3}$',  # noqa
+                 'title': _(u'Cote; format : aaaa_aaa_9999_9999_999'),  # noqa
+             }
+        ),
+        max_length=255,
+        required=True)
+    code_partner = forms.CharField(
+        label=_('Cote de l\'item dans l\'institution partenaire'),
+        required=False)
+    auto_period_access = forms.BooleanField(
+        label=_(u'Accès automatique après la date glissante'),
+        required=False)
+    remarks = forms.CharField(
+        label=_(u'Remarques concernant les données d\'archivage'),
+        widget=forms.Textarea, required=False)
+
+    # Description -----------------------------------------------
+    timbre = forms.CharField(
+        label=_(u'Timbre de l\'air'), required=False)
+    timbre_ref = forms.CharField(
+        label=_(u'Timbre(s) référencé(s)'), required=False)
+    melody = forms.CharField(
+            label=_(u'Mélodie (transcription alphabétique)'),
+            widget=forms.Textarea, required=False)
+    domain = forms.CharField(
+        label=_(u'domaine'), required=False)
+
+    # Description / deposit
+    deposit_digest = forms.CharField(label=_(u'Résumé'), required=False)
+    deposit_names = forms.CharField(
+        label=_(u'Nom(s) propre(s) cité(s)'), required=False)
+    deposit_places = forms.CharField(
+        label=_(u'Lieu(x) cité(s)'), required=False)
+    deposit_periods = forms.CharField(
+        label=_(u'Période(s) citée(s)'), required=False)
+
+    # Text ------------------------------
+    text = forms.CharField(label=_(u'Texte'), required=False)
+    incipit = forms.CharField(label=_(u'Incipit'), required=False)
+    refrain = forms.CharField(label=_(u'Refrain'), required=False)
+    jingle = forms.CharField(label=_(u'Ritournelle du conte'), required=False)
+    # Références
+
+    # Voix-instruments -----------------------------
 
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
-
-        self.fields['recording_context'] = forms.ChoiceField(
-            label=_(u'Contexte d\'enregistrement'),
-            choices=Core.get_choices(
-                entity="recordingcontext", label_field="value"),
-            required=True)
 
         self.fields['media_type'] = forms.ChoiceField(
             label=_(u'Type de média'),
@@ -100,10 +86,4 @@ class ItemForm(forms.Form):
             label=_(u'Collection'),
             choices=Core.get_choices(
                 entity="collection", label_field="title"),
-            required=True)
-
-        self.fields['legal_rights'] = forms.ChoiceField(
-            label=_(u'Droits d\'utilisation'),
-            choices=Core.get_choices(
-                entity="legalrights", label_field="value"),
             required=True)
