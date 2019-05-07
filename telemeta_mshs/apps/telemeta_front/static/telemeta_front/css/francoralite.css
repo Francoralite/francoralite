@@ -1333,35 +1333,35 @@ a:focus,div:focus{
 
 /* menu reconstruit par Laurence */
 
-.menu {
+#menu .menu {
 	font-weight: bold;
 	font-size: 1em;
 	z-index:2;
 }
 
-.menu a, .menu a:hover, .menu a:active {
+#menu .menu a, .menu a:hover, .menu a:active {
 	text-decoration: none !important;
 	color: white;
 	background: #6a0307;
 }
 
-.menu > li {
+#menu .menu > li {
 	margin: 3px 3px auto;
 	border-bottom:5px #6a0307 solid;
 	border-radius: 0;
 }
 
-.menu > li > a {
+#menu .menu > li > a {
 	border-radius: 0;
 }
 
-.menu > li:hover > a, .menu > li.active > a{
+#menu .menu > li:hover > a, .menu > li.active > a{
 	border-radius: 10px 10px 0 0;
 	background: white;
 	color: #6a0307;
 }
 
-.nav ul  {
+#menu .nav ul  {
 	margin: 0px;
 	padding: 0px;
 	background: #6a0307;
@@ -1369,7 +1369,7 @@ a:focus,div:focus{
 	list-style: none;
 }
 
-.nav a, .nav a:visited  {
+#menu .nav a, .nav a:visited  {
 	padding: 1em;
 	display: block;
 	text-align: center;
@@ -1377,23 +1377,23 @@ a:focus,div:focus{
 	color: white;
 }
 
-.nav a:hover {
+#menu .nav a:hover {
 	color: #6a0307;
 	background: white;
 	text-decoration: none !important;
 }
 
-.nav .menu {
+#menu .nav .menu {
 	display: flex;
 	flex-direction : row;
 	padding-left: 3em;
 }
 
-.has-children {
+#menu .has-children {
 	position: relative;
 }
 
-.has-children .has-children > a::after {
+#menu .has-children .has-children > a::after {
 	/*background:url(../images/next.png) no-repeat;*/
 	content: " ▶";
 	color: white;
@@ -1401,17 +1401,17 @@ a:focus,div:focus{
 	right: 10px;
 }
 
-.has-children .has-children:hover > a::after {
+#menu .has-children .has-children:hover > a::after {
 	color: #6a0307;
 }
 
-.has-children:hover > .sous-menu {
+#menu .has-children:hover > .sous-menu {
 	display: flex;
 	color: #6a0307;
 	background: white;
 }
 
-.sous-menu {
+#menu .sous-menu {
 	display: none;
 	flex-flow: column wrap;
 	min-width: 200px;
@@ -1422,55 +1422,55 @@ a:focus,div:focus{
 	border: 1px solid #6a0307;
 }
 
-.sous-menu .sous-menu > li:hover a, .sous-menu li:hover > a {
+#menu .sous-menu .sous-menu > li:hover a, .sous-menu li:hover > a {
 	background: white;
 	color:  #6a0307;
 	z-index:2;
 }
 
-.sous-menu.active { /* Javascript */
+#menu .sous-menu.active {
 	display: flex;
 }
 
-.sous-menu a {
+#menu .sous-menu a {
 	text-align: left;
 	color: white;
 	background: #6a0307;
 }
 
-.sous-menu .sous-menu {
+#menu .sous-menu .sous-menu {
 	top: 0px;
 	left: 100%;
 }
 
-.menu .darkblue  { border-bottom-color: #0f3179; }
-.menu .blue { border-bottom-color:  #4f628a; }
-.menu .green { border-bottom-color:  #92b220; }
-.menu .yellow { border-bottom-color:  #f3ad17; }
-.menu .orange { border-bottom-color:  #e65911; }
-.menu .darkgreen { border-bottom-color:  #006a12; }
-.menu .black { border-bottom-color:  #000000; }
-.menu .red { border-bottom-color:  #dd0000; }
-.menu .violet { border-bottom-color:  #a00020; }
-.menu .origin { border-bottom-color: #6a0307; }
+#menu .menu .darkblue  { border-bottom-color: #0f3179; }
+#menu .menu .blue { border-bottom-color:  #4f628a; }
+#menu .menu .green { border-bottom-color:  #92b220; }
+#menu .menu .yellow { border-bottom-color:  #f3ad17; }
+#menu .menu .orange { border-bottom-color:  #e65911; }
+#menu .menu .darkgreen { border-bottom-color:  #006a12; }
+#menu .menu .black { border-bottom-color:  #000000; }
+#menu .menu .red { border-bottom-color:  #dd0000; }
+#menu .menu .violet { border-bottom-color:  #a00020; }
+#menu .menu .origin { border-bottom-color: #6a0307; }
 
 
 
 @media screen and (max-width: 820px) {
-	.nav .menu {
+	#menu .nav .menu {
 		flex-flow: column wrap;
 		padding-left: 0;
 	}
 
-	.sous-menu a {
+	#menu .sous-menu a {
 		text-align: center;
 	}
 
-	.sous-menu {
+	#menu .sous-menu {
 		position: static;
 	}
 
-	.menu > li:hover > a, .menu > li.active > a{
+	#menu .menu > li:hover > a, .menu > li.active > a{
 		border-radius: 0;
 	}
 }
