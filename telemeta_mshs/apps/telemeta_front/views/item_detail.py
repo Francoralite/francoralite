@@ -11,6 +11,8 @@ import requests
 
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
+from telemeta_front.forms.collection import CollectionForm
+import telemeta_front.tools as tools
 
 
 class ItemDetail(FrancoraliteTemplateView):
@@ -23,8 +25,14 @@ class ItemDetail(FrancoraliteTemplateView):
         response = requests.get(
             FRONT_HOST_URL+'/api/item/'+context['id'])
         if response.status_code == status.HTTP_200_OK:
-            context['item'] = response.json
+            data = response.json()
+            context['item'] = data
             context['form'] = ItemForm()
+            # Obtain values of the record collection
+            context['collection'] = tools.request_api(
+                '/api/collection/' +
+                str(data['collection']['id']) + '/complete/')
+            context['form_collection'] = CollectionForm()
 
         # Obtain gaphers of the record
         context['graphers'] = []

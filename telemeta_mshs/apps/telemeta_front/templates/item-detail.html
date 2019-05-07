@@ -142,38 +142,19 @@
             </a>
           </span>
         </span>
-        {% field_data form.code_partner.label|safe item.code_partner|safe %}
-        {% field_data form.code.label|safe item.code|upper|safe %}
         {% field_data form.title.label|safe item.title|safe %}
+        {% field_data form.alt_title.label|safe item.alt_title|safe %}
+        {% field_data form.trans_title.label|safe item.trans_title|safe %}
       </div>
 
       <div class="container_line">
-        {% field_data form.descriptions.label|safe item.descriptions|markdown|safe %}
-      </div>
-
-      <div class="block-grey">
-        <h2>{% trans "Période" %}</h2>
-        {% trans "Années d'enregistrement" %}
-        <div class="container_line">
-          <span class="container_data">
-            <span class="libelle"> {% trans 'Depuis' %}</span>
-            <span class="donnee"></span>
-          </span>
-          <span class="container_data">
-            <span class="libelle"> {% trans "Jusqu\'à" %}</span>
-            <span class="donnee"></span>
-          </span>
-          <span class="container_data">
-            <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
-            <span class="donnee"></span>
-          </span>
-        </div>
+        {% field_data form.description.label|safe item.description|markdown|safe %}
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
         <span class="container_data">
-          <span class="libelle"> {% trans 'Collecteurs' %}</span>
+          <span class="libelle"> {% trans 'Enquêteurs' %}</span>
           <span class="donnee">
             {% for collector in item.collectors %}
               {% if not forloop.first %} | {% endif %}
@@ -197,6 +178,41 @@
           </span>
         </span>
       </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Données d'archivage" %}</h2>
+        {% field_data form.code.label|safe item.code|upper|safe %}
+        {% field_data form.code_partner.label|safe item.code_partner|safe %}
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Indications géographiques et culturelles" %}</h2>
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Lieux' %}</span>
+          <span class="donnee">
+            {% for location in collection.locations %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "location_gis-detail" id=location.id %}"
+              onclick="window.open(this.href); return false;">
+                {{location.code}}
+              </a>
+            {% endfor %}
+          </span>
+        </span>
+        {% field_data form_collection.location_details.label|safe item.collection.location_details|markdown|safe %}
+        <span class="container_data">
+          <span class="libelle"> {% trans 'Langues' %}</span>
+          <span class="donnee">
+            {% for language in collection.languages %}
+              {% if not forloop.first %} | {% endif %}
+                {{language.name}}
+            {% endfor %}
+          </span>
+        </span>
+        {% field_data form_collection.recording_context.label|safe item.collection.recording_context.value|safe %}
+      </div>
+
+
 
         {% block player %}
 
@@ -257,57 +273,17 @@
 
         {% endblock player %}
 
-        <div class="block-grey">
-          <h2>{% trans "Localisation" %}</h2>
-          <span class="container_data">
-            <span class="libelle"> {% trans 'Lieux' %}</span>
-            <span class="donnee">
-              {% for location in item.locations %}
-                {% if not forloop.first %} | {% endif %}
-                <a href="{% url "location_gis-detail" id=location.id %}"
-                onclick="window.open(this.href); return false;">
-                  {{location.code}}
-                </a>
-              {% endfor %}
-            </span>
-          </span>
-          {% field_data form.location_details.label|safe item.location_details|markdown|safe %}
-          {% field_data form.cultural_area.label|safe item.cultural_area|safe %}
-        </div>
+    </div>
 
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Langues' %}</span>
-          <span class="donnee">
-            {% for language in item.languages %}
-              {% if not forloop.first %} | {% endif %}
-                {{language.name}}
-            {% endfor %}
-          </span>
-        </span>
-
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Editeurs' %}</span>
-          <span class="donnee">
-            {% for publisher in item.publishers %}
-              {% if not forloop.first %} | {% endif %}
-                {{publisher.value}}
-            {% endfor %}
-          </span>
-        </span>
-
-
-
-  </div>
-
-    <!-- Tab Description ----------------->
+    <!-- Tab Description --------------------------------------->
     <div class="tab-pane" id="tab_desc">
     </div>
 
-    <!-- Tab Text -------------------->
+    <!-- Tab Text ---------------------------------------------->
     <div class="tab-pane" id="tab_text">
     </div>
 
-    <!-- Tab Vox/Instruments --------------->
+    <!-- Tab Vox/Instruments ----------------------------------->
     <div class="tab-pane" id="tab_vox">
       <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>
