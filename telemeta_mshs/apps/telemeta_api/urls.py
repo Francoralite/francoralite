@@ -20,6 +20,7 @@ from .views import (
     item,
     item_collector,
     item_informer,
+    item_author,
     item_domain_song,
     item_domain_music,
     item_domain_vocal,
@@ -166,6 +167,8 @@ Item_router.register(
     r'collector', item_collector.ItemCollectorViewSet)
 Item_router.register(
     r'informer', item_informer.ItemInformerViewSet)
+Item_router.register(
+    r'informer', item_author.ItemAuthorViewSet)
 Item_router.register(
     r'domain_song', item_domain_song.ItemDomainSongViewSet)
 Item_router.register(
