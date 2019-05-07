@@ -127,6 +127,9 @@
      <li class="nav-item">
        <a href="#tab_vox" role="tab" data-toggle="tab">{% trans "Voix/Instruments" %}</a>
      </li>
+     <li class="nav-item">
+       <a href="#tab_mark" role="tab" data-toggle="tab">{% trans "Marqueurs" %}</a>
+     </li>
   </ul>
 
   <div class="tab-content">
@@ -212,67 +215,6 @@
         {% field_data form_collection.recording_context.label|safe item.collection.recording_context.value|safe %}
       </div>
 
-
-
-        {% block player %}
-
-        <div id="player_maximized" class="ts-skin-lab">
-           <div id="player_header">
-            <a href="#" class="toggle">{% trans "Réduire"  %}</a>
-            <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-           </div>
-            <div class="wazing"></div>
-        </div>
-        <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
-            <div id="player_minimized" class="ts-skin-lab">
-                <a href="#" class="toggle">{% trans "Agrandir"  %}</a>
-                <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-                <div class="wazing"></div>
-                <div id="player" class="ts-player">
-                </div>
-            </div>
-
-        <!--{% if "video" in mime_type %}
-         {% include "telemeta/inc/mediaitem_video.html" %}
-         <script>
-         (function(){
-             var v = document.getElementsByTagName('video')[0]
-             var t = Timeside;
-             v.addEventListener('timeupdate',function(event){
-                 t.player.setSoundPosition(v.currentTime);
-                 },false);
-                 })();
-         </script>
-        {% endif %}
-      -->
-            <!-- </div> -->
-            <div id="tabs_container">
-                <!-- this div will be hidden when everything is fully loaded-->
-                <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
-                    <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
-                <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
-                 do not let space here as it appears in the document!!!!!
-               --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
-            </div>
-
-            <div class="markers" id="markers_div_id"></div>
-
-            <div class="analyzer" id="analyzer_div_id">
-                <table width="100%">
-                    <tr class="analyzer-title">
-                        <td>{% trans "Property" %}</td>
-                        <td>{% trans "Value" %}</td>
-                        <td>{% trans "Unit" %}</td>
-                    </tr>
-                </table>
-            </div>
-
-            <!--</div>-->
-
-        </div>
-
-        {% endblock player %}
-
     </div>
 
     <!-- Tab Description --------------------------------------->
@@ -324,6 +266,67 @@
       </div>
     </div>
 
+    <!-- Tab Player/Markers ------------------------------------>
+    <div class="tab-pane" id="tab_mark">
+      {% block player %}
+
+      <div id="player_maximized" class="ts-skin-lab">
+         <div id="player_header">
+          <a href="#" class="toggle">{% trans "Réduire"  %}</a>
+          <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+         </div>
+          <div class="wazing"></div>
+      </div>
+      <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
+          <div id="player_minimized" class="ts-skin-lab">
+              <a href="#" class="toggle">{% trans "Agrandir"  %}</a>
+              <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+              <div class="wazing"></div>
+              <div id="player" class="ts-player">
+              </div>
+          </div>
+
+      <!--{% if "video" in mime_type %}
+       {% include "telemeta/inc/mediaitem_video.html" %}
+       <script>
+       (function(){
+           var v = document.getElementsByTagName('video')[0]
+           var t = Timeside;
+           v.addEventListener('timeupdate',function(event){
+               t.player.setSoundPosition(v.currentTime);
+               },false);
+               })();
+       </script>
+      {% endif %}
+    -->
+          <!-- </div> -->
+          <div id="tabs_container">
+              <!-- this div will be hidden when everything is fully loaded-->
+              <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+                  <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
+              <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
+               do not let space here as it appears in the document!!!!!
+             --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
+          </div>
+
+          <div class="markers" id="markers_div_id"></div>
+
+          <div class="analyzer" id="analyzer_div_id">
+              <table width="100%">
+                  <tr class="analyzer-title">
+                      <td>{% trans "Property" %}</td>
+                      <td>{% trans "Value" %}</td>
+                      <td>{% trans "Unit" %}</td>
+                  </tr>
+              </table>
+          </div>
+
+          <!--</div>-->
+
+      </div>
+
+      {% endblock player %}
+    </div>
   </div>
 
   {% else %}
