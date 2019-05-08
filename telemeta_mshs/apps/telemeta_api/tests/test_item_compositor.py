@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Item-Authors tests
+Institution tests
 """
 
 import factory
@@ -19,27 +19,29 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.item_author import ItemAuthorFactory
-from ..models.item_author import ItemAuthor
+from .factories.item_compositor import ItemCompositorFactory
+from ..models.item_compositor import ItemCompositor
+# Models related
 from ..models.authority import Authority
 from ..models.item import Item
 
-# Expected structure for Item_author objects
-ITEMAUTHOR_STRUCTURE = [
+# Expected structure for Item_compositor objects
+
+ITEMCOMPOSITOR_STRUCTURE = [
     ('id', int),
     ('item', dict),
-    ('author', dict),
+    ('compositor', dict),
 ]
 
 # Expected keys for MODEL objects
-ITEMAUTHOR_FIELDS = sorted(
-    [item[0] for item in ITEMAUTHOR_STRUCTURE])
+ITEMCOMPOSITOR_FIELDS = sorted(
+    [item[0] for item in ITEMCOMPOSITOR_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestItemAuthorList(APITestCase):
+class TestItemCompositorList(APITestCase):
     """
-    This class manage all ItemAuthor tests
+    This class manage all ItemCompositor tests
     """
 
     def setUp(self):
@@ -50,19 +52,19 @@ class TestItemAuthorList(APITestCase):
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        ItemAuthorFactory.create_batch(1)
+        ItemCompositorFactory.create_batch(1)
 
-    def test_can_get_item_author_list(self):
+    def test_can_get_item_compositor_list(self):
         """
-        Ensure ItemAuthor objects exists
+        Ensure ItemCompositor objects exists
         """
         # kwargs for the related tables
-        url = reverse('itemauthor-list', kwargs={
+        url = reverse('itemcompositor-list', kwargs={
             'item_pk': 1})
 
         # ORM side
-        item_authors = ItemAuthor.objects.all()
-        self.assertEqual(len(item_authors), 1)
+        item_compositors = ItemCompositor.objects.all()
+        self.assertEqual(len(item_compositors), 1)
 
         # API side
         response = self.client.get(url)
@@ -71,66 +73,69 @@ class TestItemAuthorList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
-    @parameterized.expand(ITEMAUTHOR_STRUCTURE)
-    def test_has_valid_item_author_values(self, attribute, attribute_type):
+    @parameterized.expand(ITEMCOMPOSITOR_STRUCTURE)
+    def test_has_valid_item_compositor_values(self, attribute, attribute_type):
         """
-        Ensure ItemAuthor objects have valid values
+        Ensure ItemCompositor objects have valid values
         """
 
         # kwargs for the related tables
-        url = reverse('itemauthor-list', kwargs={
+        url = reverse('itemcompositor-list', kwargs={
             'item_pk': 1})
         response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        for item_author in response.data:
+        for item_compositor in response.data:
             # Check only expected attributes returned
             self.assertEqual(
-                sorted(item_author.keys()), ITEMAUTHOR_FIELDS)
+                sorted(item_compositor.keys()), ITEMCOMPOSITOR_FIELDS)
 
             # Ensure type of each attribute
             if attribute_type == str:
                 if sys.version_info.major == 2:
-                    self.assertIsInstance(item_author[attribute], basestring)
+                    self.assertIsInstance(
+                        item_compositor[attribute], basestring)
                 else:
-                    self.assertIsInstance(item_author[attribute], str)
+                    self.assertIsInstance(
+                        item_compositor[attribute], str)
             else:
-                self.assertIsInstance(item_author[attribute], attribute_type)
-            self.assertIsNot(item_author[attribute], '')
+                self.assertIsInstance(
+                    item_compositor[attribute], attribute_type)
+            self.assertIsNot(item_compositor[attribute], '')
 
-    def test_get_an_item_author(self):
+    def test_get_an_item_compositor(self):
         """
-        Ensure we can get an ItemAuthor objects
+        Ensure we can get an ItemCompositor objects
         using an existing id
         """
 
-        item = ItemAuthor.objects.first()
+        item = ItemCompositor.objects.first()
 
-        url = reverse('itemauthor-detail', kwargs={
+        url = reverse('itemcompositor-detail', kwargs={
                       'item_pk': item.item.id,
-                      'pk': item.author.id})
+                      'pk': item.compositor.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
-    def test_create_an_item_author(self):
+    def test_create_an_item_compositor(self):
         """
-        Ensure we can create an ItemAuthor object
+        Ensure we can create an ItemCompositor object
         """
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=ItemAuthorFactory)
+            FACTORY_CLASS=ItemCompositorFactory)
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
         data['item'] = Item.objects.first().id
-        data['author'] = Authority.objects.first().id
+        data['compositor'] = Authority.objects.first().id
 
-        url = reverse('itemauthor-list', kwargs={
+        url = reverse('itemcompositor-list', kwargs={
             'item_pk': 1})
         response = self.client.post(url, data, format='json')
 
@@ -139,40 +144,40 @@ class TestItemAuthorList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            ITEMAUTHOR_FIELDS)
+            ITEMCOMPOSITOR_FIELDS)
 
         url = reverse(
-            'itemauthor-detail',
+            'itemcompositor-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['author']['id']}
+                    'pk': response.data['compositor']['id']}
         )
         response_get = self.client.get(url)
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-    def test_delete_an_item_author(self):
+    def test_delete_an_item_compositor(self):
         """
-        Ensure we can delete an ItemAuthor object
+        Ensure we can delete an ItemCompositor object
         """
 
-        item = ItemAuthor.objects.first()
+        item = ItemCompositor.objects.first()
 
         # Delete this object
         url = reverse(
-            'itemauthor-detail', kwargs={
+            'itemcompositor-detail', kwargs={
                 'item_pk': item.item.id,
-                'pk': item.author.id}
+                'pk': item.compositor.id}
         )
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        # Ensure ItemAuthor removed
+        # Ensure ItemCompositor removed
         url_get = reverse(
-            'itemauthor-detail', kwargs={
+            'itemcompositor-detail', kwargs={
                 'item_pk': item.item.id,
-                'pk': item.author.id}
+                'pk': item.compositor.id}
         )
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)

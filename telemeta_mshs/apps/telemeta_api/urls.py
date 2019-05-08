@@ -21,6 +21,7 @@ from .views import (
     item_collector,
     item_informer,
     item_author,
+    item_compositor,
     item_domain_song,
     item_domain_music,
     item_domain_vocal,
@@ -168,7 +169,9 @@ Item_router.register(
 Item_router.register(
     r'informer', item_informer.ItemInformerViewSet)
 Item_router.register(
-    r'informer', item_author.ItemAuthorViewSet)
+    r'author', item_author.ItemAuthorViewSet)
+Item_router.register(
+    r'compositor', item_compositor.ItemCompositorViewSet)
 Item_router.register(
     r'domain_song', item_domain_song.ItemDomainSongViewSet)
 Item_router.register(

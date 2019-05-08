@@ -14,6 +14,7 @@ from .item import Item
 from .item_collector import ItemCollector
 from .item_informer import ItemInformer
 from .item_author import ItemAuthor
+from .item_compositor import ItemCompositor
 from .item_domain_song import ItemDomainSong
 from .item_domain_music import ItemDomainMusic
 from .item_domain_vocal import ItemDomainVocal
