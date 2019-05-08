@@ -105,8 +105,6 @@ services:
       - 'phpmyadmin'
     networks:
       - 'services'
-    ports:
-      - '80:80'
     volumes:
       - './etc/nginx.conf:/etc/nginx/conf.d/default.conf'
     volumes_from:
@@ -118,7 +116,7 @@ services:
       - 'services'
       - 'francoralite'
     environment:
-      - ABSOLUTE_URI=http://localhost:8000/phpmyadmin/
+      - ABSOLUTE_URI=http://phpmyadmin.francoralite.localhost:50000/phpmyadmin/
 
   keycloak:
     image: "${KEYCLOAK_IMAGE}:${KEYCLOAK_VERSION}"
@@ -135,8 +133,6 @@ services:
       - 'services'
     depends_on:
       - 'keycloak_db'
-    ports:
-      - '8080:8080'
 
   keycloak_db:
     image: "${POSTGRES_IMAGE}:${POSTGRES_VERSION}"

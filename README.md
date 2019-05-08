@@ -50,3 +50,12 @@ Now, we can launch tests
 ```
 docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps python manage.py test --settings=telemeta_mshs.settings.testing -v 3'
 ```
+
+## URLs
+
+With Traefik as reverse proxy, you can use explicit fqdn instead IP addresses.
+
+* [Root app](http://nginx.francoralite.localhost:50000)
+* [Keycloak](http://keycloak.francoralite.localhost:50000)
+
+During development, all services are accessible behind the reverse proxy but this must be change for the production deployment.
