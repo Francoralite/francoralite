@@ -129,8 +129,13 @@ services:
     env_file:
       - './francoralite-env/keycloak.env'
     networks:
-      - 'keycloak'
-      - 'services'
+      keycloak:
+        aliases:
+          - 'keycloak'
+      services:
+        aliases:
+          - 'keycloak'
+          - 'keycloak.francoralite.localhost'
     depends_on:
       - 'keycloak_db'
 
