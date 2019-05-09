@@ -156,30 +156,8 @@
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Enquêteurs' %}</span>
-          <span class="donnee">
-            {% for collector in item.collectors %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "personne-detail" id=collector.id %}"
-              onclick="window.open(this.href); return false;">
-                {{collector.first_name}} {{collector.last_name}}
-              </a>
-            {% endfor %}
-          </span>
-        </span>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Informateurs' %}</span>
-          <span class="donnee">
-            {% for informer in item.informers %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "personne-detail" id=informer.id %}"
-              onclick="window.open(this.href); return false;">
-                {{informer.first_name}} {{informer.last_name}}
-              </a>
-            {% endfor %}
-          </span>
-        </span>
+        {% related_list libelle='Enquêteurs' items=item.collectors url_detail="personne-detail" field="first_name" field2="last_name"%}
+        {% related_list libelle='Informateurs' items=item.informers url_detail="personne-detail" field="first_name" field2="last_name"%}
       </div>
 
       <div class="block-grey">
@@ -190,28 +168,9 @@
 
       <div class="block-grey">
         <h2>{% trans "Indications géographiques et culturelles" %}</h2>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Lieux' %}</span>
-          <span class="donnee">
-            {% for location in collection.locations %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "location_gis-detail" id=location.id %}"
-              onclick="window.open(this.href); return false;">
-                {{location.code}}
-              </a>
-            {% endfor %}
-          </span>
-        </span>
+        {% related_list libelle='Lieux' items=collection.locations url_detail="location_gis-detail" field="code" %}
         {% field_data form_collection.location_details.label|safe item.collection.location_details|markdown|safe %}
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Langues' %}</span>
-          <span class="donnee">
-            {% for language in collection.languages %}
-              {% if not forloop.first %} | {% endif %}
-                {{language.name}}
-            {% endfor %}
-          </span>
-        </span>
+        {% related_list libelle='Langues' items=collection.languages field="name" %}
         {% field_data form_collection.recording_context.label|safe item.collection.recording_context.value|safe %}
       </div>
 

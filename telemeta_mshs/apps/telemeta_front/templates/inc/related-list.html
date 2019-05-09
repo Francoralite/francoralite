@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load data_display %}
+
+<span class="container_data">
+  <span class="libelle"> {% trans libelle %}</span>
+  <span class="donnee">
+    {% for item in items %}
+      {% if not forloop.first %} | {% endif %}
+      {% if url_detail %}
+      <a href="{% url url_detail id=item.id %}"
+      onclick="window.open(this.href); return false;">
+      {% endif %}
+        {{ item|get_obj_attr:field }}
+        {% if field2 %}
+          {{ item|get_obj_attr:field2 }}
+        {% endif %}
+      {% if url_detail %}</a>{% endif %}
+    {% endfor %}
+  </span>
+</span>

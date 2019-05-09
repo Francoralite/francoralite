@@ -92,3 +92,19 @@ def public_access(self):
     choices['partial'] = _(u"Partiel")
     choices['full'] = _(u"Complet")
     return choices[self]
+
+
+@register.filter
+def get_obj_attr(obj, attr):
+    # return getattr(obj, attr)
+    return obj[attr]
+
+
+@register.inclusion_tag('inc/related-list.html')
+def related_list(*args, **kwargs):
+    return {
+        'libelle': kwargs.get('libelle', ""),
+        'items': kwargs['items'],
+        'url_detail': kwargs.get('url_detail', ""),
+        'field': kwargs['field'],
+        }
