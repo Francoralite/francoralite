@@ -178,6 +178,23 @@
 
     <!-- Tab Description --------------------------------------->
     <div class="tab-pane" id="tab_desc">
+      {% related_list libelle='Auteurs' items=item.authors url_detail="personne-detail" field="first_name" field2="last_name"%}
+      {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name"%}
+      {% field_data form.timbre.label|safe item.timbre|safe %}
+      {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
+      {% field_data form.melody.label|safe item.melody|safe %}
+      {% field_data form.domain.label|safe item.domain|safe %}
+
+      {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
+      {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
+
+      <div class="block-grey">
+        <h2>{% trans "Témoignage" %}</h2>
+        {% field_data form.deposit_digest.label|safe item.deposit_digest|markdown|safe %}
+        {% field_data form.deposit_names.label|safe item.deposit_names|safe %}
+        {% field_data form.deposit_places.label|safe item.deposit_places|safe %}
+        {% field_data form.deposit_periods.label|safe item.deposit_periods|safe %}
+      </div>
     </div>
 
     <!-- Tab Text ---------------------------------------------->

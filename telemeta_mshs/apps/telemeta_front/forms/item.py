@@ -53,7 +53,7 @@ class ItemForm(forms.Form):
             label=_(u'Mélodie (transcription alphabétique)'),
             widget=forms.Textarea, required=False)
     domain = forms.CharField(
-        label=_(u'domaine'), required=False)
+        label=_(u'Domaine(s)'), required=False)
 
     # Description / deposit
     deposit_digest = forms.CharField(label=_(u'Résumé'), required=False)
