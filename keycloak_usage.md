@@ -65,6 +65,7 @@ Pour tester les accès, vous pouvez créer des utilisateurs type, qui devront ê
 5. Insérez les utilisateurs dans les groupes correspondants
 
 #### Insertion des resources et des permissions
+N.B : *Au préalable, penser à rajouter "127.0.0.1   keycloak" dans le fichier `/etc/hosts`*
 
 Un playbook Ansible a été créé pour renseigner automatiquement cette partie qui est sinon très longue à réaliser.
 
