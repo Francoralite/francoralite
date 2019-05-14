@@ -107,4 +107,5 @@ def related_list(*args, **kwargs):
         'items': kwargs['items'],
         'url_detail': kwargs.get('url_detail', ""),
         'field': kwargs['field'],
+        'field2': kwargs.get('field2', ""),
         }
