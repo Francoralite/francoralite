@@ -14,6 +14,7 @@ from celery import shared_task
 
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 from ..models.item import Item as ItemModel
 from ..models.item_transcoding_flag import (
@@ -24,6 +25,119 @@ from ..serializers.item_analysis import ItemAnalysisSerializer
 import timeside.core
 from telemeta.views.core import serve_media
 from telemeta.cache import TelemetaCache
+
+
+from ..models.item_collector import ItemCollector
+from ..serializers.item_collector import ItemCollectorSerializer
+from ..models.item_informer import ItemInformer
+from ..serializers.item_informer import ItemInformerSerializer
+from ..models.item_author import ItemAuthor
+from ..serializers.item_author import ItemAuthorSerializer
+from ..models.item_compositor import ItemCompositor
+from ..models.item_dance import ItemDance
+from ..serializers.item_dance import ItemDanceSerializer
+from ..models.item_domain_music import ItemDomainMusic
+from ..serializers.item_domain_music import ItemDomainMusicSerializer
+from ..models.item_domain_song import ItemDomainSong
+from ..serializers.item_domain_song import ItemDomainSongSerializer
+from ..models.item_domain_tale import ItemDomainTale
+from ..serializers.item_domain_tale import ItemDomainTaleSerializer
+from ..models.item_domain_vocal import ItemDomainVocal
+from ..serializers.item_domain_vocal import ItemDomainVocalSerializer
+from ..models.item_marker import ItemMarker
+from ..serializers.item_marker import ItemMarkerSerializer
+from ..models.item_thematic import ItemThematic
+from ..serializers.item_thematic import ItemThematicSerializer
+from ..models.item_transcoding_flag import ItemTranscodingFlag
+from ..serializers.item_transcoding_flag import ItemTranscodingFlagSerializer
+from ..models.item_usefulness import ItemUsefulness
+from ..serializers.item_usefulness import ItemUsefulnessSerializer
+
+from ..serializers.item_compositor import ItemCompositorSerializer
+from ..models.item_musical_group import ItemMusicalGroup
+from ..serializers.item_musical_group import ItemMusicalGroupSerializer
+from ..models.item_musical_organization import ItemMusicalOrganization
+from ..serializers.item_musical_organization import \
+    ItemMusicalOrganizationSerializer
+
+
+entities = [
+    {
+        "names": "collectors", "name": "collector",
+        "model": ItemCollector,
+        "serializer": ItemCollectorSerializer
+    },
+    {
+        "names": "informers", "name": "informer",
+        "model": ItemInformer,
+        "serializer": ItemInformerSerializer
+    },
+    {
+        "names": "authors", "name": "author",
+        "model": ItemAuthor,
+        "serializer": ItemAuthorSerializer
+    },
+    {
+        "names": "compositors", "name": "compositor",
+        "model": ItemCompositor,
+        "serializer": ItemCompositorSerializer
+    },
+    {
+        "names": "dances", "name": "dance",
+        "model": ItemDance,
+        "serializer": ItemDanceSerializer
+    },
+    {
+        "names": "domain_musics", "name": "domain_music",
+        "model": ItemDomainMusic,
+        "serializer": ItemDomainMusicSerializer
+    },
+    {
+        "names": "domain_songs", "name": "domain_song",
+        "model": ItemDomainSong,
+        "serializer": ItemDomainSongSerializer
+    },
+    {
+        "names": "domain_tales", "name": "domain_tale",
+        "model": ItemDomainTale,
+        "serializer": ItemDomainTaleSerializer
+    },
+    {
+        "names": "domain_vocals", "name": "domain_vocal",
+        "model": ItemDomainVocal,
+        "serializer": ItemDomainVocalSerializer
+    },
+    {
+        "names": "markers", "name": "marker",
+        "model": ItemMarker,
+        "serializer": ItemMarkerSerializer
+    },
+    {
+        "names": "musical_groups", "name": "musical_group",
+        "model": ItemMusicalGroup,
+        "serializer": ItemMusicalGroupSerializer
+    },
+    {
+        "names": "musical_organizations", "name": "musical_organization",
+        "model": ItemMusicalOrganization,
+        "serializer": ItemMusicalOrganizationSerializer
+    },
+    {
+        "names": "thematics", "name": "thematic",
+        "model": ItemThematic,
+        "serializer": ItemThematicSerializer
+    },
+    {
+        "names": "transcoding_flags", "name": "transcoding_flag",
+        "model": ItemTranscodingFlag,
+        "serializer": ItemTranscodingFlagSerializer
+    },
+    {
+        "names": "usefulnesses", "name": "usefullness",
+        "model": ItemUsefulness,
+        "serializer": ItemUsefulnessSerializer
+    },
+]
 
 
 class ItemViewSet(viewsets.ModelViewSet):
@@ -64,6 +178,34 @@ class ItemViewSet(viewsets.ModelViewSet):
         'PUT': 'item:update',
         'DELETE': 'item:delete'
     }
+
+    def collect(self, id_main, data, entity):
+        # Obtain the related records for an ID (id_main)
+        items = entity["model"].objects.filter(
+            item=id_main)
+        # Create an empty list
+        data[entity["names"]] = []
+        # Parse every record
+        for item in items:
+            try:
+                # Use the wanted serializer
+                serializer_item = entity["serializer"](item)
+                # Append the serialized data to the list
+                data[entity["names"]].append(
+                    serializer_item.data[entity["name"]])
+            except Exception:
+                pass
+
+    @detail_route()
+    def complete(self, request, pk=None):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+        # Retrieve most of the entities
+        for entity in entities:
+            self.collect(instance.id, data, entity)
+
+        return Response(data)
 
     def analyze(self, item):
 

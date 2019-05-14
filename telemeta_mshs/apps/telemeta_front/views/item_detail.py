@@ -19,26 +19,26 @@ class ItemDetail(FrancoraliteTemplateView):
     template_name = "../templates/item-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(ItemDetail, self).get_context_data(**kwargs)
-
-        # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL+'/api/item/'+context['id'])
-        if response.status_code == status.HTTP_200_OK:
-            data = response.json()
-            context['item'] = data
+        try:
+            context = super(ItemDetail, self).get_context_data(**kwargs)
+            # Obtain values of the record item
+            context["item"] = tools.request_api(
+                '/api/item/' + context['id'] + '/complete/')
             context['form'] = ItemForm()
-            # Obtain values of the record collection
-            context['collection'] = tools.request_api(
-                '/api/collection/' +
-                str(data['collection']['id']) + '/complete/')
             context['form_collection'] = CollectionForm()
 
-        # Obtain gaphers of the record
-        context['graphers'] = []
-        response = requests.get(
-            FRONT_HOST_URL+'/api/timeside/' + context['id'] + '/visualize/')
-        if response.status_code == status.HTTP_200_OK:
-            context['graphers'].append(response.json)
+            # Obtain gaphers of the record
+            context['graphers'] = []
+            response = requests.get(
+                FRONT_HOST_URL+'/api/timeside/'
+                + context['id'] + '/visualize/')
+            if response.status_code == status.HTTP_200_OK:
+                context['graphers'].append(response.json)
+
+        except Exception as err:
+            context['item'] = {}
+            context['error'] = err.message
+            response = requests.get(
+                FRONT_HOST_URL+'/api/item/'+context['id'])
 
         return context
