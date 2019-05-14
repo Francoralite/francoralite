@@ -65,6 +65,9 @@ class ItemForm(forms.Form):
         label=_(u'Période(s) citée(s)'), required=False)
 
     # Text ------------------------------
+    text_bool = forms.BooleanField(
+        label=_(u'Présence de texte'),
+        required=False)
     text = forms.CharField(label=_(u'Texte'), required=False)
     incipit = forms.CharField(label=_(u'Incipit'), required=False)
     refrain = forms.CharField(label=_(u'Refrain'), required=False)

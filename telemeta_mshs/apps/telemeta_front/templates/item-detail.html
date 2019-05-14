@@ -199,6 +199,11 @@
 
     <!-- Tab Text ---------------------------------------------->
     <div class="tab-pane" id="tab_text">
+      {% field_data_bool form.text_bool.label item.text_bool %}
+      {% field_data form.text.label|safe item.text|markdown|safe %}
+      {% field_data form.incipit.label|safe item.Incipit|markdown|safe %}
+      {% field_data form.refrain.label|safe item.refrain|markdown|safe %}
+      {% field_data form.jingle.label|safe item.jingle|markdown|safe %}
     </div>
 
     <!-- Tab Vox/Instruments ----------------------------------->
