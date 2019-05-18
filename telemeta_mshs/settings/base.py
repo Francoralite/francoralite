@@ -74,7 +74,7 @@ DATABASES = {
     }
 }
 
-FRONT_HOST_URL = 'http://nginx.francoralite.localhost:8080/'
+FRONT_HOST_URL = 'http://172.22.0.5:8000/' # 'http://nginx.francoralite.localhost:8080'
 USE_X_FORWARDED_HOST = True
 
 REST_FRAMEWORK = {
