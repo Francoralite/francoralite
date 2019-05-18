@@ -2,6 +2,7 @@
 {% extends "item.html" %}
 {% load bootstrap3 %}
 {% load i18n %}
+{% load data_display %}
 {% load markdown_extra %}
 
 {# Load CSS and JavaScript #}
@@ -41,6 +42,26 @@
 
 {% block content %}
 {{ form.media }}
+<div id="app">
+<!-- Tabs -->
+<ul class="nav nav-tabs" role="tablist">
+   <li class="nav-item active">
+     <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Général" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_desc" role="tab" data-toggle="tab">{% trans "Description" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_text" role="tab" data-toggle="tab">{% trans "Texte" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_vox" role="tab" data-toggle="tab">{% trans "Voix/Instruments" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_mark" role="tab" data-toggle="tab">{% trans "Marqueurs" %}</a>
+   </li>
+</ul>
+
 <div class="container">
   {% if id %}
   <form action="{%url "item-edit" id %}" method="POST">
@@ -50,12 +71,388 @@
     {% csrf_token %}
     <!-- FIXIT  champs en saisie -->
 
-    <div class="block-grey">
-      <h2></h2>
-      <div class="container_line">
+    <div class="tab-content">
+      <!-- Tab General -->
+      <div class="tab-pane fade active in" id="tab_general">
+        {% bootstrap_field form.title layout='vertical' %}
+        {% bootstrap_field form.alt_title layout='vertical' %}
+        {% bootstrap_field form.trans_title layout='vertical' %}
+        {% bootstrap_field form.description layout='vertical' %}
+
+        <div class="block-grey">
+          <h2>{% trans "Personnes" %}</h2>
+
+          <!-- Collectors -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Enquêteur(s)" %}</label>
+            <v-select
+              multiple
+                v-model="collectors"
+                label="first_name"
+                :filterable="false"
+                @search="onSearchCollectors"
+                :options="optionsCollectors">
+                <template slot="option" slot-scope="option">
+                  ${ option.first_name } ${ option.last_name } -
+                  <a :href="option.url"
+                    onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-label="countryName" scope="option">
+                  <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  ${ option.first_name } ${ option.last_name }</a>
+                </template>
+            </v-select>
+          </div>
+          <input name="collectors" type="hidden"
+            :value="JSON.stringify(collectors,replacerCollector)" />
+
+          <!-- Informers -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Informateur(s)" %}</label>
+            <v-select
+              multiple
+                v-model="informers"
+                label="first_name"
+                :filterable="false"
+                @search="onSearchInformers"
+                :options="optionsInformers">
+                <template slot="option" slot-scope="option">
+                  ${ option.first_name } ${ option.last_name } -
+                  <a :href="option.url"
+                    onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                  <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  ${ option.first_name } ${ option.last_name }</a>
+                </template>
+            </v-select>
+          </div>
+          <input name="informers" type="hidden"
+            :value="JSON.stringify(informers, replacerInformer)" />
+
+        </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Indications géographiques et culturelles" %}</h2>
+          {% related_list libelle='Lieux' items=collection.locations url_detail="location_gis-detail" field="code" %}
+          <!-- Language -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Langue(s)" %}</label>
+            <v-select
+            multiple
+            v-model="languages"
+            label="name"
+            :filterable="false"
+            @search="onSearchLanguages"
+            :options="optionsLanguages">
+              <template slot="option" slot-scope="option">
+                <p>${ option.name }</p>
+              </template>
+              <template slot="selected-option" slot-scope="option">
+                ${ option.name }
+              </template>
+            </v-select>
+          </div>
+          <input name="languages" type="hidden"
+          :value="JSON.stringify(languages,replacerLanguage)" />
+
+        </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Données d'archivage" %}</h2>
+          {% bootstrap_field form.code layout='vertical' %}
+          {% bootstrap_field form.code_partner layout='vertical' %}
+          {% bootstrap_field form.auto_period_access layout='vertical' %}
+          {% bootstrap_field form.remarks layout='vertical' %}
+
+        </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Données techniques" %}</h2>
+          {% bootstrap_field form.media_type layout='vertical' %}
+        </div>
 
       </div>
+
+      <!-- Tab Description --------------------------------------->
+      <div class="tab-pane" id="tab_desc">
+        <!-- Authors -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Auteur(s)" %}</label>
+          <v-select
+            multiple
+              v-model="authors"
+              label="first_name"
+              :filterable="false"
+              @search="onSearchAuthors"
+              :options="optionsAuthors">
+              <template slot="option" slot-scope="option">
+                ${ option.first_name } ${ option.last_name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+              </template>
+              <template slot="selected-option" slot-label="countryName" scope="option">
+                <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                ${ option.first_name } ${ option.last_name }</a>
+              </template>
+          </v-select>
+        </div>
+        <input name="collectors" type="hidden"
+          :value="JSON.stringify(authors,replacerAuthor)" />
+
+        <!-- Compositors -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Compositeur(s)" %}</label>
+          <v-select
+            multiple
+              v-model="compositors"
+              label="first_name"
+              :filterable="false"
+              @search="onSearchCompositors"
+              :options="optionsCompositors">
+              <template slot="option" slot-scope="option">
+                ${ option.first_name } ${ option.last_name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+              </template>
+              <template slot="selected-option" slot-label="countryName" scope="option">
+                <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                ${ option.first_name } ${ option.last_name }</a>
+              </template>
+          </v-select>
+        </div>
+        <input name="compositors" type="hidden"
+          :value="JSON.stringify(compositors,replacerCompositor)" />
+
+        {% bootstrap_field form.timbre layout='vertical' %}
+        {% bootstrap_field form.timbre_ref layout='vertical' %}
+        {% bootstrap_field form.melody layout='vertical' %}
+
+        <div class="block-grey">
+          <h2>{% trans "Genres" %}</h2>
+
+          {% bootstrap_field form.domains layout='vertical' %}
+
+          <!-- Domain song -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) de la chanson" %}</label>
+          <v-select
+          multiple
+          v-model="domainsongs"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomainsongs"
+          :options="optionsDomainsongs">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domainsongs" type="hidden"
+          :value="JSON.stringify(domainsongs,replacerDomainsong)" />
+
+          <!-- Domain vocal -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) de l'expression vocale" %}</label>
+          <v-select
+          multiple
+          v-model="domainvocals"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomainvocals"
+          :options="optionsDomainvocals">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domainvocals" type="hidden"
+          :value="JSON.stringify(domainvocals,replacerDomainvocal)" />
+
+          <!-- Domain music -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) de l'expression instrumentale" %}</label>
+          <v-select
+          multiple
+          v-model="domainmusics"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomainmusics"
+          :options="optionsDomainmusics">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domainmusics" type="hidden"
+          :value="JSON.stringify(domainmusics,replacerDomainmusic)" />
+
+          <!-- Domain tale -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) du conte" %}</label>
+          <v-select
+          multiple
+          v-model="domaintales"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomaintales"
+          :options="optionsDomaintales">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domaintales" type="hidden"
+          :value="JSON.stringify(domaintales,replacerDomaintale)" />
+
+        </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Témoignage" %}</h2>
+          {% bootstrap_field  form.deposit_digest layout='vertical' %}
+
+          <!-- Thematic -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Thématique(s)" %}</label>
+          <v-select
+          multiple
+          v-model="thematics"
+          label="name"
+          :filterable="false"
+          @search="onSearchThematics"
+          :options="optionsThematics">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="usefulnesses" type="hidden"
+          :value="JSON.stringify(thematics,replacerThematic)" />
+
+          {% bootstrap_field  form.deposit_names layout='vertical' %}
+          {% bootstrap_field  form.deposit_places layout='vertical' %}
+          {% bootstrap_field  form.deposit_periods layout='vertical' %}
+        </div>
+
+        <!-- Usefulness -->
+        <div class="container_data">
+        <label class="control_label">{% trans "Fonction(s)" %}</label>
+        <v-select
+        multiple
+        v-model="usefulnesses"
+        label="name"
+        :filterable="false"
+        @search="onSearchUsefulness"
+        :options="optionsUsefullness">
+          <template slot="option" slot-scope="option">
+            ${ option.name } -
+              <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                <i>Fiche...</i></a>
+          </template>
+          <template slot="selected-option" slot-scope="option">
+            <a :href="option.url"
+            onclick="window.open(this.href); return false;">
+            ${ option.name }</a>
+          </template>
+        </v-select>
+        </div>
+        <input name="usefulnesses" type="hidden"
+        :value="JSON.stringify(usefulnesses,replacerUsefulness)" />
+
+        <!-- Dance -->
+        <div class="container_data">
+        <label class="control_label">{% trans "Danse(s)" %}</label>
+        <v-select
+        multiple
+        v-model="dances"
+        label="name"
+        :filterable="false"
+        @search="onSearchDance"
+        :options="optionsDances">
+          <template slot="option" slot-scope="option">
+            <p>${ option.name }</p>
+          </template>
+          <template slot="selected-option" slot-scope="option">
+            ${ option.name }
+          </template>
+        </v-select>
+        </div>
+        <input name="dances" type="hidden"
+        :value="JSON.stringify(dances,replacerDance)" />
+
+
+      </div>
+
+      <!-- Tab Text ---------------------------------------------->
+      <div class="tab-pane" id="tab_text">
+
+      </div>
+
+      <!-- Tab Vox/Instruments ----------------------------------->
+      <div class="tab-pane" id="tab_vox">
+
+      </div>
+
+
+      <!-- Tab Player/Markers ------------------------------------>
+      <div class="tab-pane" id="tab_mark">
+        {% block player %}
+        {{ block.super }}
+        {% endblock %}
+      </div>
+
     </div>
+    <!-- end tab-content -->
+
 
     {% if id %}
     {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
@@ -65,9 +462,354 @@
   </form>
 </div>
 
-{% block player %}
-  {{ block.super }}
-{% endblock %}
+</div>
+
+<script type="application/javascript">
+    Vue.component('v-select', VueSelect.VueSelect)
+
+    new Vue({
+      delimiters: ['${', '}'],
+      el: '#app',
+      data: {
+          collectors: [],
+          optionsCollectors: [],
+          informers: [],
+          optionsInformers: [],
+          languages: [],
+          optionsLanguages: [],
+          authors: [],
+          optionsAuthors: [],
+          usefulnesses: [],
+          optionsCompositors: [],
+          compositors: [],
+          optionsDomainsongs: [],
+          domainsongs: [],
+          optionsDomainvocals: [],
+          domainvocals: [],
+          optionsDomainmusics: [],
+          domainmusics: [],
+          optionsDomaintales: [],
+          domaintales: [],
+          optionsUsefullness: [],
+          dances: [],
+          optionsDances: [],
+          thematics: [],
+          optionsThematics: [],
+      },
+      watch: {
+      },
+      computed: {
+      },
+      methods: {
+        searchRelated:
+        _.debounce((loading, search, vm, url, options, entity)=>
+        {
+          axios.get(url).then(
+          res => {
+            for(i = 0; i < res.data.length; i++) {
+              res.data[i].url= "/"+entity+"/"+res.data[i].id;
+            };
+            vm[options] = res.data;
+          }
+          );
+          loading(false);
+        }),
+        onSearchCollectors(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+            'optionsCollectors',
+            'authority'
+           );
+        },
+        onSearchInformers(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+            'optionsInformers',
+            'authority'
+           );
+        },
+        onSearchLanguages(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/language/?ordering=name&search=${escape(search)}`,
+            'optionsLanguages',
+            'language'
+           );
+        },
+        onSearchAuthors(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/authority/?is_author=true&ordering=first_name+last_name&search=${escape(search)}`,
+            'optionsAuthors',
+            'authority'
+           );
+        },
+        onSearchCompositors(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/authority/?is_compositor=true&ordering=first_name+last_name&search=${escape(search)}`,
+            'optionsCompositors',
+            'authority'
+           );
+        },
+        onSearchDomainsongs(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/domain_song/?search=${escape(search)}`,
+            'optionsDomainsongs',
+            'domain_song'
+           );
+        },
+        onSearchDomainvocals(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/domain_vocal/?search=${escape(search)}`,
+            'optionsDomainvocals',
+            'domain_vocal'
+           );
+        },
+        onSearchDomainmusics(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/domain_music/?search=${escape(search)}`,
+            'optionsDomainmusics',
+            'domain_music'
+           );
+        },
+        onSearchDomaintales(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/domain_tale/?search=${escape(search)}`,
+            'optionsDomaintales',
+            'domain_tale'
+           );
+        },
+        onSearchUsefulness(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/usefulness/?search=${escape(search)}`,
+            'optionsUsefullness',
+            'usefulness'
+           );
+        },
+        onSearchDance(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/dance/?search=${escape(search)}`,
+            'optionsDances',
+            'dance'
+           );
+        },
+        onSearchThematics(search, loading) {
+          loading(true);
+           this.searchRelated(
+           loading, search, this,
+            `/api/thematic/?search=${escape(search)}`,
+            'optionsThematics',
+            'thematic'
+           );
+        },
+        getRelated: function(url, field, rel_entity, entity){
+           // Get the data from a related table to display it in a field
+           axios.get(url).then(
+           res => {
+             for(i = 0; i < res.data.length; i++) {
+               res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+             }
+             var listRelated = [];
+             for( var item in res.data) {
+               // Fill the list of related
+               listRelated.push(res.data[item][rel_entity]);
+             }
+             // Use the list of related to feeds the select
+             this[field] = listRelated;
+           });
+        },
+        getCollectors: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/collector`,
+             'collectors',
+             'collector',
+             'authority'
+           );
+        },
+        getInformers: function(){
+          this.getRelated(
+            `/api/collection/${escape({{id}})}/informer`,
+            'informers',
+            'informer',
+            'authority'
+          );
+        },
+        getLanguages: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/language`,
+             'languages',
+             'language',
+             'language'
+           );
+        },
+        getAuthors: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/author`,
+             'authors',
+             'author',
+             'authority'
+           );
+        },
+        getCompositors: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/compositor`,
+             'compositors',
+             'compositor',
+             'authority'
+           );
+        },
+        getDomainsongs: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/domain_song`,
+             'domainsongs',
+             'domainsong',
+             'domain_song'
+           );
+        },
+        getDomainvocals: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/domain_vocal`,
+             'domainvocals',
+             'domainvocal',
+             'domain_vocal'
+           );
+        },
+        getDomainmusics: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/domain_music`,
+             'domainmusics',
+             'domainmusic',
+             'domain_music'
+           );
+        },
+        getDomaintales: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/domain_tale`,
+             'domaintales',
+             'domaintale',
+             'domain_tale'
+           );
+        },
+        getUsefulness: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/usefulness`,
+             'usefulnesses',
+             'usefulness',
+             'usefulness'
+           );
+        },
+        getDance: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/dance`,
+             'dances',
+             'dance',
+             'dance'
+           );
+        },
+        getThematics: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/thematic`,
+             'thematics',
+             'thematic',
+             'thematic'
+           );
+        },
+        replacer: function(key,value,field){
+           if(value.length > 0){
+             items=[];
+             for(i = 0; i< value.length; i++){
+               var dict = {};
+               dict[field] = value[i].id;
+               items.push(dict);
+             };
+             return items;
+           };
+           return value;
+        },
+        replacerCollector: function(key,value){
+           return this.replacer(key,value,"collector");
+        },
+        replacerInformer: function(key,value){
+          return this.replacer(key,value,"informer");
+        },
+        replacerLanguage: function(key,value){
+           return this.replacer(key,value,"language");
+        },
+        replacerAuthor: function(key,value){
+           return this.replacer(key,value,"author");
+        },
+        replacerCompositor: function(key,value){
+           return this.replacer(key,value,"compositor");
+        },
+        replacerDomainsong: function(key,value){
+           return this.replacer(key,value,"domainsong");
+        },
+        replacerDomainvocal: function(key,value){
+           return this.replacer(key,value,"domainvocal");
+        },
+        replacerDomainmusic: function(key,value){
+           return this.replacer(key,value,"domainmusic");
+        },
+        replacerDomaintale: function(key,value){
+           return this.replacer(key,value,"domaintale");
+        },
+        replacerUsefulness: function(key,value){
+           return this.replacer(key,value,"usefulness");
+        },
+        replacerDance: function(key,value){
+           return this.replacer(key,value,"dance");
+        },
+        replacerThematic: function(key,value){
+           return this.replacer(key,value,"thematic");
+        },
+        mounted: function () {
+          {% if id %}
+          this.getCollectors();
+          this.getInformers();
+          this.getLanguages();
+          this.getAuthors();
+          this.getCompositors();
+          this.getDomainsongs();
+          this.getDomainvocals();
+          this.getDomainmusics();
+          this.getDomaintales();
+          this.getUsefulness();
+          this.getDance();
+          this.getThematics();
+          {% else %}
+          {% endif %}
+        }
+      }
+    })
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+
+<!-- Markdown fields -->
+{% markdown_editor "id_descriptions" %}
+{% markdown_editor "id_remarks" %}
+{% markdown_editor "id_deposit_digest" %}
+
 
 {{ form.media.js }}
 {% endblock content %}

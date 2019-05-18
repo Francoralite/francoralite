@@ -52,8 +52,19 @@ class ItemForm(forms.Form):
     melody = forms.CharField(
             label=_(u'Mélodie (transcription alphabétique)'),
             widget=forms.Textarea, required=False)
-    domain = forms.CharField(
-        label=_(u'Domaine(s)'), required=False)
+    # domain = forms.CharField(
+    #     label=_(u'Domaine(s)'), required=False)
+    DOMAINS = (
+        ('T', 'Témoignage'),
+        ('C', 'Chanson'),
+        ('A', 'Autre expression vocale'),
+        ('I', 'Expression instrumentale'),
+        ('R', 'Conte ou récit légendaire')
+    )
+    domains = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        choices=DOMAINS,
+        required=False)
 
     # Description / deposit
     deposit_digest = forms.CharField(label=_(u'Résumé'), required=False)
