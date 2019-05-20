@@ -449,15 +449,109 @@
       <!-- Tab Vox/Instruments ----------------------------------->
       <div class="tab-pane" id="tab_vox">
 
-      </div>
+        <template>
+          <div v-for="(line, index) in lines"
+            v-bind:key="index">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class=container_line>
+                  <input v-model="line.id" hidden="True" type="number" />
+                  <span class="container_data one">
+                    <label class="control_label">{% trans "Nombre" %}</label>
+                    <input v-model="line.number" type="number"/>
+                  </span>
+                  <span class="container_data four">
+                    <label class="control_label">{% trans "Voix/Instrument" %}</label>
+                    <v-select
+                      single
+                      v-model="line.instrument"
+                      label="name"
+                      :filterable="false"
+                      @search="onSearchInstruments"
+                      :options="optionsInstruments">
+                        <template slot="option" slot-scope="option">
+                          <p>${ option.name }, ${ option.typology.number}</p>
+                        </template>
+                        <template slot="selected-option" slot-scope="option">
+                          ${ option.name }, ${ option.typology.number}
+                        </template>
+                      </v-select>
+                      <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus"></span>
+                          {% trans "Créer une nouvelle voix/instrument" %}
+                      </button>
+                  </span>
+                  <span class="container_data one">
+                    <label class="control_label">{% trans "Nature émission vocale" %}</label>
+                    <select v-model="line.emit">
+                      <option v-for="option in optionsEmit" v-bind:value="option.id">
+                        ${option.name }
+                      </option>
+                    </select>
+                  </span>
+                </div>
+                <div class=container_line>
+                  <span class="container_data">
+                    <label class="control_label">{% trans "Informateur(s)" %}</label>
+                    <v-select
+                      multiple
+                        v-model="line.informers"
+                        label="first_name"
+                        :filterable="false"
+                        @search="onSearchMusicians"
+                        :options="optionsMusicians">
+                        <template slot="option" slot-scope="option">
+                          ${ option.first_name } ${ option.last_name } -
+                          <a :href="option.url"
+                            onclick="window.open(this.href); return false;">
+                            <i>Fiche...</i></a>
+                        </template>
+                        <template slot="selected-option" slot-scope="option">
+                          <a :href="option.url"
+                          onclick="window.open(this.href); return false;">
+                          ${ option.first_name } ${ option.last_name }</a>
+                        </template>
+                      </v-select>
+                      <input :name="'musicians'+index"
+                            type="hidden"
+                            :value="JSON.stringify(line.informers)" />
+                  </span>
+                </div>
+                <div class="center">
+                  <button type="button" @click="removeLine(index)"
+                    class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    {% trans "Supprimer" %}
+                  </button>
+                  <button type="button"
+                    v-if="index + 1 === lines.length"
+                    @click="addLine" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    {% trans "Ajouter une voix/instrument" %}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <button type="button"
+            v-if="lines.length === 0"
+            @click="addLine" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            {% trans "Ajouter une voix/instrument" %}
+          </button>
 
-      <!-- Tab Player/Markers ------------------------------------>
-      <div class="tab-pane" id="tab_mark">
-        {% block player %}
-        {{ block.super }}
-        {% endblock %}
-      </div>
+        </template>
+
+        <input name="performances" type="hidden"
+          :value="JSON.stringify(lines,replacerPerformance)" />
+        </div>
+        <!-- Tab Player/Markers ------------------------------------>
+        <div class="tab-pane" id="tab_mark">
+          {% block player %}
+          {{ block.super }}
+          {% endblock %}
+        </div>
 
     </div>
     <!-- end tab-content -->
@@ -504,8 +598,15 @@
           optionsDances: [],
           thematics: [],
           optionsThematics: [],
+          lines: [],
+          optionsEmit: [],
+          optionsMusicians: [],
+          optionsInstruments: [],
       },
       watch: {
+        lines () {
+          this.blockRemoval = this.lines.length <= 1
+        }
       },
       computed: {
       },
@@ -631,6 +732,20 @@
             'thematic'
            );
         },
+        onSearchMusicians(search, loading) {
+          loading(true);
+          this.optionsMusicians = this.informers
+          loading(false);
+        },
+        onSearchInstruments(search, loading) {
+            loading(true);
+            this.searchRelated(
+              loading, search, this,
+               `/api/instrument/?ordering=name&search=${escape(search)}`,
+               'optionsInstruments',
+               'instrument'
+            );
+        },
         getRelated: function(url, field, rel_entity, entity){
            // Get the data from a related table to display it in a field
            axios.get(url).then(
@@ -743,6 +858,44 @@
              'thematic'
            );
         },
+        getEmits: function(){
+         axios.get('/api/emit_vox/').then(response => {
+           this.optionsEmit = response.data;
+          });
+        },
+        getLines: function(){
+          // Get all performances, one per line
+          axios.get(`/api/item/${escape({{id}})}/performance/`).then(
+          res => {
+            // For each performance ...
+            for( var item in res.data) {
+              var rel_entity = 'musician'
+              var url = `/api/item/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician/`;
+              var listRelated = []; // list of musicians
+              // ... Get all musicians for a line (performance)
+              axios.get(url).then(
+              res => {
+                for(i = 0; i < res.data.length; i++) {
+                  res.data[i][rel_entity].url= "/authority/"+res.data[i][rel_entity].id;
+                }
+                for( var item2 in res.data) {
+                  // Fill the list of related
+                  listRelated.push(res.data[item2][rel_entity]);
+                }
+              });
+
+              // Fill the performances
+              this.lines.push(
+              {
+                number: res.data[item].number,
+                instrument: res.data[item].instrument,
+                emit: res.data[item].emit.id,
+                informers: listRelated,
+                id: res.data[item].id
+              });
+            }
+          });
+        },
         replacer: function(key,value,field){
            if(value.length > 0){
              items=[];
@@ -791,7 +944,38 @@
         replacerThematic: function(key,value){
            return this.replacer(key,value,"thematic");
         },
+        replacerPerformance: function(key,value){
+          if(key=="instrument"){
+            return value.id;
+          };
+
+          if(key=="informers"){
+            if(value.length > 0){
+              musicians=[];
+              for(i = 0; i< value.length; i++){
+                musicians.push({
+                  musician: value[i].id
+                });
+              };
+              return musicians;
+            };
+            return undefined;
+          };
+
+          return value;
+        },
+        addLine(){
+          let checkEmptyLines = this.lines.filter(line => line.number === null);
+          if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
+          this.lines.push({
+           number: "1"
+          });
+        },
+        removeLine (lineId) {
+          if (!this.blockRemoval) this.lines.splice(lineId, 1)
+        },
         mounted: function () {
+          this.getEmits();
           {% if id %}
           this.getCollectors();
           this.getInformers();
@@ -805,7 +989,9 @@
           this.getUsefulness();
           this.getDance();
           this.getThematics();
+          this.getLines();
           {% else %}
+          this.addLine();
           {% endif %}
         }
       }
