@@ -434,7 +434,16 @@
 
       <!-- Tab Text ---------------------------------------------->
       <div class="tab-pane" id="tab_text">
+        {% bootstrap_field form.text_bool layout='vertical' %}
+        {% bootstrap_field form.text layout='vertical' %}
+        {% bootstrap_field form.incipit layout='vertical' %}
+        {% bootstrap_field form.refrain layout='vertical' %}
+        {% bootstrap_field form.jingle layout='vertical' %}
+        {% bootstrap_field form.coupe layout='vertical' %}
 
+        <div class="block-grey">
+          <h2>{% trans "Références" %}</h2>
+        </div>
       </div>
 
       <!-- Tab Vox/Instruments ----------------------------------->
@@ -809,7 +818,10 @@
 {% markdown_editor "id_descriptions" %}
 {% markdown_editor "id_remarks" %}
 {% markdown_editor "id_deposit_digest" %}
-
+{% markdown_editor "id_text" %}
+{% markdown_editor "id_incipit" %}
+{% markdown_editor "id_refrain" %}
+{% markdown_editor "id_jingle" %}
 
 {{ form.media.js }}
 {% endblock content %}

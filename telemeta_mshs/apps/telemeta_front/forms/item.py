@@ -101,3 +101,9 @@ class ItemForm(forms.Form):
             choices=Core.get_choices(
                 entity="collection", label_field="title"),
             required=True)
+
+        self.fields['coupe'] = forms.ChoiceField(
+            label=_(u'Coupe'),
+            choices=Core.get_choices(
+                entity="coupe", label_field="value"),
+            required=True)
