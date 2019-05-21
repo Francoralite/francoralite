@@ -449,6 +449,48 @@
       <!-- Tab Vox/Instruments ----------------------------------->
       <div class="tab-pane" id="tab_vox">
 
+        <!-- Musical organization -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Organisation(s) musicale(s)" %}</label>
+          <v-select
+          multiple
+          v-model="musical_organizations"
+          label="name"
+          :filterable="false"
+          @search="onSearchMusicalOrganizations"
+          :options="optionsMusicalOrganizations">
+            <template slot="option" slot-scope="option">
+              <p>${ option.name }</p>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              ${ option.name }
+            </template>
+          </v-select>
+        </div>
+        <input name="musical_organizations" type="hidden"
+        :value="JSON.stringify(musical_organizations,replacerMusicalOrganization)" />
+
+        <!-- Musical group -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Formation(s) musicale(s)" %}</label>
+          <v-select
+          multiple
+          v-model="musical_groups"
+          label="name"
+          :filterable="false"
+          @search="onSearchMusicalGroups"
+          :options="optionsMusicalGroups">
+            <template slot="option" slot-scope="option">
+              <p>${ option.name }</p>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              ${ option.name }
+            </template>
+          </v-select>
+        </div>
+        <input name="musical_groups" type="hidden"
+        :value="JSON.stringify(musical_groups,replacerMusicalGroup)" />
+
         <template>
           <div v-for="(line, index) in lines"
             v-bind:key="index">
@@ -598,6 +640,10 @@
           optionsDances: [],
           thematics: [],
           optionsThematics: [],
+          musical_organizations: [],
+          optionsMusicalOrganizations: [],
+          musical_groups: [],
+          optionsMusicalGroups: [],
           lines: [],
           optionsEmit: [],
           optionsMusicians: [],
@@ -746,10 +792,29 @@
                'instrument'
             );
         },
+        onSearchMusicalOrganizations(search, loading) {
+            loading(true);
+            this.searchRelated(
+              loading, search, this,
+               `/api/musical_organization/?ordering=name&search=${escape(search)}`,
+               'optionsMusicalOrganizations',
+               'musical_organization'
+            );
+        },
+        onSearchMusicalGroups(search, loading) {
+            loading(true);
+            this.searchRelated(
+              loading, search, this,
+               `/api/musical_group/?ordering=name&search=${escape(search)}`,
+               'optionsMusicalGroups',
+               'musical_group'
+            );
+        },
         getRelated: function(url, field, rel_entity, entity){
            // Get the data from a related table to display it in a field
            axios.get(url).then(
            res => {
+             console.log(res.data)
              for(i = 0; i < res.data.length; i++) {
                res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
              }
@@ -808,7 +873,7 @@
              'domainsongs',
              'domainsong',
              'domain_song'
-           );
+           );        <!-- Musical organization -->
         },
         getDomainvocals: function(){
            this.getRelated(
@@ -856,6 +921,22 @@
              'thematics',
              'thematic',
              'thematic'
+           );
+        },
+        getMusicalOrganizations: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/musical_organization`,
+             'musical_organizations',
+             'musical_organization',
+             'musical_organization'
+           );
+        },
+        getMusicalGroups: function(){
+           this.getRelated(
+             `/api/item/${escape({{id}})}/musical_group`,
+             'musical_groups',
+             'musical_group',
+             'musical_group'
            );
         },
         getEmits: function(){
@@ -944,6 +1025,12 @@
         replacerThematic: function(key,value){
            return this.replacer(key,value,"thematic");
         },
+        replacerMusicalOrganization: function(key,value){
+           return this.replacer(key,value,"musical_organization");
+        },
+        replacerMusicalGroup: function(key,value){
+           return this.replacer(key,value,"musical_group");
+        },
         replacerPerformance: function(key,value){
           if(key=="instrument"){
             return value.id;
@@ -974,26 +1061,28 @@
         removeLine (lineId) {
           if (!this.blockRemoval) this.lines.splice(lineId, 1)
         },
-        mounted: function () {
-          this.getEmits();
-          {% if id %}
-          this.getCollectors();
-          this.getInformers();
-          this.getLanguages();
-          this.getAuthors();
-          this.getCompositors();
-          this.getDomainsongs();
-          this.getDomainvocals();
-          this.getDomainmusics();
-          this.getDomaintales();
-          this.getUsefulness();
-          this.getDance();
-          this.getThematics();
-          this.getLines();
-          {% else %}
-          this.addLine();
-          {% endif %}
-        }
+      },
+      mounted: function () {
+        this.getEmits();
+        {% if id %}
+        this.getCollectors();
+        this.getInformers();
+        this.getLanguages();
+        this.getAuthors();
+        this.getCompositors();
+        this.getDomainsongs();
+        this.getDomainvocals();
+        this.getDomainmusics();
+        this.getDomaintales();
+        this.getUsefulness();
+        this.getDance();
+        this.getThematics();
+        this.getMusicalOrganizations();
+        this.getMusicalGroups();
+        this.getLines();
+        {% else %}
+        this.addLine();
+        {% endif %}
       }
     })
 </script>
