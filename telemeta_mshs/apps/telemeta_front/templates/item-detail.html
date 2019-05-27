@@ -134,7 +134,7 @@
 
   <div class="tab-content">
     <!-- Tab General -->
-    <div class="tab-pane fade active in" id="tab_general">
+    <section class="tab-pane fade active in" id="tab_general">
 
       <div class="container_line">
         <span class="container_data">
@@ -174,16 +174,16 @@
         {% field_data form_collection.recording_context.label|safe item.collection.recording_context.value|safe %}
       </div>
 
-    </div>
+    </section>
 
     <!-- Tab Description --------------------------------------->
-    <div class="tab-pane" id="tab_desc">
+    <section class="tab-pane" id="tab_desc">
       {% related_list libelle='Auteurs' items=item.authors url_detail="personne-detail" field="first_name" field2="last_name"%}
       {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name"%}
       {% field_data form.timbre.label|safe item.timbre|safe %}
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
       {% field_data form.melody.label|safe item.melody|safe %}
-      {% field_data form.domain.label|safe item.domain|safe %}
+      {% field_data form.domains.label|safe item.domains|safe %}
 
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
@@ -195,19 +195,39 @@
         {% field_data form.deposit_places.label|safe item.deposit_places|safe %}
         {% field_data form.deposit_periods.label|safe item.deposit_periods|safe %}
       </div>
-    </div>
+    </section>
 
     <!-- Tab Text ---------------------------------------------->
-    <div class="tab-pane" id="tab_text">
-      {% field_data_bool form.text_bool.label item.text_bool %}
-      {% field_data form.text.label|safe item.text|markdown|safe %}
-      {% field_data form.incipit.label|safe item.Incipit|markdown|safe %}
-      {% field_data form.refrain.label|safe item.refrain|markdown|safe %}
-      {% field_data form.jingle.label|safe item.jingle|markdown|safe %}
-    </div>
+    <section class="tab-pane" id="tab_text">
+      <h2>Texte</h2>
+      <div class="container_data">
+        <h3 class="libelle">{{form.text_bool.label|safe}}</h3>
+        <div class="donnee">{{item.text_bool|markdown|safe}}</div>
+      </div>
+
+      <div class="container_data">
+        <h3 class="libelle">{{form.text.label|safe}}</h3>
+        <div class="donnee">{{item.text|markdown|safe}}</div>
+      </div>
+
+      <div class="container_data">
+        <h3 class="libelle">{{form.incipit.label|safe}}</h3>
+        <div class="donnee">{{item.incipit|markdown|safe}}</div>
+      </div>
+
+      <div class="container_data">
+        <h3 class="libelle">{{form.refrain.label|safe}}</h3>
+        <div class="donnee">{{item.refrain|markdown|safe}}</div>
+      </div>
+
+      <div class="container_data">
+        <h3 class="libelle">{{form.jingle.label|safe}}</h3>
+        <div class="donnee">{{item.jingle|markdown|safe}}</div>
+      </div>
+    </section>
 
     <!-- Tab Vox/Instruments ----------------------------------->
-    <div class="tab-pane" id="tab_vox">
+    <section class="tab-pane" id="tab_vox">
       {% related_list libelle='Organisation musicale' items=item.musical_organizations url_detail="musical_organization-detail" field="name" %}
       {% related_list libelle='Formation musicale' items=item.musical_groups url_detail="musical_group-detail" field="name" %}
       <div class="block-grey">
@@ -247,10 +267,10 @@
           {% endfor %}
         </span>
       </div>
-    </div>
+    </section>
 
     <!-- Tab Player/Markers ------------------------------------>
-    <div class="tab-pane" id="tab_mark">
+    <section class="tab-pane" id="tab_mark">
       {% block player %}
 
       <div id="player_maximized" class="ts-skin-lab">
@@ -306,7 +326,7 @@
 
           <!--</div>-->
 
-      </div>
+      </section>
 
       {% endblock player %}
     </div>
