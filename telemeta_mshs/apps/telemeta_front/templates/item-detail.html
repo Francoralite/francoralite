@@ -135,16 +135,16 @@
   <div class="tab-content">
     <!-- Tab General -->
     <section class="tab-pane fade active in" id="tab_general">
-
+      <h2>Général</h2>
       <div class="container_line">
-        <span class="container_data">
-          <span class="libelle"> {{form.collection.label|safe}}</span>
-          <span class="donnee">
+        <div class="container_data">
+          <h3 class="libelle"> {{form.collection.label|safe}}</h3>
+          <div class="donnee">
             <a href="{% url "collection-detail" id=item.collection.id %}">
               {{item.collection.title|safe}}
             </a>
-          </span>
-        </span>
+          </div>
+        </div>
         {% field_data form.title.label|safe item.title|safe %}
         {% field_data form.alt_title.label|safe item.alt_title|safe %}
         {% field_data form.trans_title.label|safe item.trans_title|safe %}
@@ -178,23 +178,43 @@
 
     <!-- Tab Description --------------------------------------->
     <section class="tab-pane" id="tab_desc">
+      <h2>Description</h2>
       {% related_list libelle='Auteurs' items=item.authors url_detail="personne-detail" field="first_name" field2="last_name"%}
       {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name"%}
       {% field_data form.timbre.label|safe item.timbre|safe %}
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
       {% field_data form.melody.label|safe item.melody|safe %}
       {% field_data form.domains.label|safe item.domains|safe %}
+      <div class="container_data">
+        <h3 class="libelle">{{form.timbre.label|safe}}</h3>
+        <div class="donnee">{{item.timbre|markdown|safe}}</div>
+      </div>
+
+      <div class="container_data">
+        <h3 class="libelle">{{form.timbre_ref.label|safe}}</h3>
+        <div class="donnee">{{item.timbre_ref|markdown|safe}}</div>
+      </div>
+
+      <div class="container_data">
+        <h3 class="libelle">{{form.melody.label|safe}}</h3>
+        <div class="donnee">{{item.melody|markdown|safe}}</div>
+      </div>
+
+      <div class="container_data">
+        <h3 class="libelle">{{form.domains.label|safe}}</h3>
+        <div class="donnee">{{item.domains|markdown|safe}}</div>
+      </div>
 
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
 
-      <div class="block-grey">
+      <aside class="block-grey">
         <h2>{% trans "Témoignage" %}</h2>
         {% field_data form.deposit_digest.label|safe item.deposit_digest|markdown|safe %}
         {% field_data form.deposit_names.label|safe item.deposit_names|safe %}
         {% field_data form.deposit_places.label|safe item.deposit_places|safe %}
         {% field_data form.deposit_periods.label|safe item.deposit_periods|safe %}
-      </div>
+      </aside>
     </section>
 
     <!-- Tab Text ---------------------------------------------->
@@ -228,9 +248,10 @@
 
     <!-- Tab Vox/Instruments ----------------------------------->
     <section class="tab-pane" id="tab_vox">
+      <h2>{% trans "Voix/Instruments" %}</h2>
       {% related_list libelle='Organisation musicale' items=item.musical_organizations url_detail="musical_organization-detail" field="name" %}
       {% related_list libelle='Formation musicale' items=item.musical_groups url_detail="musical_group-detail" field="name" %}
-      <div class="block-grey">
+      <aside class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>
         <span class="container_data">
           {% for performance in item.performances %}
@@ -266,11 +287,12 @@
           </div>
           {% endfor %}
         </span>
-      </div>
+      </aside>
     </section>
 
     <!-- Tab Player/Markers ------------------------------------>
     <section class="tab-pane" id="tab_mark">
+      <h2>{% trans "Marqueurs" %}</h2>
       {% block player %}
 
       <div id="player_maximized" class="ts-skin-lab">

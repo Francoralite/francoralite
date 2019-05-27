@@ -1313,7 +1313,7 @@ a:focus,div:focus{
 .block-grey {
     background-color: #f1f1f1;
     padding: 1em;
-    margin-bottom: 1em;
+    margin: 2em 0;
     -moz-border-radius: 8px 0px 8px 8px;
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
