@@ -17,6 +17,7 @@ class FondDetail(FrancoraliteTemplateView):
         try:
             context = super(FondDetail, self).get_context_data(**kwargs)
             # Obtain values of the record fond
+            context['form'] = FondForm()
             context['fond'] = tools.request_api(
                 '/api/fond/' + context['id'])
             # Obtain values of related fonds
