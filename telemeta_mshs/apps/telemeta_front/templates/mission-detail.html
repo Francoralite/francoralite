@@ -56,14 +56,14 @@
   <div class="tab-content">
     <div class="tab-pane fade in active" id="tab_general">
       <div class="container_line">
-          <span class="container_data">
-            <span class="libelle"> {{form.fonds.label|safe}}</span>
-          <span class="donnee">
+          <div class="container_data">
+            <p class="libelle"> {{form.fonds.label|safe}}</p>
+          <div class="donnee">
             <a href="{% url "fond-detail" id=mission.fonds.id %}">
               {{mission.fonds.title|safe}}
             </a>
-          </span>
-        </span>
+          </div>
+        </div>
         {% field_data form.code_partner.label|safe mission.code_partner|safe %}
         {% field_data form.code.label mission.code|upper|safe %}
         {% field_data form.title.label|safe mission.title|safe %}
@@ -76,33 +76,33 @@
 
       <div class="block-grey">
         <h2>{% trans "Période" %}</h2>
-        {% trans "Années d'enregistrement" %}
+        <h3>{% trans "Années d'enregistrement" %}</h3>
         <div class="container_line">
-          <span class="container_data">
-            <span class="libelle"> {% trans 'Depuis' %}</span>
-            <span class="donnee"></span>
-          </span>
-          <span class="container_data">
-            <span class="libelle"> {% trans "Jusqu\'à" %}</span>
-            <span class="donnee"></span>
-          </span>
-          <span class="container_data">
-            <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
-            <span class="donnee"></span>
-          </span>
+          <div class="container_data">
+            <p class="libelle"> {% trans 'Depuis' %}</p>
+            <div class="donnee"></div>
+          </div>
+          <div class="container_data">
+            <p class="libelle"> {% trans "Jusqu\'à" %}</p>
+            <div class="donnee"></div>
+          </div>
+          <div class="container_data">
+            <p class="libelle"> {% trans 'Durée totale disponible' %}</p>
+            <div class="donnee"></div>
+          </div>
         </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Collecteurs' %}</span>
-          <span class="donnee"></span>
-        </span>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Informateurs' %}</span>
-          <span class="donnee"></span>
-        </span>
+        <div class="container_data">
+          <p class="libelle"> {% trans 'Collecteurs' %}</p>
+          <div class="donnee"></div>
+        </div>
+        <div class="container_data">
+          <p class="libelle"> {% trans 'Informateurs' %}</p>
+          <div class="donnee"></div>
+        </div>
       </div>
 
     </div>

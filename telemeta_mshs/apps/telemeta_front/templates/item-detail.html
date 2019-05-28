@@ -138,7 +138,7 @@
       <h2>Général</h2>
       <div class="container_line">
         <div class="container_data">
-          <h3 class="libelle"> {{form.collection.label|safe}}</h3>
+          <p class="libelle"> {{form.collection.label|safe}}</p>
           <div class="donnee">
             <a href="{% url "collection-detail" id=item.collection.id %}">
               {{item.collection.title|safe}}
@@ -186,22 +186,22 @@
       {% field_data form.melody.label|safe item.melody|safe %}
       {% field_data form.domains.label|safe item.domains|safe %}
       <div class="container_data">
-        <h3 class="libelle">{{form.timbre.label|safe}}</h3>
+        <p class="libelle">{{form.timbre.label|safe}}</p>
         <div class="donnee">{{item.timbre|markdown|safe}}</div>
       </div>
 
       <div class="container_data">
-        <h3 class="libelle">{{form.timbre_ref.label|safe}}</h3>
+        <p class="libelle">{{form.timbre_ref.label|safe}}</p>
         <div class="donnee">{{item.timbre_ref|markdown|safe}}</div>
       </div>
 
       <div class="container_data">
-        <h3 class="libelle">{{form.melody.label|safe}}</h3>
+        <p class="libelle">{{form.melody.label|safe}}</p>
         <div class="donnee">{{item.melody|markdown|safe}}</div>
       </div>
 
       <div class="container_data">
-        <h3 class="libelle">{{form.domains.label|safe}}</h3>
+        <p class="libelle">{{form.domains.label|safe}}</p>
         <div class="donnee">{{item.domains|markdown|safe}}</div>
       </div>
 
@@ -221,27 +221,27 @@
     <section class="tab-pane" id="tab_text">
       <h2>Texte</h2>
       <div class="container_data">
-        <h3 class="libelle">{{form.text_bool.label|safe}}</h3>
+        <p class="libelle">{{form.text_bool.label|safe}}</p>
         <div class="donnee">{{item.text_bool|markdown|safe}}</div>
       </div>
 
       <div class="container_data">
-        <h3 class="libelle">{{form.text.label|safe}}</h3>
+        <p class="libelle">{{form.text.label|safe}}</p>
         <div class="donnee">{{item.text|markdown|safe}}</div>
       </div>
 
       <div class="container_data">
-        <h3 class="libelle">{{form.incipit.label|safe}}</h3>
+        <p class="libelle">{{form.incipit.label|safe}}</p>
         <div class="donnee">{{item.incipit|markdown|safe}}</div>
       </div>
 
       <div class="container_data">
-        <h3 class="libelle">{{form.refrain.label|safe}}</h3>
+        <p class="libelle">{{form.refrain.label|safe}}</p>
         <div class="donnee">{{item.refrain|markdown|safe}}</div>
       </div>
 
       <div class="container_data">
-        <h3 class="libelle">{{form.jingle.label|safe}}</h3>
+        <p class="libelle">{{form.jingle.label|safe}}</p>
         <div class="donnee">{{item.jingle|markdown|safe}}</div>
       </div>
     </section>
@@ -256,33 +256,33 @@
         <span class="container_data">
           {% for performance in item.performances %}
           <div class="container_line">
-              <span class="container_data">
-                <span class="libelle">{% trans 'Nombre' %}</span>
-                <span class="donnee">{{performance.number}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans 'Instrument' %}</span>
-                <span class="donnee">{{performance.instrument.name}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans 'Typologie Horn-Bostel' %}</span>
-                <span class="donnee">{{performance.instrument.typology.number}} :
-                {{performance.instrument.typology.name}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans "Nature de l'émission vocale" %}</span>
-                <span class="donnee">{{performance.emit.name}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans 'Musiciens' %}</span>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Nombre' %}</p>
+                <div class="donnee">{{performance.number}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Instrument' %}</p>
+                <div class="donnee">{{performance.instrument.name}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Typologie Horn-Bostel' %}</p>
+                <div class="donnee">{{performance.instrument.typology.number}} :
+                {{performance.instrument.typology.name}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans "Nature de l'émission vocale" %}</p>
+                <div class="donnee">{{performance.emit.name}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Musiciens' %}</p>
                 {{performers}}
-                <span class="donnee">
+                <div class="donnee">
                   {% for musician in performance.musicians %}
                     {% if not forloop.first %} | {% endif %}
                     {{musician.first_name}}  {{musician.last_name}}
                   {% endfor %}
-                </span>
-              </span>
+                </div>
+              </div>
 
           </div>
           {% endfor %}

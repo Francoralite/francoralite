@@ -58,14 +58,14 @@
   <div class="tab-content">
     <div class="tab-pane fade in active" id="tab_general">
       <div class="container_line">
-        <span class="container_data">
-          <span class="libelle"> {{form.mission.label|safe}}</span>
-          <span class="donnee">
+        <div class="container_data">
+          <p class="libelle"> {{form.mission.label|safe}}</p>
+          <div class="donnee">
             <a href="{% url "mission-detail" id=collection.mission.id %}">
               {{collection.mission.title|safe}}
             </a>
-          </span>
-        </span>
+          </div>
+        </div>
         {% field_data form.code_partner.label|safe collection.code_partner|safe %}
         {% field_data form.code.label|safe collection.code|upper|safe %}
         {% field_data form.title.label|safe collection.title|safe %}
@@ -78,28 +78,28 @@
 
       <div class="block-grey">
         <h2>{% trans "Période" %}</h2>
-        {% trans "Années d'enregistrement" %}
+        <h3>{% trans "Années d'enregistrement" %}</h3>
         <div class="container_line">
-          <span class="container_data">
-            <span class="libelle"> {% trans 'Depuis' %}</span>
+          <div class="container_data">
+            <p class="libelle"> {% trans 'Depuis' %}</p>
+            <div class="donnee"></div>
+          </div>
+          <div class="container_data">
+            <p class="libelle"> {% trans "Jusqu\'à" %}</p>
             <span class="donnee"></span>
-          </span>
-          <span class="container_data">
-            <span class="libelle"> {% trans "Jusqu\'à" %}</span>
-            <span class="donnee"></span>
-          </span>
-          <span class="container_data">
-            <span class="libelle"> {% trans 'Durée totale disponible' %}</span>
-            <span class="donnee"></span>
-          </span>
+          </div>
+          <div class="container_data">
+            <p class="libelle"> {% trans 'Durée totale disponible' %}</p>
+            <div class="donnee"></div>
+          </div>
         </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Collecteurs' %}</span>
-          <span class="donnee">
+        <div class="container_data">
+          <p class="libelle"> {% trans 'Collecteurs' %}</p>
+          <div class="donnee">
             {% for collector in collection.collectors %}
               {% if not forloop.first %} | {% endif %}
               <a href="{% url "personne-detail" id=collector.id %}"
@@ -107,11 +107,11 @@
                 {{collector.first_name}} {{collector.last_name}}
               </a>
             {% endfor %}
-            </span>
-        </span>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Informateurs' %}</span>
-          <span class="donnee">
+            </div>
+        </div>
+        <div class="container_data">
+          <p class="libelle"> {% trans 'Informateurs' %}</p>
+          <div class="donnee">
             {% for informer in collection.informers %}
               {% if not forloop.first %} | {% endif %}
               <a href="{% url "personne-detail" id=informer.id %}"
@@ -119,15 +119,15 @@
                 {{informer.first_name}} {{informer.last_name}}
               </a>
             {% endfor %}
-          </span>
-        </span>
+          </div>
+        </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Localisation" %}</h2>
-        <span class="container_data">
-          <span class="libelle"> {% trans 'Lieux' %}</span>
-          <span class="donnee">
+        <div class="container_data">
+          <p class="libelle"> {% trans 'Lieux' %}</p>
+          <div class="donnee">
             {% for location in collection.locations %}
               {% if not forloop.first %} | {% endif %}
               <a href="{% url "location_gis-detail" id=location.id %}"
@@ -135,69 +135,69 @@
                 {{location.code}}
               </a>
             {% endfor %}
-          </span>
-        </span>
+          </div>
+        </div>
         {% field_data form.location_details.label|safe collection.location_details|markdown|safe %}
         {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
       </div>
 
-      <span class="container_data">
-        <span class="libelle"> {% trans 'Langues' %}</span>
-        <span class="donnee">
+      <div class="container_data">
+        <p class="libelle"> {% trans 'Langues' %}</p>
+        <div class="donnee">
           {% for language in collection.languages %}
             {% if not forloop.first %} | {% endif %}
               {{language.name}}
           {% endfor %}
-        </span>
-      </span>
+        </div>
+      </div>
 
-      <span class="container_data">
-        <span class="libelle"> {% trans 'Editeurs' %}</span>
-        <span class="donnee">
+      <div class="container_data">
+        <p class="libelle"> {% trans 'Editeurs' %}</p>
+        <div class="donnee">
           {% for publisher in collection.publishers %}
             {% if not forloop.first %} | {% endif %}
               {{publisher.value}}
           {% endfor %}
-        </span>
-      </span>
+        </div>
+      </div>
 
 
       <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>
-        <span class="container_data">
+        <div class="container_data">
           {% for performance in collection.performances %}
           <div class="container_line">
-              <span class="container_data">
-                <span class="libelle">{% trans 'Nombre' %}</span>
-                <span class="donnee">{{performance.number}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans 'Instrument' %}</span>
-                <span class="donnee">{{performance.instrument.name}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans 'Typologie Horn-Bostel' %}</span>
-                <span class="donnee">{{performance.instrument.typology.number}} :
-                {{performance.instrument.typology.name}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans "Nature de l'émission vocale" %}</span>
-                <span class="donnee">{{performance.emit.name}}</span>
-              </span>
-              <span class="container_data">
-                <span class="libelle">{% trans 'Musiciens' %}</span>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Nombre' %}</p>
+                <div class="donnee">{{performance.number}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Instrument' %}</p>
+                <div class="donnee">{{performance.instrument.name}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Typologie Horn-Bostel' %}</p>
+                <div class="donnee">{{performance.instrument.typology.number}} :
+                {{performance.instrument.typology.name}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans "Nature de l'émission vocale" %}</p>
+                <div class="donnee">{{performance.emit.name}}</div>
+              </div>
+              <div class="container_data">
+                <p class="libelle">{% trans 'Musiciens' %}</p>
                 {{performers}}
-                <span class="donnee">
+                <div class="donnee">
                   {% for musician in performance.musicians %}
                     {% if not forloop.first %} | {% endif %}
                     {{musician.first_name}}  {{musician.last_name}}
                   {% endfor %}
-                </span>
-              </span>
+                </div>
+              </div>
 
           </div>
           {% endfor %}
-        </span>
+        </div>
       </div>
     </div>
 

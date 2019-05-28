@@ -2,7 +2,7 @@
 {% load data_display %}
 
 <div class="container_data">
-  <h3 class="libelle"> {% trans libelle %}</h3>
+  <p class="libelle"> {% trans libelle %}</p>
   <div class="donnee">
     {% for item in items %}
       {% if not forloop.first %} | {% endif %}
