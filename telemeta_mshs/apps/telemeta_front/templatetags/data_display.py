@@ -70,6 +70,16 @@ def modal_delete():
     return {}
 
 
+@register.inclusion_tag('inc/select-vue-item.html')
+def select_vue_item():
+    return {}
+
+
+@register.inclusion_tag('inc/select-vue-collection.html')
+def select_vue_collection():
+    return {}
+
+
 @register.inclusion_tag('inc/buttons-form.html', takes_context=True)
 def buttons_form(context):
     request = context['request']

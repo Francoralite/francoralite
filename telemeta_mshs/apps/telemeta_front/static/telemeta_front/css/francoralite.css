@@ -310,6 +310,14 @@ label.disabled { color: #d7d7d7 }
     background: none;
 }
 
+/**/
+.has-warning > label {
+    color: black !important;
+}
+
+.container > form {
+  margin-top: 2em;
+}
 /* Quick search */
 #quick_search {
     position: absolute;

@@ -1,0 +1,477 @@
+<script type="application/javascript">
+Vue.component('v-select', VueSelect.VueSelect)
+
+new Vue({
+  delimiters: ['${', '}'],
+  el: '#app',
+  data: {
+      collectors: [],
+      optionsCollectors: [],
+      informers: [],
+      optionsInformers: [],
+      languages: [],
+      optionsLanguages: [],
+      authors: [],
+      optionsAuthors: [],
+      usefulnesses: [],
+      optionsCompositors: [],
+      compositors: [],
+      optionsDomainsongs: [],
+      domainsongs: [],
+      optionsDomainvocals: [],
+      domainvocals: [],
+      optionsDomainmusics: [],
+      domainmusics: [],
+      optionsDomaintales: [],
+      domaintales: [],
+      optionsUsefullness: [],
+      dances: [],
+      optionsDances: [],
+      thematics: [],
+      optionsThematics: [],
+      musical_organizations: [],
+      optionsMusicalOrganizations: [],
+      musical_groups: [],
+      optionsMusicalGroups: [],
+      lines: [],
+      optionsEmit: [],
+      optionsMusicians: [],
+      optionsInstruments: [],
+  },
+  watch: {
+    lines () {
+      this.blockRemoval = this.lines.length <= 1
+    }
+  },
+  computed: {
+  },
+  methods: {
+    searchRelated:
+    _.debounce((loading, search, vm, url, options, entity)=>
+    {
+      axios.get(url).then(
+      res => {
+        for(i = 0; i < res.data.length; i++) {
+          res.data[i].url= "/"+entity+"/"+res.data[i].id;
+        };
+        vm[options] = res.data;
+      }
+      );
+      loading(false);
+    }),
+    onSearchCollectors(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsCollectors',
+        'authority'
+       );
+    },
+    onSearchInformers(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsInformers',
+        'authority'
+       );
+    },
+    onSearchLanguages(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/language/?ordering=name&search=${escape(search)}`,
+        'optionsLanguages',
+        'language'
+       );
+    },
+    onSearchAuthors(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/authority/?is_author=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsAuthors',
+        'authority'
+       );
+    },
+    onSearchCompositors(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/authority/?is_compositor=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsCompositors',
+        'authority'
+       );
+    },
+    onSearchDomainsongs(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/domain_song/?search=${escape(search)}`,
+        'optionsDomainsongs',
+        'domain_song'
+       );
+    },
+    onSearchDomainvocals(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/domain_vocal/?search=${escape(search)}`,
+        'optionsDomainvocals',
+        'domain_vocal'
+       );
+    },
+    onSearchDomainmusics(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/domain_music/?search=${escape(search)}`,
+        'optionsDomainmusics',
+        'domain_music'
+       );
+    },
+    onSearchDomaintales(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/domain_tale/?search=${escape(search)}`,
+        'optionsDomaintales',
+        'domain_tale'
+       );
+    },
+    onSearchUsefulness(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/usefulness/?search=${escape(search)}`,
+        'optionsUsefullness',
+        'usefulness'
+       );
+    },
+    onSearchDance(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/dance/?search=${escape(search)}`,
+        'optionsDances',
+        'dance'
+       );
+    },
+    onSearchThematics(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/thematic/?search=${escape(search)}`,
+        'optionsThematics',
+        'thematic'
+       );
+    },
+    onSearchMusicians(search, loading) {
+      loading(true);
+      this.optionsMusicians = this.informers
+      loading(false);
+    },
+    onSearchInstruments(search, loading) {
+        loading(true);
+        this.searchRelated(
+          loading, search, this,
+           `/api/instrument/?ordering=name&search=${escape(search)}`,
+           'optionsInstruments',
+           'instrument'
+        );
+    },
+    onSearchMusicalOrganizations(search, loading) {
+        loading(true);
+        this.searchRelated(
+          loading, search, this,
+           `/api/musical_organization/?ordering=name&search=${escape(search)}`,
+           'optionsMusicalOrganizations',
+           'musical_organization'
+        );
+    },
+    onSearchMusicalGroups(search, loading) {
+        loading(true);
+        this.searchRelated(
+          loading, search, this,
+           `/api/musical_group/?ordering=name&search=${escape(search)}`,
+           'optionsMusicalGroups',
+           'musical_group'
+        );
+    },
+    getRelated: function(url, field, rel_entity, entity){
+       // Get the data from a related table to display it in a field
+       axios.get(url).then(
+       res => {
+         console.log(res.data)
+         for(i = 0; i < res.data.length; i++) {
+           res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+         }
+         var listRelated = [];
+         for( var item in res.data) {
+           // Fill the list of related
+           listRelated.push(res.data[item][rel_entity]);
+         }
+         // Use the list of related to feeds the select
+         this[field] = listRelated;
+       });
+    },
+    getCollectors: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/collector`,
+         'collectors',
+         'collector',
+         'authority'
+       );
+    },
+    getInformers: function(){
+      this.getRelated(
+        `/api/collection/${escape({{id}})}/informer`,
+        'informers',
+        'informer',
+        'authority'
+      );
+    },
+    getLanguages: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/language`,
+         'languages',
+         'language',
+         'language'
+       );
+    },
+    getAuthors: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/author`,
+         'authors',
+         'author',
+         'authority'
+       );
+    },
+    getCompositors: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/compositor`,
+         'compositors',
+         'compositor',
+         'authority'
+       );
+    },
+    getDomainsongs: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/domain_song`,
+         'domainsongs',
+         'domainsong',
+         'domain_song'
+       );        <!-- Musical organization -->
+    },
+    getDomainvocals: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/domain_vocal`,
+         'domainvocals',
+         'domainvocal',
+         'domain_vocal'
+       );
+    },
+    getDomainmusics: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/domain_music`,
+         'domainmusics',
+         'domainmusic',
+         'domain_music'
+       );
+    },
+    getDomaintales: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/domain_tale`,
+         'domaintales',
+         'domaintale',
+         'domain_tale'
+       );
+    },
+    getUsefulness: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/usefulness`,
+         'usefulnesses',
+         'usefulness',
+         'usefulness'
+       );
+    },
+    getDance: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/dance`,
+         'dances',
+         'dance',
+         'dance'
+       );
+    },
+    getThematics: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/thematic`,
+         'thematics',
+         'thematic',
+         'thematic'
+       );
+    },
+    getMusicalOrganizations: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/musical_organization`,
+         'musical_organizations',
+         'musical_organization',
+         'musical_organization'
+       );
+    },
+    getMusicalGroups: function(){
+       this.getRelated(
+         `/api/item/${escape({{id}})}/musical_group`,
+         'musical_groups',
+         'musical_group',
+         'musical_group'
+       );
+    },
+    getEmits: function(){
+     axios.get('/api/emit_vox/').then(response => {
+       this.optionsEmit = response.data;
+      });
+    },
+    getLines: function(){
+      // Get all performances, one per line
+      axios.get(`/api/item/${escape({{id}})}/performance/`).then(
+      res => {
+        // For each performance ...
+        for( var item in res.data) {
+          var rel_entity = 'musician'
+          var url = `/api/item/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician/`;
+          var listRelated = []; // list of musicians
+          // ... Get all musicians for a line (performance)
+          axios.get(url).then(
+          res => {
+            for(i = 0; i < res.data.length; i++) {
+              res.data[i][rel_entity].url= "/authority/"+res.data[i][rel_entity].id;
+            }
+            for( var item2 in res.data) {
+              // Fill the list of related
+              listRelated.push(res.data[item2][rel_entity]);
+            }
+          });
+
+          // Fill the performances
+          this.lines.push(
+          {
+            number: res.data[item].number,
+            instrument: res.data[item].instrument,
+            emit: res.data[item].emit.id,
+            informers: listRelated,
+            id: res.data[item].id
+          });
+        }
+      });
+    },
+    replacer: function(key,value,field){
+       if(value.length > 0){
+         items=[];
+         for(i = 0; i< value.length; i++){
+           var dict = {};
+           dict[field] = value[i].id;
+           items.push(dict);
+         };
+         return items;
+       };
+       return value;
+    },
+    replacerCollector: function(key,value){
+       return this.replacer(key,value,"collector");
+    },
+    replacerInformer: function(key,value){
+      return this.replacer(key,value,"informer");
+    },
+    replacerLanguage: function(key,value){
+       return this.replacer(key,value,"language");
+    },
+    replacerAuthor: function(key,value){
+       return this.replacer(key,value,"author");
+    },
+    replacerCompositor: function(key,value){
+       return this.replacer(key,value,"compositor");
+    },
+    replacerDomainsong: function(key,value){
+       return this.replacer(key,value,"domainsong");
+    },
+    replacerDomainvocal: function(key,value){
+       return this.replacer(key,value,"domainvocal");
+    },
+    replacerDomainmusic: function(key,value){
+       return this.replacer(key,value,"domainmusic");
+    },
+    replacerDomaintale: function(key,value){
+       return this.replacer(key,value,"domaintale");
+    },
+    replacerUsefulness: function(key,value){
+       return this.replacer(key,value,"usefulness");
+    },
+    replacerDance: function(key,value){
+       return this.replacer(key,value,"dance");
+    },
+    replacerThematic: function(key,value){
+       return this.replacer(key,value,"thematic");
+    },
+    replacerMusicalOrganization: function(key,value){
+       return this.replacer(key,value,"musical_organization");
+    },
+    replacerMusicalGroup: function(key,value){
+       return this.replacer(key,value,"musical_group");
+    },
+    replacerPerformance: function(key,value){
+      if(key=="instrument"){
+        return value.id;
+      };
+
+      if(key=="informers"){
+        if(value.length > 0){
+          musicians=[];
+          for(i = 0; i< value.length; i++){
+            musicians.push({
+              musician: value[i].id
+            });
+          };
+          return musicians;
+        };
+        return undefined;
+      };
+
+      return value;
+    },
+    addLine(){
+      let checkEmptyLines = this.lines.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
+      this.lines.push({
+       number: "1"
+      });
+    },
+    removeLine (lineId) {
+      if (!this.blockRemoval) this.lines.splice(lineId, 1)
+    },
+  },
+  mounted: function () {
+    this.getEmits();
+    {% if id %}
+    this.getCollectors();
+    this.getInformers();
+    this.getLanguages();
+    this.getAuthors();
+    this.getCompositors();
+    this.getDomainsongs();
+    this.getDomainvocals();
+    this.getDomainmusics();
+    this.getDomaintales();
+    this.getUsefulness();
+    this.getDance();
+    this.getThematics();
+    this.getMusicalOrganizations();
+    this.getMusicalGroups();
+    this.getLines();
+    {% else %}
+    this.addLine();
+    {% endif %}
+  }
+})
+</script>
