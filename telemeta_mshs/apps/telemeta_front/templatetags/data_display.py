@@ -25,9 +25,9 @@ def field_data(label, data):
     except Exception:
         str_data = data
 
-    code = "<div class=\"container_data\"><p class=\"libelle\">"
-    code = code + str_label + "</p> <div class=\"donnee\" >"
-    code = code + str_data + "</div> </div>"
+    code = "<dl class=\"container_data\"><dt class=\"libelle\">"
+    code = code + str_label + "</dt> <dd class=\"donnee\" >"
+    code = code + str_data + "</dd> </dl>"
 
     return code
 
@@ -37,10 +37,10 @@ def field_data_bool(label, data):
     icon = ""
     if data is True:
         icon = "glyphicon-ok "
-    code = "<div class=\"container_data\"><p class=\"libelle\">"
-    code = code + str(label) + "</p> <div class=\" center glyphicon "
+    code = "<dl class=\"container_data\"><dt class=\"libelle\">"
+    code = code + str(label) + "</dt> <dd class=\" center glyphicon "
     code = code + icon + "donnee\" >"
-    code = code + "</div> </div>"
+    code = code + "</dd> </dl>"
 
     return code
 

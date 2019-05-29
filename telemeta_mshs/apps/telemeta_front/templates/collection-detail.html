@@ -56,16 +56,16 @@
 
   <!-- Onglet Fiche en cours -->
   <div class="tab-content">
-    <div class="tab-pane fade in active" id="tab_general">
+    <section class="tab-pane fade in active" id="tab_general">
       <div class="container_line">
-        <div class="container_data">
-          <p class="libelle"> {{form.mission.label|safe}}</p>
-          <div class="donnee">
+        <dl class="container_data">
+          <dt class="libelle"> {{form.mission.label|safe}}</dt>
+          <dd class="donnee">
             <a href="{% url "mission-detail" id=collection.mission.id %}">
               {{collection.mission.title|safe}}
             </a>
-          </div>
-        </div>
+          </dd>
+        </dl>
         {% field_data form.code_partner.label|safe collection.code_partner|safe %}
         {% field_data form.code.label|safe collection.code|upper|safe %}
         {% field_data form.title.label|safe collection.title|safe %}
@@ -80,26 +80,26 @@
         <h2>{% trans "Période" %}</h2>
         <h3>{% trans "Années d'enregistrement" %}</h3>
         <div class="container_line">
-          <div class="container_data">
-            <p class="libelle"> {% trans 'Depuis' %}</p>
-            <div class="donnee"></div>
-          </div>
-          <div class="container_data">
-            <p class="libelle"> {% trans "Jusqu\'à" %}</p>
-            <span class="donnee"></span>
-          </div>
-          <div class="container_data">
-            <p class="libelle"> {% trans 'Durée totale disponible' %}</p>
-            <div class="donnee"></div>
-          </div>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Depuis' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
         </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
-        <div class="container_data">
-          <p class="libelle"> {% trans 'Collecteurs' %}</p>
-          <div class="donnee">
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dd class="donnee">
             {% for collector in collection.collectors %}
               {% if not forloop.first %} | {% endif %}
               <a href="{% url "personne-detail" id=collector.id %}"
@@ -107,11 +107,11 @@
                 {{collector.first_name}} {{collector.last_name}}
               </a>
             {% endfor %}
-            </div>
-        </div>
-        <div class="container_data">
-          <p class="libelle"> {% trans 'Informateurs' %}</p>
-          <div class="donnee">
+          </dd>
+        </dl>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+          <dd class="donnee">
             {% for informer in collection.informers %}
               {% if not forloop.first %} | {% endif %}
               <a href="{% url "personne-detail" id=informer.id %}"
@@ -119,15 +119,15 @@
                 {{informer.first_name}} {{informer.last_name}}
               </a>
             {% endfor %}
-          </div>
-        </div>
+          </dd>
+        </dl>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Localisation" %}</h2>
-        <div class="container_data">
-          <p class="libelle"> {% trans 'Lieux' %}</p>
-          <div class="donnee">
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Lieux' %}</dt>
+          <dd class="donnee">
             {% for location in collection.locations %}
               {% if not forloop.first %} | {% endif %}
               <a href="{% url "location_gis-detail" id=location.id %}"
@@ -135,31 +135,31 @@
                 {{location.code}}
               </a>
             {% endfor %}
-          </div>
-        </div>
+          </dd>
+        </dl>
         {% field_data form.location_details.label|safe collection.location_details|markdown|safe %}
         {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
       </div>
 
-      <div class="container_data">
-        <p class="libelle"> {% trans 'Langues' %}</p>
-        <div class="donnee">
+      <dl class="container_data">
+        <dt class="libelle"> {% trans 'Langues' %}</dt>
+        <dd class="donnee">
           {% for language in collection.languages %}
             {% if not forloop.first %} | {% endif %}
               {{language.name}}
           {% endfor %}
-        </div>
-      </div>
+        </dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle"> {% trans 'Editeurs' %}</p>
-        <div class="donnee">
+      <dl class="container_data">
+        <dt class="libelle"> {% trans 'Editeurs' %}</dt>
+        <dd class="donnee">
           {% for publisher in collection.publishers %}
             {% if not forloop.first %} | {% endif %}
               {{publisher.value}}
           {% endfor %}
-        </div>
-      </div>
+        </dd>
+      </dl>
 
 
       <div class="block-grey">
@@ -167,43 +167,43 @@
         <div class="container_data">
           {% for performance in collection.performances %}
           <div class="container_line">
-              <div class="container_data">
-                <p class="libelle">{% trans 'Nombre' %}</p>
-                <div class="donnee">{{performance.number}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans 'Instrument' %}</p>
-                <div class="donnee">{{performance.instrument.name}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans 'Typologie Horn-Bostel' %}</p>
-                <div class="donnee">{{performance.instrument.typology.number}} :
-                {{performance.instrument.typology.name}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans "Nature de l'émission vocale" %}</p>
-                <div class="donnee">{{performance.emit.name}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans 'Musiciens' %}</p>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Nombre' %}</dt>
+                <dd class="donnee">{{performance.number}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Instrument' %}</dt>
+                <dd class="donnee">{{performance.instrument.name}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Typologie Horn-Bostel' %}</dt>
+                <dd class="donnee">{{performance.instrument.typology.number}} :
+                {{performance.instrument.typology.name}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans "Nature de l'émission vocale" %}</dt>
+                <dd class="donnee">{{performance.emit.name}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Musiciens' %}</dt>
                 {{performers}}
-                <div class="donnee">
+                <dd class="donnee">
                   {% for musician in performance.musicians %}
                     {% if not forloop.first %} | {% endif %}
                     {{musician.first_name}}  {{musician.last_name}}
                   {% endfor %}
-                </div>
-              </div>
+                </dd>
+              </dl>
 
           </div>
           {% endfor %}
         </div>
       </div>
-    </div>
+    </section>
 
 
     <!-- Onglet des items -->
-    <div class="tab-pane fade in" id="tab_item">
+    <section class="tab-pane fade in" id="tab_item">
       {% if items|length > 0 %}
         <!-- Table to display the collections --->
         <table class="listing">
@@ -230,7 +230,7 @@
       {% endif %}
       </div>
     </div>
-  </div>
+  </section>
 
   {% else %}
     <p>{% trans "Cette enquête n'existe pas." %}</p>

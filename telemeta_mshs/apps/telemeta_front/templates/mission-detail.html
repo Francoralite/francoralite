@@ -54,16 +54,16 @@
   </ul>
 
   <div class="tab-content">
-    <div class="tab-pane fade in active" id="tab_general">
+    <section class="tab-pane fade in active" id="tab_general">
       <div class="container_line">
-          <div class="container_data">
-            <p class="libelle"> {{form.fonds.label|safe}}</p>
-          <div class="donnee">
+          <dl class="container_data">
+            <dt class="libelle"> {{form.fonds.label|safe}}</dt>
+          <dd class="donnee">
             <a href="{% url "fond-detail" id=mission.fonds.id %}">
               {{mission.fonds.title|safe}}
             </a>
-          </div>
-        </div>
+          </dd>
+        </dl>
         {% field_data form.code_partner.label|safe mission.code_partner|safe %}
         {% field_data form.code.label mission.code|upper|safe %}
         {% field_data form.title.label|safe mission.title|safe %}
@@ -78,36 +78,36 @@
         <h2>{% trans "Période" %}</h2>
         <h3>{% trans "Années d'enregistrement" %}</h3>
         <div class="container_line">
-          <div class="container_data">
-            <p class="libelle"> {% trans 'Depuis' %}</p>
-            <div class="donnee"></div>
-          </div>
-          <div class="container_data">
-            <p class="libelle"> {% trans "Jusqu\'à" %}</p>
-            <div class="donnee"></div>
-          </div>
-          <div class="container_data">
-            <p class="libelle"> {% trans 'Durée totale disponible' %}</p>
-            <div class="donnee"></div>
-          </div>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Depuis' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
         </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
-        <div class="container_data">
-          <p class="libelle"> {% trans 'Collecteurs' %}</p>
-          <div class="donnee"></div>
-        </div>
-        <div class="container_data">
-          <p class="libelle"> {% trans 'Informateurs' %}</p>
-          <div class="donnee"></div>
-        </div>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dd class="donnee"></dd>
+        </dl>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+          <dd class="donnee"></dd>
+        </dl>
       </div>
 
-    </div>
+    </section>
 
-      <div class="tab-pane fade in" id="tab_collection">
+      <section class="tab-pane fade in" id="tab_collection">
         {% if collections|length > 0 %}
           <!-- Table to display the collections --->
           <table class="listing">
@@ -133,7 +133,7 @@
           </div>
         {% endif %}
         </div>
-    </div>
+    </section>
 
   {% else %}
     <p>{% trans "Cette mission n'existe pas." %}</p>

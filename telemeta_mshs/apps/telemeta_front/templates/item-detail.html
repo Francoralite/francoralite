@@ -137,14 +137,14 @@
     <section class="tab-pane fade active in" id="tab_general">
       <h2>Général</h2>
       <div class="container_line">
-        <div class="container_data">
-          <p class="libelle"> {{form.collection.label|safe}}</p>
-          <div class="donnee">
+        <dl class="container_data">
+          <dt class="libelle"> {{form.collection.label|safe}}</dt>
+          <dd class="donnee">
             <a href="{% url "collection-detail" id=item.collection.id %}">
               {{item.collection.title|safe}}
             </a>
-          </div>
-        </div>
+          </dd>
+        </dl>
         {% field_data form.title.label|safe item.title|safe %}
         {% field_data form.alt_title.label|safe item.alt_title|safe %}
         {% field_data form.trans_title.label|safe item.trans_title|safe %}
@@ -185,25 +185,25 @@
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
       {% field_data form.melody.label|safe item.melody|safe %}
       {% field_data form.domains.label|safe item.domains|safe %}
-      <div class="container_data">
-        <p class="libelle">{{form.timbre.label|safe}}</p>
-        <div class="donnee">{{item.timbre|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.timbre.label|safe}}</dt>
+        <dd class="donnee">{{item.timbre|markdown|safe}}</dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle">{{form.timbre_ref.label|safe}}</p>
-        <div class="donnee">{{item.timbre_ref|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.timbre_ref.label|safe}}</dt>
+        <dd class="donnee">{{item.timbre_ref|markdown|safe}}</dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle">{{form.melody.label|safe}}</p>
-        <div class="donnee">{{item.melody|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.melody.label|safe}}</dt>
+        <dd class="donnee">{{item.melody|markdown|safe}}</dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle">{{form.domains.label|safe}}</p>
-        <div class="donnee">{{item.domains|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.domains.label|safe}}</dt>
+        <dd class="donnee">{{item.domains|markdown|safe}}</dd>
+      </dl>
 
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
@@ -220,30 +220,30 @@
     <!-- Tab Text ---------------------------------------------->
     <section class="tab-pane" id="tab_text">
       <h2>Texte</h2>
-      <div class="container_data">
-        <p class="libelle">{{form.text_bool.label|safe}}</p>
-        <div class="donnee">{{item.text_bool|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.text_bool.label|safe}}</dt>
+        <dd class="donnee">{{item.text_bool|markdown|safe}}</dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle">{{form.text.label|safe}}</p>
-        <div class="donnee">{{item.text|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.text.label|safe}}</dt>
+        <dd class="donnee">{{item.text|markdown|safe}}</dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle">{{form.incipit.label|safe}}</p>
-        <div class="donnee">{{item.incipit|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.incipit.label|safe}}</dt>
+        <dd class="donnee">{{item.incipit|markdown|safe}}</dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle">{{form.refrain.label|safe}}</p>
-        <div class="donnee">{{item.refrain|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.refrain.label|safe}}</dt>
+        <dd class="donnee">{{item.refrain|markdown|safe}}</dd>
+      </dl>
 
-      <div class="container_data">
-        <p class="libelle">{{form.jingle.label|safe}}</p>
-        <div class="donnee">{{item.jingle|markdown|safe}}</div>
-      </div>
+      <dl class="container_data">
+        <dt class="libelle">{{form.jingle.label|safe}}</dt>
+        <dd class="donnee">{{item.jingle|markdown|safe}}</dd>
+      </dl>
     </section>
 
     <!-- Tab Vox/Instruments ----------------------------------->
@@ -256,33 +256,33 @@
         <span class="container_data">
           {% for performance in item.performances %}
           <div class="container_line">
-              <div class="container_data">
-                <p class="libelle">{% trans 'Nombre' %}</p>
-                <div class="donnee">{{performance.number}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans 'Instrument' %}</p>
-                <div class="donnee">{{performance.instrument.name}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans 'Typologie Horn-Bostel' %}</p>
-                <div class="donnee">{{performance.instrument.typology.number}} :
-                {{performance.instrument.typology.name}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans "Nature de l'émission vocale" %}</p>
-                <div class="donnee">{{performance.emit.name}}</div>
-              </div>
-              <div class="container_data">
-                <p class="libelle">{% trans 'Musiciens' %}</p>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Nombre' %}</dt>
+                <dd class="donnee">{{performance.number}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Instrument' %}</dt>
+                <dd class="donnee">{{performance.instrument.name}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Typologie Horn-Bostel' %}</dt>
+                <dd class="donnee">{{performance.instrument.typology.number}} :
+                {{performance.instrument.typology.name}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans "Nature de l'émission vocale" %}</dt>
+                <dd class="donnee">{{performance.emit.name}}</dd>
+              </dl>
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Musiciens' %}</dt>
                 {{performers}}
-                <div class="donnee">
+                <dd class="donnee">
                   {% for musician in performance.musicians %}
                     {% if not forloop.first %} | {% endif %}
                     {{musician.first_name}}  {{musician.last_name}}
                   {% endfor %}
-                </div>
-              </div>
+                </dd>
+              </dl>
 
           </div>
           {% endfor %}

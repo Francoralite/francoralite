@@ -54,16 +54,16 @@
 
   <div class="tab-content">
 
-    <div class="tab-pane fade in active" id="tab_general">
+    <section class="tab-pane fade in active" id="tab_general">
       <div class="container_line">
-        <div class="container_data">
-          <p class="libelle"> {{form.institution.label|safe}}</p>
-          <div class="donnee">
+        <dl class="container_data">
+          <dt class="libelle"> {{form.institution.label|safe}}</dt>
+          <dd class="donnee">
             <a href="{% url "institution-detail" id=fond.institution.id %}">
               {{fond.institution.name|safe}}
             </a>
-          </div>
-        </div>
+          </dd>
+        </dl>
         {% field_data form.code_partner.label|safe fond.code_partner|safe %}
         {% field_data form.code.label|safe fond.code|upper|safe %}
         {% field_data form.title.label|safe fond.title|safe %}
@@ -78,31 +78,31 @@
         <h2>{% trans "Période" %}</h2>
         <h3>{% trans "Années d'enregistrement" %}</h3>
         <div class="container_line">
-          <div class="container_data">
-            <p class="libelle"> {% trans 'Depuis' %}</p>
-            <div class="donnee"></div>
-          </div>
-          <div class="container_data">
-            <p class="libelle"> {% trans "Jusqu\'à" %}</p>
-            <div class="donnee"></div>
-          </div>
-          <div class="container_data">
-            <p class="libelle"> {% trans 'Durée totale disponible' %}</p>
-            <div class="donnee"></div>
-          </div>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Depuis' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
         </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
-        <div class="container_data">
-          <p class="libelle"> {% trans 'Collecteurs' %}</p>
-          <div class="donnee"></div>
-        </div>
-        <div class="container_data">
-          <p class="libelle"> {% trans 'Informateurs' %}</p>
-          <div class="donnee"></div>
-        </div>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dd class="donnee"></dd>
+        </dl>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+          <dd class="donnee"></dd>
+        </dl>
       </div>
 
       <div class="block-grey">
@@ -113,9 +113,9 @@
       {% if fond.comment %}
         {% field_data form.comment.label|safe fond.comment|markdown|safe %}
       {% endif %}
-    </div>
+    </section>
 
-    <div class="tab-pane" id="tab_mission">
+    <section class="tab-pane" id="tab_mission">
       {% if missions|length > 0 %}
         <!-- Table to display the missions --->
         <table class="listing">
@@ -142,7 +142,7 @@
       {% endif %}
 
     </div>
-  </div>
+  </section>
 
 
   {% else %}

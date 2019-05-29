@@ -1,9 +1,9 @@
 {% load i18n %}
 {% load data_display %}
 
-<div class="container_data">
-  <p class="libelle"> {% trans libelle %}</p>
-  <div class="donnee">
+<dl class="container_data">
+  <dt class="libelle"> {% trans libelle %}</dt>
+  <dd class="donnee">
     {% for item in items %}
       {% if not forloop.first %} | {% endif %}
       {% if url_detail %}
@@ -16,5 +16,5 @@
         {% endif %}
       {% if url_detail %}</a>{% endif %}
     {% endfor %}
-  </div>
-</div>
+  </dd>
+</dl>

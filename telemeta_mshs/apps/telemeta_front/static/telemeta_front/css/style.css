@@ -45,17 +45,19 @@
 }
 
 .libelle {
-    margin-right : 2em;
-    margin-bottom: 0.5em;
-    font-weight: bold;
+  margin-right : 2em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+    font-size: 1em;
 }
 
 .donnee {
-    background-color: #ece0d0;
-    padding: 0.5em;
-    padding-bottom: 0.2em;
-    flex-grow: 2;
-    min-height: 2em;
+  background-color: #ece0d0;
+  padding: 0.5em;
+  padding-bottom: 0.2em;
+  flex-grow: 2;
+  min-height: 2em;
+  font-size: 1em;
 }
 
 .form-group.has-warning .control-label:after {

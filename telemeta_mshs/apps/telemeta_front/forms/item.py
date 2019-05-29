@@ -64,7 +64,7 @@ class ItemForm(forms.Form):
     domains = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
         choices=DOMAINS,
-        label=_(u'Domaine()'),
+        label=_(u'Domaine(s)'),
         required=False)
 
     # Description / deposit
@@ -87,7 +87,7 @@ class ItemForm(forms.Form):
     #refrain = forms.CharField(
     #    label=_(u'Refrain'),
     #    widget=forms.Textarea(attrs={"rows": 5, "cols": 20}, required=False))
-    
+
     jingle = forms.CharField(label=_(u'Ritournelle du conte'), required=False)
     # Références
 
