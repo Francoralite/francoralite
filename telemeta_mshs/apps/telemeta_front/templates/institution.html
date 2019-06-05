@@ -47,31 +47,32 @@
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for institution in institutions %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+  <tr>
       <td class="highlight">
           <a href="/institution/{{ institution.id }}/">
             {{ institution.name }}</a>
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
+      {% if user.is_authenticated %}
       <td>
-        {% if user.is_authenticated %}
-        {% buttons %}
         <a href="{% url "institution-edit" id=institution.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-              </button>
-              <button type="button" class="btn btn-default"
-                data-toggle="modal" data-target="#modalDelete"
-                data-name="{{institution.name}}"
-                data-url="{% url "institution-delete" id=institution.id %}">
-                <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
-              </button>
-            {% endbuttons %}
+            <button type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+            </button>
+            <button type="button" class="btn btn-default"
+              data-toggle="modal" data-target="#modalDelete"
+              data-name="{{institution.name}}"
+              data-url="{% url "institution-delete" id=institution.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+            </button>
         </a>
-        {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

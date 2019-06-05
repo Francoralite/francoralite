@@ -208,12 +208,12 @@
         <!-- Table to display the collections --->
         <table class="listing">
         <tr>
-            <th class="highlight">{% trans "cote" %}</th>
+            <th class="highlight">{% trans "Cote" %}</th>
             <th>{% trans "Nom" %}</th>
             <th>{% trans "Description" %}</th>
         </tr>
         {% for item in items %}
-        <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <tr>
             <td class="highlight">
                 <a href="/collection/{{collection.id }}/">
                 {{ collection.code|upper }}</a>

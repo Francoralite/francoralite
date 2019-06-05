@@ -15,15 +15,11 @@
 {% endblock %}
 
 {% block title %}
-<div class="col-md-4">
+
   <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
     style="vertical-align:middle" />
     <h1>{% trans "Fonds" %}</h1>
-</div>
-<div class="col-md-8">
-</div>
-<div class="col-md-0">&nbsp;</div>
-</div>
+
 {% endblock %}
 
 {% block title_buttons %}
@@ -44,19 +40,21 @@
   <!-- Table to display the institutions --->
   <table class="listing">
   <tr>
-      <th class="highlight">{% trans "cote" %}</th>
+      <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for fond in fonds %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+  <tr class="alterne">
       <td class="highlight">
           <a href="/fond/{{ fond.id }}/">
             {{ fond.code|upper }}</a>
       </td>
       <td>{{ fond.title|safe }}</td>
+      {% if user.is_authenticated %}
       <td>
-        {% if user.is_authenticated %}
-        {% buttons %}
         <a href="{% url "fond-edit" id=fond.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
@@ -68,9 +66,8 @@
             data-url="{% url "fond-delete" id=fond.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-        {% endbuttons %}
-        {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

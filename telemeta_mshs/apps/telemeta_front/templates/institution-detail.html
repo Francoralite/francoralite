@@ -51,13 +51,15 @@
     <div class="with-rightcol">
       <table class="listing">
       <tr>
-          <th class="highlight">{% trans "cote" %}</th>
+          <th class="highlight">{% trans "Cote" %}</th>
           <th>{% trans "Nom" %}</th>
           <th>{% trans "Description" %}</th>
-          <th></th>
+          {% if user.is_authenticated %}
+          <th>{% trans "Modifier" %}</th>
+          {% endif %}
       </tr>
       {% for fond in fonds %}
-        <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <tr>
             <td class="highlight">
                 <a href="/fond/{{ fond.id }}/">
                   {{ fond.code|upper|safe }}</a>
@@ -67,9 +69,8 @@
               {% if fond.description %}
               {{ fond.description|markdown|safe }}</td>
               {% endif %}
-            <td>
               {% if user.is_authenticated %}
-                {% buttons %}
+            <td>
                 <a href="{% url "fond-edit" id=fond.id %}">
                       <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
@@ -81,9 +82,9 @@
                     data-url="{% url "fond-delete" id=fond.id %}">
                       <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
                 </button>
-                {% endbuttons %}
-              {% endif %}
+
             </td>
+            {% endif %}
           </tr>
         {% endfor %}
       </table>
