@@ -46,10 +46,12 @@
       <th class="highlight">{% trans "Nom / Prénom" %}</th>
       <th>{% trans "Alias" %}</th>
       <th>{% trans "Rôles" %}</th>
-      <th></th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for personne in personnes %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+  <tr>
       <td class="highlight">
           <a href="{% url "personne-detail"  personne.id %}">
             {{ personne.last_name }} {{personne.first_name}}</a>
@@ -72,9 +74,8 @@
           {{form.is_editor.label}}
         {% endif %}
       </td>
+      {% if user.is_authenticated %}
       <td>
-        {% if user.is_authenticated %}
-        {% buttons %}
         <a href="{% url "personne-edit" id=personne.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
@@ -86,9 +87,9 @@
             data-url="{% url "personne-delete" id=personne.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-        {% endbuttons %}
-        {% endif %}
+
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

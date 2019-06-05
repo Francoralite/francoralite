@@ -40,21 +40,23 @@
   <tr>
       <th class="highlight">{% trans "cote" %}</th>
       <th>{% trans "Nom" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for mission in missions %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+  <tr>
       <td class="highlight">
           <a href="/mission/{{mission.id }}/">
             {{ mission.code|upper }}</a>
       </td>
       <td>{{ mission.title|safe }}</td>
+      {% if user.is_authenticated %}
       <td>
-        {% if user.is_authenticated %}
-        {% buttons %}
         <a href="{% url "mission-edit" id=mission.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-              </button>
+            <button type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+            </button>
         </a>
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
@@ -62,9 +64,8 @@
             data-url="{% url "mission-delete" id=mission.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-        {% endbuttons %}
-        {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

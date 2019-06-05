@@ -38,19 +38,21 @@
   <!-- Table to display the collections --->
   <table class="listing">
   <tr>
-      <th class="highlight">{% trans "cote" %}</th>
+      <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for collection in collections %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+  <tr>
       <td class="highlight">
           <a href="/collection/{{collection.id }}/">
             {{ collection.code|upper }}</a>
       </td>
       <td>{{ collection.title|safe }}</td>
+      {% if user.is_authenticated %}
       <td>
-        {% if user.is_authenticated %}
-        {% buttons %}
         <a href="{% url "collection-edit" id=collection.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
@@ -62,9 +64,8 @@
             data-url="{% url "collection-delete" id=collection.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-        {% endbuttons %}
-        {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

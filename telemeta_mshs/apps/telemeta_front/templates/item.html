@@ -44,19 +44,22 @@
   <!-- Table to display the items --->
   <table class="listing">
   <tr>
-      <th class="highlight">{% trans "cote" %}</th>
+      <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for item in items %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+  <tr>
       <td class="highlight">
           <a href="/item/{{item.id }}/">
             {{ item.code|upper }}</a>
       </td>
       <!--  FIXIT : affichage des champs -->
       <td>{{ item.title|safe }}</td>
+      {% if user.is_authenticated %}
       <td>
-        {% buttons %}
         <a href="{% url "item-edit" id=item.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
@@ -68,8 +71,8 @@
             data-url="{% url "item-delete" id=item.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-        {% endbuttons %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

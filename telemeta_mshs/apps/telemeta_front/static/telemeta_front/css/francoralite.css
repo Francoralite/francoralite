@@ -318,6 +318,9 @@ label.disabled { color: #d7d7d7 }
 .container > form {
   margin-top: 2em;
 }
+
+
+
 /* Quick search */
 #quick_search {
     position: absolute;
@@ -751,12 +754,13 @@ table.listing th.asc a { background-image: url(../images/asc.png) }
 table.listing th.desc a { background-image: url(../images/desc.png) }
 table.listing tbody td, table.listing tbody th {
     padding: .33em .5em;
-    vertical-align: top;
     font-weight: normal;
 }
 table.listing tbody td {
     font-weight: bold;
+    vertical-align: middle;
 }
+
 table.listing tbody td.tmp {
     width: 100%;
 }
@@ -764,9 +768,9 @@ table.listing tbody td a:hover, table.listing tbody th a:hover {
     background-color: transparent;
 }
 table.listing tbody tr { border-top: 1px solid #ddd }
-table.listing tbody tr.even { background-color: #fcfcfc }
-table.listing tbody tr.odd { background-color: #f7f7f7 }
-table.listing tbody tr:hover { background: #f7f8fa !important }
+table.listing tbody tr:hover { background: #cecece !important; }
+table.listing tbody tr:nth-child(even) {background: white;}
+table.listing tbody tr:nth-child(odd) {background: #f7f7f7;}
 
 table td.error {
     color: red;
