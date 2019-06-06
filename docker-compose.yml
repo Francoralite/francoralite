@@ -135,7 +135,7 @@ services:
       services:
         aliases:
           - 'keycloak'
-          - 'keycloak.francoralite.localhost'
+          - 'auth.francoralite.artefacts.coop'
     depends_on:
       - 'keycloak_db'
 

@@ -1,0 +1,31 @@
+---
+
+version: '2.1'
+
+services:
+  nginx:
+    labels:
+      - 'traefik.frontend.rule=Host:app.francoralite.artefacts.coop'
+      - 'traefik.docker.network=services'
+      - 'traefik.enable=true'
+
+  keycloak:
+    labels:
+      - 'traefik.frontend.rule=Host:auth.francoralite.artefacts.coop'
+      - 'traefik.docker.network=services'
+      - 'traefik.enable=true'
+
+  reverse_proxy:
+    image: 'traefik:1.7.11'
+    command:
+      - '--api'
+      - '--docker'
+      - '--docker.domain=francoralite.artefacts.coop'
+      - '--docker.exposedbydefault=false'
+    networks:
+      - 'keycloak'
+      - 'services'
+    ports:
+      - '8080:80'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
