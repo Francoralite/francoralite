@@ -76,11 +76,14 @@ def write_relations(id_main, name_main, selected, url_related, name_related):
 
         # No exists in list of selected : create the related record
         for item in list_to_create:
-            create_record(url_related, item[0], item[1])
+            try:
+                create_record(url_related, item[0], item[1])
+            except Exception:
+                pass
 
         list_intersect = set_selected.intersection(set_related)
         for id in list_intersect:
-                update_record(url_related, id, dict_selected[id])
+            update_record(url_related, id, dict_selected[id])
 
 
 def create_record(url_related, item_selected, obj):

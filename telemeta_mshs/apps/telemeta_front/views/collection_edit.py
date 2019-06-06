@@ -144,7 +144,7 @@ class CollectionEdit(FormView):
                         url_performances + "?ordering=id")
 
                     for performance in performances_selected:
-                        if "id" not in performance:
+                        if "id" not in performance and len(performances) > 0:
                             # The performance wasn't exist.
                             # Search and retrieve the ID of the new performance
                             # in the database

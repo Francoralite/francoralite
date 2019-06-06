@@ -17,20 +17,27 @@ class FondAdd(FormView):
     form_class = FondForm
     success_url = '/fond/'
 
-    def post(self, request, *args, **kwargs):
-
-        form = FondForm(request.POST)
-
+    def form_valid(self, form):
         if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/fond/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/fond/')
-
-            except RequestException:
-                return HttpResponseRedirect('/fond/add')
-
-        return HttpResponseRedirect('/fond/add')
+            requests.post(
+                FRONT_HOST_URL + '/api/fond/',
+                data=form.cleaned_data
+            )
+        return super(FondAdd, self).form_valid(form)
+    # def post(self, request, *args, **kwargs):
+    #
+    #     form = FondForm(request.POST)
+    #
+    #     if form.is_valid():
+    #
+    #         try:
+    #             requests.post(
+    #                 FRONT_HOST_URL + '/api/fond/',
+    #                 data=form.cleaned_data
+    #             )
+    #             return HttpResponseRedirect('/fond/')
+    #
+    #         except RequestException:
+    #             return HttpResponseRedirect('/fond/add')
+    #
+    #     return HttpResponseRedirect('/fond/add')
