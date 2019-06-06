@@ -16,15 +16,9 @@
 {% endblock %}
 
 {% block title %}
-<div class="col-md-4">
   <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
     style="vertical-align:middle" />
     <h1>{% trans "Formation" %}</h1>
-</div>
-<div class="col-md-8">
-</div>
-<div class="col-md-0">&nbsp;</div>
-</div>
 {% endblock %}
 
 {% block title_buttons %}
@@ -49,9 +43,12 @@
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for musical_group in musical_groups %}
-  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+  <tr>
       <td class="highlight">
           <a href="/musical_group/{{musical_group.id }}/">
             {{ musical_group.name|upper }}</a>
@@ -61,9 +58,8 @@
           {{ musical_group.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if user.is_authenticated %}
       <td>
-        {% if user.is_authenticated %}
-        {% buttons %}
         <a href="{% url "musical_group-edit" id=musical_group.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
@@ -75,9 +71,8 @@
             data-url="{% url "musical_group-delete" id=musical_group.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-        {% endbuttons %}
-        {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

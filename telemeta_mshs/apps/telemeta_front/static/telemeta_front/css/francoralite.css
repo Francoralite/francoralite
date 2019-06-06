@@ -712,8 +712,8 @@ table.instruments tbody td {
 
 /* Styles for tabular listings (stolen from trac) */
 table.listing {
-
     border-spacing: 0;
+    margin-top: 3em;
 }
 
 .fullpage table.listing {
