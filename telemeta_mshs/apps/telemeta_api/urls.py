@@ -53,10 +53,13 @@ from .views import (
     domain_song,
     usefulness,
     timeside_item,
+    global_search,
     )
 
 urlpatterns = [
-    url(r'^jsonrpc/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch)
+    url(r'^jsonrpc/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),
+    url(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
+        name="search"),
 ]
 
 router = routers.SimpleRouter()

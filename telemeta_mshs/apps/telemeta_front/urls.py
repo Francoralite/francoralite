@@ -20,6 +20,7 @@ from .views import (
     collection_delete,
     item, item_add, item_detail, item_edit,
     item_delete,
+    search as search_integration,
 )
 
 from .views.enum import (
@@ -67,6 +68,8 @@ from .views.enum import (
 urlpatterns = [
     url(r'^$', home_integration.HomePageView.as_view(), name="home"),
     url(r'^select2/', include('django_select2.urls')),
+    url(r'^search/', search_integration.SearchView.as_view(),
+        name="search-simple"),
 
     # Institutions
     url(r'^institution/$', institution.InstitutionView.as_view(),
