@@ -34,15 +34,15 @@
         <div id="logo">
         {% block logo %}
             <a href="{% url "telemeta-home" %}">
-              <img src="{% static "telemeta_front/images/logo_universite_poitiers.jpg" %}"
-               alt={% trans "Université de Poitiers" %}/>
+              <img src="{% static "telemeta_front/images/logo_universite_poitiers.jpg" %}" 
+               alt="{% trans "Université de Poitiers" %}" />
             </a>
             <img src="{% static "telemeta_front/images/logo_francoralite.png" %}"
               alt="Francoralité" />
         {% endblock %}
         </div>
         <div id="quick_search">
-            <form action="{% url "search-simple" %}" id="_quickSearchForm" method="get">
+            <form action="{% url "search-simple" %}" id="_quickSearchForm" method="get" role="search">
                 <div class="input-group">
                     <input class="form-control" id="id_q" name="q" type="text" value="{{query}}" /><span
                         class="input-group-btn"><button type="submit" id="btn" class="btn btn-default"><span

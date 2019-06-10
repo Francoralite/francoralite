@@ -7,54 +7,60 @@
 
 {% regroup results by entity as result_list %}
 
-{% trans "Résultats de la recherche, pour :" %}
-<div>
-  {{ query }}
-</div>
-
+<h1>{% trans "Résultats de la recherche, pour :" %} <strong>{{ query }}</strong></h1>
+<hr/>
 <ul class="list-group">
 
   {% for result in result_list %}
-  <hr/>
-  <li class="list-group-item well">
-    <div>
-      {{ topics|get_obj_attr:result.grouper }}
-    </div>
-    <div class="list-group">
-      {% for item in result.list %}
-           {% if result.grouper = "Authority" %}
-             <a href="{% url "personne-detail"  item.id %}" class="list-group-item">
-               {{item.first_name}} {{item.last_name}}
-             </a>
-           {% endif %}
-           {% if result.grouper = "Location" %}
-             <a href="/location_gis/{{item.id}}" class="list-group-item">
-               {{item.code}} : {{item.name}}
-             </a>
-           {% endif %}
-           {% if result.grouper = "Fond" %}
-             <a href="/fond/{{item.id}}" class="list-group-item">
-               {{item.code}} - {{item.title}}
-             </a>
-           {% endif %}
-           {% if result.grouper = "Mission" %}
-             <a href="/mission/{{item.id}}" class="list-group-item">
-               {{item.code}} - {{item.title}}
-             </a>
-           {% endif %}
-           {% if result.grouper = "Collection" %}
-             <a href="/collection/{{item.id}}" class="list-group-item">
-               {{item.code}} - {{item.title}}
-             </a>
-           {% endif %}
-           {% if result.grouper = "Item" %}
-             <a href="/item/{{item.id}}" class="list-group-item">
-               {{item.code}} - {{item.title}}
-             </a>
-           {% endif %}
 
-       {% endfor %}
-    </div>
+  <li class="list-group-item well">
+    <h2>{{ topics|get_obj_attr:result.grouper }}</h2>
+    <ul class="list-group search">
+      {% for item in result.list %}
+        {% if result.grouper = "Authority" %}
+          <li  class="list-group-item">
+            <a href="{% url "personne-detail"  item.id %}">
+             {{item.first_name}} {{item.last_name}}
+            </a>
+          </li>
+        {% endif %}
+        {% if result.grouper = "Location" %}
+          <li class="list-group-item">
+            <a href="/location_gis/{{item.id}}">
+             {{item.code}} : {{item.name}}
+            </a>
+          </li>
+        {% endif %}
+        {% if result.grouper = "Fond" %}
+          <li class="list-group-item">
+            <a href="/fond/{{item.id}}">
+              {{item.code}} - {{item.title}}
+            </a>
+          </li>
+        {% endif %}
+        {% if result.grouper = "Mission" %}
+          <li class="list-group-item">
+            <a href="/mission/{{item.id}}">
+              {{item.code}} - {{item.title}}
+            </a>
+          </li>
+       {% endif %}
+       {% if result.grouper = "Collection" %}
+          <li  class="list-group-item">
+            <a href="/collection/{{item.id}}">
+              {{item.code}} - {{item.title}}
+            </a>
+          </li>
+      {% endif %}
+      {% if result.grouper = "Item" %}
+          <li class="list-group-item">
+            <a href="/item/{{item.id}}">
+              {{item.code}} - {{item.title}}
+            </a>
+          </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
   </li>
   {% endfor %}
 

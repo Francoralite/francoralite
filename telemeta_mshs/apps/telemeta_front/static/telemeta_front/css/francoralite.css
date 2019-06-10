@@ -1342,6 +1342,10 @@ a:focus,div:focus{
     z-index: 1;
 }
 
+.list-group.search .list-group-item {
+  list-style: none;
+  margin-top: 5px;
+}
 /* menu reconstruit par Laurence */
 
 #menu .menu {

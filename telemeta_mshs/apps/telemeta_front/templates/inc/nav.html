@@ -14,7 +14,7 @@
       <li  class="green"><a href="{% url "institution" %}">Institutions</a>
       </li>
 
-      <li class="has-children green"><a href="#archives#" >Archives</a>
+      <li class="has-children green"><a href="#archives" >Archives</a>
           <ul class="sous-menu">
               <li><a href="{% url "fond" %}">Fonds</a></li>
               <li><a href="{% url "mission" %}">Missions</a></li>
@@ -51,10 +51,10 @@
       </li>
 
       <li class="has-children yellow">
-        <a href="#enums#">
+        <a href="#enums">
           {% trans "Enumérations" %}</a>
           <ul class="sous-menu">
-            <li class="has-children"><a href="#musique#">Musique</a>
+            <li class="has-children"><a href="#musique">Musique</a>
               <ul class="sous-menu">
                 <li>
                   <a href="{% url "coupe" %}">{% trans "Coupe" %}</a>
@@ -73,7 +73,7 @@
                 </li>
               </ul>
             </li>
-            <li  class="has-children"><a href="#genre#">Genre</a>
+            <li  class="has-children"><a href="#genre">Genre</a>
               <ul class="sous-menu">
                 <li>
                   <a href="{% url "domain_song" %}">{% trans "Genre de chanson" %}</a>
@@ -94,7 +94,7 @@
             </li>
 
             <li class="has-children">
-              <a href="#editeur#">{% trans "Édition" %}</a>
+              <a href="#editeur">{% trans "Édition" %}</a>
               <ul class="sous-menu">
                 <li>
                   <a href="{% url "legal_rights" %}">{% trans "Droits légaux" %}</a>
@@ -140,7 +140,7 @@
       </li>
 
       {% if user.is_authenticated and user.is_staff %}
-          <li class="has-children red"><a href="#vocabulary#" >{% trans "Terminology" %}</a>
+          <li class="has-children red"><a href="#vocabulary" >{% trans "Terminology" %}</a>
               {% if perms.telemeta.change_physicalformat %}
                   <ul class="sous-menu">
                       <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
