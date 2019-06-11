@@ -1,4 +1,3 @@
-{% extends "telemeta/base.html" %}
 {% load staticfiles %}
 {% load i18n %}
 {% load telemeta_tags %}
@@ -8,6 +7,8 @@
 
 {% block javascript %}
   {{ block.super }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="{% static "telemeta_front/js/application.js" %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
 {% endblock %}
@@ -19,13 +20,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/telemeta-more.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/style.css" %}" />
-<!--  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/admin.css" %}" />
-  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/jquery.autocomplete.css" %}" />
-  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/jquery-ui.css" %}" />
-  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/list-sorttable.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/player.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/search.css" %}" />
-  -->
+
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/francoralite.css" %}" />
 {% endblock %}
 
@@ -34,7 +31,7 @@
         <div id="logo">
         {% block logo %}
             <a href="{% url "telemeta-home" %}">
-              <img src="{% static "telemeta_front/images/logo_universite_poitiers.jpg" %}" 
+              <img src="{% static "telemeta_front/images/logo_universite_poitiers.jpg" %}"
                alt="{% trans "Université de Poitiers" %}" />
             </a>
             <img src="{% static "telemeta_front/images/logo_francoralite.png" %}"
@@ -72,10 +69,13 @@
     </div>
 {% endblock %}
 
-{% block head_title %}
-Francoralité
+
+{% block title %}
+
 {% endblock %}
 
+{% block content %}
+{% endblock %}
 
 {% block footer %}
     <div id="footer">
