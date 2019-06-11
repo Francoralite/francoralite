@@ -14,26 +14,23 @@
 {% endblock %}
 
 
-
-{% block title %}
-  <h1>
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "Enquête" %}
-    {% if collection %}
-     : {{ collection.code }} - {{  collection.title}}
-    {% endif %}
-  </h1>
+{% block title_name %}
+  {{ block.super }}
+  {% if collection %}
+  : {{ collection.code }} - {{  collection.title}}
+  {% endif %}
 {% endblock %}
 
+{% block content %}
 {% block title_buttons %}
  {% if user.is_authenticated %}
-  <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}">
+  <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}" class="btn_add">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un item" %}
     </button>
   </a>
-  <a href="{% url "collection-edit" id=id %}">
+  <a href="{% url "collection-edit" id=id %}" class="btn_add">
   <button type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </button>
@@ -41,7 +38,10 @@
   {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
 {% if not error|length %}
   {% if collection %}
 

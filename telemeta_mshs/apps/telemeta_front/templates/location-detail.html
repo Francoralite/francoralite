@@ -23,30 +23,30 @@
 {% leaflet_css %}
 {% endblock %}
 
-
-
-{% block title %}
-  <h1>
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "Lieu" %}
-    {% if location %}
-     : {{location.name}}
-    {% endif %}
-  </h1>
+{% block title_name %}
+{{ block.super }}
+  {% if location %}
+   : {{ location.name }}
+  {% endif %}
 {% endblock %}
+
+
+{% block content %}
 
 {% block title_buttons %}
   {% if user.is_authenticated %}
-    <a href="{% url "location_gis-edit" id=id %}">
+    <a href="{% url "location_gis-edit" id=id %}" class="btn_add">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
     </button>
     </a>
   {% endif %}
 {% endblock %}
-
-{% block content %}
 {% if location %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
 
 <div class="container_line center">
   {% field_data form.code.label|safe  location.code|safe %}

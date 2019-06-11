@@ -20,8 +20,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
 {% endblock %}
 
-{% block title %}
-   {{ block.super}}
+{% block title_name %}
+   {{ block.super}} -
    {% if id %}
    {% trans "Modification" %}
    {% else %}
@@ -29,10 +29,14 @@
    {% endif %}
 {% endblock %}
 
+{% block content %}
 {% block title_buttons %}
 {% endblock %}
 
-{% block content %}
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
 {% if not error|length %}
 {{ form.media }}
 <div class="container">

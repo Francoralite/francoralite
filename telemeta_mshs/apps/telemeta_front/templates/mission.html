@@ -15,24 +15,21 @@
   {{ block.super }}
 {% endblock %}
 
-{% block title %}
-<div class="col-md-4">
-  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
-    style="vertical-align:middle" />
-    <h1>{% trans "Missions" %}</h1>
-</div>
-<div class="col-md-8">
-</div>
-<div class="col-md-0">&nbsp;</div>
-</div>
+
+
+{% block title_name %}
+{% trans "Missions" %}
 {% endblock %}
 
+{% block content %}
 {% block title_buttons %}
 {% endblock %}
 
+{% block title %}
+{{ block.super }}
+{% endblock %}
 
-</div>
-{% block content %}
+
 <div class="fullpage">
 {% if missions|length > 0 %}
   <!-- Table to display the missions --->

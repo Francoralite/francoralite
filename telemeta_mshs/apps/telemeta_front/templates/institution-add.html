@@ -12,8 +12,8 @@
   {{ block.super }}
 {% endblock %}
 
-{% block title %}
-   {{ block.super}}
+{% block title_name %}
+   {{ block.super}} - 
    {% if id %}
    {% trans "Modification" %}
    {% else %}
@@ -21,10 +21,15 @@
    {% endif %}
 {% endblock %}
 
+{% block content %}
+
 {% block title_buttons %}
 {% endblock %}
 
-{% block content %}
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
 {% if not error|length %}
   <div class="container">
     {% if id %}

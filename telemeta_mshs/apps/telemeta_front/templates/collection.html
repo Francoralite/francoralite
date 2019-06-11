@@ -15,24 +15,21 @@
   {{ block.super }}
 {% endblock %}
 
+
+{% block title_name %}
+  {% trans "Enquêtes" %}
+{% endblock %}
+
+
+{% block content %}
+
 {% block title %}
-<div class="col-md-4">
-  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
-    style="vertical-align:middle" />
-    <h1>{% trans "Enquêtes" %}</h1>
-</div>
-<div class="col-md-8">
-</div>
-<div class="col-md-0">&nbsp;</div>
-</div>
+{{ block.super }}
 {% endblock %}
 
 {% block title_buttons %}
 {% endblock %}
 
-
-</div>
-{% block content %}
 <div class="fullpage">
 {% if collections|length > 0 %}
   <!-- Table to display the collections --->

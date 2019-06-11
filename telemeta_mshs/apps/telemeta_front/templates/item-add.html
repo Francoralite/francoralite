@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
 {% endblock %}
 
-{% block title %}
+{% block title_name %}
    {{ block.super}}
    {% if id %}
    {% trans "Modification" %}
@@ -36,10 +36,15 @@
    {% endif %}
 {% endblock %}
 
+{% block content %}
+
 {% block title_buttons %}
 {% endblock %}
 
-{% block content %}
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
 {{ form.media }}
 <div id="app">
 <!-- Tabs -->

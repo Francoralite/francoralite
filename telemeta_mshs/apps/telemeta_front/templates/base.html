@@ -4,6 +4,17 @@
 {% load bootstrap3 %}
 {% load markdown_extra %}
 
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml"/>
+    <link rel="icon" href="{{ STATIC_URL }}telemeta/images/favicon.ico"/>
+
+    <title>{% block head_title %}{% organization %} - {% description %}{% endblock %}</title>
+
 
 {% block javascript %}
   {{ block.super }}
@@ -25,9 +36,11 @@
 
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/francoralite.css" %}" />
 {% endblock %}
+</head>
 
+<body>
 {% block header %}
-    <div id="header">
+    <header id="header">
         <div id="logo">
         {% block logo %}
             <a href="{% url "telemeta-home" %}">
@@ -49,12 +62,7 @@
         </div>
         <div id="auth_info" style="right : 1.1em;">
         {% if user.is_authenticated %}
-             <img src="/static/telemeta/images/user.png" alt="user" style="vertical-align:middle"/>
-              {% trans "Bienvenue" %},
-             <a href="">{{user}}</a>                            |
-             <a href="/logout/">{% trans "Déconnexion" %}
-             <img src="/static/telemeta/images/logout.png" alt="logout"
-                  style="vertical-align:middle"/></a>
+          {% trans "Bienvenue" %}, <a href="" class="login">{{user}}</a> | <a href="/logout/" class="logout">{% trans "Déconnexion" %}</a>
         {% else %}
           <a href="{% url 'oidc_authentication_init' %}">{% trans "Se connecter" %}</a>
         {% endif %}
@@ -66,17 +74,18 @@
             {% endblock %}
         </div>
 
-    </div>
+    </header>
 {% endblock %}
 
-
-{% block title %}
-
-{% endblock %}
-
+<main id="content">
 {% block content %}
-{% endblock %}
 
+  {% block title %}
+    <h1>{% block title_name %}{% endblock %}</h1>
+  {% endblock %}
+
+{% endblock %}
+</main>
 {% block footer %}
     <div id="footer">
         <hr>

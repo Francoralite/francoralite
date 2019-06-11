@@ -13,26 +13,25 @@
 {% endblock %}
 
 
-
-{% block title %}
-  <h1>
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "Fonds" %}
-    {% if fond %}
-     : {{ personne.code }} - {{fond.title}}
-    {% endif %}
-  </h1>
+{% block title_name %}
+{{ block.super }}
+  {% if fond %}
+   : {{ fond.code }} - {{ fond.title }}
+  {% endif %}
 {% endblock %}
+
+
+{% block content %}
 
 {% block title_buttons %}
   {% if user.is_authenticated %}
-    <a href="{% url "mission-add" id_institution=fond.institution.id id_fond=id %}">
+    <a href="{% url "mission-add" id_institution=fond.institution.id id_fond=id %}" class="btn_add">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-plus"></span>
         {% trans "Créer une mission" %}
       </button>
     </a>
-    <a href="{% url "fond-edit" id=id %}">
+    <a href="{% url "fond-edit" id=id %}" class="btn_add">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
     </button>
@@ -40,7 +39,10 @@
   {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
 {% if not error|length %}
   {% if fond %}
   <ul class="nav nav-tabs" role="tablist">
