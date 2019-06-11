@@ -15,15 +15,16 @@
   {{ block.super }}
 {% endblock %}
 
-{% block title %}
-  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
-    style="vertical-align:middle" />
-    <h1>{% trans "Genre de musique" %}</h1>
+{% block title_name %}
+  {% trans "Genre de musique" %}
 {% endblock %}
 
+{% block content %}
+
 {% block title_buttons %}
+
 {% if user.is_authenticated %}
-  <a href="{% url "domain_music-add" %}">
+  <a href="{% url "domain_music-add" %}" class="btn_add">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un genre de musique" %}
@@ -32,9 +33,10 @@
 {% endif %}
 {% endblock %}
 
+{% block title %}
+	{{ block.super }}
+{% endblock %}
 
-</div>
-{% block content %}
 <div class="fullpage">
   <!-- If there is some domain music (number of elements > 0 ) -->
 {% if domain_musics|length > 0 %}
