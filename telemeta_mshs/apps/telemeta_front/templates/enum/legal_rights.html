@@ -15,15 +15,15 @@
   {{ block.super }}
 {% endblock %}
 
-{% block title %}
-  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
-    style="vertical-align:middle" />
-    <h1>{% trans "droits légaux" %}</h1>
+{% block title_name %}
+  {% trans "Droits légaux" %}
 {% endblock %}
+
+{% block content %}
 
 {% block title_buttons %}
 {% if user.is_authenticated %}
-  <a href="{% url "legal_rights-add" %}">
+  <a href="{% url "legal_rights-add" %}" class="btn_add">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer des droits légaux" %}
@@ -32,9 +32,10 @@
 {% endif %}
 {% endblock %}
 
+{% block title %}
+  {{ block.super }}
+{% endblock %}
 
-</div>
-{% block content %}
 <div class="fullpage">
   <!-- If there is some legal_rights (number of elements > 0 ) -->
 {% if legal_rights|length > 0 %}

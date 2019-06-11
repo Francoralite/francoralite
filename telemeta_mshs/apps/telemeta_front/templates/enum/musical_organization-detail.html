@@ -15,14 +15,11 @@
 
 
 
-{% block title %}
-  <h1>
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "Organisation Musicale" %}
+{% block title_name %}
+  {{ block.super }}
     {% if musical_organization %}
      : {{ musical_organization.name }}
     {% endif %}
-  </h1>
 {% endblock %}
 
 {% block title_buttons %}
@@ -36,6 +33,12 @@
 {% endblock %}
 
 {% block content %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+
 {% if not error|length %}
   {% if musical_organization %}
 

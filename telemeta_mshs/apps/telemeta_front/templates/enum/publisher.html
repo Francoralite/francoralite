@@ -15,15 +15,17 @@
   {{ block.super }}
 {% endblock %}
 
-{% block title %}
-  <img src="{{ STATIC_URL }}telemeta/images/collections_red.png"
-    style="vertical-align:middle" />
-    <h1>{% trans "Éditeur" %}</h1>
+
+{% block title_name %}
+  {% trans "Éditeur" %}
 {% endblock %}
+
+
+{% block content %}
 
 {% block title_buttons %}
 {% if user.is_authenticated %}
-  <a href="{% url "publisher-add" %}">
+  <a href="{% url "publisher-add" %}" class="btn_add">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un éditeur" %}
@@ -32,9 +34,10 @@
 {% endif %}
 {% endblock %}
 
+{% block title %}
+  {{ block.super }}
+{% endblock %}
 
-</div>
-{% block content %}
 <div class="fullpage">
   <!-- If there is some publisher (number of elements > 0 ) -->
 {% if publishers|length > 0 %}

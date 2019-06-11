@@ -13,21 +13,18 @@
   {{ block.super }}
 {% endblock %}
 
-
-
-{% block title %}
-  <h1>
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    {% trans "Formation (musicale)" %}
+{% block title_name %}
+  {{ block.super }}
     {% if musical_group %}
      : {{ musical_group.name }}
     {% endif %}
-  </h1>
 {% endblock %}
+
+{% block content %}
 
 {% block title_buttons %}
   {% if user.is_authenticated %}
-  <a href="{% url "musical_group-edit" id=id %}">
+  <a href="{% url "musical_group-edit" id=id %}" class="btn_add">
   <button type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
   </button>
@@ -35,7 +32,10 @@
   {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
 {% if not error|length %}
   {% if musical_group %}
   {% field_data form.name.label|safe musical_group.name|safe %}
