@@ -184,28 +184,10 @@
       {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name"%}
       {% field_data form.timbre.label|safe item.timbre|safe %}
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
+
       {% field_data form.melody.label|safe item.melody|safe %}
+
       {% field_data form.domains.label|safe item.domains|safe %}
-      <dl class="container_data">
-        <dt class="libelle">{{form.timbre.label|safe}}</dt>
-        <dd class="donnee">{{item.timbre|markdown|safe}}</dd>
-      </dl>
-
-      <dl class="container_data">
-        <dt class="libelle">{{form.timbre_ref.label|safe}}</dt>
-        <dd class="donnee">{{item.timbre_ref|markdown|safe}}</dd>
-      </dl>
-
-      <dl class="container_data">
-        <dt class="libelle">{{form.melody.label|safe}}</dt>
-        <dd class="donnee">{{item.melody|markdown|safe}}</dd>
-      </dl>
-
-      <dl class="container_data">
-        <dt class="libelle">{{form.domains.label|safe}}</dt>
-        <dd class="donnee">{{item.domains|markdown|safe}}</dd>
-      </dl>
-
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
       <div class="block-grey">
