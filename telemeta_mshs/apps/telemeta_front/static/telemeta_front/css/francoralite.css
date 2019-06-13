@@ -1409,6 +1409,14 @@ a:focus,div:focus{
     z-index: 1;
 }
 
+label.abc {
+  display: block;
+}
+
+#midi{
+  max-width: 740px;
+}
+
 .list-group.search .list-group-item {
   list-style: none;
   margin-top: 5px;

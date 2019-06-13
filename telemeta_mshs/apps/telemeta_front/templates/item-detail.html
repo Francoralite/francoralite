@@ -208,6 +208,58 @@
 
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
+      <div class="block-grey">
+        <label for="abc" class="abc">Partition ABC</label>
+        <textarea name="abc" id="abc" cols="80" rows="15">
+X: 1
+T: Cooley's
+M: 4/4
+L: 1/8
+R: reel
+K: Emin
+|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|
+EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|
+|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|
+eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|
+        </textarea>
+        <div id="midi"></div>
+        <div id="midi-download"></div>
+        <div id="warnings"></div>
+        <div id="paper0" class="paper"></div>
+        <div id="paper1" class="paper"></div>
+        <div id="paper2" class="paper"></div>
+        <div id="paper3" class="paper"></div>
+        <div id="selection"></div>
+
+        <script type="text/javascript">
+        function selectionCallback(abcelem) {
+        var note = {};
+        for (var key in abcelem) {
+          if (abcelem.hasOwnProperty(key) && key !== "abselem")
+            note[key] = abcelem[key];
+        }
+        console.log(abcelem);
+        var el = document.getElementById("selection");
+        el.innerHTML = "<b>selectionCallback parameter:</b><br>" + JSON.stringify(note);
+        }
+
+        function initEditor() {
+        new ABCJS.Editor("abc", { paper_id: "paper0",
+          generate_midi: true,
+          midi_id:"midi",
+          midi_download_id: "midi-download",
+          generate_warnings: true,
+          warnings_id:"warnings",
+          abcjsParams: {
+            generateDownload: true,
+            clickListener: selectionCallback
+          }
+        });
+        }
+
+        window.addEventListener("load", initEditor, false);
+        </script>
+      </div>
 
       <aside class="block-grey">
         <h2>{% trans "Témoignage" %}</h2>
@@ -252,7 +304,7 @@
       <h2>{% trans "Voix/Instruments" %}</h2>
       {% related_list libelle='Organisation musicale' items=item.musical_organizations url_detail="musical_organization-detail" field="name" %}
       {% related_list libelle='Formation musicale' items=item.musical_groups url_detail="musical_group-detail" field="name" %}
-      <aside class="block-grey">
+      <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>
         <span class="container_data">
           {% for performance in item.performances %}
@@ -284,11 +336,11 @@
                   {% endfor %}
                 </dd>
               </dl>
-
           </div>
+
           {% endfor %}
         </span>
-      </aside>
+      </div>
     </section>
 
     <!-- Tab Player/Markers ------------------------------------>
@@ -325,20 +377,20 @@
        </script>
       {% endif %}
     -->
-          <!-- </div> -->
+           </div>
           <div id="tabs_container">
               <!-- this div will be hidden when everything is fully loaded-->
-              <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
-                  <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
+              <a id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+              <span id="loading_span_text">{% trans "Chargement " %}...</span></a>
               <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
-               do not let space here as it appears in the document!!!!!
-             --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
+               do not let space here as it appears in the document!!!!!             -->
+              <a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
           </div>
 
           <div class="markers" id="markers_div_id"></div>
 
           <div class="analyzer" id="analyzer_div_id">
-              <table width="100%">
+              <table>
                   <tr class="analyzer-title">
                       <td>{% trans "Property" %}</td>
                       <td>{% trans "Value" %}</td>
@@ -348,11 +400,11 @@
           </div>
 
           <!--</div>-->
-
+          {% endblock player %}
       </section>
 
-      {% endblock player %}
-    </div>
+
+
   </div>
 
   {% else %}
