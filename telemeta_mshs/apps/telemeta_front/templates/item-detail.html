@@ -208,21 +208,16 @@ eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|
         <div id="midi-download"></div>
         <div id="warnings"></div>
         <div id="paper0" class="paper"></div>
-        <div id="paper1" class="paper"></div>
-        <div id="paper2" class="paper"></div>
-        <div id="paper3" class="paper"></div>
+
         <div id="selection"></div>
 
         <script type="text/javascript">
         function selectionCallback(abcelem) {
-        var note = {};
-        for (var key in abcelem) {
-          if (abcelem.hasOwnProperty(key) && key !== "abselem")
-            note[key] = abcelem[key];
-        }
-        console.log(abcelem);
-        var el = document.getElementById("selection");
-        el.innerHTML = "<b>selectionCallback parameter:</b><br>" + JSON.stringify(note);
+          var note = {};
+          for (var key in abcelem) {
+            if (abcelem.hasOwnProperty(key) && key !== "abselem")
+              note[key] = abcelem[key];
+          }
         }
 
         function initEditor() {
