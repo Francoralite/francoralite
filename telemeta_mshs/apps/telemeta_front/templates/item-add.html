@@ -238,7 +238,44 @@
 
         {% bootstrap_field form.timbre layout='vertical' %}
         {% bootstrap_field form.timbre_ref layout='vertical' %}
-        {% bootstrap_field form.melody layout='vertical' %}
+        <label for="id_melody" class="control-label">{% trans "Mélodie (transcription alphabétique)" %}</label>
+        <textarea id="id_melody" name="melody">
+          X:1&#10;T: Cooley's&#10;M: 4/4&#10;L: 1/8&#10;R: reel&#10;K: Emin&#10;|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|
+        </textarea>
+
+        <div id="midi"></div>
+        <div id="midi-download"></div>
+        <div id="warnings"></div>
+        <div id="paper0" class="paper"></div>
+
+        <div id="selection"></div>
+        <script type="text/javascript">
+          function selectionCallback(abcelem) {
+            var note = {};
+            for (var key in abcelem) {
+              if (abcelem.hasOwnProperty(key) && key !== "abselem")
+                note[key] = abcelem[key];
+            }
+          }
+
+          function initEditor() {
+             var context = new AudioContext();
+          new ABCJS.Editor("id_melody", { paper_id: "paper0",
+            generate_midi: true,
+            midi_id:"midi",
+            midi_download_id: "midi-download",
+            generate_warnings: true,
+            warnings_id:"warnings",
+            responsive: "resize",
+            abcjsParams: {
+              generateDownload: true,
+              clickListener: selectionCallback
+            }
+          });
+          }
+
+          window.addEventListener("load", initEditor, false);
+        </script>
 
         <div class="block-grey">
           <h2>{% trans "Genres" %}</h2>

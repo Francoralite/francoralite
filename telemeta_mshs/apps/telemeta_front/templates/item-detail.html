@@ -192,17 +192,8 @@
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
       <div class="block-grey">
         <label for="abc" class="abc">Partition ABC</label>
-        <textarea name="abc" id="abc" cols="80" rows="15">
-X: 1
-T: Cooley's
-M: 4/4
-L: 1/8
-R: reel
-K: Emin
-|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|
-EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|
-|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|
-eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|
+        <textarea name="abc" id="abc" cols="80" rows="15" readonly>
+            {{item.melody|safe}}
         </textarea>
         <div id="midi"></div>
         <div id="midi-download"></div>
