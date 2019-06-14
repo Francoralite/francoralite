@@ -239,16 +239,17 @@
         {% bootstrap_field form.timbre layout='vertical' %}
         {% bootstrap_field form.timbre_ref layout='vertical' %}
         <label for="id_melody" class="control-label">{% trans "Mélodie (transcription alphabétique)" %}</label>
-        <textarea id="id_melody" name="melody">
-          X:1&#10;T: Cooley's&#10;M: 4/4&#10;L: 1/8&#10;R: reel&#10;K: Emin&#10;|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|
-        </textarea>
+        <div>
+          <textarea id="id_melody" name="melody" cols="80" rows="15">
+            {{form.melody.value|safe}}
+          </textarea>
+          <div id="midi"></div>
+          <div id="midi-download"></div>
+          <div id="warnings"></div>
+          <div id="paper0" class="paper"></div>
 
-        <div id="midi"></div>
-        <div id="midi-download"></div>
-        <div id="warnings"></div>
-        <div id="paper0" class="paper"></div>
-
-        <div id="selection"></div>
+          <div id="selection"></div>
+        </div>
         <script type="text/javascript">
           function selectionCallback(abcelem) {
             var note = {};
