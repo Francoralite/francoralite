@@ -239,7 +239,7 @@
         {% bootstrap_field form.timbre layout='vertical' %}
         {% bootstrap_field form.timbre_ref layout='vertical' %}
         <div class="block-grey row">
-          <div class="col-sm-6">
+          <div class="col-md-6">
             <label for="id_melody" class="control-label melody">{% trans "Mélodie (transcription alphabétique)" %}</label>
               <textarea id="id_melody" name="melody" cols="80" rows="15">
                 {{form.melody.value|safe}}
@@ -248,7 +248,7 @@
               <div id="midi-download"></div>
               <div id="warnings"></div>
             </div>
-          <div class="col-sm-6">
+          <div class="col-md-6">
             <div id="paper0" class="paper"></div>
             <div id="selection"></div>
           </div>

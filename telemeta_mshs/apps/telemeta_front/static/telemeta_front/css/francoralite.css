@@ -1415,6 +1415,7 @@ label.melody {
 
 #midi, #id_melody{
   max-width: 523px;
+  width: 100%;
 }
 
 .list-group.search .list-group-item {

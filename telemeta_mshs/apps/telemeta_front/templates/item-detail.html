@@ -189,7 +189,7 @@
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
       <div class="block-grey row">
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <label for="id_melody" class="melody">Mélodie (transcription alphabétique)</label>
           <textarea name="melody" id="id_melody" cols="80" rows="15" readonly>
               {{item.melody|safe}}
@@ -198,7 +198,7 @@
           <div id="midi-download"></div>
           <div id="warnings"></div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <div id="paper0" class="paper"></div>
 
           <div id="selection"></div>
