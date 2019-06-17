@@ -185,48 +185,25 @@
       {% field_data form.timbre.label|safe item.timbre|safe %}
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
 
-      {% field_data form.melody.label|safe item.melody|safe %}
-
       {% field_data form.domains.label|safe item.domains|safe %}
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
-      <div class="block-grey">
-        <label for="abc" class="abc">Partition ABC</label>
-        <textarea name="abc" id="abc" cols="80" rows="15" readonly>
-            {{item.melody|safe}}
-        </textarea>
-        <div id="midi"></div>
-        <div id="midi-download"></div>
-        <div id="warnings"></div>
-        <div id="paper0" class="paper"></div>
+      <div class="block-grey row">
+        <div class="col-sm-6">
+          <label for="id_melody" class="melody">Mélodie (transcription alphabétique)</label>
+          <textarea name="melody" id="id_melody" cols="80" rows="15" readonly>
+              {{item.melody|safe}}
+          </textarea>
+          <div id="midi"></div>
+          <div id="midi-download"></div>
+          <div id="warnings"></div>
+        </div>
+        <div class="col-sm-6">
+          <div id="paper0" class="paper"></div>
 
-        <div id="selection"></div>
-
-        <script type="text/javascript">
-        function selectionCallback(abcelem) {
-          var note = {};
-          for (var key in abcelem) {
-            if (abcelem.hasOwnProperty(key) && key !== "abselem")
-              note[key] = abcelem[key];
-          }
-        }
-
-        function initEditor() {
-        new ABCJS.Editor("abc", { paper_id: "paper0",
-          generate_midi: true,
-          midi_id:"midi",
-          midi_download_id: "midi-download",
-          generate_warnings: true,
-          warnings_id:"warnings",
-          abcjsParams: {
-            generateDownload: true,
-            clickListener: selectionCallback
-          }
-        });
-        }
-
-        window.addEventListener("load", initEditor, false);
-        </script>
+          <div id="selection"></div>
+        </div>
+        <script src="{{ STATIC_URL }}telemeta_front/js/melody_abc.js" type="text/javascript"></script>
       </div>
 
       <aside class="block-grey">

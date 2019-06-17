@@ -1409,12 +1409,12 @@ a:focus,div:focus{
     z-index: 1;
 }
 
-label.abc {
+label.melody {
   display: block;
 }
 
-#midi{
-  max-width: 740px;
+#midi, #id_melody{
+  max-width: 523px;
 }
 
 .list-group.search .list-group-item {
