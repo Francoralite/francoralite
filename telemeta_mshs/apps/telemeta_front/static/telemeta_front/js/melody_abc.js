@@ -38,7 +38,7 @@ function initEditor() {
       clickListener: selectionCallback,
       inlineControls: {
         loopToggle: true,
-        tempo: true,
+        //tempo: true,
       },
       animate: {
         listener: animateCallback,
