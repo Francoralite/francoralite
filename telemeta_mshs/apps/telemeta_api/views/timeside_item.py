@@ -64,12 +64,12 @@ class TimeSideViewSet(viewsets.ViewSet):
     def to_xml(self, dico):
         import xml.etree.ElementTree as ET
         root = ET.Element('telemeta')
-        root.tag = 'data'
+        root.tag = 'telemeta'
         for key in dico.keys():
             child = ET.SubElement(root, "data")
             child.set("id", key)
             child.set("name", key)
-            child.set("unit", "")
+            child.set("unit", "s")
             child.set("value", dico[key])
 
         return ET.tostring(root, method="xml")
