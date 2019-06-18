@@ -8,8 +8,9 @@ import os
 import settings
 import mimetypes
 import datetime
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from celery import shared_task
+import json
 
 
 from rest_framework import viewsets
@@ -559,6 +560,14 @@ class ItemViewSet(viewsets.ModelViewSet):
         media = self.item_transcode(item=item, extension="mp3")
         response = serve_media(media[0], content_type=media[1])
         return response
+
+    @detail_route(
+        methods=['get'],
+        url_path='download/(?P<file_name>[a-zA-Z0-9_.]+)/isAvailable', # noqa
+        url_name='sound_download_available')
+    def download_is_available(self, request, pk=None, file_name=""):
+        data = json.dumps({'available': True})
+        return HttpResponse(data, content_type='application/json')
 
     @shared_task
     def task_transcode(source, media, encoder_id,
