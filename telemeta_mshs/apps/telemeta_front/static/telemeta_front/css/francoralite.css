@@ -1409,6 +1409,15 @@ a:focus,div:focus{
     z-index: 1;
 }
 
+label.melody {
+  display: block;
+}
+
+#midi, #id_melody{
+  max-width: 523px;
+  width: 100%;
+}
+
 .list-group.search .list-group-item {
   list-style: none;
   margin-top: 5px;

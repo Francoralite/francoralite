@@ -184,30 +184,27 @@
       {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name"%}
       {% field_data form.timbre.label|safe item.timbre|safe %}
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
-      {% field_data form.melody.label|safe item.melody|safe %}
+
       {% field_data form.domains.label|safe item.domains|safe %}
-      <dl class="container_data">
-        <dt class="libelle">{{form.timbre.label|safe}}</dt>
-        <dd class="donnee">{{item.timbre|markdown|safe}}</dd>
-      </dl>
-
-      <dl class="container_data">
-        <dt class="libelle">{{form.timbre_ref.label|safe}}</dt>
-        <dd class="donnee">{{item.timbre_ref|markdown|safe}}</dd>
-      </dl>
-
-      <dl class="container_data">
-        <dt class="libelle">{{form.melody.label|safe}}</dt>
-        <dd class="donnee">{{item.melody|markdown|safe}}</dd>
-      </dl>
-
-      <dl class="container_data">
-        <dt class="libelle">{{form.domains.label|safe}}</dt>
-        <dd class="donnee">{{item.domains|markdown|safe}}</dd>
-      </dl>
-
       {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
       {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
+      <div class="block-grey row">
+        <div class="col-md-6">
+          <label for="id_melody" class="melody">Mélodie (transcription alphabétique)</label>
+          <textarea name="melody" id="id_melody" cols="80" rows="15" readonly>
+              {{item.melody|safe}}
+          </textarea>
+          <div id="midi"></div>
+          <div id="midi-download"></div>
+          <div id="warnings"></div>
+        </div>
+        <div class="col-md-6">
+          <div id="paper0" class="paper"></div>
+
+          <div id="selection"></div>
+        </div>
+        <script src="{{ STATIC_URL }}telemeta_front/js/melody_abc.js" type="text/javascript"></script>
+      </div>
 
       <aside class="block-grey">
         <h2>{% trans "Témoignage" %}</h2>
@@ -252,7 +249,7 @@
       <h2>{% trans "Voix/Instruments" %}</h2>
       {% related_list libelle='Organisation musicale' items=item.musical_organizations url_detail="musical_organization-detail" field="name" %}
       {% related_list libelle='Formation musicale' items=item.musical_groups url_detail="musical_group-detail" field="name" %}
-      <aside class="block-grey">
+      <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>
         <span class="container_data">
           {% for performance in item.performances %}
@@ -284,11 +281,11 @@
                   {% endfor %}
                 </dd>
               </dl>
-
           </div>
+
           {% endfor %}
         </span>
-      </aside>
+      </div>
     </section>
 
     <!-- Tab Player/Markers ------------------------------------>
@@ -325,20 +322,20 @@
        </script>
       {% endif %}
     -->
-          <!-- </div> -->
+           </div>
           <div id="tabs_container">
               <!-- this div will be hidden when everything is fully loaded-->
-              <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
-                  <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
+              <a id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+              <span id="loading_span_text">{% trans "Chargement " %}...</span></a>
               <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
-               do not let space here as it appears in the document!!!!!
-             --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
+               do not let space here as it appears in the document!!!!!             -->
+              <a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
           </div>
 
           <div class="markers" id="markers_div_id"></div>
 
           <div class="analyzer" id="analyzer_div_id">
-              <table width="100%">
+              <table>
                   <tr class="analyzer-title">
                       <td>{% trans "Property" %}</td>
                       <td>{% trans "Value" %}</td>
@@ -348,11 +345,11 @@
           </div>
 
           <!--</div>-->
-
+          {% endblock player %}
       </section>
 
-      {% endblock player %}
-    </div>
+
+
   </div>
 
   {% else %}

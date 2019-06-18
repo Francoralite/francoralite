@@ -238,7 +238,23 @@
 
         {% bootstrap_field form.timbre layout='vertical' %}
         {% bootstrap_field form.timbre_ref layout='vertical' %}
-        {% bootstrap_field form.melody layout='vertical' %}
+        <div class="block-grey row">
+          <div class="col-md-6">
+            <label for="id_melody" class="control-label melody">{% trans "Mélodie (transcription alphabétique)" %}</label>
+              <textarea id="id_melody" name="melody" cols="80" rows="15">
+                {{form.melody.value|safe}}
+              </textarea>
+              <div id="midi"></div>
+              <div id="midi-download"></div>
+              <div id="warnings"></div>
+            </div>
+          <div class="col-md-6">
+            <div id="paper0" class="paper"></div>
+            <div id="selection"></div>
+          </div>
+
+          <script src="{{ STATIC_URL }}telemeta_front/js/melody_abc.js" type="text/javascript"></script>
+        </div>
 
         <div class="block-grey">
           <h2>{% trans "Genres" %}</h2>
