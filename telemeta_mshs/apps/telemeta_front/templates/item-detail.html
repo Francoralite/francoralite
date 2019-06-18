@@ -29,41 +29,18 @@
 
         {% if user.is_superuser %}
              loadPlayer('/api/timeside/{{item.id}}/analyze/',
-              "/api/item/download/{{item.code}}.mp3",
+              "/api/item/{{item.id}}/download/{{item.code}}.mp3",
               undefined, '{{item.id}}', visualizers,
               CURRENT_USER_NAME,  //undefined if !user.is_authenticated
               true); //true because superuser
         {% else %}
            loadPlayer('/api/timeside/{{item.id}}/analyze/',
-             "/api/item/download/{{item.code}}.mp3",
+             "/api/item/{{item.id}}/download/{{item.code}}.mp3",
              undefined, '{{item.id}}', visualizers,
              CURRENT_USER_NAME,  //undefined if !user.is_authenticated
              false); //false because not superuser
         {% endif %}
       {% endif %}
-      //playlists:
-      /*
-      {% if user.is_authenticated %}
-          {% for playlist in playlists %}
-          	{% if forloop.counter0 in rang_item_playlist %}
-                  	    playlistUtils.addPlaylist('{{ playlist.playlist.title }}'+ gettrans('(playlisted)'),'{{playlist.playlist.public_id}}');
-          	{% else %}
-          	            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
-          	{% endif %}
-          {% endfor %}
-              jQuery(window).ready(function(){
-                  var anchor = jQuery('#_add_to_playlist');
-                  if(anchor.length){
-                      anchor.unbind('click').click(function(){
-                          playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
-                          //playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}');
-                          return false;
-                      });
-                  }
-                  playlistUtils.messageOk();
-              });
-      {% endif %}
-      */
   </script>
 {% endblock %}
 
@@ -129,6 +106,10 @@
     <!-- Tab General -->
     <section class="tab-pane fade active in" id="tab_general">
       <h2>Général</h2>
+<<<<<<< HEAD
+=======
+
+>>>>>>> feature/abc
       {% block player %}
 
       <div id="player_maximized" class="ts-skin-lab">
@@ -339,24 +320,8 @@
     <!-- Tab Player/Markers ------------------------------------>
     <section class="tab-pane" id="tab_mark">
       <h2>{% trans "Marqueurs" %}</h2>
-      {% block player %}
 
-      <div id="player_maximized" class="ts-skin-lab">
-         <div id="player_header">
-          <a href="#" class="toggle">{% trans "Réduire"  %}</a>
-          <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-         </div>
-          <div class="wazing"></div>
-      </div>
-      <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
-          <div id="player_minimized" class="ts-skin-lab">
-              <a href="#" class="toggle">{% trans "Agrandir"  %}</a>
-              <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-              <div class="wazing"></div>
-              <div id="player" class="ts-player">
-              </div>
-          </div>
-
+<<<<<<< HEAD
       <!--{% if "video" in mime_type %}
        {% include "telemeta/inc/mediaitem_video.html" %}
        <script>
@@ -397,6 +362,10 @@
       </section>
 
 
+=======
+      </section>
+
+>>>>>>> feature/abc
   </div>
 
   {% else %}
