@@ -31,13 +31,13 @@
              loadPlayer('/api/timeside/{{item.id}}/analyze/',
               "/api/item/{{item.id}}/download/{{item.code}}.mp3",
               undefined, '{{item.id}}', visualizers,
-              CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+              "toto",  //undefined if !user.is_authenticated
               true); //true because superuser
         {% else %}
            loadPlayer('/api/timeside/{{item.id}}/analyze/',
              "/api/item/{{item.id}}/download/{{item.code}}.mp3",
              undefined, '{{item.id}}', visualizers,
-             CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+             "toto",  //undefined if !user.is_authenticated
              false); //false because not superuser
         {% endif %}
       {% endif %}
