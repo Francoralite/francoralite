@@ -249,6 +249,13 @@ h1, h2, h3, h4 {
     padding: 2px 5px 7px 5px;
 }
 
+.player_position {
+  float: right;
+}
+.champs_general {
+  display: flex;
+  flex-direction: column
+}
 
 .exporter {
     background-color: #fff;
@@ -1546,7 +1553,12 @@ label.melody {
 #menu .menu .origin { border-bottom-color: #6a0307; }
 
 
-
+@media screen and (max-width: 1200px) {
+  .player_position {
+    display: block;
+    float: none;
+  }
+}
 @media screen and (max-width: 820px) {
 	#menu .nav .menu {
 		flex-flow: column wrap;
@@ -1564,4 +1576,6 @@ label.melody {
 	#menu .menu > li:hover > a, .menu > li.active > a{
 		border-radius: 0;
 	}
+
+
 }

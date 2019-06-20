@@ -116,7 +116,7 @@
          </div>
           <div class="wazing"></div>
       </div>
-      <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
+      <div id="rightcol" class="player_position">
           <div id="player_minimized" class="ts-skin-lab">
               <a href="#" class="toggle">{% trans "Agrandir"  %}</a>
               <a href="#" class="embed_player_frame">&lt;/&gt;</a>
@@ -149,7 +149,7 @@
 
       </div>
       {% endblock player %}
-      <div class="container_line">
+      <div class="champs_general">
         <dl class="container_data">
           <dt class="libelle"> {{form.collection.label|safe}}</dt>
           <dd class="donnee">
