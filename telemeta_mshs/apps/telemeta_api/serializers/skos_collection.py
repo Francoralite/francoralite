@@ -8,7 +8,11 @@ from rest_framework import serializers
 
 from ..models.skos_collection import SkosCollection as SkosCollectionModel
 from .asymetric_related_field import AsymetricRelatedField
-from .skos_collection import SkosCollectionSerializer
+
+
+class SubSkosCollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SkosCollectionModel
 
 
 class SkosCollectionSerializer(serializers.ModelSerializer):
@@ -21,8 +25,9 @@ class SkosCollectionSerializer(serializers.ModelSerializer):
     number = serializers.CharField(required=True)
     type = serializers.CharField(required=True)
     parent = AsymetricRelatedField.from_serializer(
-        SkosCollectionSerializer, kwargs={'required': False})
+        SubSkosCollectionSerializer, kwargs={'required': False})
 
     class Meta:
         model = SkosCollectionModel
+        depth = 2
         fields = '__all__'
