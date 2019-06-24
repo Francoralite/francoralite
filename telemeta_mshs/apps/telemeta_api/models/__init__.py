@@ -52,3 +52,4 @@ from .domain_music import DomainMusic
 from .domain_vocal import DomainVocal
 from .domain_song import DomainSong
 from .usefulness import Usefulness
+from .skos_collection import SkosCollection
