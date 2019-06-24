@@ -25,5 +25,5 @@ class SkosCollectionViewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'number', 'uri')
 
     keycloak_scopes = {
-        'GET': 'fond:view',
+        'GET': 'skos_collection:view',
     }
