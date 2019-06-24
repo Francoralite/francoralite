@@ -1,3 +1,6 @@
 [submodule "telemeta_mshs/apps/Telemeta"]
 	path = telemeta_mshs/apps/Telemeta
 	url = https://github.com/Parisson/Telemeta.git
+[submodule "coirault_skos"]
+	path = coirault_skos
+	url = https://github.com/lluc/coirault_skos.git
