@@ -21,9 +21,8 @@
         {% block graphers %}
         var visualizers = {};
         {% for g in graphers %}
-            visualizers["{{g.grapher}}"] = "/api/timeside/{{g.item}}/visualize/";
+            visualizers["{{g.grapher}}"] = "/api/timeside/{{item.id}}/soundimage/{{g.grapher}}/WIDTHxHEIGHT/";
         {% endfor %}
-        visualizers["Waveform spectral"] = "upoi_afe_0000_0000_001.waveform_centroid.346_130";
 
         {% endblock graphers %}
 
