@@ -20,8 +20,8 @@ class SkosCollectionViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('parent', 'type')
-    ordering = ('name', 'number', 'parent', 'type')
+    filter_fields = ('collection', 'type')
+    ordering = ('name', 'number', 'collection', 'type')
     search_fields = ('name', 'number', 'uri')
 
     keycloak_scopes = {
