@@ -15,6 +15,10 @@ class Command(BaseCommand):
         super(Command, self).__init__(*args, **kwargs)
         self.cpt_chapter = 0
         self.cpt_chapter_updated = 0
+        self.current_chapter = None
+        self.cpt_topic = 0
+        self.cpt_topic_updated = 0
+        self.current_topic = None
 
     def add_arguments(self, parser):
         parser.add_argument('rdf_file',
@@ -40,17 +44,24 @@ class Command(BaseCommand):
                 topics = reader.read_topic(chapter=chapter["uri"])
                 for topic in topics:
                     self.stdout.write('\tTopic %s' % topic["number"])
+                    # Create or modify a topic
+                    self.create_topic(topic=topic)
 
                     # Retrieve every song
                     songs = reader.read_song(topic=topic["uri"])
                     for song in songs:
                         self.stdout.write('.', ending='')
+                    self.stdout.write('')
 
             self.stdout.write('-----------------')
             self.stdout.write('\tChapter')
             self.stdout.write('\t\tcreated = %s' % str(self.cpt_chapter))
             self.stdout.write(
                 '\t\tupdated = %s' % str(self.cpt_chapter_updated))
+            self.stdout.write('\tTopic')
+            self.stdout.write('\t\tcreated = %s' % str(self.cpt_topic))
+            self.stdout.write(
+                '\t\tupdated = %s' % str(self.cpt_topic_updated))
             self.stdout.write('End of Coirault import.')
 
     def create_chapter(self, chapter):
@@ -61,10 +72,29 @@ class Command(BaseCommand):
                 number=chapter["number"],
                 type="chapter"
             )
+            self.current_chapter = rec
             if created is True:
                 self.cpt_chapter = self.cpt_chapter + 1
             else:
                 self.cpt_chapter_updated = self.cpt_chapter_updated + 1
+
+        except Exception(Error):
+            self.stdout.write("Error %s" % Error)
+
+    def create_topic(self, topic):
+        try:
+            rec, created = SkosCollection.objects.update_or_create(
+                name=topic["name"],
+                uri=topic["uri"],
+                number=topic["number"],
+                collection=self.current_chapter,
+                type="topic"
+            )
+            self.current_topic = rec
+            if created is True:
+                self.cpt_topic = self.cpt_topic + 1
+            else:
+                self.cpt_topic_updated = self.cpt_topic_updated + 1
 
         except Exception(Error):
             self.stdout.write("Error %s" % Error)

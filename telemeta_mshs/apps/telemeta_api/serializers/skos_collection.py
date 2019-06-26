@@ -13,6 +13,7 @@ from .asymetric_related_field import AsymetricRelatedField
 class SubSkosCollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkosCollectionModel
+        fields = '__all__'
 
 
 class SkosCollectionSerializer(serializers.ModelSerializer):
