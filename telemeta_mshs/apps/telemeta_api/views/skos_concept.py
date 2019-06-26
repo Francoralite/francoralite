@@ -10,7 +10,7 @@ from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..serializers.skos_concept import SkosConceptSerializer
 
 
-class SkosConceptViewSet(viewsets.ModelViewSet):
+class SkosConceptViewSet(viewsets.ReadOnlyModelViewSet):
     """
     SkosConcept management
     """

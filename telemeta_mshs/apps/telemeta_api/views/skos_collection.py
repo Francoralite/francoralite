@@ -10,7 +10,7 @@ from ..models.skos_collection import SkosCollection as SkosCollectionModel
 from ..serializers.skos_collection import SkosCollectionSerializer
 
 
-class SkosCollectionViewSet(viewsets.ModelViewSet):
+class SkosCollectionViewSet(viewsets.ReadOnlyModelViewSet):
     """
     SkosCollection management
     """

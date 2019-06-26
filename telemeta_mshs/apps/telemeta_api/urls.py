@@ -54,7 +54,8 @@ from .views import (
     usefulness,
     timeside_item,
     global_search,
-    skos_collection
+    skos_collection,
+    skos_concept
     )
 
 urlpatterns = [
@@ -143,6 +144,9 @@ router.register(r'timeside',
                 timeside_item.TimeSideViewSet,
                 base_name='timeside')
 router.register(r'skos_collection',
+                skos_collection.SkosCollectionViewSet,
+                base_name='coirault')
+router.register(r'skos_concept',
                 skos_collection.SkosCollectionViewSet,
                 base_name='coirault')
 
