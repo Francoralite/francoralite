@@ -24,8 +24,9 @@ class SkosCollectionSerializer(serializers.ModelSerializer):
     uri = serializers.URLField(required=True)
     number = serializers.CharField(required=True)
     type = serializers.CharField(required=True)
-    parent = AsymetricRelatedField.from_serializer(
-        SubSkosCollectionSerializer, kwargs={'required': False})
+    collection = AsymetricRelatedField.from_serializer(
+        SubSkosCollectionSerializer, kwargs={
+            'required': False, 'allow_null': True})
 
     class Meta:
         model = SkosCollectionModel
