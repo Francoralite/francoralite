@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand
 from django.db import Error
 from coirault_skos import skos
 from ...models.skos_collection import SkosCollection
+from ...models.skos_concept import SkosConcept
 
 
 class Command(BaseCommand):
@@ -19,6 +20,9 @@ class Command(BaseCommand):
         self.cpt_topic = 0
         self.cpt_topic_updated = 0
         self.current_topic = None
+        self.cpt_song = 0
+        self.cpt_song_updated = 0
+        self.current_song = None
 
     def add_arguments(self, parser):
         parser.add_argument('rdf_file',
@@ -51,6 +55,8 @@ class Command(BaseCommand):
                     songs = reader.read_song(topic=topic["uri"])
                     for song in songs:
                         self.stdout.write('.', ending='')
+                        # Create or modify a song
+                        self.create_song(song=song)
                     self.stdout.write('')
 
             self.stdout.write('-----------------')
@@ -62,6 +68,10 @@ class Command(BaseCommand):
             self.stdout.write('\t\tcreated = %s' % str(self.cpt_topic))
             self.stdout.write(
                 '\t\tupdated = %s' % str(self.cpt_topic_updated))
+            self.stdout.write('\tSong')
+            self.stdout.write('\t\tcreated = %s' % str(self.cpt_song))
+            self.stdout.write(
+                '\t\tupdated = %s' % str(self.cpt_song_updated))
             self.stdout.write('End of Coirault import.')
 
     def create_chapter(self, chapter):
@@ -95,6 +105,25 @@ class Command(BaseCommand):
                 self.cpt_topic = self.cpt_topic + 1
             else:
                 self.cpt_topic_updated = self.cpt_topic_updated + 1
+
+        except Exception(Error):
+            self.stdout.write("Error %s" % Error)
+
+    def create_song(self, song):
+        try:
+            rec, created = SkosConcept.objects.update_or_create(
+                name=song["name"],
+                uri=song["uri"],
+                number=song["number"],
+                collection=self.current_topic,
+                # TODO : penser à réupérer les notes --> abstract
+                abstract=""
+            )
+            self.current_song = rec
+            if created is True:
+                self.cpt_song = self.cpt_song + 1
+            else:
+                self.cpt_song_updated = self.cpt_song_updated + 1
 
         except Exception(Error):
             self.stdout.write("Error %s" % Error)

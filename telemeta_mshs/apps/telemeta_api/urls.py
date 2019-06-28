@@ -147,7 +147,7 @@ router.register(r'skos_collection',
                 skos_collection.SkosCollectionViewSet,
                 base_name='coirault')
 router.register(r'skos_concept',
-                skos_collection.SkosCollectionViewSet,
+                skos_concept.SkosConceptViewSet,
                 base_name='coirault')
 
 # Nested routers

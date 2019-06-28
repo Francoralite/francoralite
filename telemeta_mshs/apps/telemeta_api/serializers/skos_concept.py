@@ -20,7 +20,7 @@ class SkosConceptSerializer(serializers.ModelSerializer):
     uri = serializers.URLField(required=True)
     number = serializers.CharField(required=True)
     abstract = serializers.CharField(required=False, allow_blank=True)
-    parent = AsymetricRelatedField.from_serializer(
+    collection = AsymetricRelatedField.from_serializer(
         SkosCollectionSerializer, kwargs={'required': False})
 
     class Meta:
