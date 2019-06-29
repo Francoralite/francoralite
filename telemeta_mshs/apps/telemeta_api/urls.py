@@ -29,6 +29,7 @@ from .views import (
     item_usefulness,
     item_dance,
     item_thematic,
+    item_coirault,
     item_musical_organization,
     item_musical_group,
     item_analysis,
@@ -200,6 +201,9 @@ Item_router.register(
 Item_router.register(
     r'musical_organization',
     item_musical_organization.ItemMusicalOrganizationViewSet)
+Item_router.register(
+    r'coirault', item_coirault.ItemCoiraultViewSet
+)
 Item_router.register(
     r'musical_group',
     item_musical_group.ItemMusicalGroupViewSet)
