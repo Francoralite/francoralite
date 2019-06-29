@@ -48,6 +48,7 @@ from .views.enum import (
     musical_group_add,
     thematic, thematic_edit, thematic_delete, thematic_detail,
     thematic_add,
+    coirault_detail,
     usefulness, usefulness_edit, usefulness_delete, usefulness_detail,
     usefulness_add,
     coupe, coupe_edit, coupe_delete, coupe_detail,
@@ -360,6 +361,11 @@ urlpatterns = [
     url(r'^emit_vox/delete/(?P<id>[0-9]+)$',
         thematic_delete.ThematicDelete.as_view(),
         name='thematic-delete'),
+
+    # Coirault
+    url(r'^coirault/(?P<id>[0-9]+)/$',
+        coirault_detail.CoiraultDetail.as_view(),
+        name='coirault-detail'),
 
     # Musical Group
     url(r'^musical_group/$',
