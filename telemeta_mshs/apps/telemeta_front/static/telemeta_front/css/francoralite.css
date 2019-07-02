@@ -623,6 +623,16 @@ dl.listing dd {
     font-weight: bold;
 }
 
+/* onglets en fixe */
+.nav-tabs {
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 120;
+  background: white;
+  padding-top: 5px;
+}
+
 /* dublin core display */
 h4.dublincore {
     text-align: left;
