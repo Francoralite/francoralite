@@ -23,11 +23,9 @@
 
 {% block title_buttons %}
 {% if user.is_authenticated %}
-  <a href="{% url "musical_organization-add" %}" class="btn_add">
-    <button type="button" class="btn btn-default">
+  <a href="{% url "musical_organization-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une organisation musicale" %}
-    </button>
   </a>
 {% endif %}
 {% endblock %}

@@ -24,10 +24,8 @@
 
 {% block title_buttons %}
   {% if user.is_authenticated %}
-  <a href="{% url "coupe-edit" id=id %}" class="btn_add">
-  <button type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
-  </button>
+  <a href="{% url "coupe-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
   {% endif %}
 {% endblock %}

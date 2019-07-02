@@ -50,10 +50,8 @@
       <td>{{ collection.title|safe }}</td>
       {% if user.is_authenticated %}
       <td>
-        <a href="{% url "collection-edit" id=collection.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-              </button>
+        <a href="{% url "collection-edit" id=collection.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"

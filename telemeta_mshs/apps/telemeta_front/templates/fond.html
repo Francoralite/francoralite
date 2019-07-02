@@ -22,10 +22,8 @@
 
 {% block title_buttons %}
 {% if user.is_authenticated %}
-    <a href="{% url "fond-add" %}" class="btn_add">
-    <button type="button" class="btn btn-default">
+    <a href="{% url "fond-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"> {% trans "Ajouter" %}</span>
-    </button>
     </a>
 {% endif %}
 {% endblock %}
@@ -54,10 +52,8 @@
       <td>{{ fond.title|safe }}</td>
       {% if user.is_authenticated %}
       <td>
-        <a href="{% url "fond-edit" id=fond.id %}">
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-              </button>
+        <a href="{% url "fond-edit" id=fond.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
