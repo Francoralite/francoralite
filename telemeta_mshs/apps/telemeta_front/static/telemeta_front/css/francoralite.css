@@ -628,7 +628,7 @@ dl.listing dd {
   border-bottom: 1px solid #ddd;
   position: sticky;
   top: 0;
-  z-index: 120;
+  z-index: 3;
   background: white;
   padding-top: 5px;
 }
@@ -1444,7 +1444,7 @@ label.melody {
 #menu .menu {
 	font-weight: bold;
 	font-size: 1em;
-	z-index:2;
+	z-index:4;
 }
 
 #menu .menu a, .menu a:hover, .menu a:active {
