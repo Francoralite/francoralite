@@ -1422,7 +1422,7 @@ a:focus,div:focus{
     margin-top: 0.1em;
 }
 
-#mapid {
+#mapid, #mapItems {
     z-index: 1;
 }
 
