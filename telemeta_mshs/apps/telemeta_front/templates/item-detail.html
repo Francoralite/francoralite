@@ -30,13 +30,13 @@
              loadPlayer('/api/timeside/{{item.id}}/analyze/',
               "/api/item/{{item.id}}/download/{{item.code}}.mp3",
               undefined, '{{item.id}}', visualizers,
-              "toto",  //undefined if !user.is_authenticated
+              undefined,
               true); //true because superuser
         {% else %}
            loadPlayer('/api/timeside/{{item.id}}/analyze/',
              "/api/item/{{item.id}}/download/{{item.code}}.mp3",
              undefined, '{{item.id}}', visualizers,
-             "toto",  //undefined if !user.is_authenticated
+             undefined,
              false); //false because not superuser
         {% endif %}
       {% endif %}

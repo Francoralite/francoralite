@@ -25,6 +25,12 @@
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/abcjs/3.1.1/abcjs_editor_midi-min.js"></script>-->
   <script src="{% static "telemeta_front/js/abcjs_midi_5.6.5-min.js" %}"></script>
 
+  {% if user.is_authenticated %}
+      <script type='text/javascript'>var CURRENT_USER_NAME = "{{ user.username }}";</script>
+  {% else %}
+      <script type='text/javascript'>var CURRENT_USER_NAME = undefined;</script>
+  {% endif %}
+
 {% endblock %}
 
 
