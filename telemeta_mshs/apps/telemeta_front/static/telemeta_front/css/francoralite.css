@@ -1450,7 +1450,6 @@ label.melody {
 #menu .menu {
 	font-weight: bold;
 	font-size: 1em;
-	z-index:4;
 }
 
 #menu .menu a, .menu a:hover, .menu a:active {
@@ -1463,6 +1462,7 @@ label.melody {
 	margin: 3px 3px auto;
 	border-bottom:5px #6a0307 solid;
 	border-radius: 0;
+  z-index:4;
 }
 
 #menu .menu > li > a {
