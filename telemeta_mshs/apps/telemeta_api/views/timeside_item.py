@@ -152,5 +152,15 @@ class TimeSideViewSet(viewsets.ViewSet):
             + '.' + grapher + '.' \
             + width + '_' + height + '.png'
 
+        # Test if image not exists in cache
+        if not cache_data.exists(image):
+            # Then, create this image
+            vs = ItemViewSet()
+            vs.item_visualize(
+                public_id=item.code,
+                grapher_id=grapher,
+                width=width,
+                height=height)
+
         response = serve_media(image, content_type="image/png")
         return response
