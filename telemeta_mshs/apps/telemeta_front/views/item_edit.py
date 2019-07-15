@@ -28,6 +28,7 @@ class ItemEdit(FormView):
             FRONT_HOST_URL + '/api/item/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['item'] = response.json
+
         return context
 
     def get(self, request, *args, **kwargs):
@@ -39,9 +40,18 @@ class ItemEdit(FormView):
             FRONT_HOST_URL + '/api/item/' + str(id))
         form = ItemForm(initial=item.json())
 
+        # Obtain gaphers of the record
+        graphers = []
+        response = requests.get(
+            FRONT_HOST_URL+'/api/timeside/'
+            + str(id) + '/visualize/')
+        if response.status_code == status.HTTP_200_OK:
+            graphers.append(response.json)
+
         return render(request,
                       '../templates/item-add.html',
-                      {'form': form, 'id': id})
+                      {'form': form, 'id': id, 'item': item.json(),
+                       'graphers': graphers})
 
     def post(self, request, *args, **kwargs):
 

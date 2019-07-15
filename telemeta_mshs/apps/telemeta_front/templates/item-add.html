@@ -1,5 +1,5 @@
 
-{% extends "item.html" %}
+{% extends "item-detail.html" %}
 {% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
@@ -47,6 +47,27 @@
 
 {{ form.media }}
 <div id="app">
+  <div class="fixedWidthAsPlayer">
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+  </div>
+  {% block player %}
+  <div id="player_maximized" class="ts-skin-lab">
+     <div id="player_header">
+      <a href="#" class="toggle">Minimize</a>
+      <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+     </div>
+      <div class="wazing"></div>
+  </div>
+  <div id="rightcol">
+      <div id="player_minimized" class="ts-skin-lab">
+          <a href="#" class="toggle">Maximize</a>
+          <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+          <div class="wazing"></div>
+          <div id="player" class="ts-player">
+          </div>
+      </div>
+    </div>
+  {% endblock %}
 <!-- Tabs -->
 <ul class="nav nav-tabs" role="tablist">
    <li class="nav-item active">
@@ -610,9 +631,24 @@
         </div>
         <!-- Tab Player/Markers ------------------------------------>
         <div class="tab-pane" id="tab_mark">
-          {% block player %}
-          {{ block.super }}
-          {% endblock %}
+
+            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+                <span id="loading_span_text">Loading...</span></span>
+            <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "File" %}</a><!--
+             do not let space here as it appears in the document!!!!!
+            --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Markers" %}</a>
+
+            <div class="markers" id="markers_div_id"></div>
+
+            <div class="analyzer" id="analyzer_div_id">
+              <table width="100%">
+                  <tr class="analyzer-title">
+                      <td>{% trans "Property" %}</td>
+                      <td>{% trans "Value" %}</td>
+                      <td>{% trans "Unit" %}</td>
+                  </tr>
+              </table>
+            </div>
         </div>
 
     </div>
