@@ -84,7 +84,7 @@ class ItemForm(forms.Form):
     incipit = forms.CharField(label=_(u'Incipit'), required=False)
     refrain = forms.CharField(label=_(u'Refrain'), required=False)
 
-    #refrain = forms.CharField(
+    # refrain = forms.CharField(
     #    label=_(u'Refrain'),
     #    widget=forms.Textarea(attrs={"rows": 5, "cols": 20}, required=False))
 
@@ -103,7 +103,7 @@ class ItemForm(forms.Form):
             required=True)
 
         self.fields['collection'] = forms.ChoiceField(
-            label=_(u'Collection'),
+            label=_(u'Enquête'),
             choices=Core.get_choices(
                 entity="collection", label_field="title"),
             required=True)

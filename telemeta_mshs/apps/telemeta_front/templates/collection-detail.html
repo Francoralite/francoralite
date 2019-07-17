@@ -211,11 +211,11 @@
         {% for item in items %}
         <tr>
             <td class="highlight">
-                <a href="/collection/{{collection.id }}/">
-                {{ collection.code|upper }}</a>
+                <a href="/item/{{item.id }}/">
+                {{ item.code|upper }}</a>
             </td>
-            <td>{{ collection.title|safe }}</td>
-            <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+            <td>{{ item.title|safe }}</td>
+            <td>{{ item.description|truncatechars:50|markdown|safe}}</td>
           </tr>
           {% endfor %}
         </table>

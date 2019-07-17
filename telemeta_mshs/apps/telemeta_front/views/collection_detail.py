@@ -19,8 +19,12 @@ class CollectionDetail(FrancoraliteTemplateView):
             # Obtain values of the record collection
             context['collection'] = tools.request_api(
                 '/api/collection/'+context['id']+'/complete/')
+            # Obtain values of related items
+            context['items'] = tools.request_api(
+                '/api/item/?collection=' + context['id'])
             context['form'] = CollectionForm()
         except Exception as err:
             context['collection'] = {}
+            context['items'] = []
             context['error'] = err.message
         return context
