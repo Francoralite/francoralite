@@ -29,6 +29,7 @@ from .views import (
     item_usefulness,
     item_dance,
     item_thematic,
+    item_coirault,
     item_musical_organization,
     item_musical_group,
     item_analysis,
@@ -54,6 +55,8 @@ from .views import (
     usefulness,
     timeside_item,
     global_search,
+    skos_collection,
+    skos_concept
     )
 
 urlpatterns = [
@@ -141,6 +144,12 @@ router.register(r'usefulness',
 router.register(r'timeside',
                 timeside_item.TimeSideViewSet,
                 base_name='timeside')
+router.register(r'skos_collection',
+                skos_collection.SkosCollectionViewSet,
+                base_name='coirault')
+router.register(r'skos_concept',
+                skos_concept.SkosConceptViewSet,
+                base_name='coirault')
 
 # Nested routers
 # Collection's nested ------------------------------------
@@ -192,6 +201,9 @@ Item_router.register(
 Item_router.register(
     r'musical_organization',
     item_musical_organization.ItemMusicalOrganizationViewSet)
+Item_router.register(
+    r'coirault', item_coirault.ItemCoiraultViewSet
+)
 Item_router.register(
     r'musical_group',
     item_musical_group.ItemMusicalGroupViewSet)
