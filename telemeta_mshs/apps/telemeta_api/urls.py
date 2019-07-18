@@ -16,6 +16,7 @@ from .views import (
     collection_language,
     location,
     location_gis,
+    location_gis_collection,
     language,
     item,
     item_collector,
@@ -63,6 +64,9 @@ urlpatterns = [
     url(r'^jsonrpc/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),
     url(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
         name="search"),
+    url(r'^api/locationgiscollection/$',
+        location_gis_collection.LocationGisCollectionList.as_view(),
+        name="location_gis_collection"),
 ]
 
 router = routers.SimpleRouter()
@@ -87,6 +91,9 @@ router.register(r'location',
 router.register(r'locationgis',
                 location_gis.LocationGISViewSet,
                 base_name='location_gis')
+# router.register(r'locationgiscollection',
+#                 location_gis_collection.LocationGisCollectionList,
+#                 base_name='location_gis_collection')
 router.register(r'fond', fond.FondViewSet, base_name='fond'),
 router.register(r'acquisitionmode',
                 acquisition_mode.AcquisitionModeViewSet,

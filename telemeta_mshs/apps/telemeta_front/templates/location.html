@@ -87,26 +87,31 @@
             removeOutsideVisibleBounds: true
           } );
 
-        axios.get(
-        `/api/locationgis/?ordering=code`
-        ).then(
-        res => {
-          locs = res.data;
-          for( let loc of locs ) {
-            var marker = L.marker([loc.latitude,loc.longitude]).bindPopup(
-            'Lieu : <a href="/location_gis/'+
-            loc.id+'"><b>'+loc.code+
-            '</b></a><p>'+loc.name+'</p><hr/><i>'+
-            loc.notes+'</i>' );
-            markers.addLayer(marker);
-          }
-          map.addLayer(markers);
-        });
-
-
+        request_location(map, markers);
       }
-
-  </script>
+    </script>
+    
+  {% block request_location %}
+    <script type="text/javascript">
+     function request_location(map, markers) {
+       axios.get(
+         `/api/locationgis/?ordering=code`
+       ).then(
+         res => {
+           locs = res.data;
+           for( let loc of locs ) {
+             var marker = L.marker([loc.latitude,loc.longitude]).bindPopup(
+               'Lieu : <a href="/location_gis/'+
+               loc.id+'"><b>'+loc.code+
+               '</b></a><p>'+loc.name+'</p><hr/><i>'+
+               loc.notes+'</i>' );
+               markers.addLayer(marker);
+             }
+             map.addLayer(markers);
+           });
+       }
+    </script>
+  {% endblock request_location %}
 
 
 {% if user.is_authenticated %}

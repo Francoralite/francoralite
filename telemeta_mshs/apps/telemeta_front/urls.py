@@ -14,6 +14,7 @@ from .views import (
     location, location_add, location_detail, location_edit, location_delete,
     location_gis, location_gis_add, location_gis_detail, location_gis_edit,
     location_gis_delete,
+    location_gis_collection,
     fond, fond_add, fond_detail, fond_edit, fond_delete,
     mission, mission_add, mission_detail, mission_edit, mission_delete,
     collection, collection_add, collection_detail, collection_edit,
@@ -135,6 +136,9 @@ urlpatterns = [
     url(r'^location_gis/delete/(?P<id>[0-9]+)$',
         location_gis_delete.LocationDelete.as_view(),
         name='location_gis-delete'),
+    url(r'^location_gis_collection/$',
+        location_gis_collection.LocationCollectionView.as_view(),
+        name="location_gis_collection"),
 
     # Fonds
     url(r'^fond/$', fond.FondView.as_view(),
