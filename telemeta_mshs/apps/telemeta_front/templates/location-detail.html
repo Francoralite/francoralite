@@ -69,8 +69,28 @@
 
 <div class="block-grey">
   <h2>{% trans "Enquêtes" %}</h2>
-  <div class="container_line">
-  </div>
+
+{% if collections|length > 0 %}
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+      <th>{% trans "Description" %}</th>
+      <th>{% trans "Mission" %}</th>
+  </tr>
+  {% for col in collections %}
+  <tr>
+      <td class="highlight">
+          <a href="/collection/{{col.collection.id }}/">
+          {{ col.collection.code|upper }}</a>
+      </td>
+      <td>{{ col.collection.title|safe }}</td>
+      <td>{{ col.collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+      <td>{{ col.collection.mission.title|safe }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endif %}
 </div>
 
 <div class="block-grey">
