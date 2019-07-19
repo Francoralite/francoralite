@@ -138,7 +138,7 @@ urlpatterns = [
         name='location_gis-delete'),
     url(r'^location_gis_collection/$',
         location_gis_collection.LocationCollectionView.as_view(),
-        name="location_gis_collection"),
+        name="location_gis-collection"),
 
     # Fonds
     url(r'^fond/$', fond.FondView.as_view(),
