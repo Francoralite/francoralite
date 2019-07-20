@@ -95,7 +95,25 @@
 
 <div class="block-grey">
   <h2>{% trans "Items" %}</h2>
-  <div class="container_line">
+  {% if items|length > 0 %}
+    <table class="listing">
+    <tr>
+        <th class="highlight">{% trans "cote" %}</th>
+        <th>{% trans "Nom" %}</th>
+        <th>{% trans "Description" %}</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td class="highlight">
+            <a href="/item/{{item.id }}/">
+            {{ item.code|upper }}</a>
+        </td>
+        <td>{{ item.title|safe }}</td>
+        <td>{{ item.description|truncatechars:50|markdown|safe}}          </td>
+      </tr>
+    {% endfor %}
+    </table>
+  {% endif %}
   </div>
 </div>
 
