@@ -21,7 +21,7 @@ class LocationDetail(FrancoraliteTemplateView):
                 '/api/locationgis/' + context['id'])
             # Obtain values of related collections
             context['collections'] = tools.request_api(
-                '/api/locationgiscollection/')
+                '/api/locationgis/' + context['id'] + '/collections/')
             # Obtain values of related items
             context['items'] = tools.request_api(
                 '/api/locationgis/' + context['id'] + '/items/')
