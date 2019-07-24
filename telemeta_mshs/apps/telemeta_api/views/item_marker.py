@@ -39,11 +39,6 @@ class ItemMarkerViewSet(viewsets.ModelViewSet):
             m.time = float(marker['time'])
             m.title = marker['title']
             m.description = marker['description']
-            import sys
-            print('------------')
-            print marker['author']
-            print('------------')
-            sys.stdout.flush()
             m.author = User.objects.get(username=marker['author'])
             m.save()
         else:
@@ -54,21 +49,12 @@ class ItemMarkerViewSet(viewsets.ModelViewSet):
         item = ItemModel.objects.get(id=item_id)
         markers = ItemMarkerModel.objects.filter(item=item)
         list = []
-        import sys
         for marker in markers:
             dict = {}
-            print('------------')
-            print marker.__dict__
-            print('------------')
-            sys.stdout.flush()
             dict['public_id'] = marker.id
             dict['time'] = str(marker.time)
             dict['title'] = marker.title
             dict['description'] = marker.description
             dict['author'] = marker.author.username
             list.append(dict)
-        print('------------')
-        print list
-        print('------------')
-        sys.stdout.flush()
         return list
