@@ -3,7 +3,6 @@ import os
 import sys
 
 # Original Telemeta application settings
-# from .telemeta_settings import *  # noqa
 from telemeta_settings import *  # noqa
 
 INSTALLED_APPS = (
@@ -19,12 +18,10 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    # 'timeside.server',
     'jsonrpc',
     'sorl.thumbnail',
     'timezones',
     'jqchat',
-    # 'ipauth',
     'extra_views',
     'bootstrap3',
     'bootstrap_datepicker',
@@ -132,16 +129,20 @@ OIDC_RP_CLIENT_SECRET = os.getenv(
 OIDC_CREATE_USER = True
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') + \
     "realms/francoralite/protocol/openid-connect/auth"
 OIDC_OP_TOKEN_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') + \
     "realms/francoralite/protocol/openid-connect/token"
 OIDC_OP_USER_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') + \
     "realms/francoralite/protocol/openid-connect/userinfo"
 OIDC_OP_JWKS_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') + \
     "realms/francoralite/protocol/openid-connect/certs"
 
 LOGIN_REDIRECT_URL = "http://nginx.francoralite.localhost:8080/"
