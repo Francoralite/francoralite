@@ -56,8 +56,13 @@ services:
     build:
       context: .
     networks:
-      - 'services'
-      - 'francoralite'
+      francoralite:
+        aliases:
+          - 'app'
+      services:
+        aliases:
+          - 'app'
+          - 'app-francoralite-test.huma-num.fr'
     volumes:
       - './:/srv/app'
       - './scripts:/srv/scripts'
@@ -135,7 +140,7 @@ services:
       services:
         aliases:
           - 'keycloak'
-          - 'keycloak.francoralite.localhost'
+          #- 'auth-francoralite-test.huma-num.fr'
     depends_on:
       - 'keycloak_db'
 
