@@ -208,9 +208,10 @@ class KeycloakMiddleware(object):
         :return:
         """
 
+        path = request.path_info.lstrip('/')
+
         # Is there some exempts paths ?
         if hasattr(settings, 'KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS'):
-            path = request.path_info.lstrip('/')
 
             # Search every KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS in path
             if any(re.match(m, path) for m in
@@ -218,48 +219,36 @@ class KeycloakMiddleware(object):
                 logger.debug('** exclude path found, skipping')
                 return None
 
-            # Exclude every URL pointing to the API service,
-            #   for a list queryset.
-            expr = re.compile("^api/[a-z0-9_]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : display template')
-                return None
+        # Exclude every URL pointing to the API service,
+        #   for a list queryset.
+        expr = re.compile("^api/[a-z0-9_]*/$")
+        if expr.match(path):
+            logger.debug('** exclude path : display template')
+            return None
 
-            # Exclude every URL pointing to the API service,
-            #   for a detail queryset.
-            expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|analyze/|)$")
-            if expr.match(path):
-                logger.debug('** exclude path : display template')
-                return None
-            expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : download MP3 streaming')
-                return None
-            expr = re.compile(
-                "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : visualize sound image')
-                return None
+        # Exclude every URL pointing to the API service,
+        #   for a detail queryset.
+        expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|analyze/|)$")
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
+        expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
+        if expr.match(path):
+            logger.debug('** exclude path : download MP3 streaming')
+            return None
+        expr = re.compile(
+            "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*/$")
+        if expr.match(path):
+            logger.debug('** exclude path : visualize sound image')
+            return None
 
-            expr = re.compile(
-                "^api/.*$")
-            if expr.match(path):
-                logger.debug('** exclude path : ALL !!!')
-                return None
+        # Exclude every URL pointing to a list.
+        # e.g: institution/  --> list of the institutions
+        expr = re.compile("^[a-z0-9_]*/$")
+        if expr.match(path):
+            logger.debug('** exclude path : list template')
+            return
 
-            # Exclude every URL pointing to the API service,
-            #   for authenticate
-            expr = re.compile("^oidc/(authenticate|callback)/$")
-            if expr.match(path):
-                logger.debug('** exclude path : authenticate')
-                return None
-
-            # Exclude every URL pointing to a list.
-            # e.g: institution/  --> list of the institutions
-            expr = re.compile("^[a-z0-9_]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : list template')
-                return
         try:
             view_scopes = view_func.cls.keycloak_scopes
         except AttributeError:
