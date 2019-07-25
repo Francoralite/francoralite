@@ -45,6 +45,7 @@
   {{ block.super }}
 {% endblock %}
 
+
 {{ form.media }}
 <div id="app">
   <div class="fixedWidthAsPlayer">
@@ -94,11 +95,11 @@
   <form action="{{request.path}}" method="POST">
   {% endif %}
     {% csrf_token %}
-    <!-- FIXIT  champs en saisie -->
 
     <div class="tab-content">
       <!-- Tab General -->
       <div class="tab-pane fade active in" id="tab_general">
+        {% bootstrap_field form.collection layout='vertical' %}
         {% bootstrap_field form.title layout='vertical' %}
         {% bootstrap_field form.alt_title layout='vertical' %}
         {% bootstrap_field form.trans_title layout='vertical' %}

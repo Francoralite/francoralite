@@ -72,4 +72,5 @@ class ItemEdit(FormView):
             except RequestException:
                 return HttpResponseRedirect('/item/edit')
 
-        return HttpResponseRedirect('/item/edit')
+        return self.render_to_response(
+            self.get_context_data(request=self.request, form=form))
