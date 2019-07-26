@@ -23,20 +23,19 @@ networks:
       name: 'services'
 
 services:
-
   data:
     image: "${DATA_IMAGE_NAME}:${DATA_IMAGE_VERSION}"
     command: 'true'
-    restart: 'unless-stopped'
+    restart: 'on-failure'
     logging: *default-logging
     networks: *network-internal
     volumes:
-       - './data/media/:/srv/media'
-       - './data/backup/:/srv/backup'
-       - './data/static:/srv/static'
-       - './data/bower:/srv/bower'
-       - './data/log/nginx:/var/log/nginx'
-       - './data/log/uwsgi:/var/log/uwsgi'
+       - 'data_media/:/srv/media'
+       - 'data_backup/:/srv/backup'
+       - 'data_static:/srv/static'
+       - 'data_bower:/srv/bower'
+       - 'data_log_nginx:/var/log/nginx'
+       - 'data_log_uwsgi:/var/log/uwsgi'
 
   db:
     image: "${MYSQL_IMAGE_NAME}:${MYSQL_IMAGE_VERSION}"
@@ -52,7 +51,7 @@ services:
       retries: 3
     volumes:
       - './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
-      - './data/mysql/:/var/lib/mysql'
+      - 'mysql_data:/var/lib/mysql'
     volumes_from:
       - 'data'
 
@@ -163,4 +162,11 @@ services:
       - 'keycloak_db:/var/lib/postgresql/data'
 
 volumes:
+  data_backup: {}
+  data_bower: {}
+  data_log_nginx: {}
+  data_log_uwsgi: {}
+  data_media: {}
+  data_static: {}
   keycloak_db: {}
+  mysql_data: {}
