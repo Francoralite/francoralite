@@ -17,8 +17,9 @@ RUN chown www-data:www-data $PYTHON_EGG_CACHE
 ADD . / ./
 COPY ./telemeta_mshs/settings/base.py ./settings.py
 COPY ./telemeta_mshs/apps/Telemeta/app/settings.py ./telemeta.py
-RUN pip install --no-cache-dir -r requirements.txt --process-dependency-links
-RUN pip uninstall -y South
+RUN pip install pip==18.1 \
+  && pip install --no-cache-dir -r requirements.txt --process-dependency-links \
+  && pip uninstall -y South
 
 # EXPOSE port 8000 to allow communication to/from server
 EXPOSE 8000
