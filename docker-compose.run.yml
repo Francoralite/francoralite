@@ -1,0 +1,13 @@
+---
+
+# Docker compose to build Telemeta meta project
+
+version: '2.1'
+
+services:
+  nginx:
+    ports:
+      - '127.0.0.1:50000:80'
+  keycloak:
+    ports:
+      - '127.0.0.1:50001:8080'
