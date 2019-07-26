@@ -43,7 +43,7 @@ services:
     logging: *default-logging
     networks: *network-internal
     env_file:
-      - './telemeta_mshs/apps/Telemeta/env/prod.env'
+      - './francoralite-env/app.env'
     healthcheck:
       test: ["CMD-SHELL", "mysql -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SHOW DATABASES;'"]
       interval: '30s'
@@ -113,7 +113,7 @@ services:
       app:
         condition: 'service_healthy'
     env_file:
-      - './telemeta_mshs/apps/Telemeta/env/prod.env'
+      - './francoralite-env/app.env'
     volumes_from:
       - 'app'
 
