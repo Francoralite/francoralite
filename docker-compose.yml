@@ -4,6 +4,17 @@
 
 version: '2.1'
 
+x-logging:
+  &default-logging
+  driver: 'json-file'
+  options:
+    max-size: "${LOGGING_MAX_SIZE}"
+    max-file: "${LOGGING_MAX_FILE}"
+
+x-network-internal:
+  &network-internal
+  - 'francoralite'
+
 networks:
   keycloak: {}
   francoralite: {}
@@ -12,10 +23,13 @@ networks:
       name: 'services'
 
 services:
+
   data:
-    image: 'debian:jessie'
-    networks:
-      - 'francoralite'
+    image: "${DATA_IMAGE_NAME}:${DATA_IMAGE_VERSION}"
+    command: 'true'
+    restart: 'unless-stopped'
+    logging: *default-logging
+    networks: *network-internal
     volumes:
        - './data/media/:/srv/media'
        - './data/backup/:/srv/backup'
@@ -23,17 +37,12 @@ services:
        - './data/bower:/srv/bower'
        - './data/log/nginx:/var/log/nginx'
        - './data/log/uwsgi:/var/log/uwsgi'
-    command: 'true'
 
   db:
-    image: 'mysql:8.0.2'
-    volumes:
-      - './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
-      - './data/mysql/:/var/lib/mysql'
-    networks:
-      - 'francoralite'
-    volumes_from:
-      - 'data'
+    image: "${MYSQL_IMAGE_NAME}:${MYSQL_IMAGE_VERSION}"
+    restart: 'unless-stopped'
+    logging: *default-logging
+    networks: *network-internal
     env_file:
       - './telemeta_mshs/apps/Telemeta/env/prod.env'
     healthcheck:
@@ -41,20 +50,42 @@ services:
       interval: '30s'
       timeout: '2s'
       retries: 3
+    volumes:
+      - './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
+      - './data/mysql/:/var/lib/mysql'
+    volumes_from:
+      - 'data'
 
   broker:
-    image: 'redis'
-    networks:
-      - 'francoralite'
+    image: "${BROKER_IMAGE_NAME}:${BROKER_IMAGE_VERSION}"
+    restart: 'unless-stopped'
+    logging: *default-logging
+    networks: *network-internal
 
   search:
-    image: 'elasticsearch:1'
-    networks:
-      - 'francoralite'
+    image: "${SEARCH_IMAGE_NAME}:${SEARCH_IMAGE_VERSION}"
+    restart: 'unless-stopped'
+    logging: *default-logging
+    networks: *network-internal
 
   app:
+    image: "${APP_IMAGE_NAME}:${APP_IMAGE_VERSION}"
     build:
       context: .
+    command: '/bin/bash /srv/scripts/start_api.sh'
+    restart: 'unless-stopped'
+    logging: *default-logging
+    depends_on:
+      db:
+        condition: 'service_healthy'
+    env_file:
+      - './telemeta_mshs/apps/Telemeta/env/debug.env'
+      - './francoralite-env/app.env'
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
+      interval: '10s'
+      timeout: '2s'
+      retries: 20
     networks:
       - 'services'
       - 'francoralite'
@@ -70,35 +101,28 @@ services:
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
     volumes_from:
       - 'data'
-    env_file:
-      - './telemeta_mshs/apps/Telemeta/env/debug.env'
-      - './francoralite-env/app.env'
-    healthcheck:
-      test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
-      interval: '10s'
-      timeout: '2s'
-      retries: 20
-    command: '/bin/bash /srv/scripts/start_api.sh'
-    depends_on:
-      db:
-        condition: 'service_healthy'
 
   worker:
+    image: "${WORKER_IMAGE_NAME}:${WORKER_IMAGE_VERSION}"
     build:
       context: .
-    networks:
-      - 'francoralite'
-    volumes_from:
-      - 'app'
-    env_file:
-      - './telemeta_mshs/apps/Telemeta/env/prod.env'
     command: '/bin/bash /srv/scripts/start_worker.sh'
+    restart: 'unless-stopped'
+    logging: *default-logging
+    networks: *network-internal
     depends_on:
       app:
         condition: 'service_healthy'
+    env_file:
+      - './telemeta_mshs/apps/Telemeta/env/prod.env'
+    volumes_from:
+      - 'app'
 
   nginx:
+    image: "${NGINX_IMAGE_NAME}:${NGINX_IMAGE_VERSION}"
     image: 'nginx'
+    restart: 'unless-stopped'
+    logging: *default-logging
     depends_on:
       - 'app'
       - 'keycloak'
@@ -110,22 +134,10 @@ services:
     volumes_from:
       - 'data'
 
-  phpmyadmin:
-    image: 'nazarpc/phpmyadmin'
-    networks:
-      - 'services'
-      - 'francoralite'
-    environment:
-      - ABSOLUTE_URI=http://phpmyadmin.francoralite.localhost:50000/phpmyadmin/
-
   keycloak:
-    image: "${KEYCLOAK_IMAGE}:${KEYCLOAK_VERSION}"
+    image: "${KEYCLOAK_IMAGE_NAME}:${KEYCLOAK_IMAGE_VERSION}"
     restart: 'unless-stopped'
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: "${LOGGING_MAX_SIZE}"
-        max-file: "${LOGGING_MAX_FILE}"
+    logging: *default-logging
     env_file:
       - './francoralite-env/keycloak.env'
     networks:
@@ -140,13 +152,9 @@ services:
       - 'keycloak_db'
 
   keycloak_db:
-    image: "${POSTGRES_IMAGE}:${POSTGRES_VERSION}"
+    image: "${POSTGRES_IMAGE_NAME}:${POSTGRES_IMAGE_VERSION}"
     restart: 'unless-stopped'
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: "${LOGGING_MAX_SIZE}"
-        max-file: "${LOGGING_MAX_FILE}"
+    logging: *default-logging
     env_file:
       - './francoralite-env/keycloak_database.env'
     networks:

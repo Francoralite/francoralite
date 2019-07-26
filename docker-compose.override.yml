@@ -2,6 +2,13 @@
 
 version: '2.1'
 
+x-logging:
+  &default-logging
+  driver: 'json-file'
+  options:
+    max-size: "${LOGGING_MAX_SIZE}"
+    max-file: "${LOGGING_MAX_FILE}"
+
 services:
   data:
     labels:
@@ -33,10 +40,19 @@ services:
       - 'traefik.frontend.rule=Host:nginx.francoralite.localhost'
       - 'traefik.docker.network=services'
 
+
   phpmyadmin:
+    image: "${PHPMYADMIN_IMAGE_NAME}:${PHPMYADMIN_IMAGE_VERSION}"
+    restart: 'unless-stopped'
+    logging: *default-logging
+    environment:
+      - ABSOLUTE_URI=http://phpmyadmin.francoralite.localhost:50000/phpmyadmin/
     labels:
       - 'traefik.frontend.rule=Host:phpmyadmin.francoralite.localhost'
       - 'traefik.docker.network=services'
+    networks:
+      - 'services'
+      - 'francoralite'
 
   keycloak:
     labels:
@@ -48,8 +64,10 @@ services:
       - 'traefik.frontend.rule=Host:keycloak-db.francoralite.localhost'
 
   reverse_proxy:
-    image: 'traefik:1.7.11'
+    image: "${TRAEFIK_IMAGE_NAME}:${TRAEFIK_IMAGE_VERSION}"
     command: '--api --docker --docker.domain=francoralite.localhost'
+    restart: 'unless-stopped'
+    logging: *default-logging
     networks:
       - 'keycloak'
       - 'services'
