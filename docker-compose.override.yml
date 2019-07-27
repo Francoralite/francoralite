@@ -36,6 +36,8 @@ services:
       - 'traefik.frontend.rule=Host:worker.francoralite.localhost'
 
   nginx:
+    depends_on:
+      - 'phpmyadmin'
     labels:
       - 'traefik.frontend.rule=Host:nginx.francoralite.localhost'
       - 'traefik.docker.network=services'

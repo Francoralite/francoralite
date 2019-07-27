@@ -130,7 +130,6 @@ services:
     depends_on:
       - 'app'
       - 'keycloak'
-      - 'phpmyadmin'
     networks:
       - 'services'
     volumes:
