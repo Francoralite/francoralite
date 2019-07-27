@@ -6,6 +6,8 @@ francoralite_pip_packages:
 francoralite_system_packages:
   - 'git'
   - 'python-pip'
+  - 'python-setuptools'
+  - 'rsync'
 
 
 #
