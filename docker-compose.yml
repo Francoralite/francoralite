@@ -83,8 +83,8 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
       interval: '10s'
-      timeout: '2s'
-      retries: 20
+      timeout: '5s'
+      retries: 30
     networks:
       francoralite:
         aliases:
