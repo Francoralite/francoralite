@@ -33,6 +33,10 @@ _docker_service_networks:
 _docker_service_templates:
   - src: "templates/francoralite/app.env.j2"
     dest: "{{ ansistrano_release_path.stdout }}/francoralite-env/app.env"
+  - src: "templates/francoralite/keycloak.env.j2"
+    dest: "{{ ansistrano_release_path.stdout }}/francoralite-env/keycloak.env"
+  - src: "templates/francoralite/keycloak_database.env.j2"
+    dest: "{{ ansistrano_release_path.stdout }}/francoralite-env/keycloak_database.env"
   - src: "templates/francoralite/nginx.conf.j2"
     dest: "{{ ansistrano_release_path.stdout }}/etc/nginx.conf"
 
@@ -70,6 +74,20 @@ francoralite_reindex: False
 francoralite_haystack_url: 'http://search:9200/'
 francoralite_haystack_index_name: 'telemeta'
 francoralite_haystack_index_name_autocomplete: 'telemeta_auto'
+
+
+#
+# Francoralite / keycloak.env
+#
+francoralite_db_vendor: 'POSTGRES'
+francoralite_db_addr: 'keycloak_db'
+francoralite_db_database: 'keycloak'
+francoralite_db_user: 'keycloak'
+francoralite_db_password: 'password'
+francoralite_keycloak_hostname: 'auth-francoralite-test.huma-num.fr'
+francoralite_keycloak_user: 'admin'
+francoralite_keycloak_password: 'password'
+francoralite_proxy_address_forwarding: 'True'
 
 
 #
