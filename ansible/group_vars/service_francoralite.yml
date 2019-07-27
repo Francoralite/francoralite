@@ -24,7 +24,6 @@ ansistrano_after_cleanup_tasks_file: "{{ playbook_dir }}/tasks/after_clean_up.ym
 # Deployment cookbook management
 #
 _docker_registries: []
-_docker_service_compose_override: {}
 _docker_service_compose_options: '-f docker-compose.yml -f docker-compose.run.yml'
 _docker_service_compose_path: '/usr/bin/docker-compose'
 _docker_service_files: []
@@ -36,7 +35,6 @@ _docker_service_templates:
     dest: "{{ ansistrano_release_path.stdout }}/francoralite-env/app.env"
   - src: "templates/francoralite/nginx.conf.j2"
     dest: "{{ ansistrano_release_path.stdout }}/etc/nginx.conf"
-_docker_service_volumes: []
 
 
 #
@@ -63,7 +61,7 @@ francoralite_secret_key: 'ghv8us2587n97dq&w$c((o5rj_$-9#d-8j#57y_a9og8wux1h7'
 francoralite_front_host_url: 'http://localhost:8000'
 francoralite_api_external_ip_address: '1.2.3.4'
 francoralite_api_app_external_url: 'nginx.francoralite.localhost'
-francoralite_login_redirect_url: 'http://nginx.francoralite.localhosr:8080/'
+francoralite_login_redirect_url: 'http://nginx.francoralite.localhost:8080/'
 # CELERY
 francoralite_broker_url: 'redis://broker:6379/0'
 francoralite_celery_always_eager: False
