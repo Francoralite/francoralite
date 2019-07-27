@@ -21,6 +21,8 @@
 
 - name: 'SERVICE | Deploy Francoralite using Ansistrano'
   hosts: 'all'
+  environment:
+    COMPOSE_PROJECT_NAME: 'francoralite'
   vars:
     ansistrano_deploy_to: "{{ _ansistrano_deploy_to }}"
     ansistrano_deploy_via: "{{ _ansistrano_deploy_via }}"
@@ -29,5 +31,8 @@
     ansistrano_keep_releases: "{{ _ansistrano_keep_releases }}"
   roles:
     - { role: 'ansistrano.deploy' }
-  environment:
-    COMPOSE_PROJECT_NAME: 'francoralite'
+  post_tasks:
+    - name: 'Force Nginx restart'
+      service:
+        name: 'nginx'
+        state: 'restarted'

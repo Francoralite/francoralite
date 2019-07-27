@@ -39,6 +39,10 @@ _docker_service_templates:
     dest: "{{ ansistrano_release_path.stdout }}/francoralite-env/keycloak_database.env"
   - src: "templates/francoralite/nginx.conf.j2"
     dest: "{{ ansistrano_release_path.stdout }}/etc/nginx.conf"
+  - src: "templates/nginx/nginx.conf.j2"
+    dest: '/etc/nginx/nginx.conf'
+  - src: "templates/nginx/francoralite.j2"
+    dest: '/etc/nginx/sites-available/francoralite'
 
 
 #
@@ -95,4 +99,4 @@ francoralite_proxy_address_forwarding: 'True'
 #
 francoralite_nginx_client_max_body_size: '4096M'
 francoralite_nginx_server_name: 'app-francoralite-test.huma-num.fr'
-
+francoralite_auth_nginx_server_name: 'auth-francoralite-test.huma-num.fr'
