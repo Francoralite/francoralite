@@ -1,0 +1,82 @@
+#
+# Prerequisites
+#
+francoralite_pip_packages:
+  - 'docker'
+francoralite_system_packages:
+  - 'git'
+  - 'python-pip'
+
+
+#
+# Ansistrano configuration
+#
+_ansistrano_keep_releases: 3
+_ansistrano_deploy_to: '/tmp/francoralite'
+_ansistrano_deploy_via: 'git'
+_ansistrano_git_repo: 'https://github.com/lluc/telemeta-integration.git'
+_ansistrano_git_branch: 'feature/deployment_clean'
+ansistrano_after_update_code_tasks_file: "{{ playbook_dir }}/tasks/after_update_code.yml"
+ansistrano_after_cleanup_tasks_file: "{{ playbook_dir }}/tasks/after_clean_up.yml"
+
+
+#
+# Deployment cookbook management
+#
+_docker_registries: []
+_docker_service_compose_override: {}
+_docker_service_compose_options: '-f docker-compose.yml -f docker-compose.run.yml'
+_docker_service_compose_path: '/usr/bin/docker-compose'
+_docker_service_files: []
+_docker_service_folders: []
+_docker_service_networks:
+  - name: 'services'
+_docker_service_templates:
+  - src: "templates/francoralite/app.env.j2"
+    dest: "{{ ansistrano_release_path.stdout }}/francoralite-env/app.env"
+  - src: "templates/francoralite/nginx.conf.j2"
+    dest: "{{ ansistrano_release_path.stdout }}/etc/nginx.conf"
+_docker_service_volumes: []
+
+
+#
+# Francoralite / app.env
+#
+# Keycloak
+francoralite_keycloak_default_access: 'ALLOW'
+francoralite_keycloak_realm: 'francoralite'
+francoralite_keycloak_server_url: 'https://auth-francoralite-test.huma-num.fr/auth/'
+francoralite_keycloak_method_validate_token: 'DECODE'
+francoralite_keycloak_client_public_key: 'abcd123'
+francoralite_keycloak_client_id: 'francoralite'
+francoralite_keycloak_client_secret_key: '76c8ea71-a26d-4ba8-a5f9-1411dfdf684b'
+francoralite_keycloak_authorization_config: '/tmp/authorization_config.json'
+# Database
+francoralite_engine: 'django.db.backends.mysql'
+francoralite_mysql_root_password: 'mysecretpassword'
+francoralite_mysql_database: 'telemeta'
+francoralite_mysql_user: 'telemeta'
+francoralite_mysql_password: 'mysecretpassword'
+# Django
+francoralite_debug: False
+francoralite_secret_key: 'ghv8us2587n97dq&w$c((o5rj_$-9#d-8j#57y_a9og8wux1h7'
+francoralite_front_host_url: 'http://localhost:8000'
+francoralite_api_external_ip_address: '1.2.3.4'
+francoralite_api_app_external_url: 'nginx.francoralite.localhost'
+francoralite_login_redirect_url: 'http://nginx.francoralite.localhosr:8080/'
+# CELERY
+francoralite_broker_url: 'redis://broker:6379/0'
+francoralite_celery_always_eager: False
+# HAYSTACK
+francoralite_reindex: False
+francoralite_haystack_url: 'http://search:9200/'
+francoralite_haystack_index_name: 'telemeta'
+francoralite_haystack_index_name_autocomplete: 'telemeta_auto'
+
+
+#
+# Nginx
+#
+francoralite_nginx_client_max_body_size: '4096M'
+francoralite_nginx_server_name: 'app-francoralite-test.huma-num.fr'
+

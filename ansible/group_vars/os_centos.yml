@@ -1,0 +1,5 @@
+---
+
+# OS | CENTOS
+
+_default_system_user: 'centos'

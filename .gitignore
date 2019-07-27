@@ -89,3 +89,4 @@ worker.py
 
 # Ansible
 *.retry
+ansible/roles/externals/

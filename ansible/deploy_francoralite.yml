@@ -1,0 +1,32 @@
+---
+
+- name: 'INFRA | Prerequisites'
+  hosts: 'all'
+  tasks:
+    - name: 'Install packages'
+      package:
+        name: "{{ item }}"
+      loop: "{{ francoralite_system_packages }}"
+
+    - name: 'Install PIP packages'
+      pip:
+        name: "{{ item }}"
+      loop: "{{ francoralite_pip_packages }}"
+
+    - name: 'INFRA | Deploy Docker networks'
+      docker_network:
+        name: "{{ item.name }}"
+      loop: "{{ _docker_service_networks | default([]) }}"
+
+
+- name: 'SERVICE | Deploy Francoralite using Ansistrano'
+  hosts: 'all'
+  vars:
+    ansistrano_deploy_to: "{{ _ansistrano_deploy_to }}"
+    ansistrano_deploy_via: "{{ _ansistrano_deploy_via }}"
+    ansistrano_git_repo: "{{ _ansistrano_git_repo }}"
+    ansistrano_git_branch: "{{ _ansistrano_git_branch }}"
+    ansistrano_keep_releases: "{{ _ansistrano_keep_releases }}"
+  roles:
+    - { role: 'ansistrano.deploy' }
+

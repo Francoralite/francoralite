@@ -1,0 +1,28 @@
+---
+
+- name: 'DOCKER SERVICE | Deploy untemplated files'
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+  loop: "{{ _docker_service_files | default([]) }}"
+
+
+- name: 'DOCKER SERVICE | Deploy configuration files templates'
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+  loop: "{{ _docker_service_templates | default([]) }}"
+
+
+- name: 'DOCKER SERVICE | Configure Docker Hub credentials'
+  docker_login:
+    email: "{{ _docker_dockerhub_email }}"
+    username: "{{ _docker_dockerhub_username }}"
+    password: "{{ _docker_dockerhub_password }}"
+  when: "_docker_manage_credentials | default(False) | bool"
