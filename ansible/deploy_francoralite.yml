@@ -29,4 +29,5 @@
     ansistrano_keep_releases: "{{ _ansistrano_keep_releases }}"
   roles:
     - { role: 'ansistrano.deploy' }
-
+  environment:
+    COMPOSE_PROJECT_NAME: 'francoralite'
