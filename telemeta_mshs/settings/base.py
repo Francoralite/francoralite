@@ -1,6 +1,4 @@
-import environ
 import os
-import sys
 
 # Original Telemeta application settings
 from telemeta_settings import *  # noqa
@@ -58,10 +56,10 @@ MIDDLEWARE_CLASSES = (
 
 DATABASES = {
     'default': {
-        'ENGINE': env('ENGINE'),
-        'USER': env('MYSQL_USER'),
-        'PASSWORD': env('MYSQL_PASSWORD'),
-        'NAME': env('MYSQL_DATABASE'),
+        'ENGINE': os.getenv('ENGINE'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'NAME': os.getenv('MYSQL_DATABASE'),
         'HOST': 'db',
         'PORT': '3306',
         'TEST': {
@@ -71,7 +69,7 @@ DATABASES = {
     }
 }
 
-FRONT_HOST_URL = env('FRONT_HOST_URL')
+FRONT_HOST_URL = os.getenv('FRONT_HOST_URL')
 USE_X_FORWARDED_HOST = True
 
 REST_FRAMEWORK = {
@@ -103,8 +101,8 @@ _KEYCLOAK_SERVER_URL = os.getenv(
     'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/'
 )
 _KEYCLOAK_REALM = os.getenv('KEYCLOAK_REALM', 'francoralite')
-_KEYCLOAK_CLIENT_ID =  os.getenv('KEYCLOAK_CLIENT_ID', 'francoralite'),
-_KEYCLOAK_DEFAULT_ACCESS = os.getenv('KEYCLOAK_DEFAULT_ACCESS', 'ALLOW'),
+_KEYCLOAK_CLIENT_ID = os.getenv('KEYCLOAK_CLIENT_ID', 'francoralite')
+_KEYCLOAK_DEFAULT_ACCESS = os.getenv('KEYCLOAK_DEFAULT_ACCESS', 'ALLOW')
 _KEYCLOAK_CLIENT_SECRET_KEY = os.getenv(
     'KEYCLOAK_CLIENT_SECRET_KEY', 'ade263c9-5aca-46d4-965f-6e2d188a2515'
 )
@@ -115,7 +113,8 @@ _KEYCLOAK_METHOD_VALIDATE_TOKEN = os.getenv(
     'KEYCLOAK_METHOD_VALIDATE_TOKEN', 'DECODE'
 )
 _OPENID_BASE_URL = '{}{}{}{}'.format(
-    _KEYCLOAK_SERVER_URL, 'realms/', _KEYCLOAK_REALM, '/protocol/openid-connect'
+    _KEYCLOAK_SERVER_URL,
+    'realms/', _KEYCLOAK_REALM, '/protocol/openid-connect'
 )
 
 # Excempt list - URL paths that doesn't need Keycloak Authorization
@@ -146,8 +145,8 @@ OIDC_CREATE_USER = True
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = _OPENID_BASE_URL + '/auth'
 OIDC_OP_TOKEN_ENDPOINT = _OPENID_BASE_URL + '/token'
-OIDC_OP_USER_ENDPOINT  = _OPENID_BASE_URL + '/userinfo'
-OIDC_OP_JWKS_ENDPOINT  = _OPENID_BASE_URL + '/certs'
+OIDC_OP_USER_ENDPOINT = _OPENID_BASE_URL + '/userinfo'
+OIDC_OP_JWKS_ENDPOINT = _OPENID_BASE_URL + '/certs'
 
 LOGIN_REDIRECT_URL = os.getenv(
     'LOGIN_REDIRECT_URL', 'http://nginx.francoralite.localhost:8080/'
