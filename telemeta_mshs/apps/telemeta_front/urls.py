@@ -11,6 +11,7 @@ from .views import (
     institution, institution_add, institution_delete, institution_detail,
     institution_edit,
     personne, personne_add, personne_detail, personne_edit, personne_delete,
+    personne_collector,
     location, location_add, location_detail, location_edit, location_delete,
     location_gis, location_gis_add, location_gis_detail, location_gis_edit,
     location_gis_delete,
@@ -104,6 +105,9 @@ urlpatterns = [
     url(r'^authority/delete/(?P<id>[0-9]+)$',
         personne_delete.PersonneDelete.as_view(),
         name='personne-delete'),
+    url(r'^authority_collector/$',
+        personne_collector.PersonneCollectorView.as_view(),
+        name="personne-collector"),
 
     # Location ( Lieux)
     url(r'^location/$', location.LocationView.as_view(),
