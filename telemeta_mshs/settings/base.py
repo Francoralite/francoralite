@@ -1,6 +1,5 @@
-import environ
 import os
-import sys
+
 
 # Original Telemeta application settings
 # from .telemeta_settings import *  # noqa
@@ -61,10 +60,10 @@ MIDDLEWARE_CLASSES = (
 
 DATABASES = {
     'default': {
-        'ENGINE': env('ENGINE'),
-        'USER': env('MYSQL_USER'),
-        'PASSWORD': env('MYSQL_PASSWORD'),
-        'NAME': env('MYSQL_DATABASE'),
+        'ENGINE': os.getenv('ENGINE'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'NAME': os.getenv('MYSQL_DATABASE'),
         'HOST': 'db',
         'PORT': '3306',
         'TEST': {
@@ -107,7 +106,8 @@ KEYCLOAK_CONFIG = {
         'KEYCLOAK_AUTHORIZATION_CONFIG', '/tmp/authorization_config.json'),
     'KEYCLOAK_METHOD_VALIDATE_TOKEN': 'DECODE',
     'KEYCLOAK_SERVER_URL': os.getenv(
-        'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/'),
+        'KEYCLOAK_SERVER_URL',
+        'http://keycloak.francoralite.localhost:8080/auth/'),
     'KEYCLOAK_CLIENT_SECRET_KEY': os.getenv(
         'KEYCLOAK_CLIENT_SECRET_KEY', 'ade263c9-5aca-46d4-965f-6e2d188a2515'),
     'KEYCLOAK_CLIENT_PUBLIC_KEY': KEYCLOAK_RSA_PUBLIC_KEY,
@@ -132,19 +132,24 @@ OIDC_RP_CLIENT_SECRET = os.getenv(
 OIDC_CREATE_USER = True
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') +\
     "realms/francoralite/protocol/openid-connect/auth"
 OIDC_OP_TOKEN_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') +\
     "realms/francoralite/protocol/openid-connect/token"
 OIDC_OP_USER_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') +\
     "realms/francoralite/protocol/openid-connect/userinfo"
 OIDC_OP_JWKS_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') +\
     "realms/francoralite/protocol/openid-connect/certs"
 
 LOGIN_REDIRECT_URL = "http://nginx.francoralite.localhost:8080/"
 LOGOUT_REDIRECT_URL = os.getenv(
-    'KEYCLOAK_SERVER_URL', 'http://keycloak.francoralite.localhost:8080/auth/') +\
+    'KEYCLOAK_SERVER_URL',
+    'http://keycloak.francoralite.localhost:8080/auth/') +\
     "realms/francoralite/protocol/openid-connect/logout"
