@@ -11,7 +11,7 @@ from .views import (
     institution, institution_add, institution_delete, institution_detail,
     institution_edit,
     personne, personne_add, personne_detail, personne_edit, personne_delete,
-    personne_collector, personne_informer, personne_author,
+    personne_collector, personne_informer, personne_author, personne_composer,
     location, location_add, location_detail, location_edit, location_delete,
     location_gis, location_gis_add, location_gis_detail, location_gis_edit,
     location_gis_delete,
@@ -114,6 +114,9 @@ urlpatterns = [
     url(r'^authority_author/$',
         personne_author.PersonneAuthorView.as_view(),
         name="personne-author"),
+    url(r'^authority_composer/$',
+        personne_composer.PersonneComposerView.as_view(),
+        name="personne-composer"),
 
 
     # Location ( Lieux)
