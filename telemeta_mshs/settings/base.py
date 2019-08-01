@@ -99,17 +99,13 @@ KEYCLOAK_RSA_PUBLIC_KEY = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApPuhTYR5350AMvQnCIZJSxjlD2NiSAEi05HTRMlK3/B1IjGwfg6lP+LXrhLHRXWg7L+EzIU9oiuPqzHr/pfdWor6fPiLpII6fkmBuB18SiM7cm3xe7fyfjwhN/q0Cu1ddSo1ILR0O6/bXWCV5DHdNAdtnSQRWdnRbJCSkjzJ9/KrArvcAUx1k1bCBQ8nJ60tNRZbmLrC+1rHe8+9m9b3NpI2IRkpfJynfuxcpDAQiJ3orW8Hy3g1dgueGsiS6FWnLF9zJc5JuZQVGFukpKcl7COPp2CSEwxgPxjyZQ4GBynCfuvoNHogTEbeujE/erRM3i5VD5C5miUXz/cYiaKmqwIDAQAB
 -----END PUBLIC KEY-----"""
 KEYCLOAK_CONFIG = {
-    'KEYCLOAK_REALM': os.getenv('KEYCLOAK_REALM', 'francoralite'),
-    'KEYCLOAK_CLIENT_ID': os.getenv('KEYCLOAK_CLIENT_ID', 'francoralite'),
-    'KEYCLOAK_DEFAULT_ACCESS': os.getenv('KEYCLOAK_DEFAULT_ACCESS', 'ALLOW'),
-    'KEYCLOAK_AUTHORIZATION_CONFIG': os.getenv(
-        'KEYCLOAK_AUTHORIZATION_CONFIG', '/tmp/authorization_config.json'),
+    'KEYCLOAK_REALM':  'francoralite',
+    'KEYCLOAK_CLIENT_ID': 'francoralite',
+    'KEYCLOAK_DEFAULT_ACCESS': 'ALLOW',
+    'KEYCLOAK_AUTHORIZATION_CONFIG': '/tmp/authorization_config.json',
     'KEYCLOAK_METHOD_VALIDATE_TOKEN': 'DECODE',
-    'KEYCLOAK_SERVER_URL': os.getenv(
-        'KEYCLOAK_SERVER_URL',
-        'http://keycloak.francoralite.localhost:8080/auth/'),
-    'KEYCLOAK_CLIENT_SECRET_KEY': os.getenv(
-        'KEYCLOAK_CLIENT_SECRET_KEY', 'ade263c9-5aca-46d4-965f-6e2d188a2515'),
+    'KEYCLOAK_SERVER_URL': 'http://keycloak.francoralite.localhost:8080/auth/',
+    'KEYCLOAK_CLIENT_SECRET_KEY': 'ade263c9-5aca-46d4-965f-6e2d188a2515',
     'KEYCLOAK_CLIENT_PUBLIC_KEY': KEYCLOAK_RSA_PUBLIC_KEY,
 }
 
@@ -118,38 +114,28 @@ KEYCLOAK_CONFIG = {
 # CORS
 #
 CORS_ORIGIN_WHITELIST = (
-    os.getenv('API_EXTERNAL_IP_ADDRESS', '1.2.3.4'),
-    os.getenv('API_APP_EXTERNAL_URL', 'nginx.francoralite.localhost'),
+    '1.2.3.4',
+    'API_APP_EXTERNAL_URL', 'nginx.francoralite.localhost',
 )
 
 AUTHENTICATION_BACKENDS = (
     'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
 )
 OIDC_RP_SIGN_ALGO = "RS256"
-OIDC_RP_CLIENT_ID = os.getenv('KEYCLOAK_CLIENT_ID', 'francoralite')
-OIDC_RP_CLIENT_SECRET = os.getenv(
-    'KEYCLOAK_CLIENT_SECRET_KEY', 'ade263c9-5aca-46d4-965f-6e2d188a2515')
+OIDC_RP_CLIENT_ID = 'francoralite'
+OIDC_RP_CLIENT_SECRET = 'ade263c9-5aca-46d4-965f-6e2d188a2515'
 OIDC_CREATE_USER = True
 
-OIDC_OP_AUTHORIZATION_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL',
-    'http://keycloak.francoralite.localhost:8080/auth/') +\
+OIDC_OP_AUTHORIZATION_ENDPOINT = \
+    'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/auth"
-OIDC_OP_TOKEN_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL',
-    'http://keycloak.francoralite.localhost:8080/auth/') +\
+OIDC_OP_TOKEN_ENDPOINT = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/token"
-OIDC_OP_USER_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL',
-    'http://keycloak.francoralite.localhost:8080/auth/') +\
+OIDC_OP_USER_ENDPOINT = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/userinfo"
-OIDC_OP_JWKS_ENDPOINT = os.getenv(
-    'KEYCLOAK_SERVER_URL',
-    'http://keycloak.francoralite.localhost:8080/auth/') +\
+OIDC_OP_JWKS_ENDPOINT = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/certs"
 
 LOGIN_REDIRECT_URL = "http://nginx.francoralite.localhost:8080/"
-LOGOUT_REDIRECT_URL = os.getenv(
-    'KEYCLOAK_SERVER_URL',
-    'http://keycloak.francoralite.localhost:8080/auth/') +\
+LOGOUT_REDIRECT_URL = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/logout"
