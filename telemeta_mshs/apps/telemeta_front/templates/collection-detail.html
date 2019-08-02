@@ -17,7 +17,7 @@
 {% block title_name %}
   {{ block.super }}
   {% if collection %}
-  : {{ collection.code }} - {{  collection.title}}
+  : {{ collection.code|upper }} - {{  collection.title}}
   {% endif %}
 {% endblock %}
 

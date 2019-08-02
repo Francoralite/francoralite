@@ -16,7 +16,7 @@
 {% block title_name %}
     {{ block.super }}
     {% if mission %}
-     : {{ mission.code }}
+     : {{ mission.code|upper }}
     {% endif %}
 {% endblock %}
 

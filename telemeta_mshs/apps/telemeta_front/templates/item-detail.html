@@ -52,7 +52,7 @@
 {% block title_name %}
     {{ block.super }}
     {% if item %}
-     : {{ item.code }} - {{  item.title}}
+     : {{ item.code|upper }} - {{  item.title}}
     {% endif %}
   </h1>
 {% endblock %}
