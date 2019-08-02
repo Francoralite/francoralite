@@ -54,7 +54,7 @@ def write_relations(id_main, name_main, selected, url_related, name_related):
     # Query the list of related records in the database
     list_related = query_related(url_related)
     dict_related = {}
-    if list_related != {}:
+    if list_related != {} and list_related is not None:
         # create a dict to know the id of the related record
 
         for item in list_related:
