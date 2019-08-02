@@ -115,7 +115,7 @@ KEYCLOAK_CONFIG = {
 #
 CORS_ORIGIN_WHITELIST = (
     '1.2.3.4',
-    'API_APP_EXTERNAL_URL', 'nginx.francoralite.localhost',
+    'nginx.francoralite.localhost',
 )
 
 AUTHENTICATION_BACKENDS = (
