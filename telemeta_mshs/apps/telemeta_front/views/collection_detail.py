@@ -26,5 +26,5 @@ class CollectionDetail(FrancoraliteTemplateView):
         except Exception as err:
             context['collection'] = {}
             context['items'] = []
-            context['error'] = err.message
+            context['error'] = err.message + ":" + str(type(err).__name__)
         return context

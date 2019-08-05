@@ -5,14 +5,22 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.enum import Enumeration, MetaEnumeration
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class MediaType(Enumeration):
+class MediaType(models.Model):
     "Media Type"
 
-    class Meta(MetaEnumeration):
+    # List of the fields
+    name = models.CharField(_('Nom'), unique=True, max_length=255)
+    notes = models.TextField(_('Notes'), null=True, blank=True)
+
+    class Meta:
         app_label = 'telemeta_api'
-        db_table = 'mediatype'
-        verbose_name = _("mediatype")
+        db_table = 'api_media_type'
+        verbose_name_plural = _('media types')
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name

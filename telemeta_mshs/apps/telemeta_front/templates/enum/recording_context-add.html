@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block title_name %}
-  {{ block.super }} - 
+  {{ block.super }} -
    {% if id %}
    {% trans "Modification" %}
    {% else %}
@@ -52,7 +52,7 @@
   <form action="{%url "recording_context-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    {% bootstrap_field form.value layout='vertical' %}
+    {% bootstrap_field form.name layout='vertical' %}
     {% bootstrap_field form.notes layout='vertical' %}
 
     {% if id %}

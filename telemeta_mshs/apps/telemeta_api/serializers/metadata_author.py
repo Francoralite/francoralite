@@ -6,17 +6,17 @@
 
 from rest_framework import serializers
 
-from ..models.acquisition_mode import AcquisitionMode as AcquisitionModel
+from ..models.publisher import MetadataAuthor as MetadataAuthorModel
 
 
-class AcquisitionModeSerializer(serializers.ModelSerializer):
+class MetadataSerializer(serializers.ModelSerializer):
     """
-    Common serializer for all acquisition mode actions
+    Common serializer for all metadata author actions
     """
 
     name = serializers.CharField(required=True)
-    notes = serializers.CharField()
+    notes = serializers.CharField(required=False)
 
     class Meta:
-        model = AcquisitionModel
+        model = MetadataAuthorModel
         fields = '__all__'

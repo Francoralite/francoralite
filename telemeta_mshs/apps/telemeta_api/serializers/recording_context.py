@@ -10,7 +10,7 @@ class RecordingContextSerializer(serializers.ModelSerializer):
     Common serializer for all recording_context actions
     """
 
-    value = serializers.CharField(required=True)
+    name = serializers.CharField(required=True)
     notes = serializers.CharField(required=False)
 
     class Meta:

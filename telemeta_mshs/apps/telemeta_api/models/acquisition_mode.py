@@ -4,15 +4,23 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-from telemeta.models.enum import Enumeration, MetaEnumeration
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class AcquisitionMode(Enumeration):
+class AcquisitionMode(models.Model):
     # Description of the table
     "Mode of acquisition of fonds"
 
-    class Meta(MetaEnumeration):
+    # List of the fields
+    name = models.CharField(_('Nom'), unique=True, max_length=255)
+    notes = models.TextField(_('Notes'), null=True, blank=True)
+
+    class Meta:
         app_label = 'telemeta_api'
-        db_table = 'acquisition'
-        verbose_name = _("acquisition mode")
+        db_table = 'api_acquisition'
+        verbose_name_plural = _('acquisitions')
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name

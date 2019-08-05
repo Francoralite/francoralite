@@ -37,7 +37,7 @@
 {% if not error|length %}
 {% if legal_rights %}
 
-  {% field_data form.value.label|safe legal_rights.value|safe %}
+  {% field_data form.name.label|safe legal_rights.name|safe %}
   {% field_data form.notes.label|safe legal_rights.notes|markdown|safe %}
 
 {% else %}

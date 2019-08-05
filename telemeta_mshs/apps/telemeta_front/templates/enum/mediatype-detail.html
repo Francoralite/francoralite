@@ -37,7 +37,7 @@
 {% if not error|length %}
 {% if mediatype %}
 
-  {% field_data form.value.label|safe mediatype.value|safe %}
+  {% field_data form.name.label|safe mediatype.name|safe %}
   {% field_data form.notes.label|safe mediatype.notes|markdown|safe %}
 
 {% else %}

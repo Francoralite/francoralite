@@ -10,7 +10,7 @@ class MediaTypeSerializer(serializers.ModelSerializer):
     Common serializer for all mediatype actions
     """
 
-    value = serializers.CharField(required=True)
+    name = serializers.CharField(required=True)
     notes = serializers.CharField(required=False)
 
     class Meta:

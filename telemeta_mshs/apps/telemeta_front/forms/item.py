@@ -99,7 +99,7 @@ class ItemForm(forms.Form):
         self.fields['media_type'] = forms.ChoiceField(
             label=_(u'Type de média'),
             choices=Core.get_choices(
-                entity="mediatype", label_field="value"),
+                entity="mediatype", label_field="name"),
             required=True)
 
         self.fields['collection'] = forms.ChoiceField(
@@ -111,5 +111,5 @@ class ItemForm(forms.Form):
         self.fields['coupe'] = forms.ChoiceField(
             label=_(u'Coupe'),
             choices=Core.get_choices(
-                entity="coupe", label_field="value"),
+                entity="coupe", label_field="name"),
             required=True)

@@ -23,7 +23,7 @@
 
 {% block content %}
 {% block title_buttons %}
- {% if user.is_authenticated %}
+ {% if user.is_authenticated and collection %}
   <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un item" %}

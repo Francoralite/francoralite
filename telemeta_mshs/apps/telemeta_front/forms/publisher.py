@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class PublisherForm(forms.Form):
-    value = forms.CharField(
+    name = forms.CharField(
         label=_(u'Nom'),
         max_length=255, required=True)
     notes = forms.CharField(
