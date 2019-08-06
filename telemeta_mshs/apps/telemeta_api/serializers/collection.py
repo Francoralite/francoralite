@@ -34,7 +34,6 @@ class CollectionSerializer(serializers.ModelSerializer):
     publisher_collection = serializers.CharField(required=False)
     booklet_author = serializers.CharField(required=False)
     metadata_author = serializers.CharField(required=False)
-    public_access = serializers.CharField(required=True)
     code = serializers.CharField(required=True)
     code_partner = serializers.CharField(required=False)
     booklet_description = serializers.CharField(required=False)
@@ -45,7 +44,6 @@ class CollectionSerializer(serializers.ModelSerializer):
     auto_period_access = serializers.BooleanField(required=False)
     legal_rights = AsymetricRelatedField.from_serializer(
          LegalRightsSerializer, kwargs={'required': False})
-    public_access = serializers.CharField(required=True)
 
     class Meta:
         model = CollectionModel

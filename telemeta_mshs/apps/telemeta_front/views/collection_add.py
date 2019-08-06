@@ -118,7 +118,10 @@ class CollectionAdd(FormView):
                             # The performance wasn't exist.
                             # Search and retrieve the ID of the new performance
                             # in the database
-                            performance["id"] = performances[index]["id"]
+                            try:
+                                performance["id"] = performances[index]["id"]
+                            except Exception:
+                                pass
 
                         if("informers" in performance):
                             url_musicians = \
