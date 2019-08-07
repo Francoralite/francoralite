@@ -119,7 +119,7 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'telemeta_api.oidc.myoidcab.MyOIDCAB',
 )
 OIDC_RP_SIGN_ALGO = "RS256"
 OIDC_RP_CLIENT_ID = 'francoralite'
@@ -135,6 +135,7 @@ OIDC_OP_USER_ENDPOINT = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/userinfo"
 OIDC_OP_JWKS_ENDPOINT = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/certs"
+
 
 LOGIN_REDIRECT_URL = "http://nginx.francoralite.localhost:8080/"
 LOGOUT_REDIRECT_URL = 'http://keycloak.francoralite.localhost:8080/auth/' +\
