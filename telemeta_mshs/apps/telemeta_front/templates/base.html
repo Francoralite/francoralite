@@ -11,9 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml"/>
-    <link rel="icon" href="{{ STATIC_URL }}telemeta/images/favicon.ico"/>
+    <link rel="icon" href="{% static "telemeta_front/images/favicon.ico" %}"/>
 
-    <title>{% block head_title %}{% organization %} - {% description %}{% endblock %}</title>
+    <title>{% block head_title %}Francoralité{% endblock %}</title>
 
 
 {% block javascript %}
