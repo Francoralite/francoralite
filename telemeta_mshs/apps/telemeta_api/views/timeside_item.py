@@ -84,12 +84,12 @@ class TimeSideViewSet(viewsets.ViewSet):
             analyses = ItemAnalysis.objects.filter(item_id=item.id)
 
             for analysis in analyses:
-                data[analysis.name] = (analysis.value, analysis.unit)
+                data[analysis.name.lower()] = (analysis.value, analysis.unit)
 
         except BaseException:
             # Nothing to return
             pass
-        data['duration'] = (str(item.approx_duration), "s")
+        # data['duration'] = (str(item.approx_duration), "s")
         xml = self.to_xml(data)
 
         return HttpResponse(xml, content_type="application/xml")
