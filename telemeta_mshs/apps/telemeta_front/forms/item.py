@@ -43,6 +43,11 @@ class ItemForm(forms.Form):
     remarks = forms.CharField(
         label=_(u'Remarques concernant les données d\'archivage'),
         widget=forms.Textarea, required=False)
+    file = forms.FileField(
+        label=_(u'Fichier audio'),
+        widget=forms.FileInput(),
+        required=True
+    )
 
     # Description -----------------------------------------------
     timbre = forms.CharField(
