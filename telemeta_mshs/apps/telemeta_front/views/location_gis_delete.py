@@ -16,11 +16,15 @@ class LocationDelete(View):
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
         try:
-            # raise Exception(id)
-            requests.delete(
+            response = requests.delete(
                 FRONT_HOST_URL + '/api/locationgis/' + str(id)
                 )
-            return HttpResponseRedirect('/location_gis/')
+            if response.status_code == requests.codes.ok:
+                # OK --> go to the list display
+                return HttpResponseRedirect('/location_gis/')
+            else:
+                # Back to the current form
+                return HttpResponseRedirect('/location_gis/' + str(id) + '/')
 
         except RequestException:
             return HttpResponseRedirect('/location_gis/')

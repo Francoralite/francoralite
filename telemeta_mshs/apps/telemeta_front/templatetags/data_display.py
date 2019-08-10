@@ -77,9 +77,11 @@ def select_vue_item():
     return {}
 
 
-@register.inclusion_tag('inc/select-vue-collection.html')
-def select_vue_collection():
-    return {}
+@register.inclusion_tag('inc/select-vue-collection.html', takes_context=True)
+def select_vue_collection(context):
+    return {
+        'id': context['id'],
+    }
 
 
 @register.inclusion_tag('inc/buttons-form.html', takes_context=True)

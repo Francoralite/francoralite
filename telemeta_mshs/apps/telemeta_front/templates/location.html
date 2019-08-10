@@ -90,7 +90,7 @@
         request_location(map, markers);
       }
     </script>
-    
+
   {% block request_location %}
     <script type="text/javascript">
      function request_location(map, markers) {
@@ -114,8 +114,5 @@
   {% endblock request_location %}
 
 
-{% if user.is_authenticated %}
-	{% modal_delete %}
-{% endif %}
 </div>
 {% endblock %}
