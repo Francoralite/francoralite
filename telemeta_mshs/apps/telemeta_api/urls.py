@@ -29,6 +29,7 @@ from .views import (
     item_domain_tale,
     item_usefulness,
     item_dance,
+    item_language,
     item_thematic,
     item_coirault,
     item_musical_organization,
@@ -203,6 +204,8 @@ Item_router.register(
     r'usefulness', item_usefulness.ItemUsefulnessViewSet)
 Item_router.register(
     r'dance', item_dance.ItemDanceViewSet)
+Item_router.register(
+    r'language', item_language.ItemLanguageViewSet)
 Item_router.register(
     r'thematic', item_thematic.ItemThematicViewSet)
 Item_router.register(

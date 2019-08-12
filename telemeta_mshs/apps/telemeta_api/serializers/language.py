@@ -20,7 +20,7 @@ class LanguageSerializer(serializers.ModelSerializer):
     part1 = serializers.CharField(max_length=1, required=False)
     scope = serializers.CharField(max_length=1, required=False)
     type = serializers.CharField(max_length=1, required=False)
-    name = serializers.CharField()
+    name = serializers.CharField(max_length=255)
     comment = serializers.CharField()
 
     class Meta:

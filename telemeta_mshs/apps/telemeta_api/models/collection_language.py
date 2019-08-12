@@ -4,11 +4,11 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-
+from django.db import models
 from telemeta.models.core import ModelCore, ForeignKey, MetaCore
 from django.utils.translation import ugettext_lazy as _
 from .collection import Collection
-from telemeta.models.language import Language
+from .language import Language
 
 
 class CollectionLanguage(ModelCore):
@@ -17,7 +17,9 @@ class CollectionLanguage(ModelCore):
 
     # List of the fields
     collection = ForeignKey(Collection, verbose_name=_('collection'))
-    language = ForeignKey(Language, verbose_name=_('language'))
+    language = ForeignKey(Language,
+                          verbose_name=_('language'),
+                          on_delete=models.PROTECT)
 
     class Meta(MetaCore):
         app_label = 'telemeta_api'
