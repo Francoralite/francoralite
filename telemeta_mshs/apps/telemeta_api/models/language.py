@@ -26,7 +26,7 @@ class Language(models.Model):
     scope = models.CharField(_('scope'), choices=SCOPE_CHOICES, max_length=1)
     type = models.CharField(_('type'), choices=TYPE_CHOICES, max_length=1)
     name = models.CharField(_('name'), max_length=255)
-    comment = models.TextField(_('comment'))
+    comment = models.TextField(_('comment'), null=True, blank=True)
 
     class Meta:
         app_label = 'telemeta_api'

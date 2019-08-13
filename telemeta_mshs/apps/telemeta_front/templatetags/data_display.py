@@ -72,9 +72,11 @@ def modal_delete():
     return {}
 
 
-@register.inclusion_tag('inc/select-vue-item.html')
-def select_vue_item():
-    return {}
+@register.inclusion_tag('inc/select-vue-item.html', takes_context=True)
+def select_vue_item(context):
+    return {
+        'id': context['id'],
+    }
 
 
 @register.inclusion_tag('inc/select-vue-collection.html', takes_context=True)

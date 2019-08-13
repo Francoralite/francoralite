@@ -41,6 +41,7 @@ from .views.enum import (
     dance_add,
     emit_vox, emit_vox_edit, emit_vox_delete, emit_vox_detail,
     emit_vox_add,
+    language, language_edit, language_delete, language_detail, language_add,
     musical_organization, musical_organization_edit,
     musical_organization_delete, musical_organization_detail,
     musical_organization_add,
@@ -367,6 +368,22 @@ urlpatterns = [
     url(r'^emit_vox/delete/(?P<id>[0-9]+)$',
         emit_vox_delete.EmitVoxDelete.as_view(),
         name='emit_vox-delete'),
+
+    # Language
+    url(r'^language/$', language.LanguageView.as_view(),
+        name="language"),
+    url(r'^language/add/$',
+        language_add.LanguageAdd.as_view(),
+        name="language-add"),
+    url(r'^language/(?P<id>[0-9]+)/$',
+        language_detail.LanguageDetail.as_view(),
+        name="language-detail"),
+    url(r'^language/edit/(?P<id>[0-9]+)/$',
+        language_edit.LanguageEdit.as_view(),
+        name="language-edit"),
+    url(r'^language/delete/(?P<id>[0-9]+)/$',
+        language_delete.LanguageDelete.as_view(),
+        name="language-delete"),
 
     # thematic
     url(r'^thematic/$', thematic.ThematicView.as_view(),
