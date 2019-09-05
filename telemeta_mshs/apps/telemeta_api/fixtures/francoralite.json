@@ -1,0 +1,79 @@
+[
+  {
+    "fields": {
+      "notes": "cassette audio",
+      "name": "cassette audio"
+    },
+    "model": "telemeta_api.mediatype",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "notes": "bande DAT",
+      "name": "bande dat"
+    },
+    "model": "telemeta_api.mediatype",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "notes": "domaine public",
+      "name": "domaine public"
+    },
+    "model": "telemeta_api.legalrights",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "notes": "droit d'auteur",
+      "name": "droit d'auteur"
+    },
+    "model": "telemeta_api.legalrights",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "notes": "bal",
+      "name": "bal"
+    },
+    "model": "telemeta_api.recordingcontext",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "notes": "collectage",
+      "name": "collectage"
+    },
+    "model": "telemeta_api.recordingcontext",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "notes": "",
+      "name": "Université de Poitiers"
+    },
+    "model": "telemeta_api.institution",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "notes": "",
+      "name": "reversement"
+    },
+    "model": "telemeta_api.acquisitionmode",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "code": "upoi_afe_0000",
+      "code_partner": null,
+      "description": null,
+      "title": "Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]",
+      "descriptions": "dsdfsdfsdfsdfsdfsdfs",
+      "public_access": "full",
+      "fonds": 2
+    },
+    "model": "telemeta_api.mission",
+    "pk": 1
+  }
+]
