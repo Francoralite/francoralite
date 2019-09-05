@@ -74,16 +74,20 @@ def modal_delete():
 
 @register.inclusion_tag('inc/select-vue-item.html', takes_context=True)
 def select_vue_item(context):
-    return {
-        'id': context['id'],
-    }
+    if 'id' in context:
+        return {
+            'id': context['id'],
+        }
+    return {}
 
 
 @register.inclusion_tag('inc/select-vue-collection.html', takes_context=True)
 def select_vue_collection(context):
-    return {
-        'id': context['id'],
-    }
+    if 'id' in context:
+        return {
+            'id': context['id'],
+        }
+    return {}
 
 
 @register.inclusion_tag('inc/buttons-form.html', takes_context=True)
