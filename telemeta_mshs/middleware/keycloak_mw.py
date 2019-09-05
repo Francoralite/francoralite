@@ -247,7 +247,10 @@ class KeycloakMiddleware(object):
         expr = re.compile("^[a-z0-9_]*/$")
         if expr.match(path):
             logger.debug('** exclude path : list template')
-            return
+            return None
+
+        # FIXME : temporary "open bar"
+        return None
 
         try:
             view_scopes = view_func.cls.keycloak_scopes
@@ -324,6 +327,9 @@ class KeycloakMiddleware(object):
         if expr.match(path):
             logger.debug('** exclude path : authenticate')
             return None
+
+        # FIXME : temporary "open bar"
+        return None
 
         if not request.user.is_authenticated():
             response = HttpResponseRedirect(
