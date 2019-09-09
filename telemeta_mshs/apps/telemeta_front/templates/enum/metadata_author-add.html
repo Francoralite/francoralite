@@ -40,7 +40,7 @@
 
 {% block title %}
   {{ block.super }}
-{% endblock %} 
+{% endblock %}
 
 
 {{ form.media }}
@@ -55,11 +55,7 @@
     {% bootstrap_field form.value layout='vertical' %}
     {% bootstrap_field form.notes layout='vertical' %}
 
-    {% if id %}
-    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
-    {% else %}
-    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
-    {% endif %}
+    {% buttons_form %}
   </form>
 </div>
 
