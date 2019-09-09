@@ -55,8 +55,8 @@ class MusicalGroupEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/musical_group/edit' +
-                                                str(id) + '/')
+                    return HttpResponseRedirect('/musical_group/edit/' +
+                                                str(id))
                 return HttpResponseRedirect('/musical_group/')
 
             except RequestException:

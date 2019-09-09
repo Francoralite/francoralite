@@ -56,7 +56,7 @@ class RecordingContextEdit(FormView):
                 )
                 if(response.status_code != status.HTTP_200_OK):
                     return HttpResponseRedirect(
-                        '/recording_context/edit' + str(id) + '/')
+                        '/recording_context/edit/' + str(id))
                 return HttpResponseRedirect('/recording_context/')
 
             except RequestException:

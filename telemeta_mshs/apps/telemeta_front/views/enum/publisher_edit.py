@@ -55,8 +55,8 @@ class PublisherEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/publisher/edit' + str(id)
-                                                + '/')
+                    return HttpResponseRedirect('/publisher/edit/' +
+                                                str(id))
                 return HttpResponseRedirect('/publisher/')
 
             except RequestException:

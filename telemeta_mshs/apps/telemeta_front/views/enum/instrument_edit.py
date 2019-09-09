@@ -56,7 +56,7 @@ class InstrumentEdit(FormView):
                 )
                 if(response.status_code != status.HTTP_200_OK):
                     return HttpResponseRedirect(
-                        '/instrument/edit/' + str(id) + '/')
+                        '/instrument/edit/' + str(id))
                 return HttpResponseRedirect('/instrument/')
 
             except RequestException:

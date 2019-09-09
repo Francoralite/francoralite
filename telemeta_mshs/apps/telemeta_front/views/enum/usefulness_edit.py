@@ -55,8 +55,8 @@ class UsefulnessEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/usefulness/edit' + str(id)
-                                                + '/')
+                    return HttpResponseRedirect('/usefulness/edit/' +
+                                                str(id))
                 return HttpResponseRedirect('/usefulness/')
 
             except RequestException:

@@ -55,8 +55,8 @@ class DomainVocalEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/domain_vocal/edit' + str(id)
-                                                + '/')
+                    return HttpResponseRedirect('/domain_vocal/edit/' +
+                                                str(id))
                 return HttpResponseRedirect('/domain_vocal/')
 
             except RequestException:

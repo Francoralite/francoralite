@@ -55,8 +55,8 @@ class LegalRightsEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/legal_rights/edit' + str(id)
-                                                + '/')
+                    return HttpResponseRedirect('/legal_rights/edit/' +
+                                                str(id))
                 return HttpResponseRedirect('/legal_rights/')
 
             except RequestException:

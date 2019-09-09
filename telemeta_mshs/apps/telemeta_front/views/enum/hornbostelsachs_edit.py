@@ -55,9 +55,8 @@ class HornbostelsachsEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/hornbostelsachs/edit' + str(
-                        id)
-                                                + '/')
+                    return HttpResponseRedirect('/hornbostelsachs/edit/' +
+                                                str(id))
                 return HttpResponseRedirect('/hornbostelsachs/')
 
             except RequestException:
