@@ -16,7 +16,7 @@ class LocationGisSerializer(serializers.ModelSerializer):
 
     code = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
-    notes = serializers.CharField(required=False)
+    notes = serializers.CharField(required=False, allow_blank=True)
     latitude = serializers.FloatField(required=True)
     longitude = serializers.FloatField(required=True)
 

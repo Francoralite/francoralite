@@ -10,7 +10,7 @@ from ..models.hornbostelsachs import HornbostelSachs as HornbostelSachsModel
 
 class HornbostelSachsSerializer(serializers.ModelSerializer):
     number = serializers.CharField(required=True)
-    name = serializers.CharField(required=False)
+    name = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = HornbostelSachsModel

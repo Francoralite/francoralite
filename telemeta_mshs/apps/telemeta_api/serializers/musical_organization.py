@@ -16,7 +16,7 @@ class MusicalOrganizationSerializer(serializers.ModelSerializer):
     """
 
     name = serializers.CharField(required=True)
-    notes = serializers.CharField(required=False)
+    notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = MusicalOrganizationModel
