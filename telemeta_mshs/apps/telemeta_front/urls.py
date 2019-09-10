@@ -397,7 +397,7 @@ urlpatterns = [
     url(r'^thematic/edit/(?P<id>[0-9]+)$',
          thematic_edit.ThematicEdit.as_view(),
          name='thematic-edit'),
-    url(r'^emit_vox/delete/(?P<id>[0-9]+)$',
+    url(r'^thematic/delete/(?P<id>[0-9]+)$',
         thematic_delete.ThematicDelete.as_view(),
         name='thematic-delete'),
 
