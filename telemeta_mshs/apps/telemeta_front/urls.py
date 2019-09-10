@@ -497,7 +497,7 @@ urlpatterns = [
     url(r'^metadata_author/(?P<id>[0-9]+)/$',
      metadata_author_detail.MetadataAuthorDetail.as_view(),
      name='metadata_author-detail'),
-    url(r'^legal_rights/edit/(?P<id>[0-9]+)$',
+    url(r'^metadata_author/edit/(?P<id>[0-9]+)$',
          metadata_author_edit.MetadataAuthorEdit.as_view(),
          name='metadata_author-edit'),
     url(r'^metadata_author/delete/(?P<id>[0-9]+)$',

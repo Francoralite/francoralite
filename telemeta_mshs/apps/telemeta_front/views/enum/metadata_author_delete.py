@@ -17,7 +17,7 @@ class MetadataAuthorDelete(View):
         id = kwargs.get('id')
         try:
             requests.delete(
-                FRONT_HOST_URL + '/api/legalrights/' + str(id)
+                FRONT_HOST_URL + '/api/metadata_author/' + str(id)
                 )
             return HttpResponseRedirect('/metadata_author/')
 

@@ -38,6 +38,7 @@ from .views import (
     item_transcoding_flag,
     item_marker,
     mediatype,
+    metadata_author,
     publisher,
     legal_rights,
     recording_context,
@@ -76,6 +77,9 @@ router.register(r'institution',
 router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
 router.register(r'mediatype',
                 mediatype.MediaTypeViewSet, base_name='mediatype')
+router.register(r'metadata_author',
+                metadata_author.MetadataAuthorViewSet,
+                base_name='metadata_author')
 router.register(r'legalrights',
                 legal_rights.LegalRightsViewSet, base_name='legal_rights')
 router.register(r'recordingcontext',

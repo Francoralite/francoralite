@@ -25,7 +25,7 @@ class MetadataAuthorEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/legalrights/' + str(id))
+            FRONT_HOST_URL + '/api/metadata_author/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['metadata_author'] = response.json
         return context
@@ -36,7 +36,7 @@ class MetadataAuthorEdit(FormView):
 
         # Obtain values of the record
         metadata_author = requests.get(
-            FRONT_HOST_URL + '/api/legalrights/' + str(id))
+            FRONT_HOST_URL + '/api/metadata_author/' + str(id))
         form = MetadataAuthorForm(initial=metadata_author.json())
 
         return render(request,
@@ -51,12 +51,12 @@ class MetadataAuthorEdit(FormView):
         if form.is_valid():
             try:
                 response = requests.patch(
-                    FRONT_HOST_URL + '/api/legalrights/' + str(id) + '/',
+                    FRONT_HOST_URL + '/api/metadata_author/' + str(id) + '/',
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/metadata_author/edit' + str(id)
-                                                + '/')
+                    return HttpResponseRedirect('/metadata_author/edit/' +
+                                                str(id))
                 return HttpResponseRedirect('/metadata_author/')
 
             except RequestException:

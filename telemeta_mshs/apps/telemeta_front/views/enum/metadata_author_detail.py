@@ -17,7 +17,7 @@ class MetadataAuthorDetail(FrancoraliteTemplateView):
         try:
             context = super(MetadataAuthorDetail, self).get_context_data(**kwargs)
             context['metadata_author'] = tools.request_api(
-                '/api/legalrights/' + context['id'])
+                '/api/metadata_author/' + context['id'])
             context['form'] = MetadataAuthorForm()
 
         except Exception as err:

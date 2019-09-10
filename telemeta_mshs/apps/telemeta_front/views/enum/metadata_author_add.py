@@ -26,7 +26,7 @@ class MetadataAuthorAdd(FormView):
 
             try:
                 requests.post(
-                    FRONT_HOST_URL + '/api/legalrights/',
+                    FRONT_HOST_URL + '/api/metadata_author/',
                     data=form.cleaned_data
                 )
                 return HttpResponseRedirect('/metadata_author/')

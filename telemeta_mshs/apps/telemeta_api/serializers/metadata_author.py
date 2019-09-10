@@ -6,7 +6,7 @@
 
 from rest_framework import serializers
 
-from ..models.publisher import MetadataAuthor as MetadataAuthorModel
+from ..models.metadata_author import MetadataAuthor as MetadataAuthorModel
 
 
 class MetadataSerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class MetadataSerializer(serializers.ModelSerializer):
     """
 
     name = serializers.CharField(required=True)
-    notes = serializers.CharField(required=False)
+    notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = MetadataAuthorModel

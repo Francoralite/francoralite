@@ -52,7 +52,7 @@
   <form action="{%url "metadata_author-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    {% bootstrap_field form.value layout='vertical' %}
+    {% bootstrap_field form.name layout='vertical' %}
     {% bootstrap_field form.notes layout='vertical' %}
 
     {% buttons_form %}
