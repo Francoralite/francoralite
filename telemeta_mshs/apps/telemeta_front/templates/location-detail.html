@@ -27,7 +27,7 @@
 {% block title_name %}
 {{ block.super }}
   {% if location %}
-   : {{ location.name }}
+   Lieu : {{ location.name }}
   {% endif %}
 {% endblock %}
 
@@ -41,7 +41,7 @@
       <a href="{% url "location_gis-edit" id=id %}" class="btn_add btn btn-default">
         <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
       </a>
-      <button type="button" class="btn btn-default"
+      <button type="button" class="btn_add btn btn-default"
         data-toggle="modal" data-target="#modalDelete"
         data-name="{{location.code}} | {{location.name}}"
         data-url="{% url "location_gis-delete" id=location.id %}">
