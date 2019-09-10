@@ -16,11 +16,11 @@ class InstrumentDetail(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(InstrumentDetail, self).get_context_data(**kwargs)
-            context['instruments'] = tools.request_api(
+            context['instrument'] = tools.request_api(
                 '/api/instrument/' + context['id'])
             context['form'] = InstrumentForm()
         except Exception as err:
-            context['instruments'] = {}
+            context['instrument'] = {}
             context['error'] = err.message
             context['form'] = InstrumentForm()
         return context
