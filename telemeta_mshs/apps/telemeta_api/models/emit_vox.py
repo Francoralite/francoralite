@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 class EmitVox(models.Model):
     name = models.CharField(_(u"Nature de l'émission vocale"),
                             unique=True, max_length=255)
+    notes = models.TextField(_('Notes'), null=True, blank=True)
 
     class Meta:
         app_label = 'telemeta_api'

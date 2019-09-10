@@ -10,6 +10,7 @@ from ..models.emit_vox import EmitVox as EmitVoxModel
 
 class EmitVoxSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
+    notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = EmitVoxModel
