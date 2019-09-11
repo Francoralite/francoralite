@@ -39,7 +39,7 @@ class ItemSerializer(serializers.ModelSerializer):
     media_type = AsymetricRelatedField.from_serializer(
         MediaTypeSerializer, kwargs={'required': False})
     approx_duration = serializers.DurationField(required=False)
-    file = serializers.FileField(max_length=1024)
+    file = serializers.FileField(max_length=1024, allow_null=True)
 
     # Description -----------------------
     timbre = serializers.CharField(

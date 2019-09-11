@@ -89,6 +89,7 @@
 </ul>
 
 <div class="container">
+
   {% if id %}
   <form enctype="multipart/form-data" action="{%url "item-edit" id %}" method="POST">
   {% else %}
@@ -104,8 +105,15 @@
         {% bootstrap_field form.alt_title layout='vertical' %}
         {% bootstrap_field form.trans_title layout='vertical' %}
         {% bootstrap_field form.description layout='vertical' %}
+        {% if id %}
+          <div hidden=True>
+        {% else %}
+          <div>
+        {% endif %}
         {% bootstrap_field form.file layout='vertical' %}
-        {{item.file}}
+        </div>
+
+
 
         <div class="block-grey">
           <h2>{% trans "Personnes" %}</h2>

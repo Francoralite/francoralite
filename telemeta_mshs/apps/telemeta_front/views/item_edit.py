@@ -38,7 +38,9 @@ class ItemEdit(FormView):
         # Obtain values of the record
         item = requests.get(
             FRONT_HOST_URL + '/api/item/' + str(id))
+
         form = ItemForm(initial=item.json())
+        form.fields['file'].required = False
 
         # Obtain gaphers of the record
         graphers = []
@@ -56,6 +58,7 @@ class ItemEdit(FormView):
     def post(self, request, *args, **kwargs):
 
         form = ItemForm(request.POST)
+        form.fields['file'].required = False
         id = kwargs.get('id')
 
         if form.is_valid():
@@ -71,6 +74,5 @@ class ItemEdit(FormView):
 
             except RequestException:
                 return HttpResponseRedirect('/item/edit')
-
         return self.render_to_response(
             self.get_context_data(request=self.request, form=form))
