@@ -54,7 +54,6 @@
     {% if item %}
      : {{ item.code|upper }} - {{  item.title}}
     {% endif %}
-  </h1>
 {% endblock %}
 
 {% block content %}
@@ -123,8 +122,8 @@
 
           <div id="tabs_container">
               <!-- this div will be hidden when everything is fully loaded-->
-              <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
-                  <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
+              <a id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+                  <span id="loading_span_text">{% trans "Chargement " %}...</span></a>
               <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
                do not let space here as it appears in the document!!!!!
              --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
@@ -133,7 +132,7 @@
           <div class="markers" id="markers_div_id"></div>
 
           <div class="analyzer" id="analyzer_div_id">
-              <table width="100%">
+              <table>
                   <tr class="analyzer-title">
                       <td>{% trans "Property" %}</td>
                       <td>{% trans "Value" %}</td>
