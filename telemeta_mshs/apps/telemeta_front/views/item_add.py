@@ -4,17 +4,21 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-
+from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 import requests
+from requests.exceptions import RequestException
 from rest_framework import status
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
+from related import write_relations, query_related
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class ItemAdd(FormView):
     template_name = "../templates/item-add.html"
     form_class = ItemForm
+    parser_classes = (MultiPartParser, FormParser)
     success_url = '/item/'
 
     def get_initial(self):
@@ -27,10 +31,28 @@ class ItemAdd(FormView):
             initial['code'] = response.json()['code']
         return initial
 
-    def form_valid(self, form):
+    def post(self, request, *args, **kwargs):
+        id_institution = kwargs['id_institution']
+        id_fond = kwargs['id_fond']
+        id_mission = kwargs['id_mission']
+        id_collection = kwargs['id_collection']
+
+        form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
-            requests.post(
-                FRONT_HOST_URL + '/api/item/',
-                data=form.cleaned_data
+            try:
+                # Remove the 'file' entry : if not, there some bugs
+                del form.cleaned_data['file']
+                response = requests.post(
+                    FRONT_HOST_URL + '/api/item/',
+                    data=form.cleaned_data,  files=request.FILES
                 )
+                if response.status_code == status.HTTP_201_CREATED:
+                    item = response.json()
+
+            except RequestException:
+                return super(ItemAdd, self).form_valid(form)
         return super(ItemAdd, self).form_valid(form)
+        # return HttpResponseRedirect(
+        #     '/institution/' + id_institution + '/fond/'
+        #     + id_fond + '/mission/' + id_mission + '/collection/'
+        #     + id_collection + '/item/add')
