@@ -11,7 +11,8 @@ from requests.exceptions import RequestException
 from rest_framework import status
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
-from related import write_relations, query_related
+from related import write_relations
+import json
 from rest_framework.parsers import MultiPartParser, FormParser
 
 
@@ -38,16 +39,31 @@ class ItemAdd(FormView):
         id_collection = kwargs['id_collection']
 
         form = ItemForm(request.POST, request.FILES)
+
         if form.is_valid():
             try:
                 # Remove the 'file' entry : if not, there some bugs
                 del form.cleaned_data['file']
+
+                # Use an API call to create a record
                 response = requests.post(
                     FRONT_HOST_URL + '/api/item/',
                     data=form.cleaned_data,  files=request.FILES
                 )
                 if response.status_code == status.HTTP_201_CREATED:
                     item = response.json()
+
+                    # Authors
+                    authors = json.loads(request.POST['authors'])
+                    url_authors = \
+                        FRONT_HOST_URL + '/api/item/' + \
+                        str(item["id"]) + '/author/'
+                    # Create authors
+                    write_relations(item["id"],
+                                    "collection", authors,
+                                    url_authors, "author")
+
+                    return HttpResponseRedirect('/item/')
 
             except RequestException:
                 return super(ItemAdd, self).form_valid(form)
