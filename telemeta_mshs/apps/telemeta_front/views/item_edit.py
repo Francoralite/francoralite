@@ -12,8 +12,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
 from django.shortcuts import render
-import json
-from .related import write_relations
+from .related import write_item_related
 
 
 class ItemEdit(FormView):
@@ -75,15 +74,7 @@ class ItemEdit(FormView):
                 else:
                     item = response.json()
 
-                    # Authors
-                    authors = json.loads(request.POST['authors'])
-                    url_authors = \
-                        FRONT_HOST_URL + '/api/item/' + \
-                        str(item["id"]) + '/author/'
-                    # Create authors
-                    write_relations(item["id"],
-                                    "item", authors,
-                                    url_authors, "author")
+                    write_item_related(item['id'], request)
 
                 return HttpResponseRedirect('/item/')
 

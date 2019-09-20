@@ -192,8 +192,9 @@
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
 
       {% field_data form.domains.label|safe item.domains|safe %}
-      {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
-      {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
+      {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" %}
+      {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" %}
+
       <div class="block-grey row">
         <div class="col-md-6">
           <label for="id_melody" class="melody">Mélodie (transcription alphabétique)</label>
@@ -219,15 +220,17 @@
 
       <div class="container_data">
         <h3 class="libelle">{{form.domains.label|safe}}</h3>
-        <div class="donnee">{{item.domains|markdown|safe}}</div>
+        {% related_list libelle='Genre(s) de la chanson' items=item.domain_songs url_detail="domain_song-detail" field="name" %}
+        {% related_list libelle="Genre(s) de l'expression vocale" items=item.domain_vocals url_detail="domain_vocal-detail" field="name" %}
+        {% related_list libelle="Genre(s) de l'expression instrumentale" items=item.domain_musics url_detail="domain_music-detail" field="name" %}
+        {% related_list libelle='Genre(s) du conte' items=item.domain_tales url_detail="domain_tale-detail" field="name" %}
       </div>
 
-      {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
-      {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
 
       <aside class="block-grey">
         <h2>{% trans "Témoignage" %}</h2>
         {% field_data form.deposit_digest.label|safe item.deposit_digest|markdown|safe %}
+        {% related_list libelle='Thématique(s)' items=item.thematics url_detail="thematic-detail" field="name" %}
         {% field_data form.deposit_names.label|safe item.deposit_names|safe %}
         {% field_data form.deposit_places.label|safe item.deposit_places|safe %}
         {% field_data form.deposit_periods.label|safe item.deposit_periods|safe %}

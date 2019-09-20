@@ -11,8 +11,7 @@ from requests.exceptions import RequestException
 from rest_framework import status
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
-from related import write_relations
-import json
+from related import write_item_related
 from rest_framework.parsers import MultiPartParser, FormParser
 
 
@@ -53,15 +52,7 @@ class ItemAdd(FormView):
                 if response.status_code == status.HTTP_201_CREATED:
                     item = response.json()
 
-                    # Authors
-                    authors = json.loads(request.POST['authors'])
-                    url_authors = \
-                        FRONT_HOST_URL + '/api/item/' + \
-                        str(item["id"]) + '/author/'
-                    # Create authors
-                    write_relations(item["id"],
-                                    "collection", authors,
-                                    url_authors, "author")
+                    write_item_related(item['id'], request)
 
                     return HttpResponseRedirect('/item/')
 

@@ -5,6 +5,8 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 from rest_framework import status
 import requests
+import json
+from settings import FRONT_HOST_URL
 
 
 class related():
@@ -24,6 +26,34 @@ class related():
 
     def update_data(self, new_data):
         self.main_data = new_data
+
+
+def write_item_related(id_main, request):
+    related = [
+        ["collector", "collectors"],
+        ["informer", "informers"],
+        ["author", "authors"],
+        ["compositor", "compositors"],
+        ["thematic", "thematics"],
+        ["dance", "dances"],
+        ["usefulness", "usefulnesses"],
+        ["domain_song", "domainsongs"],
+        ["domain_vocal", "domainvocals"],
+        ["domain_music", "domainmusics"],
+        ["domain_tale", "domaintales"],
+        ["musical_organization", "musical_organizations"],
+        ["musical_group", "musical_groups"]
+    ]
+
+    for rel_item in related:
+        write_relations(
+            id_main,
+            "item",
+            json.loads(request.POST[rel_item[1]]),
+            FRONT_HOST_URL + '/api/item/' +
+            str(id_main) + '/' + rel_item[0] + '/',
+            rel_item[0]
+        )
 
 
 def write_relations(id_main, name_main, selected, url_related, name_related):

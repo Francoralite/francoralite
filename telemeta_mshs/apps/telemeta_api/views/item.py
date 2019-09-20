@@ -134,7 +134,7 @@ entities = [
         "serializer": ItemTranscodingFlagSerializer
     },
     {
-        "names": "usefulnesses", "name": "usefullness",
+        "names": "usefulnesses", "name": "usefulness",
         "model": ItemUsefulness,
         "serializer": ItemUsefulnessSerializer
     },
