@@ -6,7 +6,7 @@
 
 from rest_framework import serializers
 
-from telemeta.models.language import Language as LanguageModel
+from ..models.language import Language as LanguageModel
 
 
 class LanguageSerializer(serializers.ModelSerializer):

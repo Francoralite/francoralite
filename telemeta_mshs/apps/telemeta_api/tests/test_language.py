@@ -20,7 +20,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.language import LanguageFactory
-from telemeta.models.language import Language
+from ..models.language import Language
 
 # Expected structure for Language objects
 LANGUAGE_STRUCTURE = [

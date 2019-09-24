@@ -19,7 +19,7 @@ from ..models.acquisition_mode import AcquisitionMode
 # Expected structure for Coupe objects
 ACQUSITION_STRUCTURE = [
     ('id', int),
-    ('value', str),
+    ('name', str),
     ('notes', str),
 ]
 
@@ -130,13 +130,13 @@ class TestAcquistionList(APITestCase):
         """
 
         item = AcquisitionMode.objects.first()
-        self.assertNotEqual(item.value, 'foobar_test_put')
+        self.assertNotEqual(item.name, 'foobar_test_put')
 
         # Get existing object from API
         url_get = reverse('acquisition_mode-detail', kwargs={'pk': item.id})
         data = self.client.get(url_get).data
 
-        data['value'] = 'foobar_test_put'
+        data['name'] = 'foobar_test_put'
         url = reverse('acquisition_mode-detail', kwargs={'pk': item.id})
         response = self.client.put(url, data, format='json')
 
@@ -144,7 +144,7 @@ class TestAcquistionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), ACQUISITION_FIELDS)
-        self.assertEqual(response.data['value'], 'foobar_test_put')
+        self.assertEqual(response.data['name'], 'foobar_test_put')
 
     def test_patch_an_acquisition(self):
         """
@@ -152,9 +152,9 @@ class TestAcquistionList(APITestCase):
         """
 
         item = AcquisitionMode.objects.first()
-        self.assertNotEqual(item.value, 'foobar_test_patch')
+        self.assertNotEqual(item.name, 'foobar_test_patch')
 
-        data = {'value': 'foobar_test_patch'}
+        data = {'name': 'foobar_test_patch'}
         url = reverse('acquisition_mode-detail', kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='json')
 
@@ -162,7 +162,7 @@ class TestAcquistionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), ACQUISITION_FIELDS)
-        self.assertEqual(response.data['value'], 'foobar_test_patch')
+        self.assertEqual(response.data['name'], 'foobar_test_patch')
 
     def test_delete_an_acquisition(self):
         """

@@ -14,7 +14,6 @@ class MediaTypeFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = MediaType
-        django_get_or_create = ('value',)
 
-    value = factory.Faker('word')
-    notes = factory.Faker('word')
+    name = factory.Faker('sentence', nb_words=3)
+    notes = factory.Faker('paragraph', nb_sentences=1)

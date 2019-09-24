@@ -22,6 +22,8 @@ from rest_framework.test import APITestCase
 from .factories.domain_vocal import DomainVocalFactory
 from ..models.domain_vocal import DomainVocal
 
+from .keycloak import get_token
+
 # Expected structure for Domain_vocal objects
 DOMAINVOCAL_STRUCTURE = [
     ('id', int),
@@ -44,7 +46,7 @@ class TestDomainVocalList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
@@ -61,7 +63,7 @@ class TestDomainVocalList(APITestCase):
         self.assertEqual(len(domain_vocals), 6)
 
         # API side
-        response = self.client.get(url)
+        response = self.client.get(url, **self.auth_headers)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -122,7 +124,7 @@ class TestDomainVocalList(APITestCase):
             dict,
             FACTORY_CLASS=DomainVocalFactory)
         url = reverse('domainvocal-list')
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(url, data, format='json', **self.auth_headers)
 
         # Check only expected attributes returned
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

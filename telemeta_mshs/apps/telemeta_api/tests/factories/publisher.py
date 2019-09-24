@@ -4,16 +4,16 @@ coupe factory to execute tests
 """
 
 import factory
-from ...models.coupe import Coupe
+from ...models.publisher import Publisher
 
 
-class CoupeFactory(factory.django.DjangoModelFactory):
+class PublisherFactory(factory.django.DjangoModelFactory):
     """
-    Coupe factory
+    Publisher factory
     """
 
     class Meta:
-        model = Coupe
+        model = Publisher
 
     name = factory.Faker('sentence', nb_words=3)
     notes = factory.Faker('paragraph', nb_sentences=1)

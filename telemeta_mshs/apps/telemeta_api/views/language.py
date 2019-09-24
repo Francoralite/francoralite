@@ -6,7 +6,7 @@
 
 
 from rest_framework import viewsets
-from telemeta.models.language import Language as LanguageModel
+from ..models.language import Language as LanguageModel
 from ..serializers.language import LanguageSerializer
 
 

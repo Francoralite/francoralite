@@ -5,10 +5,7 @@ Enumeration factory to execute tests
 import factory
 from telemeta.models.enum import (
     Enumeration,
-    RecordingContext,
-    PublisherCollection,
     EthnicGroup,
-    AcquisitionMode,
     CopyType,
     MetadataAuthor,
     PublishingStatus,
@@ -24,8 +21,6 @@ from telemeta.models.enum import (
     Topic
     )
 from ...models.mediatype import MediaType
-from ...models.publisher import Publisher
-from ...models.legal_rights import LegalRights
 
 
 class EnumerationFactory(factory.django.DjangoModelFactory):
@@ -42,37 +37,9 @@ class EnumerationFactory(factory.django.DjangoModelFactory):
     notes = factory.Faker('paragraph', nb_sentences=2)
 
 
-class RecordingContextFactory(EnumerationFactory):
-    class Meta:
-        model = RecordingContext
-
-
-class PublisherFactory(EnumerationFactory):
-    class Meta:
-        model = Publisher
-
-
-class PublisherCollectionFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = PublisherCollection
-
-    publisher = factory.SubFactory(PublisherFactory)
-    value = factory.Faker('word')
-
-
 class EthnicGroupFactory(EnumerationFactory):
     class Meta:
         model = EthnicGroup
-
-
-class LegalRightsFactory(EnumerationFactory):
-    class Meta:
-        model = LegalRights
-
-
-class AcquisitionModeFactory(EnumerationFactory):
-    class Meta:
-        model = AcquisitionMode
 
 
 class CopyTypeFactory(EnumerationFactory):

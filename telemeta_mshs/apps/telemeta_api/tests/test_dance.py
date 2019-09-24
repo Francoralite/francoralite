@@ -22,6 +22,8 @@ from rest_framework.test import APITestCase
 from .factories.dance import DanceFactory
 from ..models.dance import Dance
 
+from .keycloak import get_token
+
 # Expected structure for Dance objects
 DANCE_STRUCTURE = [
     ('id', int),
@@ -44,7 +46,7 @@ class TestDanceList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
@@ -61,7 +63,7 @@ class TestDanceList(APITestCase):
         self.assertEqual(len(dances), 6)
 
         # API side
-        response = self.client.get(url)
+        response = self.client.get(url, **self.auth_headers)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

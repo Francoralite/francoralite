@@ -10,7 +10,7 @@ Language factory to execute tests
 import factory
 import factory.fuzzy
 
-from telemeta.models.language import Language
+from ...models.language import Language
 
 
 class LanguageFactory(factory.django.DjangoModelFactory):
@@ -28,5 +28,5 @@ class LanguageFactory(factory.django.DjangoModelFactory):
     scope = factory.fuzzy.FuzzyChoice(['I', 'M', 'S'])
     type = factory.fuzzy.FuzzyChoice(
         ['A', 'C', 'E', 'H', 'M', 'S'])
-    name = factory.Faker('word')
+    name = factory.fuzzy.FuzzyText(length=255)
     comment = factory.Faker('paragraph', nb_sentences=1)

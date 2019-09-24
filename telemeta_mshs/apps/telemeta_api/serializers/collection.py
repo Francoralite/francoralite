@@ -31,7 +31,7 @@ class CollectionSerializer(serializers.ModelSerializer):
     location_details = serializers.CharField(required=False)
     cultural_area = serializers.CharField(required=False)
     language = serializers.CharField(required=False)
-    publisher_collection = serializers.CharField(required=False)
+    # publisher_collection = serializers.CharField(required=False)
     booklet_author = serializers.CharField(required=False)
     metadata_author = serializers.CharField(required=False)
     code = serializers.CharField(required=True)

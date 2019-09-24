@@ -34,7 +34,6 @@ COLLECTION_STRUCTURE = [
     ('title', str),
     ('alt_title', str),
     ('description', str),
-    ('descriptions', str),
     ('recording_context', str),
     ('recorded_from_year', str),
     ('recorded_to_year', str),
@@ -52,8 +51,7 @@ COLLECTION_STRUCTURE = [
     ('comment', str),
     ('media_type', dict),
     ('physical_items_num', int),
-    ('auto_period_access', bool),
-    ('public_access', str),
+    ('auto_period_access', bool)
 ]
 
 # Expected keys for MODEL objects

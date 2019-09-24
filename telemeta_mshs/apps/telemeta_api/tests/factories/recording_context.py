@@ -4,16 +4,16 @@ coupe factory to execute tests
 """
 
 import factory
-from ...models.coupe import Coupe
+from ...models.recording_context import RecordingContext
 
 
-class CoupeFactory(factory.django.DjangoModelFactory):
+class RecordingContextFactory(factory.django.DjangoModelFactory):
     """
-    Coupe factory
+    Recording context factory
     """
 
     class Meta:
-        model = Coupe
+        model = RecordingContext
 
     name = factory.Faker('sentence', nb_words=3)
     notes = factory.Faker('paragraph', nb_sentences=1)
