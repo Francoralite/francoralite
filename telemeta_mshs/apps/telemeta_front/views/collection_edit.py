@@ -61,6 +61,10 @@ class CollectionEdit(FormView):
         id = kwargs.get('id')
 
         if form.is_valid():
+            form.cleaned_data['recorded_from_year'] = \
+                form.data['recorded_from_year']
+            form.cleaned_data['recorded_to_year'] = \
+                form.data['recorded_to_year']
             try:
                 response = requests.patch(
                     FRONT_HOST_URL + '/api/collection/' + str(id) + '/',

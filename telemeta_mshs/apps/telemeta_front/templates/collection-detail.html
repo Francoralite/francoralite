@@ -68,7 +68,7 @@
       </div>
 
       <div class="container_line">
-        {% field_data form.descriptions.label|safe collection.descriptions|markdown|safe %}
+        {% field_data form.description.label|safe collection.description|markdown|safe %}
       </div>
 
       <div class="block-grey">
@@ -77,11 +77,11 @@
         <div class="container_line">
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Depuis' %}</dt>
-            <dd class="donnee"></dd>
+            <dd class="donnee">{{collection.recorded_from_year}}</dd>
           </dl>
           <dl class="container_data">
             <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
-            <dd class="donnee"></dd>
+            <dd class="donnee">{{collection.recorded_to_year}}</dd>
           </dl>
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>

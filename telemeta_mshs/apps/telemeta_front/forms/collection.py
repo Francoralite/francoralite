@@ -16,7 +16,7 @@ class CollectionForm(forms.Form):
     alt_title = forms.CharField(
         label=_(u'Titre original / Traduction'),
         max_length=255, required=False)
-    record_from_year = forms.DateField(
+    recorded_from_year = forms.DateField(
         label=_(u'Date d\'enregistrement (depuis)'),
         required=False,
         widget=DatePicker(
@@ -27,7 +27,7 @@ class CollectionForm(forms.Form):
                 }
             )
     )
-    record_to_year = forms.DateField(
+    recorded_to_year = forms.DateField(
         label=_(u'Date d\'enregistrement (jusqu\'à)'),
         required=False,
         widget=DatePicker(
