@@ -34,12 +34,14 @@ class MissionAdd(FormView):
         id_fond = kwargs['id_fond']
         form = MissionForm(request.POST)
         if form.is_valid():
+            form.cleaned_data['description'] = form.data['descriptions']
             try:
-                requests.post(
+                response = requests.post(
                     FRONT_HOST_URL + '/api/mission/',
                     data=form.cleaned_data
                 )
-                return HttpResponseRedirect('/mission/')
+                if response.status_code == status.HTTP_201_CREATED:
+                    return HttpResponseRedirect('/mission/')
 
             except RequestException:
                 return HttpResponseRedirect(
