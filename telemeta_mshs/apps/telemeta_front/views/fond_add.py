@@ -18,6 +18,7 @@ class FondAdd(FormView):
     success_url = '/fond/'
 
     def form_valid(self, form):
+        form.cleaned_data['description'] = form.data['descriptions']
         if form.is_valid():
             requests.post(
                 FRONT_HOST_URL + '/api/fond/',
