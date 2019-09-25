@@ -5,16 +5,15 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.core import ModelCore, MetaCore
-from telemeta.models.core import CharField, TextField
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class Institution(ModelCore):
+class Institution(models.Model):
     "Institution who owns some resources"
 
-    name = CharField(_('name'), required=True)
-    notes = TextField(_('notes'))
+    name = models.CharField(_('name'), max_length=255)
+    notes = models.TextField(_('notes'), null=True, blank=True)
 
     @property
     def has_fonds(self):
@@ -30,7 +29,7 @@ class Institution(ModelCore):
 
         fonds.verbose_name = _("fonds")
 
-    class Meta(MetaCore):
+    class Meta:
         app_label = 'telemeta_api'
         db_table = 'institutions'
         verbose_name_plural = _('institutions')
