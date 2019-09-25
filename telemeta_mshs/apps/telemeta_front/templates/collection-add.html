@@ -188,15 +188,15 @@
           <v-select
             multiple
             v-model="publishers"
-            label="value"
+            label="name"
             :filterable="false"
             @search="onSearchPublishers"
             :options="optionsPublishers">
               <template slot="option" slot-scope="option">
-                <p>${ option.value }</p>
+                <p>${ option.name }</p>
               </template>
               <template slot="selected-option" slot-scope="option">
-                ${ option.value }
+                ${ option.name }
               </template>
             </v-select>
         </div>

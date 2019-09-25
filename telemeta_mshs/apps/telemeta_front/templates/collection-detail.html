@@ -151,7 +151,10 @@
         <dd class="donnee">
           {% for publisher in collection.publishers %}
             {% if not forloop.first %} | {% endif %}
-              {{publisher.value}}
+              <a href="{% url "publisher-detail" id=publisher.id %}"
+                  target="_blank">
+                {{publisher.name|safe}}
+              </a>
           {% endfor %}
         </dd>
       </dl>
