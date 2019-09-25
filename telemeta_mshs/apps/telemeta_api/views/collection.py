@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from ..models.collection import Collection as CollectionModel
@@ -63,6 +63,12 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
     queryset = CollectionModel.objects.all()
     serializer_class = CollectionSerializer
+
+    filter_backends = (filters.DjangoFilterBackend,
+                       filters.OrderingFilter, filters.SearchFilter)
+    filter_fields = ('mission',)
+    ordering = ('mission', 'code')
+    search_fields = ('mission', 'code', 'title')
 
     keycloak_scopes = {
         'GET': 'collection:view',
