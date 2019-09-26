@@ -65,6 +65,8 @@ class CollectionEdit(FormView):
                 form.data['recorded_from_year']
             form.cleaned_data['recorded_to_year'] = \
                 form.data['recorded_to_year']
+            if form.cleaned_data['year_published'] is None:
+                form.cleaned_data['year_published'] = ''
             try:
                 response = requests.patch(
                     FRONT_HOST_URL + '/api/collection/' + str(id) + '/',
