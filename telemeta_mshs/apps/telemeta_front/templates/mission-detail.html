@@ -91,6 +91,22 @@
       </div>
 
       <div class="block-grey">
+        <h2>{% trans "Lieux" %}</h2>
+        <dl class="container_data">
+          <dt class="libelle"></dt>
+          <dd class="donnee">
+            {% for location in locations %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "location_gis-detail" id=location.id %}"
+              target="_blank">
+                {{location.code}}/{{location.name}}
+              </a>
+            {% endfor %}
+          </dd>
+        </dl>
+      </div>
+
+      <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Collecteurs' %}</dt>

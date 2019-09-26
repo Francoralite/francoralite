@@ -15,9 +15,13 @@ from ..models.collection_informer import (
     CollectionInformer as CollectionInformerModel)
 from ..models.collectioncollectors import (
     CollectionCollectors as CollectionCollectorModel)
+from ..models.collection_location import (
+    CollectionLocation as CollectionLocationModel)
 from ..models.authority import Authority as AuthorityModel
+from ..models.location import Location as LocationModel
 from ..serializers.mission import MissionSerializer
 from ..serializers.authority import AuthoritySerializer
+from ..serializers.location_gis import LocationGisSerializer
 
 
 class MissionViewSet(viewsets.ModelViewSet):
@@ -42,22 +46,27 @@ class MissionViewSet(viewsets.ModelViewSet):
         'DELETE': 'mission:delete'
     }
 
-    def authorities(self, id_mission, model, entity):
+    def related_collections(self,
+                            id_mission,
+                            model_related,
+                            model,
+                            entity,
+                            serializer=AuthoritySerializer):
         # Retrieve the collections, related to the current mission
         collections = CollectionModel.objects.filter(
             mission_id=id_mission).values_list(
                 'id', flat=True)
-        # Retrieve the authorities, related to the collections
-        list_authorities = model.objects.filter(
+        # Retrieve the entities, related to the collections
+        list_related = model_related.objects.filter(
                  collection_id__in=[str(x) for x in collections]
                  ).values_list(
                      entity, flat=True)
-        # Retrieve the authority
-        authorities = AuthorityModel.objects.filter(
-            id__in=[str(x) for x in list_authorities])
+        # Retrieve the entity
+        entities = model.objects.filter(
+            id__in=[str(x) for x in list_related])
 
         # Push the authorities to the data results
-        data = [AuthoritySerializer(i).data for i in authorities]
+        data = [serializer(i).data for i in entities]
 
         return data
 
@@ -65,9 +74,10 @@ class MissionViewSet(viewsets.ModelViewSet):
     def informers(self, request, pk=None):
         instance = self.get_object()
 
-        data = self.authorities(
+        data = self.related_collections(
             id_mission=instance.id,
-            model=CollectionInformerModel,
+            model_related=CollectionInformerModel,
+            model=AuthorityModel,
             entity='informer'
             )
         return Response(data)
@@ -75,10 +85,23 @@ class MissionViewSet(viewsets.ModelViewSet):
     @detail_route()
     def collectors(self, request, pk=None):
         instance = self.get_object()
-        data = self.authorities(
+        data = self.related_collections(
             id_mission=instance.id,
-            model=CollectionCollectorModel,
+            model_related=CollectionCollectorModel,
+            model=AuthorityModel,
             entity='collector'
             )
 
+        return Response(data)
+
+    @detail_route()
+    def locations(self, request, pk=None):
+        instance = self.get_object()
+        data = self.related_collections(
+            id_mission=instance.id,
+            model_related=CollectionLocationModel,
+            model=LocationModel,
+            entity='location',
+            serializer=LocationGisSerializer
+            )
         return Response(data)
