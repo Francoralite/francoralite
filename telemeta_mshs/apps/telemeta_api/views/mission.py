@@ -6,8 +6,16 @@
 
 
 from rest_framework import viewsets, filters
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
+
 from ..models.mission import Mission as MissionModel
+from ..models.collection import Collection as CollectionModel
+from ..models.collection_informer import (
+    CollectionInformer as CollectionInformerModel)
+from ..models.authority import Authority as AuthorityModel
 from ..serializers.mission import MissionSerializer
+from ..serializers.authority import AuthoritySerializer
 
 
 class MissionViewSet(viewsets.ModelViewSet):
@@ -31,3 +39,26 @@ class MissionViewSet(viewsets.ModelViewSet):
         'PUT': 'mission:update',
         'DELETE': 'mission:delete'
     }
+
+    @detail_route()
+    def informers(self, request, pk=None):
+        instance = self.get_object()
+
+        # Retrieve the collections, related to the current mission
+        collections = CollectionModel.objects.filter(
+            mission_id=instance.id).values_list(
+                'id', flat=True)
+        # Retrieve the informers, related to the collections
+        list_informers = CollectionInformerModel.objects.filter(
+                 collection_id__in=[str(x) for x in collections]
+                 ).values_list(
+                     'informer', flat=True)
+
+        # Retrieve the informer
+        informers = AuthorityModel.objects.filter(
+            id__in=[str(x) for x in list_informers])
+
+        # Push the informers to the data results
+        data = [AuthoritySerializer(i).data for i in informers]
+
+        return Response(data)

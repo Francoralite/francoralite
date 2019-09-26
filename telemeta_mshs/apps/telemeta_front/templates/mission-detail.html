@@ -98,7 +98,15 @@
         </dl>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Informateurs' %}</dt>
-          <dd class="donnee"></dd>
+          <dd class="donnee">
+            {% for informer in informers %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "personne-detail" id=informer.id %}"
+              target="_blank">
+                {{informer.first_name}} {{informer.last_name}}
+              </a>
+            {% endfor %}
+          </dd>
         </dl>
       </div>
 
