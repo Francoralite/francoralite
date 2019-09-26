@@ -94,7 +94,15 @@
         <h2>{% trans "Personnes" %}</h2>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
-          <dd class="donnee"></dd>
+          <dd class="donnee">
+            {% for collector in collectors %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "personne-detail" id=collector.id %}"
+              target="_blank">
+                {{collector.first_name}} {{collector.last_name}}
+              </a>
+            {% endfor %}
+          </dd>
         </dl>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Informateurs' %}</dt>
