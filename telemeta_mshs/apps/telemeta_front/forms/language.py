@@ -10,17 +10,26 @@ from django.utils.translation import ugettext_lazy as _
 
 class LanguageForm(forms.Form):
     identifier = forms.CharField(
-        label=_(u'Identificateur'), max_length=3, required=True)
+        label=_(u'Identificateur'),
+        help_text=_(u'Identificateur unique, sur 3 caractères.'),
+        widget=forms.TextInput(attrs={'placeholder': 'abc'}),
+        max_length=3, required=True)
     part2B = forms.CharField(
         label=_(u'equivalent ISO 639-2 (bibliographie)'),
+        widget=forms.TextInput(attrs={'placeholder': 'abc'}),
         max_length=3, required=True)
     part2T = forms.CharField(
         label=_(u'equivalent ISO 639-2 (terminologie)'),
+        widget=forms.TextInput(attrs={'placeholder': 'abc'}),
         max_length=3, required=True)
     part1 = forms.CharField(
-        label=_('equivalent ISO 639-1 '), max_length=1, required=True)
+        label=_('equivalent ISO 639-1 '),
+        widget=forms.TextInput(attrs={'placeholder': 'a'}),
+        max_length=1, required=True)
     name = forms.CharField(
-        label=_(u'Nom'), max_length=255)
+        label=_(u'Nom'),
+        help_text=_(u'Nom d\'utilisation, en toutes lettres. Ex. : Français'),
+        max_length=255)
     comment = forms.CharField(
         label=_(u'Commentaires'),
         widget=forms.Textarea,
