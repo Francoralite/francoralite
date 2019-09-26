@@ -91,19 +91,6 @@ class CollectionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
 
-        PUBLIC_ACCESS_CHOICES = (
-            ('none', _(u'Aucun')),
-            ('metadata', _(u'Meta-données')),
-            ('partial', _(u'Partiel')),
-            ('full', _(u'Complet'))
-            )
-
-        self.fields['public_access'] = forms.ChoiceField(
-            label=_(u'Type d\'accès'),
-            choices=PUBLIC_ACCESS_CHOICES,
-            initial="metadata",
-            required=True)
-
         self.fields['recording_context'] = forms.ChoiceField(
             label=_(u'Contexte d\'enregistrement'),
             choices=Core.get_choices(
