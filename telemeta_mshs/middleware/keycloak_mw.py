@@ -218,11 +218,10 @@ class KeycloakMiddleware(object):
                    settings.KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS):
                 logger.debug('** exclude path found, skipping')
                 return None
-
         # Exclude every URL pointing to the API service,
         #   for a list queryset.
         expr = re.compile("^api/[a-z0-9_]*/$")
-        if expr.match(path):
+        if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
 
@@ -250,7 +249,7 @@ class KeycloakMiddleware(object):
             return None
 
         # FIXME : temporary "open bar"
-        return None
+        ###### return None
 
         try:
             view_scopes = view_func.cls.keycloak_scopes
@@ -262,36 +261,49 @@ class KeycloakMiddleware(object):
         required_scope = view_scopes.get(request.method, None) \
             if view_scopes.get(request.method, None) else view_scopes.get(
                 'DEFAULT', None)
-
         # DEFAULT scope not found and DEFAULT_ACCESS is DENY
         if not required_scope and self.default_access == 'DENY':
             return JsonResponse(
                 {"detail": unicode(PermissionDenied.default_detail)},
                 status=PermissionDenied.status_code)
 
-        try:
-            # Get Token
-            access_token = request.session['oidc_access_token']
-
-            self.keycloak.load_authorization_config(
-                "/srv/app/etc/keycloak/auth.json")
-            # Get permissions
-            permissions = self.keycloak.get_permissions(
-                access_token,
-                method_token_info='decode',
-                key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
-        except Exception:
+        # Get Token
+        access_token = request.session.get('oidc_access_token', '')
+        if access_token == "":
+            access_token = request.META["HTTP_AUTHORIZATION"].split(' ')[1]
+        if access_token == "":
             return JsonResponse(
-                {"detail": unicode(AuthenticationFailed.default_detail)},
-                status=AuthenticationFailed.status_code)
-        for perm in permissions:
-            if required_scope in perm.scopes:
-                return None
+                {"detail": unicode(PermissionDenied.default_detail)},
+                status=PermissionDenied.status_code)
 
-        # User Permission Denied
-        return JsonResponse(
-            {"detail": unicode(PermissionDenied.default_detail)},
-            status=PermissionDenied.status_code)
+        self.keycloak.load_authorization_config(
+            "/srv/app/etc/keycloak/auth.json")
+
+        return None  # Voir les permissions ensuite
+
+        # Get permissions
+        # --------------------------------------------------
+        # permissions = self.keycloak.get_permissions(
+        #     access_token,
+        #     method_token_info='decode',
+        #     key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
+        #
+        # for perm in permissions:
+        #     print '-------- perm ----------'
+        #     print perm
+        #     print '------------------'
+        #     sys.stdout.flush()
+        #     if required_scope in perm.scopes:
+        #         return None
+        # print '-------- denied ----------'
+        # print 'DENIED !'
+        # print '------------------'
+        # sys.stdout.flush()
+        # # User Permission Denied
+        # return JsonResponse(
+        #     {"detail": unicode(PermissionDenied.default_detail)},
+        #     status=PermissionDenied.status_code)
+        # --------------------------------------------------
 
     def process_request(self, request):
 
@@ -329,7 +341,7 @@ class KeycloakMiddleware(object):
             return None
 
         # FIXME : temporary "open bar"
-        return None
+        ## return None
 
         if not request.user.is_authenticated():
             response = HttpResponseRedirect(

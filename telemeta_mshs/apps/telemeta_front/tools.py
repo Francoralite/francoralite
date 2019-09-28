@@ -17,6 +17,12 @@ HTTP_ERRORS = {
 }
 
 
+def get_token_header():
+    auth_token = 'kbkcmbkcmbkcbc9ic9vixc9vixc9v'
+    hed = {'Authorization': 'Bearer ' + auth_token}
+    return hed
+
+
 def request_api(endpoint):
     """
     TODO: A renseigner
@@ -32,3 +38,29 @@ def request_api(endpoint):
         raise Exception(HTTP_ERRORS[response.status_code])
     except Exception:
         raise
+
+
+def post_api(endpoint, data):
+    """
+    TODO: A renseigner
+    """
+
+    try:
+        response = requests.post(
+            endpoint, data=data,
+            headers=get_token_header())
+
+        if response.status_code == status.HTTP_201_CREATED or \
+                response.status_code == status.HTTP_200_OK:
+            return response.json
+
+        raise Exception(HTTP_ERRORS[response.status_code])
+    except Exception:
+        raise
+
+
+def delete_api(endpoint):
+    """
+    TODO: A renseigner
+    """
+    requests.delete(endpoint, headers=get_token_header())
