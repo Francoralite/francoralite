@@ -270,11 +270,12 @@ class KeycloakMiddleware(object):
         # Get Token
         access_token = request.session.get('oidc_access_token', '')
         if access_token == "":
-            access_token = request.META["HTTP_AUTHORIZATION"].split(' ')[1]
-        if access_token == "":
-            return JsonResponse(
-                {"detail": unicode(PermissionDenied.default_detail)},
-                status=PermissionDenied.status_code)
+            try:
+                access_token = request.META["HTTP_AUTHORIZATION"].split(' ')[1]
+            except Exception:
+                return JsonResponse(
+                    {"detail": unicode(PermissionDenied.default_detail)},
+                    status=PermissionDenied.status_code)
 
         self.keycloak.load_authorization_config(
             "/srv/app/etc/keycloak/auth.json")

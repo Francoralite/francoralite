@@ -17,8 +17,8 @@ HTTP_ERRORS = {
 }
 
 
-def get_token_header():
-    auth_token = 'kbkcmbkcmbkcbc9ic9vixc9vixc9v'
+def get_token_header(request):
+    auth_token = request.session['oidc_access_token']
     hed = {'Authorization': 'Bearer ' + auth_token}
     return hed
 
@@ -40,7 +40,7 @@ def request_api(endpoint):
         raise
 
 
-def post_api(endpoint, data):
+def post_api(endpoint, data, request):
     """
     TODO: A renseigner
     """
@@ -48,7 +48,7 @@ def post_api(endpoint, data):
     try:
         response = requests.post(
             endpoint, data=data,
-            headers=get_token_header())
+            headers=get_token_header(request=request))
 
         if response.status_code == status.HTTP_201_CREATED or \
                 response.status_code == status.HTTP_200_OK:
@@ -59,8 +59,29 @@ def post_api(endpoint, data):
         raise
 
 
-def delete_api(endpoint):
+def patch_api(endpoint, data, request):
+
+    try:
+        response = requests.patch(
+            endpoint,
+            data=data,
+            headers=get_token_header(request=request)
+        )
+        if response.status_code == status.HTTP_200_OK:
+            return response.json
+
+    except Exception:
+        raise
+
+
+def delete_api(endpoint, request):
     """
     TODO: A renseigner
     """
-    requests.delete(endpoint, headers=get_token_header())
+    try:
+        response = requests.delete(
+            endpoint,
+            headers=get_token_header(request=request)
+            )
+    except Exception:
+        raise

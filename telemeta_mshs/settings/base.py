@@ -56,6 +56,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'telemeta_mshs.middleware.keycloak_mw.KeycloakMiddleware',
+    # 'telemeta_mshs.middleware.history_records.HistoryRecordsMiddleware',
 )
 
 DATABASES = {
@@ -96,7 +97,7 @@ KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS = [
     'admin',
 ]
 KEYCLOAK_RSA_PUBLIC_KEY = """-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApPuhTYR5350AMvQnCIZJSxjlD2NiSAEi05HTRMlK3/B1IjGwfg6lP+LXrhLHRXWg7L+EzIU9oiuPqzHr/pfdWor6fPiLpII6fkmBuB18SiM7cm3xe7fyfjwhN/q0Cu1ddSo1ILR0O6/bXWCV5DHdNAdtnSQRWdnRbJCSkjzJ9/KrArvcAUx1k1bCBQ8nJ60tNRZbmLrC+1rHe8+9m9b3NpI2IRkpfJynfuxcpDAQiJ3orW8Hy3g1dgueGsiS6FWnLF9zJc5JuZQVGFukpKcl7COPp2CSEwxgPxjyZQ4GBynCfuvoNHogTEbeujE/erRM3i5VD5C5miUXz/cYiaKmqwIDAQAB
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgP/m+V2owmzi6egBGQekKThsXuSDsEKfWjYNk9quCCR4BBFlT0444b1xb948w7Ii59OFor3UDfvy8+mD9XSm56ghuWhvuvAcOEGYPlvqOPQ+p5IXum1b7LrjH1aljtDmT6C6No1D+POzsLy9MQBRto7zTbi3ViQoh+7tMywUPm6WreYxpwPTDhSCA2+uptPJn2R5vqi/OB4wIvQ90JXvH6RE5oSkmHSMW10UWRFGNtCABJy4XXlCXDDl6BW+uTuy1LvVZxDiqBudqEmsbeVl2gXGp46BRqs+YDabh10V7rkuF4XeHY4bU3ICfWu+1Zq7fRF1Em/cMVuUfjKXy3dKZwIDAQAB
 -----END PUBLIC KEY-----"""
 KEYCLOAK_CONFIG = {
     'KEYCLOAK_REALM':  'francoralite',
@@ -105,7 +106,7 @@ KEYCLOAK_CONFIG = {
     'KEYCLOAK_AUTHORIZATION_CONFIG': '/tmp/authorization_config.json',
     'KEYCLOAK_METHOD_VALIDATE_TOKEN': 'DECODE',
     'KEYCLOAK_SERVER_URL': 'http://keycloak.francoralite.localhost:8080/auth/',
-    'KEYCLOAK_CLIENT_SECRET_KEY': 'ade263c9-5aca-46d4-965f-6e2d188a2515',
+    'KEYCLOAK_CLIENT_SECRET_KEY': '557ef7aa-7100-411a-9305-5f19827872aa',
     'KEYCLOAK_CLIENT_PUBLIC_KEY': KEYCLOAK_RSA_PUBLIC_KEY,
 }
 
@@ -123,7 +124,7 @@ AUTHENTICATION_BACKENDS = (
 )
 OIDC_RP_SIGN_ALGO = "RS256"
 OIDC_RP_CLIENT_ID = 'francoralite'
-OIDC_RP_CLIENT_SECRET = 'ade263c9-5aca-46d4-965f-6e2d188a2515'
+OIDC_RP_CLIENT_SECRET = '557ef7aa-7100-411a-9305-5f19827872aa'
 OIDC_CREATE_USER = True
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = \
