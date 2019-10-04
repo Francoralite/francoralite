@@ -16,6 +16,8 @@ from rest_framework.test import APITestCase
 from .factories.acquistion_mode import AcquisitionModeFactory
 from ..models.acquisition_mode import AcquisitionMode
 
+from .keycloak import get_token
+
 # Expected structure for Coupe objects
 ACQUSITION_STRUCTURE = [
     ('id', int),
@@ -37,7 +39,9 @@ class TestAcquistionList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         AcquisitionModeFactory.create_batch(6)

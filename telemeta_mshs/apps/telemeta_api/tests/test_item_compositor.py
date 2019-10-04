@@ -12,7 +12,6 @@ import factory
 import pytest
 import sys
 
-from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -24,6 +23,8 @@ from ..models.item_compositor import ItemCompositor
 # Models related
 from ..models.authority import Authority
 from ..models.item import Item
+
+from .keycloak import get_token
 
 # Expected structure for Item_compositor objects
 
@@ -48,7 +49,9 @@ class TestItemCompositorList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data

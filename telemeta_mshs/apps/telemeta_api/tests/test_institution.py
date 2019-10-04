@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
+
 """
 Institution tests
 """
@@ -6,7 +12,6 @@ import factory
 import pytest
 import sys
 
-# from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -15,6 +20,8 @@ from rest_framework.test import APITestCase
 
 from .factories.institution import InstitutionFactory
 from ..models.institution import Institution
+
+from .keycloak import get_token
 
 # Expected structure for Institution objects
 INSTITUTION_STRUCTURE = [
@@ -37,9 +44,12 @@ class TestInstitutionList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
+        # Create a set of sample data
         InstitutionFactory.create_batch(6)
 
     def test_can_get_institution_list(self):

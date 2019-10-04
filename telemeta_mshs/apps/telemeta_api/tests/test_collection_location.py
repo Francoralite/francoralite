@@ -13,7 +13,6 @@ import pytest
 import sys
 import random
 
-from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -24,6 +23,8 @@ from .factories.collection_location import CollectionLocationFactory
 from ..models.collection_location import CollectionLocation
 from ..models.location import Location
 from ..models.collection import Collection
+
+from .keycloak import get_token
 
 # Expected structure for Collection_location objects
 COLLECTIONLOCATION_STRUCTURE = [
@@ -47,6 +48,9 @@ class TestCollectionLocationList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         call_command('telemeta-setup-enumerations')
 
