@@ -20,7 +20,7 @@ from rest_framework.test import APITestCase
 
 from .factories.collection_language import CollectionLanguageFactory
 from ..models.collection_language import CollectionLanguage
-from telemeta.models.language import Language
+from ..models.language import Language
 from ..models.collection import Collection
 
 from .keycloak import get_token
@@ -96,7 +96,8 @@ class TestCollectionLanguageList(APITestCase):
             # Ensure type of each attribute
             if attribute_type == str:
                 if sys.version_info.major == 2:
-                    self.assertIsInstance(collection_language[attribute], basestring)
+                    self.assertIsInstance(
+                        collection_language[attribute], basestring)
                 else:
                     self.assertIsInstance(collection_language[attribute], str)
             else:

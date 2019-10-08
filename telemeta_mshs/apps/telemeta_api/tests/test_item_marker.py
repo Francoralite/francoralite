@@ -13,7 +13,6 @@ import pytest
 import sys
 from types import NoneType
 
-from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -25,7 +24,8 @@ from ..models.item_marker import ItemMarker
 
 # Models related
 from ..models.item import Item
-from django.contrib.auth.models import User
+
+from .keycloak import get_token
 
 # Expected structure for Item_marker objects
 ITEM_MARKER_STRUCTURE = [
@@ -52,7 +52,9 @@ class TestItemMarkerList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data

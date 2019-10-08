@@ -16,6 +16,8 @@ from rest_framework.test import APITestCase
 
 from .factories.MediaResource import MediaresourceFactory
 
+from .keycloak import get_token
+
 
 @pytest.mark.django_db
 class TestMediaresourceList(APITestCase):
@@ -27,7 +29,9 @@ class TestMediaresourceList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         self.instance = MediaresourceFactory.create()
