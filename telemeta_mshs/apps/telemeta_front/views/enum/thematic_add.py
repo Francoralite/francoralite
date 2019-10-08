@@ -7,10 +7,10 @@
 
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
 from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.thematic import ThematicForm
+import telemeta_front.tools as tools
 
 
 class ThematicAdd(FormView):
@@ -25,9 +25,10 @@ class ThematicAdd(FormView):
         if form.is_valid():
 
             try:
-                requests.post(
+                tools.post_api(
                     FRONT_HOST_URL + '/api/thematic/',
-                    data=form.cleaned_data
+                    data=form.cleaned_data,
+                    request=request
                 )
                 return HttpResponseRedirect('/thematic/')
 

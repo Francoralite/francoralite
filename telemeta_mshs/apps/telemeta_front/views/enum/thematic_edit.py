@@ -12,6 +12,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.thematic import ThematicForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class ThematicEdit(FormView):
@@ -50,9 +51,10 @@ class ThematicEdit(FormView):
 
         if form.is_valid():
             try:
-                response = requests.patch(
+                response = tools.patch_api(
                     FRONT_HOST_URL + '/api/thematic/' + str(id) + '/',
-                    data=form.cleaned_data
+                    data=form.cleaned_data,
+                    request=request
                 )
                 if(response.status_code != status.HTTP_200_OK):
                     return HttpResponseRedirect('/thematic/edit/' +
