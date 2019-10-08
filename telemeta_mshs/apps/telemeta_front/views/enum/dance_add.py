@@ -25,7 +25,8 @@ class DanceAdd(FormView):
         if form.is_valid():
             try:
                 tools.post_api(FRONT_HOST_URL + '/api/dance/',
-                               data=form.cleaned_data)
+                               data=form.cleaned_data,
+                               request=request)
                 return HttpResponseRedirect('/dance/')
 
             except RequestException:

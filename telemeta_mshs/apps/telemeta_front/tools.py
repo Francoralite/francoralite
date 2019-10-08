@@ -68,7 +68,7 @@ def patch_api(endpoint, data, request):
             headers=get_token_header(request=request)
         )
         if response.status_code == status.HTTP_200_OK:
-            return response.json
+            return response
 
     except Exception:
         raise

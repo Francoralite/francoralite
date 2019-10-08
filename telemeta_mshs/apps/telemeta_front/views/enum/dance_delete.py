@@ -17,7 +17,8 @@ class DanceDelete(View):
         id = kwargs.get('id')
         try:
             tools.delete_api(
-                FRONT_HOST_URL + '/api/dance/' + str(id)
+                FRONT_HOST_URL + '/api/dance/' + str(id),
+                request=request
                 )
             return HttpResponseRedirect('/dance/')
 
