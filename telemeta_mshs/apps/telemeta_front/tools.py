@@ -14,6 +14,7 @@ from requests.exceptions import RequestException
 from telemeta_front.errors import APPLICATION_ERRORS
 
 HTTP_ERRORS = {
+    status.HTTP_400_BAD_REQUEST: APPLICATION_ERRORS['HTTP_API_400'],
     status.HTTP_401_UNAUTHORIZED: APPLICATION_ERRORS['HTTP_API_401'],
     status.HTTP_403_FORBIDDEN: APPLICATION_ERRORS['HTTP_API_403'],
     status.HTTP_404_NOT_FOUND: APPLICATION_ERRORS['HTTP_API_404'],
@@ -58,6 +59,9 @@ def post(entity, form_entity, request, *args, **kwargs):
         entity_api = entity.replace('_', '')
 
     if form.is_valid():
+        if entity == "fond":
+            form.cleaned_data['description'] = form.data['descriptions']
+
         try:
             post_api(FRONT_HOST_URL + '/api/' + entity_api + '/',
                      data=form.cleaned_data,
@@ -79,7 +83,6 @@ def post_api(endpoint, data, request):
         response = requests.post(
             endpoint, data=data,
             headers=get_token_header(request=request))
-
         if response.status_code == status.HTTP_201_CREATED or \
                 response.status_code == status.HTTP_200_OK:
             return response.json
