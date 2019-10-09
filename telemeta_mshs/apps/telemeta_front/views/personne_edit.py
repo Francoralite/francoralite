@@ -4,11 +4,9 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.personne import PersonneForm
 from django.shortcuts import render
@@ -54,24 +52,4 @@ class PersonneEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = PersonneForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/authority/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/authority/edit/' +
-                                                str(id))
-                return HttpResponseRedirect('/authority/')
-            except RequestException:
-                raise Exception(response.status_code)
-                return HttpResponseRedirect('/authority/edit/')
-        return render(request,
-                      '../templates/personne-add.html',
-                      {'form': form,
-                       'id': id})
+        return tools.patch('authority', PersonneForm, request, *args, **kwargs)

@@ -21,7 +21,8 @@ HTTP_ERRORS = {
 
 PROBLEM_NAMES = [
     "legal_rights",
-    "recording_context"
+    "recording_context",
+    "location_gis"
     ]
 
 

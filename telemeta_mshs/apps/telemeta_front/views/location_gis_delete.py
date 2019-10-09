@@ -4,22 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
 from django.views.generic.base import View
-
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
+import telemeta_front.tools as tools
 
 
 class LocationDelete(View):
     def get(self, request, *args, **kwargs):
-        id = kwargs.get('id')
-        try:
-            requests.delete(
-                FRONT_HOST_URL + '/api/locationgis/' + str(id)
-                )
-            return HttpResponseRedirect('/location_gis/')
-
-        except RequestException:
-            return HttpResponseRedirect('/location_gis/')
+        return tools.delete('location_gis', request, *args, **kwargs)

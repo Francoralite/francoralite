@@ -12,6 +12,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.location import LocationForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class LocationEdit(FormView):
@@ -44,22 +45,4 @@ class LocationEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = LocationForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/location/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/location/edit/' +
-                                                str(id) + '/')
-                return HttpResponseRedirect('/location/')
-
-            except RequestException:
-                raise Exception(response.status_code)
-                return HttpResponseRedirect('/location/edit/')
-        return HttpResponseRedirect('/location/edit/')
+        return tools.patch('location', LocationForm, request, *args, **kwargs)
