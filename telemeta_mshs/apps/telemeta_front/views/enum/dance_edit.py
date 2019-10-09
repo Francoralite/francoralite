@@ -4,11 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.dance import DanceForm
 from django.shortcuts import render
@@ -45,23 +44,4 @@ class DanceEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = DanceForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = tools.patch_api(
-                    FRONT_HOST_URL + '/api/dance/' + str(id) + '/',
-                    data=form.cleaned_data,
-                    request=request
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/dance/edit/' +
-                                                str(id))
-                return HttpResponseRedirect('/dance/')
-
-            except RequestException:
-                return HttpResponseRedirect('/dance/edit')
-
-        return HttpResponseRedirect('/dance/edit')
+        return tools.patch('dance', DanceForm, request, *args, **kwargs)

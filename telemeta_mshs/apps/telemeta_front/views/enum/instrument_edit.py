@@ -4,14 +4,14 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.instrument import InstrumentForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class InstrumentEdit(FormView):
@@ -44,22 +44,5 @@ class InstrumentEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = InstrumentForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/instrument/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect(
-                        '/instrument/edit/' + str(id))
-                return HttpResponseRedirect('/instrument/')
-
-            except RequestException:
-                raise Exception(response.status_code)
-                return HttpResponseRedirect('/instrument/edit/')
-        return HttpResponseRedirect('/instrument/edit/')
+        return tools.patch(
+            'instrument', InstrumentForm, request, *args, **kwargs)

@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.metadata_author import MetadataAuthorForm
+import telemeta_front.tools as tools
 
 
 class MetadataAuthorAdd(FormView):
@@ -19,19 +16,5 @@ class MetadataAuthorAdd(FormView):
     success_url = '/metadata_author/'
 
     def post(self, request, *args, **kwargs):
-
-        form = MetadataAuthorForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/metadata_author/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/metadata_author/')
-
-            except RequestException:
-                return HttpResponseRedirect('/metadata_author/add')
-
-        return HttpResponseRedirect('/metadata_author/add')
+        return tools.post(
+            'metadata_author', MetadataAuthorForm, request, *args, **kwargs)

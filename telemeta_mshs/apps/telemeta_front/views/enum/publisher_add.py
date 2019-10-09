@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.publisher import PublisherForm
+import telemeta_front.tools as tools
 
 
 class PublisherAdd(FormView):
@@ -19,19 +16,4 @@ class PublisherAdd(FormView):
     success_url = '/publisher/'
 
     def post(self, request, *args, **kwargs):
-
-        form = PublisherForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/publisher/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/publisher/')
-
-            except RequestException:
-                return HttpResponseRedirect('/publisher/add')
-
-        return HttpResponseRedirect('/publisher/add')
+        return tools.post('publisher', PublisherForm, request, *args, **kwargs)

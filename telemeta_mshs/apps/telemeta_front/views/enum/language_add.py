@@ -4,12 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.language import LanguageForm
+import telemeta_front.tools as tools
 
 
 class LanguageAdd(FormView):
@@ -18,19 +16,4 @@ class LanguageAdd(FormView):
     success_url = '/language/'
 
     def post(self, request, *args, **kwargs):
-
-        form = LanguageForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/language/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/language/')
-
-            except RequestException:
-                return HttpResponseRedirect('/language/add')
-
-        return HttpResponseRedirect('/language/add')
+        return tools.post('language', LanguageForm, request, *args, **kwargs)

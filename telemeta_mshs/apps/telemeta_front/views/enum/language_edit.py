@@ -4,11 +4,9 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.language import LanguageForm
 from django.shortcuts import render
@@ -53,26 +51,4 @@ class LanguageEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = LanguageForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/language/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/language/edit' +
-                                                str(id))
-                return HttpResponseRedirect('/language/')
-
-            except RequestException:
-                raise Exception(response.status_code)
-                return HttpResponseRedirect('/language/edit')
-
-        return render(request,
-                      '../templates/enum/language-add.html',
-                      {'form': form,
-                       'id': id})
+        return tools.patch('language', LanguageForm, request, *args, **kwargs)

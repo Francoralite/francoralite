@@ -4,14 +4,13 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.domain_vocal import DomainVocalForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class DomainVocalEdit(FormView):
@@ -44,22 +43,5 @@ class DomainVocalEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = DomainVocalForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/domain_vocal/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/domain_vocal/edit/' +
-                                                str(id))
-                return HttpResponseRedirect('/domain_vocal/')
-
-            except RequestException:
-                return HttpResponseRedirect('/domain_vocal/edit')
-
-        return HttpResponseRedirect('/domain_vocal/edit')
+        return tools.patch(
+            'domain_vocal', DomainVocalForm, request, *args, **kwargs)

@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.usefulness import UsefulnessForm
+import telemeta_front.tools as tools
 
 
 class UsefulnessAdd(FormView):
@@ -19,19 +16,5 @@ class UsefulnessAdd(FormView):
     success_url = '/usefulness/'
 
     def post(self, request, *args, **kwargs):
-
-        form = UsefulnessForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/usefulness/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/usefulness/')
-
-            except RequestException:
-                return HttpResponseRedirect('/usefulness/add')
-
-        return HttpResponseRedirect('/usefulness/add')
+        return tools.post(
+            'usefulness', UsefulnessForm, request, *args, **kwargs)

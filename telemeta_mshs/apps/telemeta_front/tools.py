@@ -8,6 +8,9 @@ from rest_framework import status
 from settings import FRONT_HOST_URL
 import requests
 
+from django.http import HttpResponseRedirect
+from requests.exceptions import RequestException
+
 from telemeta_front.errors import APPLICATION_ERRORS
 
 HTTP_ERRORS = {
@@ -15,6 +18,11 @@ HTTP_ERRORS = {
     status.HTTP_403_FORBIDDEN: APPLICATION_ERRORS['HTTP_API_403'],
     status.HTTP_404_NOT_FOUND: APPLICATION_ERRORS['HTTP_API_404'],
 }
+
+PROBLEM_NAMES = [
+    "legal_rights",
+    "recording_context"
+    ]
 
 
 def get_token_header(request):
@@ -40,6 +48,27 @@ def request_api(endpoint):
         raise
 
 
+def post(entity, form_entity, request, *args, **kwargs):
+
+    form = form_entity(request.POST)
+
+    entity_api = entity
+    if entity in PROBLEM_NAMES:
+        entity_api = entity.replace('_', '')
+
+    if form.is_valid():
+        try:
+            post_api(FRONT_HOST_URL + '/api/' + entity_api + '/',
+                     data=form.cleaned_data,
+                     request=request)
+            return HttpResponseRedirect('/' + entity + '/')
+
+        except RequestException:
+            return HttpResponseRedirect('/' + entity + '/add')
+
+    return HttpResponseRedirect('/' + entity + '/add')
+
+
 def post_api(endpoint, data, request):
     """
     TODO: A renseigner
@@ -59,6 +88,32 @@ def post_api(endpoint, data, request):
         raise
 
 
+def patch(entity, form_entity, request, *args, **kwargs):
+    form = form_entity(request.POST)
+    id = kwargs.get('id')
+
+    entity_api = entity
+    if entity in PROBLEM_NAMES:
+        entity_api = entity.replace('_', '')
+
+    if form.is_valid():
+        try:
+            response = patch_api(
+                FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id) + '/',
+                data=form.cleaned_data,
+                request=request
+            )
+            if(response.status_code != status.HTTP_200_OK):
+                return HttpResponseRedirect('/' + entity + '/edit/' +
+                                            str(id))
+            return HttpResponseRedirect('/' + entity + '/')
+
+        except RequestException:
+            return HttpResponseRedirect('/' + entity + '/edit')
+
+    return HttpResponseRedirect('/' + entity + '/edit')
+
+
 def patch_api(endpoint, data, request):
 
     try:
@@ -74,12 +129,29 @@ def patch_api(endpoint, data, request):
         raise
 
 
+def delete(entity, request, *args, **kwargs):
+    id = kwargs.get('id')
+    entity_api = entity
+
+    if entity in PROBLEM_NAMES:
+        entity_api = entity.replace('_', '')
+    try:
+        delete_api(
+            FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
+            request=request
+            )
+        return HttpResponseRedirect('/' + entity + '/')
+
+    except RequestException:
+        return HttpResponseRedirect('/' + entity + '/')
+
+
 def delete_api(endpoint, request):
     """
     TODO: A renseigner
     """
     try:
-        response = requests.delete(
+        requests.delete(
             endpoint,
             headers=get_token_header(request=request)
             )

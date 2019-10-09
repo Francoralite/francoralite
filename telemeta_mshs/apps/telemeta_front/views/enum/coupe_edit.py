@@ -4,14 +4,13 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.coupe import CoupeForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class CoupeEdit(FormView):
@@ -44,21 +43,4 @@ class CoupeEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = CoupeForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/coupe/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/coupe/edit/' + str(id))
-                return HttpResponseRedirect('/coupe/')
-
-            except RequestException:
-                return HttpResponseRedirect('/coupe/edit')
-
-        return HttpResponseRedirect('/coupe/edit')
+        return tools.patch('coupe', CoupeForm, request, *args, **kwargs)

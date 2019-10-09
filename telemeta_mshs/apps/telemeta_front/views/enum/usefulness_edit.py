@@ -4,14 +4,14 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.usefulness import UsefulnessForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class UsefulnessEdit(FormView):
@@ -44,22 +44,5 @@ class UsefulnessEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = UsefulnessForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/usefulness/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/usefulness/edit/' +
-                                                str(id))
-                return HttpResponseRedirect('/usefulness/')
-
-            except RequestException:
-                return HttpResponseRedirect('/usefulness/edit')
-
-        return HttpResponseRedirect('/usefulness/edit')
+        return tools.patch(
+            'usefulness', UsefulnessForm, request, *args, **kwargs)

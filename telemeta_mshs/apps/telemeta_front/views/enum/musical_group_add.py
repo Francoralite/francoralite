@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.musical_group import MusicalGroupForm
+import telemeta_front.tools as tools
 
 
 class MusicalGroupAdd(FormView):
@@ -19,19 +16,5 @@ class MusicalGroupAdd(FormView):
     success_url = '/musical_group/'
 
     def post(self, request, *args, **kwargs):
-
-        form = MusicalGroupForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/musical_group/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/musical_group/')
-
-            except RequestException:
-                return HttpResponseRedirect('/musical_group/add')
-
-        return HttpResponseRedirect('/musical_group/add')
+        return tools.post(
+            'musical_group', MusicalGroupForm, request, *args, **kwargs)
