@@ -60,35 +60,43 @@ def post(entity, form_entity, request, *args, **kwargs):
     form = form_entity(request.POST)
 
     entity_api = entity
-    entity_name = entity
+    entity_url = entity
 
     # Processing the problem names entities
     if entity in PROBLEM_NAMES:
         entity_api = entity.replace('_', '')
 
-    # processing URL for Mission entity
+    # Processing URL for Mission entity
     if entity == 'mission':
-        entity = 'institution/' + kwargs['id_institution'] \
-            + '/fond/' + kwargs['id_fond'] + '/' + entity
+        entity_url = 'institution/' + kwargs['id_institution'] \
+            + '/fond/' + kwargs['id_fond']\
+            + '/' + entity
+    # Processing URL for Collection entity
+    if entity == 'collection':
+        entity_url = 'institution/' + kwargs['id_institution'] \
+            + '/fond/' + kwargs['id_fond']\
+            + '/mission/' + kwargs['id_mission'] \
+            + '/' + entity
 
     # Problem with old Telemeta fields/entities
     if form.is_valid():
-        if entity_name in PROBLEM_ENTITIES:
+        if entity in PROBLEM_ENTITIES:
             form.cleaned_data['description'] = form.data['descriptions']
 
         try:
             post_api(FRONT_HOST_URL + '/api/' + entity_api + '/',
                      data=form.cleaned_data,
-                     request=request)
-            return HttpResponseRedirect('/' + entity_name + '/')
+                     request=request,
+                     entity=entity)
+            return HttpResponseRedirect('/' + entity + '/')
 
         except RequestException:
-            return HttpResponseRedirect('/' + entity + '/add')
+            return HttpResponseRedirect('/' + entity_url + '/add')
 
-    return HttpResponseRedirect('/' + entity + '/add')
+    return HttpResponseRedirect('/' + entity_url + '/add')
 
 
-def post_api(endpoint, data, request):
+def post_api(endpoint, data, request, entity):
     """
     TODO: A renseigner
     """
@@ -99,7 +107,8 @@ def post_api(endpoint, data, request):
             headers=get_token_header(request=request))
         if response.status_code == status.HTTP_201_CREATED or \
                 response.status_code == status.HTTP_200_OK:
-            return response.json
+            entity_json = response.json()
+            return entity_json
 
         raise Exception(HTTP_ERRORS[response.status_code])
     except Exception:

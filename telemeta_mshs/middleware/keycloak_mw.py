@@ -231,6 +231,12 @@ class KeycloakMiddleware(object):
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
+        # Related entities of a mission
+        expr = re.compile(
+            "^api/mission/[0-9]*/(informers/|collectors/|locations/)$")
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
         expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
         if expr.match(path):
             logger.debug('** exclude path : download MP3 streaming')
