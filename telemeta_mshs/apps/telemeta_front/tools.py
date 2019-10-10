@@ -26,6 +26,11 @@ PROBLEM_NAMES = [
     "location_gis"
     ]
 
+PROBLEM_ENTITIES = [
+    "fond",
+    "mission"
+]
+
 
 def get_token_header(request):
     auth_token = request.session['oidc_access_token']
@@ -55,18 +60,27 @@ def post(entity, form_entity, request, *args, **kwargs):
     form = form_entity(request.POST)
 
     entity_api = entity
+    entity_name = entity
+
+    # Processing the problem names entities
     if entity in PROBLEM_NAMES:
         entity_api = entity.replace('_', '')
 
+    # processing URL for Mission entity
+    if entity == 'mission':
+        entity = 'institution/' + kwargs['id_institution'] \
+            + '/fond/' + kwargs['id_fond'] + '/' + entity
+
+    # Problem with old Telemeta fields/entities
     if form.is_valid():
-        if entity == "fond":
+        if entity_name in PROBLEM_ENTITIES:
             form.cleaned_data['description'] = form.data['descriptions']
 
         try:
             post_api(FRONT_HOST_URL + '/api/' + entity_api + '/',
                      data=form.cleaned_data,
                      request=request)
-            return HttpResponseRedirect('/' + entity + '/')
+            return HttpResponseRedirect('/' + entity_name + '/')
 
         except RequestException:
             return HttpResponseRedirect('/' + entity + '/add')

@@ -5,13 +5,12 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.mission import MissionForm
+import telemeta_front.tools as tools
 
 
 class MissionAdd(FormView):
@@ -30,23 +29,4 @@ class MissionAdd(FormView):
         return initial
 
     def post(self, request, *args, **kwargs):
-        id_institution = kwargs['id_institution']
-        id_fond = kwargs['id_fond']
-        form = MissionForm(request.POST)
-        if form.is_valid():
-            form.cleaned_data['description'] = form.data['descriptions']
-            try:
-                response = requests.post(
-                    FRONT_HOST_URL + '/api/mission/',
-                    data=form.cleaned_data
-                )
-                if response.status_code == status.HTTP_201_CREATED:
-                    return HttpResponseRedirect('/mission/')
-
-            except RequestException:
-                return HttpResponseRedirect(
-                    '/institution/' + id_institution + '/fond/'
-                    + id_fond + '/mission/add')
-        return HttpResponseRedirect(
-            '/institution/' + id_institution + '/fond/'
-            + id_fond + '/mission/add')
+        return tools.post('mission', MissionForm, request, *args, **kwargs)
