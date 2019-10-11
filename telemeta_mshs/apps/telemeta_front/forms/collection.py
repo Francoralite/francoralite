@@ -18,7 +18,7 @@ class CollectionForm(forms.Form):
         max_length=255, required=False)
     recorded_from_year = forms.DateField(
         label=_(u'Date d\'enregistrement (depuis)'),
-        required=False,
+        required=True,
         widget=DatePicker(
               options={
                     "format": "yyyy-mm-dd",
@@ -29,7 +29,7 @@ class CollectionForm(forms.Form):
     )
     recorded_to_year = forms.DateField(
         label=_(u'Date d\'enregistrement (jusqu\'à)'),
-        required=False,
+        required=True,
         widget=DatePicker(
               options={
                     "format": "yyyy-mm-dd",

@@ -24,8 +24,9 @@ class CollectionSerializer(serializers.ModelSerializer):
     alt_title = serializers.CharField(allow_blank=True)
     description = serializers.CharField(allow_blank=True)
     recording_context = serializers.CharField(allow_blank=True)
-    recorded_from_year = serializers.CharField(allow_blank=True)
-    recorded_to_year = serializers.CharField(allow_blank=True)
+    recorded_from_year = serializers.CharField(
+        allow_blank=True, required=False)
+    recorded_to_year = serializers.CharField(allow_blank=True, required=False)
     year_published = serializers.IntegerField(allow_null=True, required=False)
     location_details = serializers.CharField(allow_blank=True)
     cultural_area = serializers.CharField(allow_blank=True)

@@ -12,6 +12,7 @@ from django.http import HttpResponseRedirect
 from requests.exceptions import RequestException
 
 from telemeta_front.errors import APPLICATION_ERRORS
+from .views.related import write_collection_related
 
 HTTP_ERRORS = {
     status.HTTP_400_BAD_REQUEST: APPLICATION_ERRORS['HTTP_API_400'],
@@ -34,8 +35,8 @@ PROBLEM_ENTITIES = [
 
 def get_token_header(request):
     auth_token = request.session['oidc_access_token']
-    hed = {'Authorization': 'Bearer ' + auth_token}
-    return hed
+    head = {'Authorization': 'Bearer ' + auth_token}
+    return head
 
 
 def request_api(endpoint):
@@ -108,6 +109,8 @@ def post_api(endpoint, data, request, entity):
         if response.status_code == status.HTTP_201_CREATED or \
                 response.status_code == status.HTTP_200_OK:
             entity_json = response.json()
+            if entity == "collection":
+                write_collection_related(entity_json, request)
             return entity_json
 
         raise Exception(HTTP_ERRORS[response.status_code])
@@ -124,11 +127,19 @@ def patch(entity, form_entity, request, *args, **kwargs):
         entity_api = entity.replace('_', '')
 
     if form.is_valid():
+        if entity == "collection":
+            form.cleaned_data['recorded_from_year'] = \
+                form.data['recorded_from_year']
+            form.cleaned_data['recorded_to_year'] = \
+                form.data['recorded_to_year']
+            if form.cleaned_data['year_published'] is None:
+                form.cleaned_data['year_published'] = ''
         try:
             response = patch_api(
                 FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id) + '/',
                 data=form.cleaned_data,
-                request=request
+                request=request,
+                entity=entity
             )
             if(response.status_code != status.HTTP_200_OK):
                 return HttpResponseRedirect('/' + entity + '/edit/' +
@@ -141,7 +152,7 @@ def patch(entity, form_entity, request, *args, **kwargs):
     return HttpResponseRedirect('/' + entity + '/edit')
 
 
-def patch_api(endpoint, data, request):
+def patch_api(endpoint, data, request, entity):
 
     try:
         response = requests.patch(
@@ -150,6 +161,12 @@ def patch_api(endpoint, data, request):
             headers=get_token_header(request=request)
         )
         if response.status_code == status.HTTP_200_OK:
+            entity_json = response.json()
+            if entity == "collection":
+                write_collection_related(
+                    entity_json,
+                    request,
+                    headers=get_token_header(request=request))
             return response
 
     except Exception:
