@@ -49,6 +49,14 @@
   },
   {
     "fields": {
+      "notes": "AABB",
+      "name": "AABB"
+    },
+    "model": "telemeta_api.coupe",
+    "pk": 1
+  },
+  {
+    "fields": {
       "notes": "",
       "name": "Université de Poitiers"
     },
@@ -57,23 +65,39 @@
   },
   {
     "fields": {
-      "notes": "",
-      "name": "reversement"
+      "first_name": "Astérix",
+      "last_name": "Le Gaulois",
+      "is_collector": true,
+      "birth_location": null,
+      "is_editor": false,
+      "is_composer": false,
+      "civility": "",
+      "uri": "",
+      "is_informer": true,
+      "alias": "",
+      "death_location": null,
+      "birth_date": null,
+      "is_author": true,
+      "biography": "",
+      "death_date": null
     },
-    "model": "telemeta_api.acquisitionmode",
+    "model": "telemeta_api.authority",
     "pk": 1
   },
   {
     "fields": {
-      "code": "upoi_afe_0000",
-      "code_partner": null,
-      "description": null,
-      "title": "Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]",
-      "descriptions": "dsdfsdfsdfsdfsdfsdfs",
-      "public_access": "full",
-      "fonds": 2
+      "notes": "AABB",
+      "name": "AABB"
     },
-    "model": "telemeta_api.mission",
+    "model": "telemeta_api.coupe",
     "pk": 1
-  }
+  },
+   {"fields": {"notes": "bal", "name": "bal"}, "model": "telemeta_api.recordingcontext", "pk": 1},
+   {"fields": {"notes": "collectage", "name": "collectage"}, "model": "telemeta_api.recordingcontext", "pk": 2},
+   {"fields": {"latitude": 46.5802596, "notes": "", "code": "poitiers", "name": "Poitiers, Vienne, Nouvelle-Aquitaine, France m\u00e9tropolitaine, 86000, France", "longitude": 0.340196}, "model": "telemeta_api.location", "pk": 1},
+   {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "telemeta_api.emitvox", "pk": 1},
+   {"fields": {"number": "321.322", "name": "Violon"}, "model": "telemeta_api.hornbostelsachs", "pk": 1},
+   {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "telemeta_api.instrument", "pk": 1}
+
+
 ]
