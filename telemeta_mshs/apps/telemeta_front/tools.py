@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect
 from requests.exceptions import RequestException
 
 from telemeta_front.errors import APPLICATION_ERRORS
-from .views.related import write_collection_related
+from .views.related import write_collection_related, write_item_related
 
 HTTP_ERRORS = {
     status.HTTP_400_BAD_REQUEST: APPLICATION_ERRORS['HTTP_API_400'],
@@ -58,8 +58,7 @@ def request_api(endpoint):
 
 def post(entity, form_entity, request, *args, **kwargs):
 
-    form = form_entity(request.POST)
-
+    form = form_entity(request.POST, request.FILES)
     entity_api = entity
     entity_url = entity
 
@@ -78,12 +77,21 @@ def post(entity, form_entity, request, *args, **kwargs):
             + '/fond/' + kwargs['id_fond']\
             + '/mission/' + kwargs['id_mission'] \
             + '/' + entity
+    # Processing URL for Item entity
+    if entity == 'item':
+        entity_url = 'institution/' + kwargs['id_institution'] \
+            + '/fond/' + kwargs['id_fond']\
+            + '/mission/' + kwargs['id_mission'] \
+            + '/collection/' + kwargs['id_collection'] \
+            + '/' + entity
 
     # Problem with old Telemeta fields/entities
     if form.is_valid():
         if entity in PROBLEM_ENTITIES:
             form.cleaned_data['description'] = form.data['descriptions']
-
+        if entity == 'item':
+            # Remove the 'file' entry : if not, there some bugs
+            del form.cleaned_data['file']
         try:
             post_api(FRONT_HOST_URL + '/api/' + entity_api + '/',
                      data=form.cleaned_data,
@@ -103,14 +111,19 @@ def post_api(endpoint, data, request, entity):
     """
 
     try:
+        headers = get_token_header(request=request)
         response = requests.post(
-            endpoint, data=data,
-            headers=get_token_header(request=request))
+            endpoint,
+            data=data,
+            files=request.FILES,
+            headers=headers)
         if response.status_code == status.HTTP_201_CREATED or \
                 response.status_code == status.HTTP_200_OK:
             entity_json = response.json()
             if entity == "collection":
-                write_collection_related(entity_json, request)
+                write_collection_related(entity_json, request, headers)
+            if entity == "item":
+                write_item_related(entity_json, request, headers)
             return entity_json
 
         raise Exception(HTTP_ERRORS[response.status_code])
@@ -120,6 +133,8 @@ def post_api(endpoint, data, request, entity):
 
 def patch(entity, form_entity, request, *args, **kwargs):
     form = form_entity(request.POST)
+    if entity == 'item':
+        form.fields['file'].required = False
     id = kwargs.get('id')
 
     entity_api = entity
@@ -164,6 +179,11 @@ def patch_api(endpoint, data, request, entity):
             entity_json = response.json()
             if entity == "collection":
                 write_collection_related(
+                    entity_json,
+                    request,
+                    headers=get_token_header(request=request))
+            if entity == "item":
+                write_item_related(
                     entity_json,
                     request,
                     headers=get_token_header(request=request))

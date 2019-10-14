@@ -86,7 +86,7 @@ def write_collection_related(collection, request, headers):
         index = index + 1
 
 
-def write_item_related(id_main, request):
+def write_item_related(id_main, request, headers):
     related = [
         ["collector", "collectors"],
         ["informer", "informers"],
@@ -110,7 +110,8 @@ def write_item_related(id_main, request):
             json.loads(request.POST[rel_item[1]]),
             FRONT_HOST_URL + '/api/item/' +
             str(id_main) + '/' + rel_item[0] + '/',
-            rel_item[0]
+            rel_item[0],
+            headers=headers
         )
 
 

@@ -4,15 +4,14 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
 import requests
-from requests.exceptions import RequestException
 from rest_framework import status
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
-from related import write_item_related
 from rest_framework.parsers import MultiPartParser, FormParser
+import telemeta_front.tools as tools
 
 
 class ItemAdd(FormView):
@@ -32,34 +31,5 @@ class ItemAdd(FormView):
         return initial
 
     def post(self, request, *args, **kwargs):
-        id_institution = kwargs['id_institution']
-        id_fond = kwargs['id_fond']
-        id_mission = kwargs['id_mission']
-        id_collection = kwargs['id_collection']
-
-        form = ItemForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            try:
-                # Remove the 'file' entry : if not, there some bugs
-                del form.cleaned_data['file']
-
-                # Use an API call to create a record
-                response = requests.post(
-                    FRONT_HOST_URL + '/api/item/',
-                    data=form.cleaned_data,  files=request.FILES
-                )
-                if response.status_code == status.HTTP_201_CREATED:
-                    item = response.json()
-
-                    write_item_related(item['id'], request)
-
-                    return HttpResponseRedirect('/item/')
-
-            except RequestException:
-                return super(ItemAdd, self).form_valid(form)
-        return super(ItemAdd, self).form_valid(form)
-        # return HttpResponseRedirect(
-        #     '/institution/' + id_institution + '/fond/'
-        #     + id_fond + '/mission/' + id_mission + '/collection/'
-        #     + id_collection + '/item/add')
+        return tools.post(
+            'item', ItemForm, request, *args, **kwargs)

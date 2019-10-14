@@ -47,6 +47,7 @@
 
 
 {{ form.media }}
+{% if not error|length %}
 <div id="app">
   <div class="fixedWidthAsPlayer">
     <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
@@ -696,6 +697,7 @@
     {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
     {% endif %}
   </form>
+
 </div>
 
 </div>
@@ -712,6 +714,10 @@
 {% markdown_editor "id_incipit" %}
 {% markdown_editor "id_refrain" %}
 {% markdown_editor "id_jingle" %}
+
+{% else %}
+  {% display_error error %}
+{% endif %}
 
 {{ form.media.js }}
 {% endblock content %}
