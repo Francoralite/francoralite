@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.dance import DanceForm
+import telemeta_front.tools as tools
 
 
 class DanceAdd(FormView):
@@ -19,19 +16,4 @@ class DanceAdd(FormView):
     success_url = '/dance/'
 
     def post(self, request, *args, **kwargs):
-
-        form = DanceForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/dance/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/dance/')
-
-            except RequestException:
-                return HttpResponseRedirect('/dance/add')
-
-        return HttpResponseRedirect('/dance/add')
+        return tools.post('dance', DanceForm, request, *args, **kwargs)

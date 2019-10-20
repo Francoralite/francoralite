@@ -1,0 +1,59 @@
+
+{% extends "enum/language.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+  {{ block.super }}
+    {% if language %}
+     : {{ language.name }}
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if user.is_authenticated %}
+  <a href="{% url "language-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </button>
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+
+{% if language %}
+
+
+  {% field_data form.identifier.label|safe language.identifier|upper|safe %}
+  {% field_data form.part2B.label|safe language.part2B|safe %}
+  {% field_data form.part2T.label|safe language.part2T|safe %}
+  {% field_data form.part1.label|safe language.part1|safe %}
+  {% field_data form.scope.label|safe language.scope|safe %}
+  {% field_data form.type.label|safe language.type|safe %}
+  {% field_data form.name.label|safe language.name|safe %}
+  {% field_data form.comment.label|safe dance.comment|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Cette langue n'existe pas." %}</p>
+{% endif %}
+
+{% endif %}
+{% endblock %}

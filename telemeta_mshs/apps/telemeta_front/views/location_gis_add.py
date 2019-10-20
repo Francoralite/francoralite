@@ -4,12 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.location_gis import LocationForm
+import telemeta_front.tools as tools
 
 
 class LocationAdd(FormView):
@@ -18,19 +16,5 @@ class LocationAdd(FormView):
     success_url = '/location_gis/'
 
     def post(self, request, *args, **kwargs):
-
-        form = LocationForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/locationgis/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/location_gis/')
-
-            except RequestException:
-                return HttpResponseRedirect('/location_gis/add')
-
-        return HttpResponseRedirect('/location_gis/add')
+        return tools.post(
+            'location_gis', LocationForm, request, *args, **kwargs)

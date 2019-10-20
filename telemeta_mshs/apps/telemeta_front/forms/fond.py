@@ -56,5 +56,5 @@ class FondForm(forms.Form):
         self.fields['acquisition_mode'] = forms.ChoiceField(
             label=_(u'Mode d\'acquisition'),
             choices=Core.get_choices(
-                entity="acquisitionmode", label_field="value"),
+                entity="acquisitionmode", label_field="name"),
             required=False)

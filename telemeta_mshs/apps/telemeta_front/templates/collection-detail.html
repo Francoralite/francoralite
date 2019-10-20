@@ -17,13 +17,13 @@
 {% block title_name %}
   {{ block.super }}
   {% if collection %}
-  : {{ collection.code }} - {{  collection.title}}
+  : {{ collection.code|upper }} - {{  collection.title}}
   {% endif %}
 {% endblock %}
 
 {% block content %}
 {% block title_buttons %}
- {% if user.is_authenticated %}
+ {% if user.is_authenticated and collection %}
   <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un item" %}
@@ -65,11 +65,10 @@
         {% field_data form.code_partner.label|safe collection.code_partner|safe %}
         {% field_data form.code.label|safe collection.code|upper|safe %}
         {% field_data form.title.label|safe collection.title|safe %}
-        {% field_data form.public_access.label|safe collection.public_access|public_access|safe %}
       </div>
 
       <div class="container_line">
-        {% field_data form.descriptions.label|safe collection.descriptions|markdown|safe %}
+        {% field_data form.description.label|safe collection.description|markdown|safe %}
       </div>
 
       <div class="block-grey">
@@ -78,11 +77,11 @@
         <div class="container_line">
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Depuis' %}</dt>
-            <dd class="donnee"></dd>
+            <dd class="donnee">{{collection.recorded_from_year}}</dd>
           </dl>
           <dl class="container_data">
             <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
-            <dd class="donnee"></dd>
+            <dd class="donnee">{{collection.recorded_to_year}}</dd>
           </dl>
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
@@ -152,7 +151,10 @@
         <dd class="donnee">
           {% for publisher in collection.publishers %}
             {% if not forloop.first %} | {% endif %}
-              {{publisher.value}}
+              <a href="{% url "publisher-detail" id=publisher.id %}"
+                  target="_blank">
+                {{publisher.name|safe}}
+              </a>
           {% endfor %}
         </dd>
       </dl>

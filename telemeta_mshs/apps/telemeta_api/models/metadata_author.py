@@ -5,14 +5,23 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.enum import Enumeration, MetaEnumeration
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class MetadataAuthor(Enumeration):
+class MetadataAuthor(models.Model):
+    # Description of the table
     "Metadata author"
 
-    class Meta(MetaEnumeration):
+    # List of the fields
+    name = models.CharField(_('Nom'), unique=True, max_length=255)
+    notes = models.TextField(_('Notes'), null=True, blank=True)
+
+    class Meta:
         app_label = 'telemeta_api'
-        db_table = 'metadata_author'
-        verbose_name = _(u"redacteur de la fiche")
+        db_table = 'api_metadata_author'
+        verbose_name_plural = _('metadata authors')
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name

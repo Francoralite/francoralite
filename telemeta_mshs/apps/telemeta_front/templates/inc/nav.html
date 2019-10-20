@@ -28,23 +28,23 @@
           {% trans "Personnes" %}</a>
           <ul class="sous-menu">
             <li>
-              <a href="">
+              <a href="{% url "personne-collector" %}">
                 {% trans "Enquêteurs" %}</a>
             </li>
             <li>
-              <a href="">
+              <a href="{% url "personne-informer" %}">
                 {% trans "Informateurs" %}</a>
             </li>
             <li>
-              <a href="">
+              <a href="{% url "personne-author" %}">
                 {% trans "Auteur" %}</a>
             </li>
             <li>
-              <a href="">
+              <a href="{% url "personne-composer" %}">
                 {% trans "Compositeur" %}</a>
             </li>
             <li>
-              <a href="">
+              <a href="{% url "personne-editor" %}">
                 {% trans "Editeur" %}</a>
             </li>
           </ul>
@@ -115,6 +115,9 @@
             </li>
             <li>
               <a href="{% url "emit_vox" %}">{% trans "Nature de l'émission vocale" %}</a>
+            </li>
+            <li>
+              <a href="{% url "language" %}">{% trans "Langue" %}</a>
             </li>
             <li>
               <a href="{% url "thematic" %}">{% trans "Thématique" %}</a>

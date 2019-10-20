@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-
+from django.db import models
 from telemeta.models.core import ModelCore, ForeignKey, MetaCore
 from django.utils.translation import ugettext_lazy as _
 from .collection import Collection
@@ -17,7 +17,9 @@ class CollectionLocation(ModelCore):
 
     # List of the fields
     collection = ForeignKey(Collection, verbose_name=_('collection'))
-    location = ForeignKey(Location, verbose_name=_('location'))
+    location = ForeignKey(
+        Location, verbose_name=_('location'),
+        on_delete=models.PROTECT)
 
     class Meta(MetaCore):
         app_label = 'telemeta_api'

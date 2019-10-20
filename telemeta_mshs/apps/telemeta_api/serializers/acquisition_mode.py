@@ -14,7 +14,7 @@ class AcquisitionModeSerializer(serializers.ModelSerializer):
     Common serializer for all acquisition mode actions
     """
 
-    value = serializers.CharField(required=True)
+    name = serializers.CharField(required=True)
     notes = serializers.CharField()
 
     class Meta:

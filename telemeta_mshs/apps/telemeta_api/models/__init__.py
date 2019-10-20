@@ -22,6 +22,7 @@ from .item_domain_tale import ItemDomainTale
 from .item_usefulness import ItemUsefulness
 from .item_dance import ItemDance
 from .item_thematic import ItemThematic
+from .item_language import ItemLanguage
 from .item_musical_organization import ItemMusicalOrganization
 from .item_musical_group import ItemMusicalGroup
 from .item_coirault import ItemCoirault
@@ -35,6 +36,7 @@ from .collection_publisher import CollectionPublisher
 from .collection_location import CollectionLocation
 from .collection_language import CollectionLanguage
 from .institution import Institution
+from .language import Language
 from .location import Location
 from .fond import Fond
 from .acquisition_mode import AcquisitionMode

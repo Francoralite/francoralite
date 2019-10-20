@@ -6,8 +6,22 @@
 
 
 from rest_framework import viewsets, filters
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
+
 from ..models.mission import Mission as MissionModel
+from ..models.collection import Collection as CollectionModel
+from ..models.collection_informer import (
+    CollectionInformer as CollectionInformerModel)
+from ..models.collectioncollectors import (
+    CollectionCollectors as CollectionCollectorModel)
+from ..models.collection_location import (
+    CollectionLocation as CollectionLocationModel)
+from ..models.authority import Authority as AuthorityModel
+from ..models.location import Location as LocationModel
 from ..serializers.mission import MissionSerializer
+from ..serializers.authority import AuthoritySerializer
+from ..serializers.location_gis import LocationGisSerializer
 
 
 class MissionViewSet(viewsets.ModelViewSet):
@@ -31,3 +45,63 @@ class MissionViewSet(viewsets.ModelViewSet):
         'PUT': 'mission:update',
         'DELETE': 'mission:delete'
     }
+
+    def related_collections(self,
+                            id_mission,
+                            model_related,
+                            model,
+                            entity,
+                            serializer=AuthoritySerializer):
+        # Retrieve the collections, related to the current mission
+        collections = CollectionModel.objects.filter(
+            mission_id=id_mission).values_list(
+                'id', flat=True)
+        # Retrieve the entities, related to the collections
+        list_related = model_related.objects.filter(
+                 collection_id__in=[str(x) for x in collections]
+                 ).values_list(
+                     entity, flat=True)
+        # Retrieve the entity
+        entities = model.objects.filter(
+            id__in=[str(x) for x in list_related])
+
+        # Push the authorities to the data results
+        data = [serializer(i).data for i in entities]
+
+        return data
+
+    @detail_route()
+    def informers(self, request, pk=None):
+        instance = self.get_object()
+
+        data = self.related_collections(
+            id_mission=instance.id,
+            model_related=CollectionInformerModel,
+            model=AuthorityModel,
+            entity='informer'
+            )
+        return Response(data)
+
+    @detail_route()
+    def collectors(self, request, pk=None):
+        instance = self.get_object()
+        data = self.related_collections(
+            id_mission=instance.id,
+            model_related=CollectionCollectorModel,
+            model=AuthorityModel,
+            entity='collector'
+            )
+
+        return Response(data)
+
+    @detail_route()
+    def locations(self, request, pk=None):
+        instance = self.get_object()
+        data = self.related_collections(
+            id_mission=instance.id,
+            model_related=CollectionLocationModel,
+            model=LocationModel,
+            entity='location',
+            serializer=LocationGisSerializer
+            )
+        return Response(data)

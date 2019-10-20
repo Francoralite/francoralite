@@ -208,58 +208,55 @@ class KeycloakMiddleware(object):
         :return:
         """
 
+        path = request.path_info.lstrip('/')
+
         # Is there some exempts paths ?
         if hasattr(settings, 'KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS'):
-            path = request.path_info.lstrip('/')
 
             # Search every KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS in path
             if any(re.match(m, path) for m in
                    settings.KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS):
                 logger.debug('** exclude path found, skipping')
                 return None
+        # Exclude every URL pointing to the API service,
+        #   for a list queryset.
+        expr = re.compile("^api/[a-z0-9_]*/$")
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
 
-            # Exclude every URL pointing to the API service,
-            #   for a list queryset.
-            expr = re.compile("^api/[a-z0-9_]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : display template')
-                return None
+        # Exclude every URL pointing to the API service,
+        #   for a detail queryset.
+        expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|analyze/|)$")
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
+        # Related entities of a mission
+        expr = re.compile(
+            "^api/mission/[0-9]*/(informers/|collectors/|locations/)$")
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
+        expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
+        if expr.match(path):
+            logger.debug('** exclude path : download MP3 streaming')
+            return None
+        expr = re.compile(
+            "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*/$")
+        if expr.match(path):
+            logger.debug('** exclude path : visualize sound image')
+            return None
 
-            # Exclude every URL pointing to the API service,
-            #   for a detail queryset.
-            expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|analyze/|)$")
-            if expr.match(path):
-                logger.debug('** exclude path : display template')
-                return None
-            expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : download MP3 streaming')
-                return None
-            expr = re.compile(
-                "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : visualize sound image')
-                return None
+        # Exclude every URL pointing to a list.
+        # e.g: institution/  --> list of the institutions
+        expr = re.compile("^[a-z0-9_]*/$")
+        if expr.match(path):
+            logger.debug('** exclude path : list template')
+            return None
 
-            expr = re.compile(
-                "^api/.*$")
-            if expr.match(path):
-                logger.debug('** exclude path : ALL !!!')
-                return None
+        # FIXME : temporary "open bar"
+        ###### return None
 
-            # Exclude every URL pointing to the API service,
-            #   for authenticate
-            expr = re.compile("^oidc/(authenticate|callback)/$")
-            if expr.match(path):
-                logger.debug('** exclude path : authenticate')
-                return None
-
-            # Exclude every URL pointing to a list.
-            # e.g: institution/  --> list of the institutions
-            expr = re.compile("^[a-z0-9_]*/$")
-            if expr.match(path):
-                logger.debug('** exclude path : list template')
-                return
         try:
             view_scopes = view_func.cls.keycloak_scopes
         except AttributeError:
@@ -270,36 +267,50 @@ class KeycloakMiddleware(object):
         required_scope = view_scopes.get(request.method, None) \
             if view_scopes.get(request.method, None) else view_scopes.get(
                 'DEFAULT', None)
-
         # DEFAULT scope not found and DEFAULT_ACCESS is DENY
         if not required_scope and self.default_access == 'DENY':
             return JsonResponse(
                 {"detail": unicode(PermissionDenied.default_detail)},
                 status=PermissionDenied.status_code)
 
-        try:
-            # Get Token
-            access_token = request.session['oidc_access_token']
+        # Get Token
+        access_token = request.session.get('oidc_access_token', '')
+        if access_token == "":
+            try:
+                access_token = request.META["HTTP_AUTHORIZATION"].split(' ')[1]
+            except Exception:
+                return JsonResponse(
+                    {"detail": unicode(PermissionDenied.default_detail)},
+                    status=PermissionDenied.status_code)
 
-            self.keycloak.load_authorization_config(
-                "/srv/app/etc/keycloak/auth.json")
-            # Get permissions
-            permissions = self.keycloak.get_permissions(
-                access_token,
-                method_token_info='decode',
-                key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
-        except Exception:
-            return JsonResponse(
-                {"detail": unicode(AuthenticationFailed.default_detail)},
-                status=AuthenticationFailed.status_code)
-        for perm in permissions:
-            if required_scope in perm.scopes:
-                return None
+        self.keycloak.load_authorization_config(
+            "/srv/app/etc/keycloak/auth.json")
 
-        # User Permission Denied
-        return JsonResponse(
-            {"detail": unicode(PermissionDenied.default_detail)},
-            status=PermissionDenied.status_code)
+        return None  # Voir les permissions ensuite
+
+        # Get permissions
+        # --------------------------------------------------
+        # permissions = self.keycloak.get_permissions(
+        #     access_token,
+        #     method_token_info='decode',
+        #     key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
+        #
+        # for perm in permissions:
+        #     print '-------- perm ----------'
+        #     print perm
+        #     print '------------------'
+        #     sys.stdout.flush()
+        #     if required_scope in perm.scopes:
+        #         return None
+        # print '-------- denied ----------'
+        # print 'DENIED !'
+        # print '------------------'
+        # sys.stdout.flush()
+        # # User Permission Denied
+        # return JsonResponse(
+        #     {"detail": unicode(PermissionDenied.default_detail)},
+        #     status=PermissionDenied.status_code)
+        # --------------------------------------------------
 
     def process_request(self, request):
 
@@ -335,6 +346,9 @@ class KeycloakMiddleware(object):
         if expr.match(path):
             logger.debug('** exclude path : authenticate')
             return None
+
+        # FIXME : temporary "open bar"
+        ## return None
 
         if not request.user.is_authenticated():
             response = HttpResponseRedirect(

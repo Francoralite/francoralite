@@ -115,13 +115,13 @@
       <input name="informers" type="hidden"
         :value="JSON.stringify(informers, replacerInformer)" />
 
-      {% bootstrap_field form.descriptions layout='vertical' %}
+      {% bootstrap_field form.description layout='vertical' %}
       <div class="block-grey">
         <h2>{% trans "Enregistrement" %}</h2>
         <div class="container_line">
           {% bootstrap_field form.recording_context layout='vertical'%}
-          {% bootstrap_field form.record_from_year layout='vertical' %}
-          {% bootstrap_field form.record_to_year layout='vertical' %}
+          {% bootstrap_field form.recorded_from_year layout='vertical' %}
+          {% bootstrap_field form.recorded_to_year layout='vertical' %}
           {% bootstrap_field form.year_published layout='vertical' %}
         </div>
       </div>
@@ -188,15 +188,15 @@
           <v-select
             multiple
             v-model="publishers"
-            label="value"
+            label="name"
             :filterable="false"
             @search="onSearchPublishers"
             :options="optionsPublishers">
               <template slot="option" slot-scope="option">
-                <p>${ option.value }</p>
+                <p>${ option.name }</p>
               </template>
               <template slot="selected-option" slot-scope="option">
-                ${ option.value }
+                ${ option.name }
               </template>
             </v-select>
         </div>
@@ -225,7 +225,6 @@
       {% bootstrap_field form.media_type layout='vertical' %}
       {% bootstrap_field form.auto_period_access layout='vertical' %}
       {% bootstrap_field form.legal_rights layout='vertical' %}
-      {% bootstrap_field form.public_access layout='vertical' %}
 
       <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>

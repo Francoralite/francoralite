@@ -4,14 +4,14 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.musical_group import MusicalGroupForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class MusicalGroupEdit(FormView):
@@ -44,22 +44,5 @@ class MusicalGroupEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = MusicalGroupForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/musical_group/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/musical_group/edit' +
-                                                str(id) + '/')
-                return HttpResponseRedirect('/musical_group/')
-
-            except RequestException:
-                return HttpResponseRedirect('/musical_group/edit')
-
-        return HttpResponseRedirect('/musical_group/edit')
+        return tools.patch(
+            'musical_group', MusicalGroupForm, request, *args, **kwargs)

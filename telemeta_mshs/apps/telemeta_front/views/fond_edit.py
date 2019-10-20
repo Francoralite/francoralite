@@ -4,11 +4,9 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.fond import FondForm
 from django.shortcuts import render
@@ -53,24 +51,4 @@ class FondEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = FondForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/fond/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/fond/edit/'
-                                                + str(id))
-                return HttpResponseRedirect('/fond/')
-
-            except RequestException:
-                return HttpResponseRedirect('/fond/edit/'
-                                            + str(id))
-
-        return HttpResponseRedirect('/fond/edit/'
-                                    + str(id))
+        return tools.patch('fond', FondForm, request, *args, **kwargs)

@@ -4,12 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.institution import InstitutionForm
+import telemeta_front.tools as tools
 
 
 class InstitutionAdd(FormView):
@@ -18,19 +16,4 @@ class InstitutionAdd(FormView):
     success_url = '/institution/'
 
     def post(self, request, *args, **kwargs):
-
-        form = InstitutionForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/institution/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/institution/')
-
-            except RequestException:
-                return HttpResponseRedirect('/institution/add')
-
-        return HttpResponseRedirect('/institution/add')
+        return tools.post('dance', InstitutionForm, request, *args, **kwargs)

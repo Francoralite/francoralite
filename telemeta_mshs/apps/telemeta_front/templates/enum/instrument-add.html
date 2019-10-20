@@ -58,7 +58,7 @@
             {% trans "Classification Hornbostel-Sachs" %}
           </label>
           <v-select
-            v-model="typology"
+            v-model="typologies"
             label="number"
             :filterable="false"
             @search="onSearchTypology"
@@ -74,6 +74,8 @@
             </span>
           </v-select>
         </div>
+        <input name="typology"
+          :value="JSON.stringify(typologies,replacerTypology)" />
         {% buttons_form %}
       </form>
     </div>
@@ -87,11 +89,12 @@
       delimiters: ['${', '}'],
       el: '#app',
       data: {
-        typology: {
+        typologies: [{
+            id: '{{form.typology.value.id}}',
             number:'{{form.typology.value.number}}',
             name:'{{form.typology.value.name}}',
             url:'/hornbostelsachs/{{form.typology.value.id}}'
-          },
+          }],
         optionsTypology: [],
       },
       watch: {},
@@ -116,8 +119,36 @@
               loading, search, this,
                `/api/hornbostelsachs/?ordering=number&search=${escape(search)}`,
                'optionsTypology',
-               'typology'
+               'hornbostelsachs'
             );
+        },
+        getRelated: function(url, field, rel_entity, entity){
+           // Get the data from a related table to display it in a field
+           axios.get(url).then(
+           res => {
+             for(i = 0; i < res.data.length; i++) {
+               res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+             }
+             var listRelated = [];
+             for( var item in res.data) {
+               // Fill the list of related
+               listRelated.push(res.data[item][rel_entity]);
+             }
+             // Use the list of related to feeds the select
+             this[field] = listRelated;
+             console.log(field);
+             console.log(listRelated);
+           });
+        },
+
+        replacer: function(key,value,field){
+           if(value){
+             return value.id;
+           };
+
+        },
+        replacerTypology: function(key,value){
+           return this.replacer(key,value,"hornbostelsachs");
         },
       },
       mounted: function () {

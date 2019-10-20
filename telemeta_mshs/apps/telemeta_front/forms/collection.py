@@ -14,10 +14,11 @@ from .core import Core
 class CollectionForm(forms.Form):
     title = forms.CharField(label=_(u'Titre'), max_length=255, required=True)
     alt_title = forms.CharField(
-        label=_(u'Titre original / Traduction'), max_length=255, required=False)
-    record_from_year = forms.DateField(
+        label=_(u'Titre original / Traduction'),
+        max_length=255, required=False)
+    recorded_from_year = forms.DateField(
         label=_(u'Date d\'enregistrement (depuis)'),
-        required=False,
+        required=True,
         widget=DatePicker(
               options={
                     "format": "yyyy-mm-dd",
@@ -26,9 +27,9 @@ class CollectionForm(forms.Form):
                 }
             )
     )
-    record_to_year = forms.DateField(
+    recorded_to_year = forms.DateField(
         label=_(u'Date d\'enregistrement (jusqu\'à)'),
-        required=False,
+        required=True,
         widget=DatePicker(
               options={
                     "format": "yyyy-mm-dd",
@@ -90,29 +91,16 @@ class CollectionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
 
-        PUBLIC_ACCESS_CHOICES = (
-            ('none', _(u'Aucun')),
-            ('metadata', _(u'Meta-données')),
-            ('partial', _(u'Partiel')),
-            ('full', _(u'Complet'))
-            )
-
-        self.fields['public_access'] = forms.ChoiceField(
-            label=_(u'Type d\'accès'),
-            choices=PUBLIC_ACCESS_CHOICES,
-            initial="metadata",
-            required=True)
-
         self.fields['recording_context'] = forms.ChoiceField(
             label=_(u'Contexte d\'enregistrement'),
             choices=Core.get_choices(
-                entity="recordingcontext", label_field="value"),
+                entity="recordingcontext", label_field="name"),
             required=True)
 
         self.fields['media_type'] = forms.ChoiceField(
             label=_(u'Type de média'),
             choices=Core.get_choices(
-                entity="mediatype", label_field="value"),
+                entity="mediatype", label_field="name"),
             required=True)
 
         self.fields['mission'] = forms.ChoiceField(
@@ -124,5 +112,5 @@ class CollectionForm(forms.Form):
         self.fields['legal_rights'] = forms.ChoiceField(
             label=_(u'Droits d\'utilisation'),
             choices=Core.get_choices(
-                entity="legalrights", label_field="value"),
+                entity="legalrights", label_field="name"),
             required=True)

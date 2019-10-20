@@ -1,0 +1,72 @@
+
+{% extends "enum/language.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title %}
+   {{ block.super}}
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block content %}
+{{ form.media }}
+{% if not error|length %}
+  <div class="container">
+    {% if id %}
+    <form action="{%url "language-edit" id %}" method="POST">
+    {% else %}
+    <form action="{%url "language-add" %}" method="POST">
+    {% endif %}
+      {% csrf_token %}
+      <!-- FIXIT  champs en saisie -->
+      {% bootstrap_field form.identifier layout='vertical' %}
+      {% bootstrap_field form.part2B layout='vertical' %}
+      {% bootstrap_field form.part2T layout='vertical' %}
+      {% bootstrap_field form.part1 layout='vertical' %}
+      {% bootstrap_field form.scope layout='vertical' %}
+      {% bootstrap_field form.type layout='vertical' %}
+      {% bootstrap_field form.name layout='vertical' %}
+      {% bootstrap_field form.comment layout='vertical' %}
+      <div class="block-grey">
+        <h2></h2>
+        <div class="container_line">
+
+        </div>
+      </div>
+
+      {% buttons_form %}
+    </form>
+  </div>
+{% else %}
+  {% display_error error %}
+{% endif %}
+
+{{ form.media.js }}
+{% endblock %}

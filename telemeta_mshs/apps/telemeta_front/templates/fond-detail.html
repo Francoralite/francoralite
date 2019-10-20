@@ -16,7 +16,7 @@
 {% block title_name %}
 {{ block.super }}
   {% if fond %}
-   : {{ fond.code }} - {{ fond.title }}
+   : {{ fond.code|upper }} - {{ fond.title }}
   {% endif %}
 {% endblock %}
 
@@ -105,7 +105,7 @@
 
       <div class="block-grey">
         <h2>{% trans "Archivage" %}</h2>
-        {% field_data form.acquisition_mode.label|safe fond.acquisition_mode.value|safe %}
+        {% field_data form.acquisition_mode.label|safe fond.acquisition_mode.name|safe %}
         {% field_data form.conservation_site.label|safe fond.conservation_site|safe %}
       </div>
       {% if fond.comment %}

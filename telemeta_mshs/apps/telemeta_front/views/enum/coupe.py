@@ -19,7 +19,7 @@ class CoupeView(FrancoraliteTemplateView):
             context = super(CoupeView, self).get_context_data(**kwargs)
             context['coupes'] = tools.request_api('/api/coupe/')
         except Exception as err:
-            context['coupes']
+            context['coupes'] = []
             context['error'] = err.message
 
         return context

@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block title_name %}
-   {{ block.super}} - 
+   {{ block.super}} -
    {% if id %}
    {% trans "Modification" %}
    {% else %}
@@ -55,11 +55,7 @@
     {% bootstrap_field form.name layout='vertical' %}
     {% bootstrap_field form.notes layout='vertical' %}
 
-    {% if id %}
-    {% buttons submit='Modifier' reset="Annuler" %}{% endbuttons %}
-    {% else %}
-    {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
-    {% endif %}
+    {% buttons_form %}
   </form>
 </div>
 

@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.emit_vox import EmitVoxForm
+import telemeta_front.tools as tools
 
 
 class EmitVoxAdd(FormView):
@@ -19,19 +16,4 @@ class EmitVoxAdd(FormView):
     success_url = '/emit_vox/'
 
     def post(self, request, *args, **kwargs):
-
-        form = EmitVoxForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/emit_vox/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/emit_vox/')
-
-            except RequestException:
-                return HttpResponseRedirect('/emit_vox/add')
-
-        return HttpResponseRedirect('/emit_vox/add')
+        return tools.post('emit_vox', EmitVoxForm, request, *args, **kwargs)

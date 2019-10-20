@@ -1,4 +1,4 @@
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from ..models.location import Location as LocationModel
@@ -31,6 +31,15 @@ class LocationGISViewSet(viewsets.ModelViewSet):
         'PUT': 'location_gis:update',
         'DELETE': 'location_gis:delete'
     }
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            content = {'error': e}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
     @detail_route()
     def collections(self, request, pk=None):

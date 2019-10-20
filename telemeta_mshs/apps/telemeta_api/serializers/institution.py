@@ -11,7 +11,7 @@ class InstitutionSerializer(serializers.ModelSerializer):
     """
 
     name = serializers.CharField(required=True)
-    notes = serializers.CharField(required=False)
+    notes = serializers.CharField(allow_blank=True)
 
     class Meta:
         model = InstitutionModel

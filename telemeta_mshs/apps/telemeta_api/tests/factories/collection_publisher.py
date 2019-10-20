@@ -11,7 +11,7 @@ import factory
 from ...models.collection_publisher import CollectionPublisher
 
 from .collection import CollectionFactory
-from .enumeration import PublisherFactory
+from .publisher import PublisherFactory
 
 
 class CollectionPublisherFactory(factory.django.DjangoModelFactory):

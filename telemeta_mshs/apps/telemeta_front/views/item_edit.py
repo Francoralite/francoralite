@@ -12,6 +12,7 @@ from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
 from django.shortcuts import render
+from .related import write_item_related
 
 
 class ItemEdit(FormView):
@@ -38,7 +39,9 @@ class ItemEdit(FormView):
         # Obtain values of the record
         item = requests.get(
             FRONT_HOST_URL + '/api/item/' + str(id))
+
         form = ItemForm(initial=item.json())
+        form.fields['file'].required = False
 
         # Obtain gaphers of the record
         graphers = []
@@ -56,6 +59,7 @@ class ItemEdit(FormView):
     def post(self, request, *args, **kwargs):
 
         form = ItemForm(request.POST)
+        form.fields['file'].required = False
         id = kwargs.get('id')
 
         if form.is_valid():
@@ -65,11 +69,16 @@ class ItemEdit(FormView):
                     data=form.cleaned_data
                 )
                 if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/item/edit' +
-                                                str(id) + '/')
+                    return HttpResponseRedirect('/item/edit/' +
+                                                str(id))
+                else:
+                    item = response.json()
+
+                    write_item_related(item['id'], request)
+
                 return HttpResponseRedirect('/item/')
 
             except RequestException:
                 return HttpResponseRedirect('/item/edit')
-
-        return HttpResponseRedirect('/item/edit')
+        return self.render_to_response(
+            self.get_context_data(request=self.request, form=form))

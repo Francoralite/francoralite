@@ -6,6 +6,7 @@
 
 
 from rest_framework import viewsets
+from django.contrib.auth.models import User
 from ..models.item_marker import ItemMarker as ItemMarkerModel
 from ..models.item import Item as ItemModel
 from ..serializers.item_marker import ItemMarkerSerializer
@@ -27,6 +28,22 @@ class ItemMarkerViewSet(viewsets.ModelViewSet):
         'DELETE': 'item_marker:delete'
         }
 
+    @jsonrpc_method('telemeta.add_marker')
+    def add_marker(request, marker):
+        # marker must be a dict
+        if isinstance(marker, dict):
+            item_id = marker['item_id']
+            item = ItemModel.objects.get(id=item_id)
+            m = ItemMarkerModel(item=item)
+            m.public_id = marker['public_id']
+            m.time = float(marker['time'])
+            m.title = marker['title']
+            m.description = marker['description']
+            m.author = User.objects.get(username=marker['author'])
+            m.save()
+        else:
+            raise 'Error : Bad marker dictionnary'
+
     @jsonrpc_method('telemeta.get_markers')
     def get_markers(request, item_id):
         item = ItemModel.objects.get(id=item_id)
@@ -34,7 +51,7 @@ class ItemMarkerViewSet(viewsets.ModelViewSet):
         list = []
         for marker in markers:
             dict = {}
-            dict['public_id'] = marker.public_id
+            dict['public_id'] = marker.id
             dict['time'] = str(marker.time)
             dict['title'] = marker.title
             dict['description'] = marker.description

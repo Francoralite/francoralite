@@ -4,12 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.personne import PersonneForm
+import telemeta_front.tools as tools
 
 
 class PersonneAdd(FormView):
@@ -18,19 +16,4 @@ class PersonneAdd(FormView):
     success_url = '/authority/'
 
     def post(self, request, *args, **kwargs):
-
-        form = PersonneForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/authority/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/authority/')
-
-            except RequestException:
-                return HttpResponseRedirect('/authority/add')
-
-        return HttpResponseRedirect('/authority/add')
+        return tools.post('authority', PersonneForm, request, *args, **kwargs)

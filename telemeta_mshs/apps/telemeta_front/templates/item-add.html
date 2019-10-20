@@ -45,7 +45,9 @@
   {{ block.super }}
 {% endblock %}
 
+
 {{ form.media }}
+{% if not error|length %}
 <div id="app">
   <div class="fixedWidthAsPlayer">
     <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
@@ -88,21 +90,31 @@
 </ul>
 
 <div class="container">
+
   {% if id %}
-  <form action="{%url "item-edit" id %}" method="POST">
+  <form enctype="multipart/form-data" action="{%url "item-edit" id %}" method="POST">
   {% else %}
-  <form action="{{request.path}}" method="POST">
+  <form enctype="multipart/form-data" action="{{request.path}}" method="POST">
   {% endif %}
     {% csrf_token %}
-    <!-- FIXIT  champs en saisie -->
 
     <div class="tab-content">
       <!-- Tab General -->
       <div class="tab-pane fade active in" id="tab_general">
+        {% bootstrap_field form.collection layout='vertical' %}
         {% bootstrap_field form.title layout='vertical' %}
         {% bootstrap_field form.alt_title layout='vertical' %}
         {% bootstrap_field form.trans_title layout='vertical' %}
         {% bootstrap_field form.description layout='vertical' %}
+        {% if id %}
+          <div hidden=True>
+        {% else %}
+          <div>
+        {% endif %}
+        {% bootstrap_field form.file layout='vertical' %}
+        </div>
+
+
 
         <div class="block-grey">
           <h2>{% trans "Personnes" %}</h2>
@@ -228,7 +240,7 @@
               </template>
           </v-select>
         </div>
-        <input name="collectors" type="hidden"
+        <input name="authors" type="hidden"
           :value="JSON.stringify(authors,replacerAuthor)" />
 
         <!-- Compositors -->
@@ -415,7 +427,7 @@
             </template>
           </v-select>
           </div>
-          <input name="usefulnesses" type="hidden"
+          <input name="thematics" type="hidden"
           :value="JSON.stringify(thematics,replacerThematic)" />
 
           {% bootstrap_field  form.deposit_names layout='vertical' %}
@@ -685,6 +697,7 @@
     {% buttons submit='Ajouter' reset="Annuler" %}{% endbuttons %}
     {% endif %}
   </form>
+
 </div>
 
 </div>
@@ -701,6 +714,10 @@
 {% markdown_editor "id_incipit" %}
 {% markdown_editor "id_refrain" %}
 {% markdown_editor "id_jingle" %}
+
+{% else %}
+  {% display_error error %}
+{% endif %}
 
 {{ form.media.js }}
 {% endblock content %}

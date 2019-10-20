@@ -18,6 +18,8 @@ from .factories.authority import AuthorityFactory
 from ..models.authority import Authority
 from ..models.location import Location
 
+from .keycloak import get_token
+
 # Expected structure for Authority objects
 AUTHORITY_STRUCTURE = [
     ('id', int),
@@ -52,7 +54,9 @@ class TestAuthorityList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         AuthorityFactory.create_batch(6)

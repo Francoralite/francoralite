@@ -12,7 +12,6 @@ import factory
 import pytest
 import sys
 
-from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -21,6 +20,8 @@ from rest_framework.test import APITestCase
 
 from .factories.usefulness import UsefulnessFactory
 from ..models.usefulness import Usefulness
+
+from .keycloak import get_token
 
 # Expected structure for Usefulness objects
 USEFULNESS_STRUCTURE = [
@@ -44,7 +45,9 @@ class TestUsefulnessList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data

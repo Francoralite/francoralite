@@ -134,7 +134,7 @@ entities = [
         "serializer": ItemTranscodingFlagSerializer
     },
     {
-        "names": "usefulnesses", "name": "usefullness",
+        "names": "usefulnesses", "name": "usefulness",
         "model": ItemUsefulness,
         "serializer": ItemUsefulnessSerializer
     },
@@ -523,7 +523,7 @@ class ItemViewSet(viewsets.ModelViewSet):
             #         else:
             #             # wait for the transcode to begin
             #             time.sleep(1)
-            #             return (None, None)  # self.item_transcode(item, extension)
+            #             return (None, None)  # self.item_transcode(item, extension) # noqa
             #
             #     except MediaItemTranscodingFlag.DoesNotExist:
             #         pass
@@ -607,6 +607,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Save the serializer -> create an id
         serializer.save()
+
         # Retrieve the item
         id = serializer.data['id']
         item = ItemModel.objects.get(pk=id)

@@ -17,10 +17,5 @@ class InstrumentForm(forms.Form):
         widget=forms.Textarea, required=False)
     typology = forms.CharField(
         label=_(u'Classification Hornbostel-Sachs'),
-        widget=forms.TextInput(
-            attrs={
-                 'class': 'typeahead',
-                 'placeholder': _(u'Saisir le numéro d\'une entrée'),
-             }
-        ),
+        max_length=255,
         required=False)

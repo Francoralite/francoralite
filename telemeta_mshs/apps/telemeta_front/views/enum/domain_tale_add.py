@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.domain_tale import DomainTaleForm
+import telemeta_front.tools as tools
 
 
 class DomainTaleAdd(FormView):
@@ -19,19 +16,5 @@ class DomainTaleAdd(FormView):
     success_url = '/domain_tale/'
 
     def post(self, request, *args, **kwargs):
-
-        form = DomainTaleForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/domain_tale/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/domain_tale/')
-
-            except RequestException:
-                return HttpResponseRedirect('/domain_tale/add')
-
-        return HttpResponseRedirect('/domain_tale/add')
+        return tools.post(
+            'domain_tale', DomainTaleForm, request, *args, **kwargs)

@@ -8,6 +8,7 @@ Item factory to execute tests
 """
 
 import factory
+import factory.fuzzy
 import datetime
 from ...models.item import Item
 from .collection import CollectionFactory

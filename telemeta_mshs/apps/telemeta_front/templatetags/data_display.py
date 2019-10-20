@@ -50,17 +50,19 @@ def display_error(error="0"):
     url_error = {
         'HTTP_API_401': 'inc/non_authentified.html',
         'HTTP_API_404': 'inc/not_present.html',
+        'KEY_ERROR': 'inc/key_error.html',
     }
-    code = ""
+    code = error
     for key, value in url_error.iteritems():
         if error == APPLICATION_ERRORS[key]:
             code = template.loader.get_template(value)
 
     if error != "0" and error != '':
         # Display the code of the error
-        html = "<i>err-" + error + "</i>"
+        html = "<i>ERR : " + error + "</i>"
         # Render the template to HTML source code
-        html += code.render()
+        if isinstance(code, template.__class__):
+            html += code.render()
         return html
     return code
 
@@ -70,13 +72,21 @@ def modal_delete():
     return {}
 
 
-@register.inclusion_tag('inc/select-vue-item.html')
-def select_vue_item():
+@register.inclusion_tag('inc/select-vue-item.html', takes_context=True)
+def select_vue_item(context):
+    if 'id' in context:
+        return {
+            'id': context['id'],
+        }
     return {}
 
 
-@register.inclusion_tag('inc/select-vue-collection.html')
-def select_vue_collection():
+@register.inclusion_tag('inc/select-vue-collection.html', takes_context=True)
+def select_vue_collection(context):
+    if 'id' in context:
+        return {
+            'id': context['id'],
+        }
     return {}
 
 

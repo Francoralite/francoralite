@@ -43,6 +43,11 @@ class ItemForm(forms.Form):
     remarks = forms.CharField(
         label=_(u'Remarques concernant les données d\'archivage'),
         widget=forms.Textarea, required=False)
+    file = forms.FileField(
+        label=_(u'Fichier audio'),
+        widget=forms.FileInput(),
+        required=True
+    )
 
     # Description -----------------------------------------------
     timbre = forms.CharField(
@@ -99,7 +104,7 @@ class ItemForm(forms.Form):
         self.fields['media_type'] = forms.ChoiceField(
             label=_(u'Type de média'),
             choices=Core.get_choices(
-                entity="mediatype", label_field="value"),
+                entity="mediatype", label_field="name"),
             required=True)
 
         self.fields['collection'] = forms.ChoiceField(
@@ -111,5 +116,5 @@ class ItemForm(forms.Form):
         self.fields['coupe'] = forms.ChoiceField(
             label=_(u'Coupe'),
             choices=Core.get_choices(
-                entity="coupe", label_field="value"),
+                entity="coupe", label_field="name"),
             required=True)

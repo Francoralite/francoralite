@@ -4,14 +4,14 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.mediatype import MediaTypeForm
 from django.shortcuts import render
+import telemeta_front.tools as tools
 
 
 class MediaTypeEdit(FormView):
@@ -44,22 +44,5 @@ class MediaTypeEdit(FormView):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-
-        form = MediaTypeForm(request.POST)
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/mediatype/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/mediatype/edit' + str(id)
-                                                + '/')
-                return HttpResponseRedirect('/mediatype/')
-
-            except RequestException:
-                return HttpResponseRedirect('/mediatype/edit')
-
-        return HttpResponseRedirect('/mediatype/edit')
+        return tools.patch(
+            'mediatype', MediaTypeForm, request, *args, **kwargs)

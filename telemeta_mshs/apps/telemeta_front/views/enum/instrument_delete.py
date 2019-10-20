@@ -4,22 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
 from django.views.generic.base import View
-
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
+import telemeta_front.tools as tools
 
 
 class InstrumentDelete(View):
     def get(self, request, *args, **kwargs):
-        id = kwargs.get('id')
-        try:
-            requests.delete(
-                FRONT_HOST_URL + '/api/instrument/' + str(id)
-                )
-            return HttpResponseRedirect('/instrument/')
-
-        except RequestException:
-            return HttpResponseRedirect('/instrument/')
+        return tools.delete('instrument', request, *args, **kwargs)

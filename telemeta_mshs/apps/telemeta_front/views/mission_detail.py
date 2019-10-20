@@ -22,9 +22,21 @@ class MissionDetail(FrancoraliteTemplateView):
             # Obtain values of related collections
             context['collections'] = tools.request_api(
                 '/api/collection/?mission=' + context['id'])
+            # Obtain values of related informers
+            context['informers'] = tools.request_api(
+                '/api/mission/' + context['id'] + '/informers/')
+            # Obtain values of related collectors
+            context['collectors'] = tools.request_api(
+                '/api/mission/' + context['id'] + '/collectors/')
+            # Obtain values of related locations
+            context['locations'] = tools.request_api(
+                '/api/mission/' + context['id'] + '/locations/')
             context['form'] = MissionForm()
         except Exception as err:
             context['mission'] = {}
             context['collections'] = []
+            context['informers'] = []
+            context['collectors'] = []
+            context['locations'] = []
             context['error'] = err.message
         return context

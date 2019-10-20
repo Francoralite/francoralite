@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.thematic import ThematicForm
+import telemeta_front.tools as tools
 
 
 class ThematicAdd(FormView):
@@ -19,19 +16,4 @@ class ThematicAdd(FormView):
     success_url = '/thematic/'
 
     def post(self, request, *args, **kwargs):
-
-        form = ThematicForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/thematic/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/thematic/')
-
-            except RequestException:
-                return HttpResponseRedirect('/thematic/add')
-
-        return HttpResponseRedirect('/thematic/add')
+        return tools.post('thematic', ThematicForm, request, *args, **kwargs)

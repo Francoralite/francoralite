@@ -4,23 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
 from django.views.generic.base import View
-
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
+import telemeta_front.tools as tools
 
 
 class FondDelete(View):
     def get(self, request, *args, **kwargs):
-        id = kwargs.get('id')
-        try:
-            # raise Exception(id)
-            requests.delete(
-                FRONT_HOST_URL + '/api/fond/' + str(id)
-                )
-            return HttpResponseRedirect('/fond/')
-
-        except RequestException:
-            return HttpResponseRedirect('/fond/')
+        return tools.delete('fond', request, *args, **kwargs)

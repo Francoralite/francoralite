@@ -47,7 +47,7 @@ class Item(models.Model):
         null=True, blank=True)
     date_edit = models.DateTimeField(_('date'), auto_now=True)
     media_type = models.ForeignKey(
-        'MediaType',
+        'telemeta_api.MediaType',
         related_name="items",
         verbose_name=_(u'type de media'),
         blank=True, null=True, on_delete=models.SET_NULL)

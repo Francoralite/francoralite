@@ -14,7 +14,6 @@ class CoupeFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Coupe
-        django_get_or_create = ('value',)
 
-    value = factory.Faker('word')
-    notes = factory.Faker('word')
+    name = factory.Faker('sentence', nb_words=3)
+    notes = factory.Faker('paragraph', nb_sentences=1)

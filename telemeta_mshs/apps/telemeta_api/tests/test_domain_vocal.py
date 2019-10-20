@@ -12,7 +12,6 @@ import factory
 import pytest
 import sys
 
-from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -21,6 +20,8 @@ from rest_framework.test import APITestCase
 
 from .factories.domain_vocal import DomainVocalFactory
 from ..models.domain_vocal import DomainVocal
+
+from .keycloak import get_token
 
 # Expected structure for Domain_vocal objects
 DOMAINVOCAL_STRUCTURE = [
@@ -44,7 +45,9 @@ class TestDomainVocalList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
@@ -61,7 +64,7 @@ class TestDomainVocalList(APITestCase):
         self.assertEqual(len(domain_vocals), 6)
 
         # API side
-        response = self.client.get(url)
+        response = self.client.get(url, **self.auth_headers)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

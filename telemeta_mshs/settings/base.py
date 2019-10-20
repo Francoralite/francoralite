@@ -1,5 +1,6 @@
 import os
 
+
 # Original Telemeta application settings
 from telemeta_settings import *  # noqa
 
@@ -52,6 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'telemeta_mshs.middleware.keycloak_mw.KeycloakMiddleware',
+    # 'telemeta_mshs.middleware.history_records.HistoryRecordsMiddleware',
 )
 
 DATABASES = {
@@ -87,8 +89,8 @@ WSGI_APPLICATION = 'telemeta_mshs.wsgi.application'
 # CORS
 #
 CORS_ORIGIN_WHITELIST = (
-    os.getenv('API_EXTERNAL_IP_ADDRESS', '1.2.3.4'),
-    os.getenv('API_APP_EXTERNAL_URL', 'nginx.francoralite.localhost'),
+    os.getenv('API_EXTERNAL_IP_ADDRESS'),
+    os.getenv('API_APP_EXTERNAL_URL'),
 )
 
 
@@ -135,8 +137,9 @@ KEYCLOAK_CONFIG = {
     'KEYCLOAK_CLIENT_PUBLIC_KEY': _KEYCLOAK_RSA_PUBLIC_KEY,
 }
 
+
 AUTHENTICATION_BACKENDS = (
-    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'telemeta_api.oidc.myoidcab.MyOIDCAB',
 )
 OIDC_RP_SIGN_ALGO = 'RS256'
 OIDC_RP_CLIENT_ID = _KEYCLOAK_CLIENT_ID

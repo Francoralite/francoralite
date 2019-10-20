@@ -11,7 +11,7 @@ import factory
 import factory.fuzzy
 from ...models.item_marker import ItemMarker
 from .item import ItemFactory
-from .user import UserFactory
+# from .user import UserFactory
 
 
 class ItemMarkerFactory(factory.django.DjangoModelFactory):

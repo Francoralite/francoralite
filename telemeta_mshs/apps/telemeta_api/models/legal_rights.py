@@ -5,14 +5,22 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.enum import Enumeration, MetaEnumeration
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class LegalRights(Enumeration):
+class LegalRights(models.Model):
     "Legal rights"
 
-    class Meta(MetaEnumeration):
+    # List of the fields
+    name = models.CharField(_('Nom'), unique=True, max_length=255)
+    notes = models.TextField(_('Notes'), null=True, blank=True)
+
+    class Meta:
         app_label = 'telemeta_api'
         db_table = 'api_legal_rights'
-        verbose_name = _(u"droits d'utilisation")
+        verbose_name_plural = _('legal rights')
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name

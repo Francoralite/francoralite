@@ -10,8 +10,8 @@ class CoupeSerializer(serializers.ModelSerializer):
     Common serializer for all coupe actions
     """
 
-    value = serializers.CharField(required=True)
-    notes = serializers.CharField(required=False)
+    name = serializers.CharField(required=True)
+    notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = CoupeModel

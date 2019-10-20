@@ -30,13 +30,13 @@
              loadPlayer('/api/timeside/{{item.id}}/analyze/',
               "/api/item/{{item.id}}/download/{{item.code}}.mp3",
               undefined, '{{item.id}}', visualizers,
-              undefined,
+              CURRENT_USER_NAME,
               true); //true because superuser
         {% else %}
            loadPlayer('/api/timeside/{{item.id}}/analyze/',
              "/api/item/{{item.id}}/download/{{item.code}}.mp3",
              undefined, '{{item.id}}', visualizers,
-             undefined,
+             CURRENT_USER_NAME,
              false); //false because not superuser
         {% endif %}
       {% endif %}
@@ -52,9 +52,8 @@
 {% block title_name %}
     {{ block.super }}
     {% if item %}
-     : {{ item.code }} - {{  item.title}}
+     : {{ item.code|upper }} - {{  item.title}}
     {% endif %}
-  </h1>
 {% endblock %}
 
 {% block content %}
@@ -123,8 +122,8 @@
 
           <div id="tabs_container">
               <!-- this div will be hidden when everything is fully loaded-->
-              <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
-                  <span id="loading_span_text">{% trans "Chargement " %}...</span></span>
+              <a id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+                  <span id="loading_span_text">{% trans "Chargement " %}...</span></a>
               <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Fichiers" %}</a><!--
                do not let space here as it appears in the document!!!!!
              --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Marqueurs" %}</a>
@@ -133,7 +132,7 @@
           <div class="markers" id="markers_div_id"></div>
 
           <div class="analyzer" id="analyzer_div_id">
-              <table width="100%">
+              <table>
                   <tr class="analyzer-title">
                       <td>{% trans "Property" %}</td>
                       <td>{% trans "Value" %}</td>
@@ -193,8 +192,9 @@
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe %}
 
       {% field_data form.domains.label|safe item.domains|safe %}
-      {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
-      {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
+      {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" %}
+      {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" %}
+
       <div class="block-grey row">
         <div class="col-md-6">
           <label for="id_melody" class="melody">Mélodie (transcription alphabétique)</label>
@@ -220,15 +220,17 @@
 
       <div class="container_data">
         <h3 class="libelle">{{form.domains.label|safe}}</h3>
-        <div class="donnee">{{item.domains|markdown|safe}}</div>
+        {% related_list libelle='Genre(s) de la chanson' items=item.domain_songs url_detail="domain_song-detail" field="name" %}
+        {% related_list libelle="Genre(s) de l'expression vocale" items=item.domain_vocals url_detail="domain_vocal-detail" field="name" %}
+        {% related_list libelle="Genre(s) de l'expression instrumentale" items=item.domain_musics url_detail="domain_music-detail" field="name" %}
+        {% related_list libelle='Genre(s) du conte' items=item.domain_tales url_detail="domain_tale-detail" field="name" %}
       </div>
 
-      {% related_list libelle='Fonction(s)' items=item.usefulness url_detail="usefulness-detail" field="name" %}
-      {% related_list libelle='Danse(s)' items=item.dance url_detail="dance-detail" field="name" %}
 
       <aside class="block-grey">
         <h2>{% trans "Témoignage" %}</h2>
         {% field_data form.deposit_digest.label|safe item.deposit_digest|markdown|safe %}
+        {% related_list libelle='Thématique(s)' items=item.thematics url_detail="thematic-detail" field="name" %}
         {% field_data form.deposit_names.label|safe item.deposit_names|safe %}
         {% field_data form.deposit_places.label|safe item.deposit_places|safe %}
         {% field_data form.deposit_periods.label|safe item.deposit_periods|safe %}

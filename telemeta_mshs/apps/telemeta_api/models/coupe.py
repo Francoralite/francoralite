@@ -4,15 +4,23 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-
-from telemeta.models.enum import Enumeration, MetaEnumeration
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class Coupe(Enumeration):
+class Coupe(models.Model):
+    # Description of the table
     "Coupe"
 
-    class Meta(MetaEnumeration):
+    # List of the fields
+    name = models.CharField(_('Nom'), unique=True, max_length=255)
+    notes = models.TextField(_('Notes'), null=True, blank=True)
+
+    class Meta:
         app_label = 'telemeta_api'
-        db_table = 'coupe'
-        verbose_name = _("coupe")
+        db_table = 'api_coupe'
+        verbose_name_plural = _('coupes')
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name

@@ -4,12 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
+
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.fond import FondForm
+import telemeta_front.tools as tools
 
 
 class FondAdd(FormView):
@@ -17,27 +15,5 @@ class FondAdd(FormView):
     form_class = FondForm
     success_url = '/fond/'
 
-    def form_valid(self, form):
-        if form.is_valid():
-            requests.post(
-                FRONT_HOST_URL + '/api/fond/',
-                data=form.cleaned_data
-            )
-        return super(FondAdd, self).form_valid(form)
-    # def post(self, request, *args, **kwargs):
-    #
-    #     form = FondForm(request.POST)
-    #
-    #     if form.is_valid():
-    #
-    #         try:
-    #             requests.post(
-    #                 FRONT_HOST_URL + '/api/fond/',
-    #                 data=form.cleaned_data
-    #             )
-    #             return HttpResponseRedirect('/fond/')
-    #
-    #         except RequestException:
-    #             return HttpResponseRedirect('/fond/add')
-    #
-    #     return HttpResponseRedirect('/fond/add')
+    def post(self, request, *args, **kwargs):
+        return tools.post('fond', FondForm, request, *args, **kwargs)

@@ -5,12 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-import requests
-from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
 from telemeta_front.forms.hornbostelsachs import HornbostelsachsForm
+import telemeta_front.tools as tools
 
 
 class HornbostelsachsAdd(FormView):
@@ -19,19 +16,5 @@ class HornbostelsachsAdd(FormView):
     success_url = '/hornbostelsachs/'
 
     def post(self, request, *args, **kwargs):
-
-        form = HornbostelsachsForm(request.POST)
-
-        if form.is_valid():
-
-            try:
-                requests.post(
-                    FRONT_HOST_URL + '/api/hornbostelsachs/',
-                    data=form.cleaned_data
-                )
-                return HttpResponseRedirect('/hornbostelsachs/')
-
-            except RequestException:
-                return HttpResponseRedirect('/hornbostelsachs/add')
-
-        return HttpResponseRedirect('/hornbostelsachs/add')
+        return tools.post(
+            'hornbostelsachs', HornbostelsachsForm, request, *args, **kwargs)

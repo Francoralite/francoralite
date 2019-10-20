@@ -10,8 +10,8 @@ class LegalRightsSerializer(serializers.ModelSerializer):
     Common legal rights for all recording_context actions
     """
 
-    value = serializers.CharField(required=True)
-    notes = serializers.CharField(required=False)
+    name = serializers.CharField(required=True)
+    notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = LegalRightsModel

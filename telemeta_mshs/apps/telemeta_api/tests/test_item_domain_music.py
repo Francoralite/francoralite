@@ -12,7 +12,6 @@ import factory
 import pytest
 import sys
 
-from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -24,6 +23,8 @@ from ..models.item_domain_music import ItemDomainMusic
 # Models related
 from ..models.domain_music import DomainMusic
 from ..models.item import Item
+
+from .keycloak import get_token
 
 # Expected structure for Item_domain_music objects
 ITEMDOMAINMUSIC_STRUCTURE = [
@@ -47,7 +48,9 @@ class TestItemDomainMusicList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
         call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data

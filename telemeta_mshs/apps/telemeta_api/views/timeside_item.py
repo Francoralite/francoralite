@@ -6,7 +6,6 @@
 
 from rest_framework import viewsets
 from django.http import HttpResponse
-from rest_framework_xml.renderers import XMLRenderer
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from ..models.item import Item
@@ -69,8 +68,8 @@ class TimeSideViewSet(viewsets.ViewSet):
             child = ET.SubElement(root, "data")
             child.set("id", key)
             child.set("name", key)
-            child.set("unit", "s")
-            child.set("value", dico[key])
+            child.set("unit", dico[key][1])
+            child.set("value", dico[key][0])
 
         return ET.tostring(root, method="xml")
 
@@ -78,24 +77,21 @@ class TimeSideViewSet(viewsets.ViewSet):
     def analyze(self, request, pk=None):
         data = dict()  # data to return
 
-        # try:
-        #     # Search an item with the right code field
-        #     item = Item.objects.get(pk=pk)
-        #     # Extract some data of the item
-        #     data['duration'] = str(item.approx_duration)
-        #     analyses = ItemAnalysis.objects.all()  # filter(item_id=item.id)
-        #
-        #     for analysis in analyses:
-        #         data[analysis.name] = analysis.value
-        # except BaseException:
-        #     # Nothing to return
-        #     pass
-        item = Item.objects.get(pk=pk)
-        data['duration'] = str(item.approx_duration)
-        # FIXIT -----------------------------------------
+        try:
+            # Search an item with the right code field
+            item = Item.objects.get(pk=pk)
+            # Extract some data of the item
+            analyses = ItemAnalysis.objects.filter(item_id=item.id)
+
+            for analysis in analyses:
+                data[analysis.name.lower()] = (analysis.value, analysis.unit)
+
+        except BaseException:
+            # Nothing to return
+            pass
+        # data['duration'] = (str(item.approx_duration), "s")
         xml = self.to_xml(data)
 
-        # Yeeeeessssssssssssssssss   !!!!!!!!!!!!!!!!!
         return HttpResponse(xml, content_type="application/xml")
 
     @detail_route()

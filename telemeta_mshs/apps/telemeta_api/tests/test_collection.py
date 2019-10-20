@@ -12,7 +12,6 @@ import factory
 import pytest
 import sys
 
-from django.forms.models import model_to_dict
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -26,6 +25,7 @@ from ..models.mission import Mission
 from ..models.mediatype import MediaType
 from ..models.legal_rights import LegalRights
 
+from .keycloak import get_token
 
 # Expected structure for collection objects
 COLLECTION_STRUCTURE = [
@@ -34,7 +34,6 @@ COLLECTION_STRUCTURE = [
     ('title', str),
     ('alt_title', str),
     ('description', str),
-    ('descriptions', str),
     ('recording_context', str),
     ('recorded_from_year', str),
     ('recorded_to_year', str),
@@ -52,8 +51,7 @@ COLLECTION_STRUCTURE = [
     ('comment', str),
     ('media_type', dict),
     ('physical_items_num', int),
-    ('auto_period_access', bool),
-    ('public_access', str),
+    ('auto_period_access', bool)
 ]
 
 # Expected keys for MODEL objects
@@ -71,6 +69,9 @@ class TestCollectionList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
+        get_token(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         call_command('telemeta-setup-enumerations')
 

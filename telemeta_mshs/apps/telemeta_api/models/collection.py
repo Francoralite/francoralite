@@ -4,13 +4,12 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-from telemeta.models.core import MetaCore
-from telemeta.models.resource import MediaBaseResource
+from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 
-class Collection(MediaBaseResource):
+class Collection(models.Model):
     # Description of the table
     "Collections, they belongs to a mission"
 
@@ -20,8 +19,10 @@ class Collection(MediaBaseResource):
             'telemeta_api.Mission',
             related_name='collection',
             verbose_name=_('Mission'), blank=True, default="")
+    title = models.CharField(_('titre'), max_length=255)
     alt_title = models.CharField(
         _(u'Titre original'), blank=True, max_length=255)
+    description = models.TextField(_('description'), null=True, blank=True)
     recording_context = models.CharField(
         _(u'Contexte d\'enregistrement'), blank=True, max_length=255)
     recorded_from_year = models.DateField(blank=True, null=True)
@@ -51,6 +52,14 @@ class Collection(MediaBaseResource):
         _(u'Rédacteur(s) fiches ou registre'),
         help_text=_(u'Rédacteur ; rédacteur'),
         default="", blank=True,  max_length=255)
+    code = models.CharField(
+        _('cote'), validators=[
+            RegexValidator(
+                regex=r'^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}_[0-9]{4}$',
+                message='Code must conform to XXXX_XXX_000X_0000',
+                code='invalid_code',
+            )
+        ],  max_length=255)
     code_partner = models.CharField(
         _('Cote dans l\'institution partenaire'),
         null=True, blank=True, max_length=255)
@@ -75,6 +84,8 @@ class Collection(MediaBaseResource):
         blank=True,
         null=True, on_delete=models.SET_NULL)
 
-    class Meta(MetaCore):
+    class Meta:
         app_label = 'telemeta_api'
         db_table = 'int_collection'
+        verbose_name_plural = _('collections')
+        ordering = ['code', 'title']

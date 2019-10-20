@@ -29,6 +29,7 @@ from .views import (
     item_domain_tale,
     item_usefulness,
     item_dance,
+    item_language,
     item_thematic,
     item_coirault,
     item_musical_organization,
@@ -37,6 +38,7 @@ from .views import (
     item_transcoding_flag,
     item_marker,
     mediatype,
+    metadata_author,
     publisher,
     legal_rights,
     recording_context,
@@ -75,6 +77,9 @@ router.register(r'institution',
 router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
 router.register(r'mediatype',
                 mediatype.MediaTypeViewSet, base_name='mediatype')
+router.register(r'metadata_author',
+                metadata_author.MetadataAuthorViewSet,
+                base_name='metadata_author')
 router.register(r'legalrights',
                 legal_rights.LegalRightsViewSet, base_name='legal_rights')
 router.register(r'recordingcontext',
@@ -203,6 +208,8 @@ Item_router.register(
     r'usefulness', item_usefulness.ItemUsefulnessViewSet)
 Item_router.register(
     r'dance', item_dance.ItemDanceViewSet)
+Item_router.register(
+    r'language', item_language.ItemLanguageViewSet)
 Item_router.register(
     r'thematic', item_thematic.ItemThematicViewSet)
 Item_router.register(

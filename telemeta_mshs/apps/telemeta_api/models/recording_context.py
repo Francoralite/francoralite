@@ -5,14 +5,23 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.enum import Enumeration, MetaEnumeration
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class RecordingContext(Enumeration):
+class RecordingContext(models.Model):
+    # Description of the table
     "Recording context"
 
-    class Meta(MetaEnumeration):
+    # List of the fields
+    name = models.CharField(_('Nom'), unique=True, max_length=255)
+    notes = models.TextField(_('Notes'), null=True, blank=True)
+
+    class Meta:
         app_label = 'telemeta_api'
-        db_table = 'recordingcontext'
-        verbose_name = _("contexte d'enregistrement")
+        db_table = 'api_recording_context'
+        verbose_name_plural = _('recording contexts')
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name
