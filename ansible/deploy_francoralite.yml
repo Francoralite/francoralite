@@ -2,7 +2,11 @@
 
 - name: 'INFRA | Prerequisites'
   hosts: 'all'
-  tasks:
+  roles:
+    - role: 'geerlingguy.docker'
+    - role: 'geerlingguy.git'
+    - role: 'geerlingguy.nginx'
+  post_tasks:
     - name: 'Install packages'
       package:
         name: "{{ item }}"
@@ -30,7 +34,7 @@
     ansistrano_git_branch: "{{ _ansistrano_git_branch }}"
     ansistrano_keep_releases: "{{ _ansistrano_keep_releases }}"
   roles:
-    - { role: 'ansistrano.deploy' }
+    - role: 'ansistrano.deploy'
   post_tasks:
     - name: 'Force Nginx restart'
       service:

@@ -4,10 +4,15 @@
 francoralite_pip_packages:
   - 'docker'
 francoralite_system_packages:
-  - 'git'
   - 'python-pip'
   - 'python-setuptools'
   - 'rsync'
+
+
+#
+# Docker
+#
+docker_install_compose: True
 
 
 #
@@ -27,7 +32,7 @@ ansistrano_after_cleanup_tasks_file: "{{ playbook_dir }}/tasks/after_clean_up.ym
 #
 _docker_registries: []
 _docker_service_compose_options: '-f docker-compose.yml -f docker-compose.run.yml'
-_docker_service_compose_path: '/usr/bin/docker-compose'
+_docker_service_compose_path: '/usr/local/bin/docker-compose'
 _docker_service_files: []
 _docker_service_folders: []
 _docker_service_networks:
@@ -44,7 +49,7 @@ _docker_service_templates:
   - src: "templates/nginx/nginx.conf.j2"
     dest: '/etc/nginx/nginx.conf'
   - src: "templates/nginx/francoralite.j2"
-    dest: '/etc/nginx/sites-available/francoralite'
+    dest: '/etc/nginx/conf.d/francoralite.conf'
 
 
 #
