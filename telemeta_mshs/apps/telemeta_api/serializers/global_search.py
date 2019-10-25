@@ -16,6 +16,8 @@ from ..models.mission import Mission as MissionModel
 from .mission import MissionSerializer
 from ..models.collection import Collection as CollectionModel
 from .collection import CollectionSerializer
+from ..models.item import Item as ItemModel
+from .item import ItemSerializer
 
 
 class GlobalSearchSerializer(serializers.Serializer):
@@ -31,8 +33,10 @@ class GlobalSearchSerializer(serializers.Serializer):
             serializer = MissionSerializer(instance)
         elif isinstance(instance, CollectionModel):
             serializer = CollectionSerializer(instance)
+        elif isinstance(instance, ItemModel):
+            serializer = ItemSerializer(instance)
         else:
-            raise Exception("Not an authority instance!")
+            raise Exception("Not an known instance!")
         data = serializer.data
         data['entity'] = type(instance).__name__
         return data

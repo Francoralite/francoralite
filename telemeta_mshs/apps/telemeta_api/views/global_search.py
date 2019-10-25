@@ -13,6 +13,7 @@ from ..models.location import Location
 from ..models.fond import Fond
 from ..models.mission import Mission
 from ..models.collection import Collection
+from ..models.item import Item
 from ..serializers.global_search import GlobalSearchSerializer
 
 
@@ -34,10 +35,14 @@ class GlobalSearchList(generics.ListAPIView):
         collections = Collection.objects.filter(
             Q(title__icontains=query) |
             Q(alt_title__icontains=query))[:limit]
+        items = Item.objects.filter(
+            Q(title__icontains=query) |
+            Q(alt_title__icontains=query))[:limit]
         all_results = list(itertools.chain(
             authorities,
             locations,
             fonds,
             missions,
-            collections))
+            collections,
+            items))
         return all_results
