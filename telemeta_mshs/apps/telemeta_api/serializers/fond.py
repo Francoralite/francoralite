@@ -19,9 +19,7 @@ class FondSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(required=True)
     description = serializers.CharField(allow_blank=True)
-    descriptions = serializers.CharField(allow_blank=True)
     code = serializers.CharField(required=True)
-    public_access = serializers.CharField(required=True)
     institution = AsymetricRelatedField.from_serializer(
          InstitutionSerializer, kwargs={'required': True})
     code_partner = serializers.CharField(allow_blank=True)

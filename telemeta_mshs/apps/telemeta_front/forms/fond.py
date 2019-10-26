@@ -22,8 +22,8 @@ class FondForm(forms.Form):
                            max_length=16, required=True)
     code_partner = forms.CharField(
         label=_('Cote dans l\'institution partenaire'), required=False)
-    descriptions = forms.CharField(label=_(u'Description'),
-                                   widget=forms.Textarea, required=False)
+    description = forms.CharField(label=_(u'Description'),
+                                  widget=forms.Textarea, required=False)
     conservation_site = forms.CharField(
         label=_(u'Lieu de conservation original'),
         max_length=255, required=True)
@@ -33,19 +33,6 @@ class FondForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(FondForm, self).__init__(*args, **kwargs)
-
-        PUBLIC_ACCESS_CHOICES = (
-            ('none', _(u'Aucun')),
-            ('metadata', _(u'Meta-données')),
-            ('partial', _(u'Partiel')),
-            ('full', _(u'Complet'))
-            )
-
-        self.fields['public_access'] = forms.ChoiceField(
-            label=_(u'Type d\'accès'),
-            choices=PUBLIC_ACCESS_CHOICES,
-            initial="metadata",
-            required=True)
 
         self.fields['institution'] = forms.ChoiceField(
             label=_(u'Institution partenaire'),
