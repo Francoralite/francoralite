@@ -34,7 +34,7 @@ setup(
     'django==1.8.18',
     'django-environ==0.4.4',
     'django-haystack==2.5.1',
-    'django-ipauth==0.4.1-dev',
+    'django-ipauth @ git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev', # noqa
     'django-jqchat',
     'django-rest-swagger==2.1.2',
     'djangorestframework==3.6.4',
@@ -43,11 +43,11 @@ setup(
     'django-filter==1.0.0',
     'ebooklib==0.16',
     'gunicorn==19.7.1',
-    'saved_searches==2.0.0-beta',
-    'sorl-thumbnail-master',
-    'telemeta==1.7.0-dev',
-    #'timeside==0.7', # See https://github.com/Parisson/TimeSide/issues/104
-    'timeside-master', # See https://github.com/Parisson/TimeSide/issues/104
+    'saved_searches @ git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta', # noqa
+    'sorl-thumbnail-master-0 @ git+https://github.com/mariocesar/sorl-thumbnail.git@7ce76bc1ef798a63cbf89b5df83de4da4b12e98d#egg=sorl-thumbnail-master-0',  # noqa
+    'telemeta @ git+https://github.com/Parisson/Telemeta.git@9c6a77974b338781db2971d66c96834b94ab2bb8#egg=telemeta-1.7.0-dev',  # noqa
+    # 'timeside==0.7', # See https://github.com/Parisson/TimeSide/issues/104
+    'timeside-master @ git+https://github.com/Parisson/TimeSide.git@86f699cd61db2c0dc7fed61c4bb9f44ca3d8868f#egg=timeside-master-0', # noqa
     # V2
     'django-model-utils==3.1.1',
     'psycopg2-binary==2.7.4',
@@ -85,7 +85,7 @@ setup(
     'django-cors-headers==2.4.1',
     'python-keycloak==0.16.0',
     'python-jose==3.0.1',
-    'mozilla-django-oidc==francoralite',
+    'mozilla-django-oidc @ git+https://github.com/lluc/mozilla-django-oidc.git@francoralite#egg=mozilla-django-oidc-francoralite', # noqa
   ],
   extras_require={
     'tests': [
@@ -99,18 +99,6 @@ setup(
       'pytest-pythonpath==0.7.2',
     ],
   },
-  dependency_links=[
-    'git+https://github.com/lluc/mozilla-django-oidc.git@francoralite#egg=mozilla-django-oidc-francoralite',
-    'git+https://github.com/achaussier/python-keycloak.git@8a483aa4f10114edd8ebd69a460c33cb766bd80d#egg=python-keycloak-0.16.0',
-    'git+https://github.com/django-haystack/django-haystack.git@v2.5.1#egg=django-haystack-2.5.1',
-    'git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev',
-    'git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat-0',
-    'git+https://github.com/Parisson/ebooklib.git#egg=ebooklib-0.16',
-    'git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta',
-    'git+https://github.com/mariocesar/sorl-thumbnail.git@7ce76bc1ef798a63cbf89b5df83de4da4b12e98d#egg=sorl-thumbnail-master-0',
-    'git+https://github.com/Parisson/Telemeta.git@9c6a77974b338781db2971d66c96834b94ab2bb8#egg=telemeta-1.7.0-dev',
-    'git+https://github.com/Parisson/TimeSide.git@86f699cd61db2c0dc7fed61c4bb9f44ca3d8868f#egg=timeside-master-0',
-  ],
   platforms = ['OS Independent'],
   license = 'CeCILL v2',
   classifiers = CLASSIFIERS,
