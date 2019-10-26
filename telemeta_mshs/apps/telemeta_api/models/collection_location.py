@@ -5,23 +5,22 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.db import models
-from telemeta.models.core import ModelCore, ForeignKey, MetaCore
 from django.utils.translation import ugettext_lazy as _
 from .collection import Collection
 from .location import Location
 
 
-class CollectionLocation(ModelCore):
+class CollectionLocation(models.Model):
     # Description of the table
     "The locations related to a media_collection"
 
     # List of the fields
-    collection = ForeignKey(Collection, verbose_name=_('collection'))
-    location = ForeignKey(
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
+    location = models.ForeignKey(
         Location, verbose_name=_('location'),
         on_delete=models.PROTECT)
 
-    class Meta(MetaCore):
+    class Meta:
         app_label = 'telemeta_api'
         db_table = 'collection_location'
         verbose_name_plural = _('collection_locations')

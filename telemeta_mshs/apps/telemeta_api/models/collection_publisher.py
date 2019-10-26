@@ -4,22 +4,21 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-
-from telemeta.models.core import ModelCore, ForeignKey, MetaCore
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from .collection import Collection
 from .publisher import Publisher
 
 
-class CollectionPublisher(ModelCore):
+class CollectionPublisher(models.Model):
     # Description of the table
     "The publishers who produce a media_collection"
 
     # List of the fields
-    collection = ForeignKey(Collection, verbose_name=_('collection'))
-    publisher = ForeignKey(Publisher, verbose_name=_('publisher'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
+    publisher = models.ForeignKey(Publisher, verbose_name=_('publisher'))
 
-    class Meta(MetaCore):
+    class Meta:
         app_label = 'telemeta_api'
         db_table = 'collection_publisher'
         verbose_name_plural = _('collection_publishers')

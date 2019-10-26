@@ -5,14 +5,12 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 
-from telemeta.models.core import MetaCore
-from telemeta.models.resource import MediaBaseResource
+from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
-from django.db.models import CharField
 from django.db import models
 
 
-class Mission(MediaBaseResource):
+class Mission(models.Model):
     # Description of the table-
     "Mission belongs to a Fonds"
 
@@ -21,15 +19,27 @@ class Mission(MediaBaseResource):
             'telemeta_api.Fond',
             related_name='mission',
             verbose_name=_('Fonds'))
-    code_partner = CharField(
+    title = models.CharField(_('titre'), max_length=255)
+    alt_title = models.CharField(
+        _(u'Titre original'), blank=True, max_length=255)
+    description = models.TextField(_('description'), null=True, blank=True)
+    code = models.CharField(
+        _('cote'), validators=[
+            RegexValidator(
+                regex=r'^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}$',
+                message='Code must conform to XXXX_XXX_000X',
+                code='invalid_code',
+            )
+        ],  max_length=255)
+    code_partner = models.CharField(
         _('Cote de la mission dans l\'institution partenaire'),
         null=True, blank=True, max_length=255)
 
-    class Meta(MetaCore):
+    class Meta():
         app_label = 'telemeta_api'
         db_table = 'mission'
         verbose_name_plural = _('missions')
-        ordering = []
+        ordering = ['code', 'title']
 
     def __unicode__(self):
         return self.title

@@ -66,9 +66,15 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('mission',)
+    filter_fields = ('mission', 'code')
     ordering = ('mission', 'code')
-    search_fields = ('mission', 'code', 'title')
+    search_fields = (
+        'code',
+        'title',
+        'recording_context',
+        'recorded_from_year',
+        'recorded_to_year',
+        'year_published',)
 
     keycloak_scopes = {
         'GET': 'collection:view',
