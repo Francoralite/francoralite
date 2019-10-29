@@ -690,8 +690,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=255, verbose_name='titre')),
-                ('alt_title', models.CharField(max_length=255, verbose_name='Titre original', blank=True)),
                 ('description', models.TextField(null=True, verbose_name='description', blank=True)),
+                ('public_access', models.CharField(default=b'metadata', max_length=16, verbose_name='access type', choices=[(b'none', 'none'), (b'metadata', 'metadata'), (b'mixed', 'mixed'), (b'full', 'full')])),
                 ('code', models.CharField(max_length=255, verbose_name='cote', validators=[django.core.validators.RegexValidator(regex=b'^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}$', message=b'Code must conform to XXXX_XXX_000X', code=b'invalid_code')])),
                 ('code_partner', models.CharField(max_length=255, null=True, verbose_name="Cote de la mission dans l'institution partenaire", blank=True)),
                 ('fonds', models.ForeignKey(related_name='mission', verbose_name='Fonds', to='telemeta_api.Fond')),

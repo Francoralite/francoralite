@@ -27,11 +27,6 @@ PROBLEM_NAMES = [
     "location_gis"
     ]
 
-PROBLEM_ENTITIES = [
-    "fond",
-    "mission"
-]
-
 
 def get_token_header(request):
     auth_token = request.session['oidc_access_token']
@@ -87,8 +82,6 @@ def post(entity, form_entity, request, *args, **kwargs):
 
     # Problem with old Telemeta fields/entities
     if form.is_valid():
-        if entity in PROBLEM_ENTITIES:
-            form.cleaned_data['description'] = form.data['descriptions']
         if entity == 'item':
             # Remove the 'file' entry : if not, there some bugs
             del form.cleaned_data['file']

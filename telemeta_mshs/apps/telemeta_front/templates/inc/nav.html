@@ -138,29 +138,5 @@
       </li>
       <li class="orange"><a href="#" >{% trans "Recherche" %}</a>
       </li>
-
-      {% if user.is_authenticated and user.is_staff %}
-          <li class="has-children red"><a href="#vocabulary" >{% trans "Terminology" %}</a>
-              {% if perms.telemeta.change_physicalformat %}
-                  <ul class="sous-menu">
-                      <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
-                      <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
-                      <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument (vernaculare)" %}</a></li>
-                  </ul>
-              {% else %}
-                  <ul class="sous-menu">
-                      <li><a href="{% url "telemeta-instruments" %}">{% trans "Instruments" %}</a>
-                      <li><a href="{% url "telemeta-instrument-alias" %}">{% trans "Instruments (vernaculare)" %}</a></li>
-                      {% for enu in menu %}
-                          <li>
-                              <a href="{% url "telemeta-enumeration" enu.id %}">{{ enu.name |capfirst }}</a>
-                          </li>
-                      {% endfor %}
-                  </ul>
-              {% endif %}
-          </li>
-      {% endif %}
-
-
   </ul>
 </nav>

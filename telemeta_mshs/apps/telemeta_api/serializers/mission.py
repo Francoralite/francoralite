@@ -18,7 +18,6 @@ class MissionSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(required=True)
     description = serializers.CharField(allow_blank=True)
-    descriptions = serializers.CharField(allow_blank=True)
     code = serializers.CharField(required=True)
     public_access = serializers.CharField(required=True)
     fonds = AsymetricRelatedField.from_serializer(

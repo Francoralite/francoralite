@@ -89,8 +89,7 @@
       "title": "Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]",
       "description": "Sélection de copies commandées par Joseph Le Floc'h en 1994 aux Archives de Folklore de l'Université Laval, pour ses cours sur la chanson de tradition orale franco-canadienne au Département de Musicologie de l'Université de Poitiers.\r\n\r\nLes Archives de folklore et d'ethnologie sont constituées des fonds et des collections, privés ou publics, concernant la culture des francophones en Amérique du Nord. Cette documentation reflète les manifestations tant esthétiques que pragmatiques de cette culture, soit les us et coutumes, les légendes, les contes, les chansons, les métiers, le costume, la religion, la musique, les histoires de vie, etc. Elle se base principalement sur des enquêtes sur le terrain mais aussi sur des dépouillements bibliographiques et des travaux de recherche.",
       "code": "UPOI_AFE_0000",
-      "code_partner": "",
-      "alt_title": ""
+      "code_partner": ""
     },
     "model":"telemeta_api.mission",
     "pk":1

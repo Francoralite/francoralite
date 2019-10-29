@@ -9,6 +9,9 @@ from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
+PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
+                         ('mixed', _('mixed')), ('full', _('full')))
+
 
 class Mission(models.Model):
     # Description of the table-
@@ -20,9 +23,11 @@ class Mission(models.Model):
             related_name='mission',
             verbose_name=_('Fonds'))
     title = models.CharField(_('titre'), max_length=255)
-    alt_title = models.CharField(
-        _(u'Titre original'), blank=True, max_length=255)
     description = models.TextField(_('description'), null=True, blank=True)
+    public_access = models.CharField(
+        _('access type'),
+        choices=PUBLIC_ACCESS_CHOICES,
+        max_length=16, default="metadata")
     code = models.CharField(
         _('cote'), validators=[
             RegexValidator(
