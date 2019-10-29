@@ -98,7 +98,7 @@
           {{ collection.code|upper }}</a>
       </td>
       <td>{{ collection.title|safe }}</td>
-      <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+      <td>{{ collection.description|truncatechars:50|markdown|safe}}          </td>
       <td>{{ collection.mission.title|safe }}</td>
     </tr>
     {% endfor %}
