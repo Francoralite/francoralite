@@ -8,6 +8,7 @@ from .views import (
     fond,
     acquisition_mode,
     mission,
+    document_mission,
     collection,
     collectioncollectors,
     collection_informer,
@@ -164,6 +165,13 @@ router.register(r'skos_concept',
                 base_name='coirault')
 
 # Nested routers
+
+# Mission's nested ------------------------------------
+Mission_router = routers.NestedSimpleRouter(
+    router, r'mission', lookup='mission')
+Mission_router.register(
+    r'document', document_mission.DocumentMissionViewSet)
+
 # Collection's nested ------------------------------------
 Collection_router = routers.NestedSimpleRouter(
     router, r'collection', lookup='collection')
