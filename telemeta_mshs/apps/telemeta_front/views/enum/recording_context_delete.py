@@ -10,4 +10,4 @@ import telemeta_front.tools as tools
 
 class RecordingContextDelete(View):
     def get(self, request, *args, **kwargs):
-        return tools.delete('recording context', request, *args, **kwargs)
+        return tools.delete('recording_context', request, *args, **kwargs)
