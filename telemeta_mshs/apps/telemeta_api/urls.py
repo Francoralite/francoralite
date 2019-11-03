@@ -10,6 +10,7 @@ from .views import (
     mission,
     document_mission,
     collection,
+    document_collection,
     collectioncollectors,
     collection_informer,
     collection_publisher,
@@ -192,6 +193,8 @@ Performance_router = routers.NestedSimpleRouter(
 Performance_router.register(
     r'musician',
     performance_collection_musician.PerformanceCollectionMusicianViewSet)
+Collection_router.register(
+    r'document', document_collection.DocumentCollectionViewSet)
 
 # Item's nested ------------------------------------
 Item_router = routers.NestedSimpleRouter(
