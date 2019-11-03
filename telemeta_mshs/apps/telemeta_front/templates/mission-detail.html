@@ -46,6 +46,9 @@
        <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
      </li>
      <li>
+       <a href="#tab_document" role="tab" data-toggle="tab">{% trans "Média associés" %}</a>
+     </li>
+     <li>
        <a href="#tab_collection" role="tab" data-toggle="tab">{% trans "Enquêtes" %}</a>
      </li>
   </ul>
@@ -136,33 +139,37 @@
 
     </section>
 
-      <section class="tab-pane fade in" id="tab_collection">
-        {% if collections|length > 0 %}
-          <!-- Table to display the collections --->
-          <table class="listing">
-          <tr>
-              <th class="highlight">{% trans "cote" %}</th>
-              <th>{% trans "Nom" %}</th>
-              <th>{% trans "Description" %}</th>
-          </tr>
-          {% for collection in collections %}
-          <tr>
-              <td class="highlight">
-                  <a href="/collection/{{collection.id }}/">
-                  {{ collection.code|upper }}</a>
-              </td>
-              <td>{{ collection.title|safe }}</td>
-              <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
-            </tr>
-            {% endfor %}
-          </table>
-        {% else %}
-          <div class="block-grey">
-          {% trans "Cette mission ne possède pas d'enquête."%}
-          </div>
-        {% endif %}
-        </div>
+    <section class="tab-pane fade in" id="tab_document">
+      {% display_documents %}
     </section>
+
+    <section class="tab-pane fade in" id="tab_collection">
+      {% if collections|length > 0 %}
+        <!-- Table to display the collections --->
+        <table class="listing">
+        <tr>
+            <th class="highlight">{% trans "cote" %}</th>
+            <th>{% trans "Nom" %}</th>
+            <th>{% trans "Description" %}</th>
+        </tr>
+        {% for collection in collections %}
+        <tr>
+            <td class="highlight">
+                <a href="/collection/{{collection.id }}/">
+                {{ collection.code|upper }}</a>
+            </td>
+            <td>{{ collection.title|safe }}</td>
+            <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+        </tr>
+        {% endfor %}
+        </table>
+      {% else %}
+        <div class="block-grey">
+        {% trans "Cette mission ne possède pas d'enquête."%}
+        </div>
+      {% endif %}
+    </section>
+  </div>
 
   {% else %}
     <p>{% trans "Cette mission n'existe pas." %}</p>

@@ -12,7 +12,10 @@ from django.http import HttpResponseRedirect
 from requests.exceptions import RequestException
 
 from telemeta_front.errors import APPLICATION_ERRORS
-from .views.related import write_collection_related, write_item_related
+from .views.related import (
+    write_mission_related,
+    write_collection_related,
+    write_item_related)
 
 HTTP_ERRORS = {
     status.HTTP_400_BAD_REQUEST: APPLICATION_ERRORS['HTTP_API_400'],
@@ -113,6 +116,8 @@ def post_api(endpoint, data, request, entity):
         if response.status_code == status.HTTP_201_CREATED or \
                 response.status_code == status.HTTP_200_OK:
             entity_json = response.json()
+            if entity == "mission":
+                write_mission_related(entity_json, request, headers)
             if entity == "collection":
                 write_collection_related(entity_json, request, headers)
             if entity == "item":
@@ -170,6 +175,11 @@ def patch_api(endpoint, data, request, entity):
         )
         if response.status_code == status.HTTP_200_OK:
             entity_json = response.json()
+            if entity == "mission":
+                write_mission_related(
+                    entity_json,
+                    request,
+                    headers=get_token_header(request=request))
             if entity == "collection":
                 write_collection_related(
                     entity_json,

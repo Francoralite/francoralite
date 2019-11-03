@@ -119,6 +119,8 @@ _keycloak_endpoints:
   - name: "mediatype"
   - name: "mission"
     contributors_authorized: True
+  - name: "mission_document"
+    contributors_authorized: True
   - name: "musical_group"
   - name: "musical_organization"
   - name: "performance_collection_musician"

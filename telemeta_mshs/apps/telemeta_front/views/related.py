@@ -28,6 +28,25 @@ class related():
         self.main_data = new_data
 
 
+def write_mission_related(mission, request, headers):
+    url_documents = \
+        FRONT_HOST_URL + '/api/mission/' + \
+        str(mission["id"]) + '/document/'
+
+    documents_selected = json.loads(request.POST['media'])
+
+    # Use only the mission ID (not all the data of a mission)
+    for doc in documents_selected:
+        doc["mission"] = mission["id"]
+
+    write_relations(mission["id"],
+                    "document_mission",
+                    documents_selected,
+                    url_documents,
+                    "",
+                    headers)
+
+
 def write_collection_related(collection, request, headers):
 
     list_related = [
@@ -200,7 +219,7 @@ def create_record(url_related, item_selected, obj, headers):
 def update_record(url_related, id, obj, headers):
     obj.set_id_data()
     # update a related record
-    response = requests.put(
+    response = requests.patch(
         url_related + str(id) + "/",
         data=obj.main_data,
         headers=headers)

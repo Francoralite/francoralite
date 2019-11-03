@@ -129,3 +129,12 @@ def related_list(*args, **kwargs):
         'field': kwargs['field'],
         'field2': kwargs.get('field2', ""),
         }
+
+
+@register.inclusion_tag('inc/display_documents.html', takes_context=True)
+def display_documents(context):
+    if 'documents' in context:
+        return {
+            'documents': context['documents'],
+        }
+    return {}
