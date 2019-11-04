@@ -26,6 +26,9 @@ class ItemDetail(FrancoraliteTemplateView):
                 '/api/item/' + context['id'] + '/complete/')
             context['form'] = ItemForm()
             context['form_collection'] = CollectionForm()
+            # Obtain values of related documents
+            context['documents'] = tools.request_api(
+                '/api/item/' + context['id'] + '/document/')
 
             # Obtain gaphers of the record
             context['graphers'] = []
@@ -37,6 +40,7 @@ class ItemDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['item'] = {}
+            context['documents'] = []
             context['error'] = err.message
             response = requests.get(
                 FRONT_HOST_URL+'/api/item/'+context['id'])

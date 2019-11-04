@@ -4,15 +4,13 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from requests.exceptions import RequestException
 from settings import FRONT_HOST_URL
 from telemeta_front.forms.item import ItemForm
 from django.shortcuts import render
-from .related import write_item_related
+import telemeta_front.tools as tools
 
 
 class ItemEdit(FormView):
@@ -57,28 +55,5 @@ class ItemEdit(FormView):
                        'graphers': graphers})
 
     def post(self, request, *args, **kwargs):
-
-        form = ItemForm(request.POST)
-        form.fields['file'].required = False
-        id = kwargs.get('id')
-
-        if form.is_valid():
-            try:
-                response = requests.patch(
-                    FRONT_HOST_URL + '/api/item/' + str(id) + '/',
-                    data=form.cleaned_data
-                )
-                if(response.status_code != status.HTTP_200_OK):
-                    return HttpResponseRedirect('/item/edit/' +
-                                                str(id))
-                else:
-                    item = response.json()
-
-                    write_item_related(item['id'], request)
-
-                return HttpResponseRedirect('/item/')
-
-            except RequestException:
-                return HttpResponseRedirect('/item/edit')
-        return self.render_to_response(
-            self.get_context_data(request=self.request, form=form))
+        return tools.patch(
+            'item', ItemForm, request, *args, **kwargs)

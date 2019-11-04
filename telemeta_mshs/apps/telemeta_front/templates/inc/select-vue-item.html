@@ -39,11 +39,15 @@ new Vue({
       optionsEmit: [],
       optionsMusicians: [],
       optionsInstruments: [],
+      documents: [],
   },
   watch: {
     lines () {
       this.blockRemoval = this.lines.length <= 1
-    }
+    },
+    documents () {
+      this.blockRemoval = this.documents.length <= 1
+    },
   },
   computed: {
   },
@@ -478,6 +482,27 @@ new Vue({
     removeLine (lineId) {
       if (!this.blockRemoval) this.lines.splice(lineId, 1)
     },
+    // Documents related (media) -------------------------
+    addDoc(){
+      let checkEmptyLines = this.documents.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.documents.length > 0) return;
+      this.documents.push({
+       number: "1"
+     });
+    },
+    removeDoc (lineId) {
+       if (!this.blockRemoval) this.documents.splice(lineId, 1)
+    },
+    getDocuments: function(){
+      axios.get(`/api/item/${escape({{id}})}/document`).then(
+        response => {
+          this.documents = response.data;
+        }
+      );
+    },
+    replacerMedia: function(key,value){
+      return value;
+    },
   },
   mounted: function () {
     this.getEmits();
@@ -498,8 +523,10 @@ new Vue({
     this.getMusicalOrganizations();
     this.getMusicalGroups();
     this.getLines();
+    this.getDocuments();
     {% else %}
     this.addLine();
+    this.addDoc();
     {% endif %}
   }
 })

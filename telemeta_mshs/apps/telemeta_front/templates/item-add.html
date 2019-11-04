@@ -213,6 +213,57 @@
           {% bootstrap_field form.media_type layout='vertical' %}
         </div>
 
+        <!-- Media ---------------------------------------------->
+        <div class="block-grey">
+          <h2>{% trans "Média associés" %}</h2>
+          <div class="container_line">
+            <template>
+              <div v-for="(doc, index) in documents"
+                v-bind:key="index">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div class=container_line>
+                      <input v-model="doc.id" hidden="True" type="number" />
+                      <span class="container_data one">
+                        <label class="control_label">{% trans "Nakala ID" %}</label>
+                        <input v-model="doc.id_nakala" type="string"/>
+                      </span>
+                      <span class="container_data one">
+                        <label class="control_label">{% trans "Titre" %}</label>
+                        <input v-model="doc.title" type="string"/>
+                      </span>
+                      <span class="container_data four">
+                        <label class="control_label">{% trans "Description" %}</label>
+                        <input v-model="doc.description" type="string"/>
+                      </span>
+                      <span class="container_data two">
+                        <label class="control_label">{% trans "Crédits" %}</label>
+                        <input v-model="doc.credits" type="string"/>
+                      </span>
+                    </div>
+
+                    <div class="center">
+                      <button type="button" @click="removeDoc(index)"
+                        class="btn btn-default">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        {% trans "Supprimer" %}
+                      </button>
+                      <button type="button"
+                        v-if="index + 1 === documents.length"
+                        @click="addDoc" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        {% trans "Ajouter une référence NAKALA" %}
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </template>
+            <input name="media" :value="JSON.stringify(documents,replacerMedia)" />
+          </div>
+        </div>
+
       </div>
 
       <!-- Tab Description --------------------------------------->

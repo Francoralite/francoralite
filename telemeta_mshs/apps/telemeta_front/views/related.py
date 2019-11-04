@@ -151,6 +151,24 @@ def write_item_related(id_main, request, headers):
             headers=headers
         )
 
+    # Documents related (media)
+    url_documents = \
+        FRONT_HOST_URL + '/api/item/' + \
+        str(id_main["id"]) + '/document/'
+
+    documents_selected = json.loads(request.POST['media'])
+
+    # Use only the item ID (not all the data of an item)
+    for doc in documents_selected:
+        doc["item"] = id_main["id"]
+
+    write_relations(id_main["id"],
+                    "document_item",
+                    documents_selected,
+                    url_documents,
+                    "",
+                    headers)
+
 
 def write_relations(id_main,
                     name_main, selected, url_related, name_related, headers):

@@ -239,7 +239,13 @@ class KeycloakMiddleware(object):
             return None
         # Related entities of a collection
         expr = re.compile(
-            "^api/collection/[0-9]*/(document/)$") # noqa
+            "^api/collection/[0-9]*/(document/)$")
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
+        # Related entities of an item
+        expr = re.compile(
+            "^api/item/[0-9]*/(document/)$")
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
