@@ -104,6 +104,24 @@ def write_collection_related(collection, request, headers):
                             headers)
         index = index + 1
 
+    # Documents related (media)
+    url_documents = \
+        FRONT_HOST_URL + '/api/collection/' + \
+        str(collection["id"]) + '/document/'
+
+    documents_selected = json.loads(request.POST['media'])
+
+    # Use only the collection ID (not all the data of a collection)
+    for doc in documents_selected:
+        doc["collection"] = collection["id"]
+
+    write_relations(collection["id"],
+                    "document_collection",
+                    documents_selected,
+                    url_documents,
+                    "",
+                    headers)
+
 
 def write_item_related(id_main, request, headers):
     related = [

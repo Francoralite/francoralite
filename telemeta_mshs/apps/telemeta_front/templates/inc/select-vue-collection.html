@@ -21,10 +21,14 @@ new Vue({
       lines: [],
       optionsEmit:[],
       optionsInstruments: [],
+      documents:[],
   },
   watch: {
     lines () {
       this.blockRemoval = this.lines.length <= 1
+    },
+    documents () {
+      this.blockRemoval = this.documents.length <= 1
     }
   },
   computed: {
@@ -253,6 +257,29 @@ new Vue({
        this.optionsEmit = response.data;
       });
     },
+
+    // Documents related (media) -------------------------
+    addDoc(){
+      let checkEmptyLines = this.documents.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.documents.length > 0) return;
+      this.documents.push({
+       number: "1"
+     });
+    },
+    removeDoc (lineId) {
+       if (!this.blockRemoval) this.documents.splice(lineId, 1)
+    },
+    getDocuments: function(){
+      axios.get(`/api/collection/${escape({{id}})}/document`).then(
+        response => {
+          this.documents = response.data;
+        }
+      );
+    },
+    replacerMedia: function(key,value){
+      return value;
+    },
+
    },
    mounted: function () {
      this.getEmits();
@@ -263,8 +290,10 @@ new Vue({
        this.getLanguages();
        this.getPublishers();
        this.getLines();
+       this.getDocuments();
      {% else %}
       this.addLine();
+      this.addDoc();
      {% endif %}
    }
 })

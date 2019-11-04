@@ -46,6 +46,9 @@
        <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
      </li>
      <li>
+       <a href="#tab_document" role="tab" data-toggle="tab">{% trans "Média associés" %}</a>
+     </li>
+     <li>
        <a href="#tab_item" role="tab" data-toggle="tab">{% trans "Items" %}</a>
      </li>
   </ul>
@@ -197,6 +200,11 @@
           {% endfor %}
         </div>
       </div>
+    </section>
+
+    <!-- Onglet des media -->
+    <section class="tab-pane fade in" id="tab_document">
+      {% display_documents %}
     </section>
 
 

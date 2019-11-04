@@ -70,6 +70,8 @@ _keycloak_endpoints:
     contributors_authorized: True
   - name: "collection_publisher"
     contributors_authorized: True
+  - name: "collection_document"
+      contributors_authorized: True
   - name: "collection"
     contributors_authorized: True
   - name: "coupe"
