@@ -46,9 +46,6 @@
        <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
      </li>
      <li>
-       <a href="#tab_document" role="tab" data-toggle="tab">{% trans "Média associés" %}</a>
-     </li>
-     <li>
        <a href="#tab_collection" role="tab" data-toggle="tab">{% trans "Enquêtes" %}</a>
      </li>
   </ul>
@@ -137,11 +134,10 @@
         </dl>
       </div>
 
+      {% display_documents %}
+
     </section>
 
-    <section class="tab-pane fade in" id="tab_document">
-      {% display_documents %}
-    </section>
 
     <section class="tab-pane fade in" id="tab_collection">
       {% if collections|length > 0 %}

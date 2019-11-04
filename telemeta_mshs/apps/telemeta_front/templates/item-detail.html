@@ -181,10 +181,7 @@
         {% field_data form_collection.recording_context.label|safe item.collection.recording_context.value|safe %}
       </div>
 
-      <div class="block-grey">
-        <h2>{% trans "Médias associés" %}</h2>
-        {% display_documents %}
-      </div>
+      {% display_documents %}
 
     </section>
 
