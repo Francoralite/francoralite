@@ -107,6 +107,8 @@ _keycloak_endpoints:
   - name: "item_musical_organization"
   - name: "item"
     contributors_authorized: True
+  - name: "item_document"
+      contributors_authorized: True
   - name: "item_thematic"
     contributors_authorized: True
   - name: "item_transcoding_flag"

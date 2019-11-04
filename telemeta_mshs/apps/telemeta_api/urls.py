@@ -21,6 +21,7 @@ from .views import (
     location_gis_collection,
     language,
     item,
+    document_item,
     item_collector,
     item_informer,
     item_author,
@@ -229,6 +230,8 @@ Item_router.register(
 Item_router.register(
     r'coirault', item_coirault.ItemCoiraultViewSet
 )
+Item_router.register(
+    r'document', document_item.DocumentItemViewSet)
 Item_router.register(
     r'musical_group',
     item_musical_group.ItemMusicalGroupViewSet)
