@@ -32,11 +32,8 @@ class ItemDetail(FrancoraliteTemplateView):
 
             # Obtain gaphers of the record
             context['graphers'] = []
-            response = requests.get(
-                FRONT_HOST_URL+'/api/timeside/'
-                + context['id'] + '/visualize/')
-            if response.status_code == status.HTTP_200_OK:
-                context['graphers'].append(response.json)
+            context['graphers'].append(tools.request_api(
+                 '/api/timeside/' + context['id'] + '/visualize/'))
 
         except Exception as err:
             context['item'] = {}
