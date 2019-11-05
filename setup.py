@@ -36,7 +36,7 @@ setup(
     'django-haystack==2.5.1',
     'django-ipauth @ git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev', # noqa
     'django-jqchat',
-    'django-rest-swagger==2.1.2',
+    'django-rest-swagger==2.2.0',
     'djangorestframework==3.6.4',
     'djangorestframework-xml==1.4.0',
     'drf-nested-routers==0.90.0',
