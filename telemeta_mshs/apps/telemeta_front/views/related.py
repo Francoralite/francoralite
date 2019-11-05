@@ -142,11 +142,11 @@ def write_item_related(id_main, request, headers):
 
     for rel_item in related:
         write_relations(
-            id_main,
+            id_main["id"],
             "item",
             json.loads(request.POST[rel_item[1]]),
             FRONT_HOST_URL + '/api/item/' +
-            str(id_main) + '/' + rel_item[0] + '/',
+            str(id_main["id"]) + '/' + rel_item[0] + '/',
             rel_item[0],
             headers=headers
         )
