@@ -266,6 +266,8 @@
         <dt class="libelle">{{form.jingle.label|safe}}</dt>
         <dd class="donnee">{{item.jingle|markdown|safe}}</dd>
       </dl>
+
+      {% field_data form.coupe.label|safe item.coupe.name|safe %}
     </section>
 
     <!-- Tab Vox/Instruments ----------------------------------->
