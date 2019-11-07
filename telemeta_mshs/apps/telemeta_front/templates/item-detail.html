@@ -21,20 +21,20 @@
         {% block graphers %}
         var visualizers = {};
         {% for g in graphers %}
-            visualizers["{{g.grapher}}"] = "/api/timeside/{{item.id}}/soundimage/{{g.grapher}}/WIDTHxHEIGHT/";
+            visualizers["{{g.grapher}}"] = "{{url_external}}/api/timeside/{{item.id}}/soundimage/{{g.grapher}}/WIDTHxHEIGHT/";
         {% endfor %}
 
         {% endblock graphers %}
 
         {% if user.is_superuser %}
-             loadPlayer('/api/timeside/{{item.id}}/analyze/',
-              "/api/item/{{item.id}}/download/{{item.code}}.mp3",
+             loadPlayer('{{url_external}}/api/timeside/{{item.id}}/analyze/',
+              "{{url_external}}/api/item/{{item.id}}/download/{{item.code}}.mp3",
               undefined, '{{item.id}}', visualizers,
               CURRENT_USER_NAME,
               true); //true because superuser
         {% else %}
-           loadPlayer('/api/timeside/{{item.id}}/analyze/',
-             "/api/item/{{item.id}}/download/{{item.code}}.mp3",
+           loadPlayer('{{url_external}}/api/timeside/{{item.id}}/analyze/',
+             "{{url_external}}/api/item/{{item.id}}/download/{{item.code}}.mp3",
              undefined, '{{item.id}}', visualizers,
              CURRENT_USER_NAME,
              false); //false because not superuser

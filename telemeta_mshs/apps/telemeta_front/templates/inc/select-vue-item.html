@@ -222,9 +222,8 @@ new Vue({
     },
     getRelated: function(url, field, rel_entity, entity){
        // Get the data from a related table to display it in a field
-       axios.get(url).then(
+       axios.get("{{url_external}}" + url).then(
        res => {
-         console.log(res.data)
          for(i = 0; i < res.data.length; i++) {
            res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
          }
@@ -358,18 +357,18 @@ new Vue({
        );
     },
     getEmits: function(){
-     axios.get('/api/emit_vox/').then(response => {
+     axios.get('{{url_external}}/api/emit_vox/').then(response => {
        this.optionsEmit = response.data;
       });
     },
     getLines: function(){
       // Get all performances, one per line
-      axios.get(`/api/item/${escape({{id}})}/performance/`).then(
+      axios.get(`{{url_external}}/api/item/${escape({{id}})}/performance/`).then(
       res => {
         // For each performance ...
         for( var item in res.data) {
           var rel_entity = 'musician'
-          var url = `/api/item/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician/`;
+          var url = `{{url_external}}/api/item/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician/`;
           var listRelated = []; // list of musicians
           // ... Get all musicians for a line (performance)
           axios.get(url).then(

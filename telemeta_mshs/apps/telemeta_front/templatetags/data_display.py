@@ -77,6 +77,7 @@ def select_vue_item(context):
     if 'id' in context:
         return {
             'id': context['id'],
+            'url_external': context['url_external'],
         }
     return {}
 

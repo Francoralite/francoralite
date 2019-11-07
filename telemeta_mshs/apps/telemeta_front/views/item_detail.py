@@ -9,7 +9,7 @@ from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 from rest_framework import status
 import requests
 
-from settings import FRONT_HOST_URL
+from settings import FRONT_HOST_URL, FRONT_HOST_URL_EXTERNAL
 from telemeta_front.forms.item import ItemForm
 from telemeta_front.forms.collection import CollectionForm
 import telemeta_front.tools as tools
@@ -21,6 +21,7 @@ class ItemDetail(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(ItemDetail, self).get_context_data(**kwargs)
+            context["url_external"] = FRONT_HOST_URL_EXTERNAL
             # Obtain values of the record item
             context["item"] = tools.request_api(
                 '/api/item/' + context['id'] + '/complete/')

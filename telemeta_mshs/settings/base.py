@@ -34,7 +34,7 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djng',
+    'django',
     'saved_searches',
     'rest_framework_swagger',
     'django_filters',
@@ -75,6 +75,7 @@ DATABASES = {
 }
 
 FRONT_HOST_URL = 'http://localhost:8000'
+FRONT_HOST_URL_EXTERNAL = 'http://nginx.francoralite.localhost:8080'
 USE_X_FORWARDED_HOST = True
 
 REST_FRAMEWORK = {
@@ -106,7 +107,7 @@ KEYCLOAK_CONFIG = {
     'KEYCLOAK_AUTHORIZATION_CONFIG': '/tmp/authorization_config.json',
     'KEYCLOAK_METHOD_VALIDATE_TOKEN': 'DECODE',
     'KEYCLOAK_SERVER_URL': 'http://keycloak.francoralite.localhost:8080/auth/',
-    'KEYCLOAK_CLIENT_SECRET_KEY': '557ef7aa-7100-411a-9305-5f19827872aa',
+    'KEYCLOAK_CLIENT_SECRET_KEY': 'cc453f2d-9342-4924-bbb9-53f3eda5e824',
     'KEYCLOAK_CLIENT_PUBLIC_KEY': KEYCLOAK_RSA_PUBLIC_KEY,
 }
 
@@ -124,7 +125,7 @@ AUTHENTICATION_BACKENDS = (
 )
 OIDC_RP_SIGN_ALGO = "RS256"
 OIDC_RP_CLIENT_ID = 'francoralite'
-OIDC_RP_CLIENT_SECRET = '557ef7aa-7100-411a-9305-5f19827872aa'
+OIDC_RP_CLIENT_SECRET = 'cc453f2d-9342-4924-bbb9-53f3eda5e824'
 OIDC_CREATE_USER = True
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = \
