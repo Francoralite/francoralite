@@ -22,8 +22,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="{% static "telemeta_front/js/application.js" %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/abcjs/3.1.1/abcjs_editor_midi-min.js"></script>-->
-  <script src="{% static "telemeta_front/js/abcjs_midi_5.6.5-min.js" %}"></script>
+  <script src="{% static "telemeta_front/js/abcjs_midi_5.9.1-min.js" %}"></script>
 
   {% if user.is_authenticated %}
       <script type='text/javascript'>var CURRENT_USER_NAME = "{{ user.username }}";</script>
@@ -39,7 +38,7 @@
   <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css" />
   <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css" />
   <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@5.6.11/abcjs-midi.css">
+  <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/abcjs-midi.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/telemeta-more.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/style.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "telemeta_front/css/player.css" %}" />
