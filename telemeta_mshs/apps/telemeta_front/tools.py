@@ -47,7 +47,7 @@ def request_api(endpoint):
             FRONT_HOST_URL + endpoint)
 
         if response.status_code == status.HTTP_200_OK:
-            return response.json
+            return response.json()
 
         raise Exception(HTTP_ERRORS[response.status_code])
     except Exception:

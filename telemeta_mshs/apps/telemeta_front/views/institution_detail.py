@@ -19,7 +19,7 @@ class InstitutionDetail(FrancoraliteTemplateView):
                 '/api/institution/' + context['id'])
             # Obtain values of related fonds
             context['fonds'] = tools.request_api(
-                '/api/fond/?institution=' + context['id'])
+                '/api/fond?institution=' + context['id'])
         except Exception as err:
             context['institution'] = {}
             context['fonds'] = []

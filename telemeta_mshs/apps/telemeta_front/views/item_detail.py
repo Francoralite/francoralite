@@ -6,7 +6,6 @@
 
 
 from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
-from rest_framework import status
 import requests
 
 from settings import FRONT_HOST_URL, FRONT_HOST_URL_EXTERNAL
@@ -24,17 +23,17 @@ class ItemDetail(FrancoraliteTemplateView):
             context["url_external"] = FRONT_HOST_URL_EXTERNAL
             # Obtain values of the record item
             context["item"] = tools.request_api(
-                '/api/item/' + context['id'] + '/complete/')
+                '/api/item/' + context['id'] + '/complete')
             context['form'] = ItemForm()
             context['form_collection'] = CollectionForm()
             # Obtain values of related documents
             context['documents'] = tools.request_api(
-                '/api/item/' + context['id'] + '/document/')
+                '/api/item/' + context['id'] + '/document')
 
             # Obtain gaphers of the record
             context['graphers'] = []
             context['graphers'].append(tools.request_api(
-                 '/api/timeside/' + context['id'] + '/visualize/'))
+                 '/api/timeside/' + context['id'] + '/visualize'))
 
         except Exception as err:
             context['item'] = {}

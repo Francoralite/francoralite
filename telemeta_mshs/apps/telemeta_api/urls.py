@@ -74,7 +74,7 @@ urlpatterns = [
         name="location_gis_collection"),
 ]
 
-router = routers.SimpleRouter()
+router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'institution',
                 institution.InstitutionViewSet, base_name='institution')
 router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
@@ -170,13 +170,13 @@ router.register(r'skos_concept',
 
 # Mission's nested ------------------------------------
 Mission_router = routers.NestedSimpleRouter(
-    router, r'mission', lookup='mission')
+    router, r'mission', lookup='mission', trailing_slash=False)
 Mission_router.register(
     r'document', document_mission.DocumentMissionViewSet)
 
 # Collection's nested ------------------------------------
 Collection_router = routers.NestedSimpleRouter(
-    router, r'collection', lookup='collection')
+    router, r'collection', lookup='collection', trailing_slash=False)
 Collection_router.register(
     r'collectors', collectioncollectors.CollectionCollectorsViewSet)
 Collection_router.register(
@@ -190,7 +190,8 @@ Collection_router.register(
 Collection_router.register(
     r'performance', performance_collection.PerformanceCollectionViewSet)
 Performance_router = routers.NestedSimpleRouter(
-    Collection_router, r'performance', lookup='performance')
+    Collection_router, r'performance', lookup='performance',
+    trailing_slash=False)
 Performance_router.register(
     r'musician',
     performance_collection_musician.PerformanceCollectionMusicianViewSet)
@@ -199,7 +200,7 @@ Collection_router.register(
 
 # Item's nested ------------------------------------
 Item_router = routers.NestedSimpleRouter(
-     router, r'item', lookup='item')
+     router, r'item', lookup='item', trailing_slash=False)
 Item_router.register(
     r'collector', item_collector.ItemCollectorViewSet)
 Item_router.register(

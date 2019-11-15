@@ -6,7 +6,6 @@
 
 from django.views.generic.edit import FormView
 from rest_framework import status
-import requests
 from settings import FRONT_HOST_URL, FRONT_HOST_URL_EXTERNAL
 from telemeta_front.forms.item import ItemForm
 from django.shortcuts import render
@@ -24,10 +23,9 @@ class ItemEdit(FormView):
 
         id = kwargs.get('id')
         # Obtain values of the record
-        response = requests.get(
-            FRONT_HOST_URL + '/api/item/' + str(id))
+        response = tools.request_api('/api/item/' + str(id))
         if response.status_code == status.HTTP_200_OK:
-            context['item'] = response.json
+            context['item'] = response
 
         return context
 
@@ -36,23 +34,21 @@ class ItemEdit(FormView):
         id = kwargs.get('id')
 
         # Obtain values of the record
-        item = requests.get(
-            FRONT_HOST_URL + '/api/item/' + str(id))
+        item = tools.request_api('/api/item/' + str(id))
 
-        form = ItemForm(initial=item.json())
+        form = ItemForm(initial=item)
         form.fields['file'].required = False
 
         # Obtain gaphers of the record
         graphers = []
-        response = requests.get(
-            FRONT_HOST_URL+'/api/timeside/'
-            + str(id) + '/visualize/')
-        if response.status_code == status.HTTP_200_OK:
-            graphers.append(response.json)
+        response = tools.request_api(
+            '/api/timeside/' + str(id) + '/visualize')
+        # if response.status_code == status.HTTP_200_OK:
+        graphers.append(response)
 
         return render(request,
                       '../templates/item-add.html',
-                      {'form': form, 'id': id, 'item': item.json(),
+                      {'form': form, 'id': id, 'item': item,
                        'graphers': graphers,
                        'url_external': FRONT_HOST_URL_EXTERNAL})
 

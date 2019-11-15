@@ -13,7 +13,7 @@ from celery import shared_task
 import json
 
 
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -148,6 +148,13 @@ class ItemViewSet(viewsets.ModelViewSet):
     parser_classes = (FormParser, MultiPartParser,)
     queryset = ItemModel.objects.all()
     serializer_class = ItemSerializer
+
+    filter_backends = (filters.DjangoFilterBackend,
+                       filters.OrderingFilter, filters.SearchFilter)
+
+    filter_fields = ('collection', 'media_type',)
+    ordering = ('title', 'code',)
+    search_fields = ('title', 'code', 'collection' 'media_type')
 
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
     MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
@@ -563,7 +570,7 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     @detail_route(
         methods=['get'],
-        url_path='download/(?P<file_names>[a-zA-Z0-9_.]+)/isAvailable', # noqa
+        url_path='download/(?P<file_names>[a-zA-Z0-9_.]+)/isAvailable/', # noqa
         url_name='sound_download_available')
     def download_is_available(self, request, pk=None, file_names=""):
         data = json.dumps({'available': True})

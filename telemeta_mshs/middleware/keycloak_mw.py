@@ -218,34 +218,38 @@ class KeycloakMiddleware(object):
                    settings.KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS):
                 logger.debug('** exclude path found, skipping')
                 return None
+        expr = re.compile("^api/[a-z0-9_]*/[0-9]*$")
+        if expr.match(path)and request.method == 'GET':
+            logger.debug('** exclude path : detail template')
+            return
         # Exclude every URL pointing to the API service,
         #   for a list queryset.
-        expr = re.compile("^api/[a-z0-9_]*/$")
+        expr = re.compile("^api/[a-z0-9_]*$")
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
 
         # Exclude every URL pointing to the API service,
         #   for a detail queryset.
-        expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete/|analyze/|)$")
+        expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete|analyze|)$")
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
         # Related entities of a mission
         expr = re.compile(
-            "^api/mission/[0-9]*/(informers/|collectors/|locations/|document/)$") # noqa
+            "^api/mission/[0-9]*/(informers|collectors|locations|document)$") # noqa
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
         # Related entities of a collection
         expr = re.compile(
-            "^api/collection/[0-9]*/(document/)$")
+            "^api/collection/[0-9]*/(document)$")
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
         # Related entities of an item
         expr = re.compile(
-            "^api/item/[0-9]*/(document/)$")
+            "^api/item/[0-9]*/(document)$")
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
@@ -255,24 +259,24 @@ class KeycloakMiddleware(object):
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
-        expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/$")
+        expr = re.compile("^api/item/[0-9]*/download/[a-zA-Z0-9_.]*$")
         if expr.match(path):
             logger.debug('** exclude path : download MP3 streaming')
             return None
         expr = re.compile(
-            "^api/timeside/[0-9]*/visualize/$")
+            "^api/timeside/[0-9]*/visualize$")
         if expr.match(path):
             logger.debug('** exclude path : visualize sound image')
             return None
         expr = re.compile(
-            "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*/$")
+            "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*$")
         if expr.match(path):
             logger.debug('** exclude path : visualize sound image')
             return None
 
         # Exclude every URL pointing to a list.
         # e.g: institution/  --> list of the institutions
-        expr = re.compile("^[a-z0-9_]*/$")
+        expr = re.compile("^[a-z0-9_]*$")
         if expr.match(path):
             logger.debug('** exclude path : list template')
             return None
@@ -351,14 +355,14 @@ class KeycloakMiddleware(object):
 
         # Exclude every URL pointing to a list.
         # e.g: institution/  --> list of the institutions
-        expr = re.compile("^[a-z0-9_]*/$")
+        expr = re.compile("^[a-z0-9_]*$")
         if expr.match(path):
             logger.debug('** exclude path : list template')
             return
 
         # Exclude every URL pointing to a detail.
         # e.g: institution/1/  --> detail of an institution
-        expr = re.compile("^[a-z0-9_]*/[0-9]*/$")
+        expr = re.compile("^[a-z0-9_]*/[0-9]*$")
         if expr.match(path):
             logger.debug('** exclude path : detail template')
             return
