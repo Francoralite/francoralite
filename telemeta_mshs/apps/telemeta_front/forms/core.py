@@ -25,7 +25,7 @@ class Core():
 
         # Calling the entity via the API
         response = requests.get(
-            FRONT_HOST_URL+'/api/' + entity + '/')
+            FRONT_HOST_URL+'/api/' + entity)
         if response.status_code == 200:
             # Make a JSON structure
             data = response.json()

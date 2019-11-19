@@ -89,11 +89,11 @@ def post(entity, form_entity, request, *args, **kwargs):
             # Remove the 'file' entry : if not, there some bugs
             del form.cleaned_data['file']
         try:
-            post_api(FRONT_HOST_URL + '/api/' + entity_api + '/',
+            post_api(FRONT_HOST_URL + '/api/' + entity_api,
                      data=form.cleaned_data,
                      request=request,
                      entity=entity)
-            return HttpResponseRedirect('/' + entity + '/')
+            return HttpResponseRedirect('/' + entity)
 
         except RequestException:
             return HttpResponseRedirect('/' + entity_url + '/add')
@@ -149,7 +149,7 @@ def patch(entity, form_entity, request, *args, **kwargs):
                 form.cleaned_data['year_published'] = ''
         try:
             response = patch_api(
-                FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id) + '/',
+                FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
                 data=form.cleaned_data,
                 request=request,
                 entity=entity
@@ -157,7 +157,7 @@ def patch(entity, form_entity, request, *args, **kwargs):
             if(response.status_code != status.HTTP_200_OK):
                 return HttpResponseRedirect('/' + entity + '/edit/' +
                                             str(id))
-            return HttpResponseRedirect('/' + entity + '/')
+            return HttpResponseRedirect('/' + entity)
 
         except RequestException:
             return HttpResponseRedirect('/' + entity + '/edit')

@@ -357,13 +357,13 @@ new Vue({
        );
     },
     getEmits: function(){
-     axios.get('{{url_external}}/api/emit_vox/').then(response => {
+     axios.get('{{url_external}}/api/emit_vox').then(response => {
        this.optionsEmit = response.data;
       });
     },
     getLines: function(){
       // Get all performances, one per line
-      axios.get(`{{url_external}}/api/item/${escape({{id}})}/performance/`).then(
+      axios.get(`{{url_external}}/api/item/${escape({{id}})}/performance`).then(
       res => {
         // For each performance ...
         for( var item in res.data) {
