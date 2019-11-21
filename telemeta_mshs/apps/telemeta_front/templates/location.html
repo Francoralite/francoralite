@@ -95,7 +95,7 @@
     <script type="text/javascript">
      function request_location(map, markers) {
        axios.get(
-         `/api/locationgis/?ordering=code`
+         `/api/locationgis?ordering=code`
        ).then(
          res => {
            locs = res.data;

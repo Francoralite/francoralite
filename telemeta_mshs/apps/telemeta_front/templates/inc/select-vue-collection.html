@@ -51,7 +51,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+        `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsCollectors',
         'authority'
        );
@@ -60,7 +60,7 @@ new Vue({
       loading(true);
       this.searchRelated(
       loading, search, this,
-       `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+       `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
        'optionsInformers',
        'authority'
       );
@@ -74,7 +74,7 @@ new Vue({
         loading(true);
         this.searchRelated(
           loading, search, this,
-           `/api/locationgis/?ordering=code&search=${escape(search)}`,
+           `/api/locationgis?ordering=code&search=${escape(search)}`,
            'optionsLocations',
            'location_gis'
         );
@@ -83,7 +83,7 @@ new Vue({
         loading(true);
         this.searchRelated(
           loading, search, this,
-           `/api/language/?ordering=code&search=${escape(search)}`,
+           `/api/language?ordering=code&search=${escape(search)}`,
            'optionsLanguages',
            'language'
         );
@@ -92,7 +92,7 @@ new Vue({
         loading(true);
         this.searchRelated(
           loading, search, this,
-           `/api/publisher/?ordering=code&search=${escape(search)}`,
+           `/api/publisher?ordering=code&search=${escape(search)}`,
            'optionsPublishers',
            'publisher'
         );
@@ -101,7 +101,7 @@ new Vue({
         loading(true);
         this.searchRelated(
           loading, search, this,
-           `/api/instrument/?ordering=name&search=${escape(search)}`,
+           `/api/instrument?ordering=name&search=${escape(search)}`,
            'optionsInstruments',
            'instrument'
         );
@@ -164,12 +164,12 @@ new Vue({
     },
     getLines: function(){
       // Get all performances, one per line
-      axios.get(`/api/collection/${escape({{id}})}/performance/`).then(
+      axios.get(`/api/collection/${escape({{id}})}/performance`).then(
       res => {
         // For each performance ...
         for( var item in res.data) {
           var rel_entity = 'musician'
-          var url = `/api/collection/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician/`;
+          var url = `/api/collection/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician`;
           var listRelated = []; // list of musicians
           // ... Get all musicians for a line (performance)
           axios.get(url).then(
@@ -253,7 +253,7 @@ new Vue({
       if (!this.blockRemoval) this.lines.splice(lineId, 1)
    },
    getEmits: function(){
-     axios.get('/api/emit_vox/').then(response => {
+     axios.get('/api/emit_vox').then(response => {
        this.optionsEmit = response.data;
       });
     },

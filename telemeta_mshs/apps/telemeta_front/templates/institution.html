@@ -47,7 +47,7 @@
   {% for institution in institutions %}
   <tr>
       <td class="highlight">
-          <a href="/institution/{{ institution.id }}/">
+          <a href="/institution/{{ institution.id }}">
             {{ institution.name }}</a>
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
