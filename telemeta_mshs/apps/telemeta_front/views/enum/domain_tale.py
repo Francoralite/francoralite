@@ -17,9 +17,9 @@ class DomainTaleView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(DomainTaleView, self).get_context_data(**kwargs)
-            context['domain_tales'] = tools.request_api('/api/domain_tale/')
+            context['domain_tales'] = tools.request_api('/api/domain_tale')
         except Exception as err:
-            context['domain_tales']
+            context['domain_tales'] = []
             context['error'] = err.message
 
         return context

@@ -17,9 +17,9 @@ class UsefulnessView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(UsefulnessView, self).get_context_data(**kwargs)
-            context['usefulnesss'] = tools.request_api('/api/usefulness/')
+            context['usefulnesss'] = tools.request_api('/api/usefulness')
         except Exception as err:
-            context['usefulnesss']
+            context['usefulnesss'] = []
             context['error'] = err.message
 
         return context

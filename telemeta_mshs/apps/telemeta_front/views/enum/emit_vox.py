@@ -17,9 +17,9 @@ class EmitVoxView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(EmitVoxView, self).get_context_data(**kwargs)
-            context['emit_voxs'] = tools.request_api('/api/emit_vox/')
+            context['emit_voxs'] = tools.request_api('/api/emit_vox')
         except Exception as err:
-            context['emit_voxs']
+            context['emit_voxs'] = []
             context['error'] = err.message
 
         return context

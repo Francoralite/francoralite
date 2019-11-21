@@ -16,8 +16,10 @@ class MetadataAuthorView(FrancoraliteTemplateView):
 
     def get_context_data(self, **kwargs):
         try:
-            context = super(MetadataAuthorView, self).get_context_data(**kwargs)
-            context['metadata_author'] = tools.request_api('/api/metadata_author/')
+            context = super(
+                MetadataAuthorView, self).get_context_data(**kwargs)
+            context['metadata_author'] = tools.request_api(
+                '/api/metadata_author')
         except Exception as err:
             context['metadata_author'] = []
             context['error'] = err.message

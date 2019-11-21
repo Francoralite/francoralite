@@ -17,9 +17,9 @@ class DomainMusicView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(DomainMusicView, self).get_context_data(**kwargs)
-            context['domain_musics'] = tools.request_api('/api/domain_music/')
+            context['domain_musics'] = tools.request_api('/api/domain_music')
         except Exception as err:
-            context['domain_musics']
+            context['domain_musics'] = []
             context['error'] = err.message
 
         return context

@@ -17,7 +17,7 @@ class MediaTypeView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(MediaTypeView, self).get_context_data(**kwargs)
-            context['mediatypes'] = tools.request_api('/api/mediatype/')
+            context['mediatypes'] = tools.request_api('/api/mediatype')
         except Exception as err:
             context['mediatypes'] = []
             context['error'] = err.message

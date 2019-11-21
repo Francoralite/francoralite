@@ -17,9 +17,9 @@ class DanceView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(DanceView, self).get_context_data(**kwargs)
-            context['dances'] = tools.request_api('/api/dance/')
+            context['dances'] = tools.request_api('/api/dance')
         except Exception as err:
-            context['dances']
+            context['dances'] = []
             context['error'] = err.message
 
         return context

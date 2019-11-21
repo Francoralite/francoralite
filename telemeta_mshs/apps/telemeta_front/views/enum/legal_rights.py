@@ -17,7 +17,7 @@ class LegalRightsView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(LegalRightsView, self).get_context_data(**kwargs)
-            context['legal_rights'] = tools.request_api('/api/legalrights/')
+            context['legal_rights'] = tools.request_api('/api/legalrights')
         except Exception as err:
             context['legal_rights'] = []
             context['error'] = err.message

@@ -17,9 +17,9 @@ class DomainVocalView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(DomainVocalView, self).get_context_data(**kwargs)
-            context['domain_vocals'] = tools.request_api('/api/domain_vocal/')
+            context['domain_vocals'] = tools.request_api('/api/domain_vocal')
         except Exception as err:
-            context['domain_vocals']
+            context['domain_vocals'] = []
             context['error'] = err.message
 
         return context

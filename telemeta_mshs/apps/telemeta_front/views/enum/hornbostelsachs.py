@@ -19,9 +19,9 @@ class HornbostelsachsView(FrancoraliteTemplateView):
             context = super(HornbostelsachsView, self).get_context_data(
                 **kwargs)
             context['hornbostelsachss'] = tools.request_api(
-                '/api/hornbostelsachs/')
+                '/api/hornbostelsachs')
         except Exception as err:
-            context['hornbostelsachss']
+            context['hornbostelsachss'] = []
             context['error'] = err.message
 
         return context

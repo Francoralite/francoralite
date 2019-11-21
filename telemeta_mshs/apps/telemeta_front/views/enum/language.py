@@ -16,7 +16,7 @@ class LanguageView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(LanguageView, self).get_context_data(**kwargs)
-            context['languages'] = tools.request_api('/api/language/')
+            context['languages'] = tools.request_api('/api/language')
         except Exception as err:
             context['languages'] = []
             context['error'] = err.message

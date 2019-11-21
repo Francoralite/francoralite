@@ -17,7 +17,7 @@ class PublisherView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(PublisherView, self).get_context_data(**kwargs)
-            context['publishers'] = tools.request_api('/api/publisher/')
+            context['publishers'] = tools.request_api('/api/publisher')
         except Exception as err:
             context['publishers'] = []
             context['error'] = err.message

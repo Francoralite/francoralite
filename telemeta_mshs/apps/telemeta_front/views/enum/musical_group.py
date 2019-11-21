@@ -19,7 +19,7 @@ class MusicalGroupView(FrancoraliteTemplateView):
         try:
             context = super(MusicalGroupView, self).get_context_data(**kwargs)
             context['musical_groups'] = tools.request_api(
-                '/api/musical_group/')
+                '/api/musical_group')
         except Exception as err:
             context['musical_group'] = []
             context['error'] = err.message

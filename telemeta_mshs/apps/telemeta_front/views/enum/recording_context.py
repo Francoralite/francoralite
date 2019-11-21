@@ -19,7 +19,7 @@ class RecordingContextView(FrancoraliteTemplateView):
             context = super(RecordingContextView, self).get_context_data(
                 **kwargs)
             context['recording_contexts'] = tools.request_api(
-                '/api/recordingcontext/')
+                '/api/recordingcontext')
         except Exception as err:
             context['recording_contexts'] = []
             context['error'] = err.message

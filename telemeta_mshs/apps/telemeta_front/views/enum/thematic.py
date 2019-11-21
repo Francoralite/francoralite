@@ -17,9 +17,9 @@ class ThematicView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(ThematicView, self).get_context_data(**kwargs)
-            context['thematics'] = tools.request_api('/api/thematic/')
+            context['thematics'] = tools.request_api('/api/thematic')
         except Exception as err:
-            context['thematics']
+            context['thematics'] = []
             context['error'] = err.message
 
         return context
