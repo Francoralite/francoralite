@@ -160,9 +160,9 @@ def patch(entity, form_entity, request, *args, **kwargs):
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
-            return HttpResponseRedirect('/' + entity + '/edit')
+            return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
-    return HttpResponseRedirect('/' + entity + '/edit')
+    return HttpResponseRedirect('/' + entity + '/edit' + str(id))
 
 
 def patch_api(endpoint, data, request, entity):

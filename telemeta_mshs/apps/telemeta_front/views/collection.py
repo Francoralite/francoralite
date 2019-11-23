@@ -18,7 +18,7 @@ class CollectionView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(CollectionView, self).get_context_data(**kwargs)
-            context['collections'] = tools.request_api('/api/collection/')
+            context['collections'] = tools.request_api('/api/collection')
             context['form'] = CollectionForm
         except Exception as err:
             context['collections'] = []

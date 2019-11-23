@@ -75,7 +75,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/authority/?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+        `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsCollectors',
         'authority'
        );
@@ -84,7 +84,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/authority/?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+        `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsInformers',
         'authority'
        );
@@ -93,7 +93,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/language/?ordering=name&search=${escape(search)}`,
+        `/api/language?ordering=name&search=${escape(search)}`,
         'optionsLanguages',
         'language'
        );
@@ -102,7 +102,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/authority/?is_author=true&ordering=first_name+last_name&search=${escape(search)}`,
+        `/api/authority?is_author=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsAuthors',
         'authority'
        );
@@ -111,7 +111,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/authority/?is_compositor=true&ordering=first_name+last_name&search=${escape(search)}`,
+        `/api/authority?is_compositor=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsCompositors',
         'authority'
        );
@@ -120,7 +120,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/domain_song/?search=${escape(search)}`,
+        `/api/domain_song?search=${escape(search)}`,
         'optionsDomainsongs',
         'domain_song'
        );
@@ -129,7 +129,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/domain_vocal/?search=${escape(search)}`,
+        `/api/domain_vocal?search=${escape(search)}`,
         'optionsDomainvocals',
         'domain_vocal'
        );
@@ -138,7 +138,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/domain_music/?search=${escape(search)}`,
+        `/api/domain_music?search=${escape(search)}`,
         'optionsDomainmusics',
         'domain_music'
        );
@@ -147,7 +147,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/domain_tale/?search=${escape(search)}`,
+        `/api/domain_tale?search=${escape(search)}`,
         'optionsDomaintales',
         'domain_tale'
        );
@@ -156,7 +156,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/usefulness/?search=${escape(search)}`,
+        `/api/usefulness?search=${escape(search)}`,
         'optionsUsefullness',
         'usefulness'
        );
@@ -165,7 +165,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/dance/?search=${escape(search)}`,
+        `/api/dance?search=${escape(search)}`,
         'optionsDances',
         'dance'
        );
@@ -174,7 +174,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/thematic/?search=${escape(search)}`,
+        `/api/thematic?search=${escape(search)}`,
         'optionsThematics',
         'thematic'
        );
@@ -183,7 +183,7 @@ new Vue({
       loading(true);
        this.searchRelated(
        loading, search, this,
-        `/api/skos_concept/?search=${escape(search)}`,
+        `/api/skos_concept?search=${escape(search)}`,
         'optionsCoirault',
         'coirault'
        );
@@ -197,7 +197,7 @@ new Vue({
         loading(true);
         this.searchRelated(
           loading, search, this,
-           `/api/instrument/?ordering=name&search=${escape(search)}`,
+           `/api/instrument?ordering=name&search=${escape(search)}`,
            'optionsInstruments',
            'instrument'
         );
@@ -206,7 +206,7 @@ new Vue({
         loading(true);
         this.searchRelated(
           loading, search, this,
-           `/api/musical_organization/?ordering=name&search=${escape(search)}`,
+           `/api/musical_organization?ordering=name&search=${escape(search)}`,
            'optionsMusicalOrganizations',
            'musical_organization'
         );
@@ -215,7 +215,7 @@ new Vue({
         loading(true);
         this.searchRelated(
           loading, search, this,
-           `/api/musical_group/?ordering=name&search=${escape(search)}`,
+           `/api/musical_group?ordering=name&search=${escape(search)}`,
            'optionsMusicalGroups',
            'musical_group'
         );
@@ -368,7 +368,7 @@ new Vue({
         // For each performance ...
         for( var item in res.data) {
           var rel_entity = 'musician'
-          var url = `{{url_external}}/api/item/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician/`;
+          var url = `{{url_external}}/api/item/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician`;
           var listRelated = []; // list of musicians
           // ... Get all musicians for a line (performance)
           axios.get(url).then(

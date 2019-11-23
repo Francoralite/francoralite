@@ -19,8 +19,8 @@ class CollectionDetail(FrancoraliteTemplateView):
             context['collection'] = tools.request_api(
                  '/api/collection/'+context['id'])
             # # Obtain values of the record collection
-            # context['collection'] = tools.request_api(
-            #      '/api/collection/'+context['id']+'/complete')
+            context['collection'] = tools.request_api(
+              '/api/collection/'+context['id']+'/complete')
             # Obtain values of related items
             context['items'] = tools.request_api(
                 '/api/item?collection=' + context['id'])

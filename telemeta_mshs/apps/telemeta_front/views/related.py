@@ -31,7 +31,7 @@ class related():
 def write_mission_related(mission, request, headers):
     url_documents = \
         FRONT_HOST_URL + '/api/mission/' + \
-        str(mission["id"]) + '/document/'
+        str(mission["id"]) + '/document'
 
     documents_selected = json.loads(request.POST['media'])
 
@@ -65,7 +65,7 @@ def write_collection_related(collection, request, headers):
             nested = 'collectors'
         url = \
             FRONT_HOST_URL + '/api/collection/' + \
-            str(collection["id"]) + '/' + nested + '/'
+            str(collection["id"]) + '/' + nested
         # Create the related records
         write_relations(collection["id"],
                         "collection", items,
@@ -73,7 +73,7 @@ def write_collection_related(collection, request, headers):
 
     url_performances = \
         FRONT_HOST_URL + '/api/collection/' + \
-        str(collection["id"]) + '/performance/'
+        str(collection["id"]) + '/performance'
     index = 0
     # Request the performances ordered by ID
     performances = query_related(
@@ -95,7 +95,7 @@ def write_collection_related(collection, request, headers):
             url_musicians = \
                 FRONT_HOST_URL + '/api/collection/' + \
                 str(collection["id"]) + '/performance/' + \
-                str(performance["id"]) + '/musician/'
+                str(performance["id"]) + '/musician'
             write_relations(performance["id"],
                             "performance_collection",
                             performance["informers"],
@@ -107,7 +107,7 @@ def write_collection_related(collection, request, headers):
     # Documents related (media)
     url_documents = \
         FRONT_HOST_URL + '/api/collection/' + \
-        str(collection["id"]) + '/document/'
+        str(collection["id"]) + '/document'
 
     documents_selected = json.loads(request.POST['media'])
 
@@ -154,7 +154,7 @@ def write_item_related(id_main, request, headers):
     # Documents related (media)
     url_documents = \
         FRONT_HOST_URL + '/api/item/' + \
-        str(id_main["id"]) + '/document/'
+        str(id_main["id"]) + '/document'
 
     documents_selected = json.loads(request.POST['media'])
 
@@ -202,7 +202,6 @@ def write_relations(id_main,
     dict_related = {}
     if list_related != {} and list_related is not None:
         # create a dict to know the id of the related record
-
         for item in list_related:
             if name_related != "":
                 # Add the item ID to the set
@@ -218,7 +217,7 @@ def write_relations(id_main,
         # No exists in list of related : delete the related record
         list_delete = set_related.difference(set_selected)
         for id in list_delete:
-            requests.delete(url_related + str(dict_related[id]) + "/",
+            requests.delete(url_related + "/" + str(dict_related[id]),
                             headers=headers)
 
         # No exists in list of selected : create the related record
@@ -256,7 +255,7 @@ def update_record(url_related, id, obj, headers):
     obj.set_id_data()
     # update a related record
     response = requests.patch(
-        url_related + str(id) + "/",
+        url_related + "/" + str(id),
         data=obj.main_data,
         headers=headers)
     if response.status_code \
