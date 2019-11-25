@@ -18,17 +18,13 @@
 
 import re
 import logging
-import requests
 from django.conf import settings
 from django.http.response import JsonResponse
 from keycloak import KeycloakOpenID
 from keycloak.exceptions import KeycloakInvalidTokenError
-from rest_framework.exceptions import PermissionDenied, AuthenticationFailed
+from rest_framework.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from mozilla_django_oidc.utils import absolutify, import_from_settings
-from django.utils.crypto import get_random_string
-from urllib import urlencode
 
 
 logger = logging.getLogger(__name__)
@@ -243,8 +239,9 @@ class KeycloakMiddleware(object):
             return None
         # Related entities of a collection
         expr = re.compile(
-            "^api/collection/[0-9]*/(document)$")
-        if expr.match(path) and request.method == 'GET':
+            "^api/collection/[0-9]*/document$")
+        if expr.match(path) and \
+                (request.method == 'GET' or request.method == 'HEAD'):
             logger.debug('** exclude path : display template')
             return None
         # Related entities of an item
@@ -267,6 +264,11 @@ class KeycloakMiddleware(object):
             "^api/timeside/[0-9]*/visualize$")
         if expr.match(path):
             logger.debug('** exclude path : visualize sound image')
+            return None
+        expr = re.compile(
+            "^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/isAvailable/$")
+        if expr.match(path):
+            logger.debug('** exclude path : MP3 is available')
             return None
         expr = re.compile(
             "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*$")

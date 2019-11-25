@@ -207,10 +207,10 @@ def delete(entity, request, *args, **kwargs):
             FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
             request=request
             )
-        return HttpResponseRedirect('/' + entity + '/')
+        return HttpResponseRedirect('/' + entity)
 
     except RequestException:
-        return HttpResponseRedirect('/' + entity + '/')
+        return HttpResponseRedirect('/' + entity)
 
 
 def delete_api(endpoint, request):
