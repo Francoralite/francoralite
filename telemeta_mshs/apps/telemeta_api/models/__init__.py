@@ -58,6 +58,7 @@ from .usefulness import Usefulness
 from .skos_collection import SkosCollection
 from .skos_concept import SkosConcept
 from .document import Document
+from .document_fond import DocumentFond
 from .document_mission import DocumentMission
 from .document_collection import DocumentCollection
 from .document_item import DocumentItem
