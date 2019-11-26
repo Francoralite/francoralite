@@ -85,6 +85,8 @@ _keycloak_endpoints:
   - name: "ext_media_item"
   - name: "fond"
     contributors_authorized: True
+  - name: "fond_document"
+    contributors_authorized: True
   - name: "hornbostelsachs"
   - name: "institution"
   - name: "instrument"
