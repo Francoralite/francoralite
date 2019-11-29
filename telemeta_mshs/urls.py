@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^admin/django/', include(admin.site.urls)),
     url(r'^', include(telemeta_api_urls)),
     url(r'^api/', include(telemeta_api_urls.router.urls)),
+    url(r'^api/', include(telemeta_api_urls.Fond_router.urls)),
     url(r'^api/', include(telemeta_api_urls.Mission_router.urls)),
     url(r'^api/', include(telemeta_api_urls.Collection_router.urls)),
     url(r'^api/', include(telemeta_api_urls.Performance_router.urls)),

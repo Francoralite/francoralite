@@ -231,6 +231,12 @@ class KeycloakMiddleware(object):
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
+        # Related entities of a fond
+        expr = re.compile(
+            "^api/fond/[0-9]*/(document)$") # noqa
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
         # Related entities of a mission
         expr = re.compile(
             "^api/mission/[0-9]*/(informers|collectors|locations|document)$") # noqa

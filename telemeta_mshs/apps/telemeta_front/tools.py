@@ -13,6 +13,7 @@ from requests.exceptions import RequestException
 
 from telemeta_front.errors import APPLICATION_ERRORS
 from .views.related import (
+    write_fond_related,
     write_mission_related,
     write_collection_related,
     write_item_related)
@@ -65,6 +66,10 @@ def post(entity, form_entity, request, *args, **kwargs):
         entity_api = entity.replace('_', '')
 
     # Processing URL for Mission entity
+    if entity == 'fond':
+        entity_url = 'institution/' + kwargs['id_institution'] \
+            + '/' + entity
+    # Processing URL for Mission entity
     if entity == 'mission':
         entity_url = 'institution/' + kwargs['id_institution'] \
             + '/fond/' + kwargs['id_fond']\
@@ -116,6 +121,8 @@ def post_api(endpoint, data, request, entity):
         if response.status_code == status.HTTP_201_CREATED or \
                 response.status_code == status.HTTP_200_OK:
             entity_json = response.json()
+            if entity == "fond":
+                write_fond_related(entity_json, request, headers)
             if entity == "mission":
                 write_mission_related(entity_json, request, headers)
             if entity == "collection":
@@ -166,7 +173,6 @@ def patch(entity, form_entity, request, *args, **kwargs):
 
 
 def patch_api(endpoint, data, request, entity):
-
     try:
         response = requests.patch(
             endpoint,
@@ -175,6 +181,11 @@ def patch_api(endpoint, data, request, entity):
         )
         if response.status_code == status.HTTP_200_OK:
             entity_json = response.json()
+            if entity == "fond":
+                write_fond_related(
+                    entity_json,
+                    request,
+                    headers=get_token_header(request=request))
             if entity == "mission":
                 write_mission_related(
                     entity_json,

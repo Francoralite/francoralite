@@ -71,6 +71,8 @@
         {% field_data form.description.label|safe fond.description|markdown|safe %}
       </div>
 
+      {% display_documents %}
+
       <div class="block-grey">
         <h2>{% trans "Période" %}</h2>
         <h3>{% trans "Années d'enregistrement" %}</h3>

@@ -28,6 +28,25 @@ class related():
         self.main_data = new_data
 
 
+def write_fond_related(fond, request, headers):
+    url_documents = \
+        FRONT_HOST_URL + '/api/fond/' + \
+        str(fond["id"]) + '/document'
+
+    documents_selected = json.loads(request.POST['media'])
+
+    # Use only the fond ID (not all the data of a fond)
+    for doc in documents_selected:
+        doc["fond"] = fond["id"]
+
+    write_relations(fond["id"],
+                    "document_fond",
+                    documents_selected,
+                    url_documents,
+                    "",
+                    headers)
+
+
 def write_mission_related(mission, request, headers):
     url_documents = \
         FRONT_HOST_URL + '/api/mission/' + \

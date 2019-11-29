@@ -23,9 +23,13 @@ class FondDetail(FrancoraliteTemplateView):
             # Obtain values of related fonds
             context['missions'] = tools.request_api(
                 '/api/mission?fonds=' + context['id'])
+            # Obtain values of related documents
+            context['documents'] = tools.request_api(
+                '/api/fond/' + context['id'] + '/document')
         except Exception as err:
             context['fond'] = {}
             context['missions'] = []
             context['form'] = FondForm()
+            context['documents'] = []
             context['error'] = err.message
         return context

@@ -14,7 +14,7 @@ class DocumentFondSerializer(DocumentSerializer):
     """
     Common serializer for all DocumentFond actions
     """
-    mission = AsymetricRelatedField.from_serializer(
+    fond = AsymetricRelatedField.from_serializer(
          FondSerializer, kwargs={'required': True})
 
     class Meta:
