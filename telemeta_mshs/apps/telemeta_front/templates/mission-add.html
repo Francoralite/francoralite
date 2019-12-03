@@ -76,19 +76,21 @@
                 <input v-model="doc.id" hidden="True" type="number" />
                 <span class="container_data one">
                   <label class="control_label">{% trans "Nakala ID" %}</label>
-                  <input v-model="doc.id_nakala" type="string"/>
+                  <input v-model="doc.id_nakala" type="string"
+                    required="required" pattern=".*\S+.*"/>
                 </span>
                 <span class="container_data one">
                   <label class="control_label">{% trans "Titre" %}</label>
-                  <input v-model="doc.title" type="string"/>
+                  <input v-model="doc.title" type="string"
+                  required="required" pattern=".*\S+.*"/>
                 </span>
                 <span class="container_data four">
                   <label class="control_label">{% trans "Description" %}</label>
-                  <input v-model="doc.description" type="string"/>
+                  <input v-model="doc.description" type="string" required="required"/>
                 </span>
                 <span class="container_data two">
                   <label class="control_label">{% trans "Crédits" %}</label>
-                  <input v-model="doc.credits" type="string"/>
+                  <input v-model="doc.credits" type="string" required="required"/>
                 </span>
               </div>
 
@@ -98,16 +100,16 @@
                   <span class="glyphicon glyphicon-trash"></span>
                   {% trans "Supprimer" %}
                 </button>
-                <button type="button"
-                  v-if="index + 1 === documents.length"
-                  @click="addDoc" class="btn btn-default">
-                  <span class="glyphicon glyphicon-plus"></span>
-                  {% trans "Ajouter une référence NAKALA" %}
-                </button>
               </div>
 
             </div>
           </div>
+          <button type="button"
+          v-if="index + 1 === documents.length"
+          @click="addDoc" class="btn btn-default">
+          <span class="glyphicon glyphicon-plus"></span>
+          {% trans "Ajouter une référence NAKALA" %}
+        </button>
         </div>
       </template>
       <input name="media" type="hidden" :value="JSON.stringify(documents,replacerMedia)" />
@@ -139,12 +141,14 @@
          });
         },
         removeDoc (lineId) {
-           if (!this.blockRemoval) this.documents.splice(lineId, 1)
+          this.documents.splice(lineId, 1)
         },
         getDocuments: function(){
           axios.get(`/api/mission/${escape({{id}})}/document`).then(
             response => {
-              this.documents = response.data;
+              if(response.data.length>0){
+                this.documents = response.data;
+              }
             }
           );
         },
@@ -155,10 +159,8 @@
       mounted: function() {
         {% if id %}
         this.getDocuments();
-        {% else %}
-        this.addDoc();
         {% endif %}
-
+        this.addDoc();
       }
     });
 </script>
