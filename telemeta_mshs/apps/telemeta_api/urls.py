@@ -62,6 +62,7 @@ from .views import (
     usefulness,
     timeside_item,
     global_search,
+    advanced_search,
     skos_collection,
     skos_concept
     )
@@ -70,6 +71,8 @@ urlpatterns = [
     url(r'^jsonrpc/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),
     url(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
         name="search"),
+    url(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
+        name="search_advanced"),
     url(r'^api/locationgiscollection/$',
         location_gis_collection.LocationGisCollectionList.as_view(),
         name="location_gis_collection"),
