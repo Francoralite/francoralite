@@ -792,6 +792,7 @@ table.instruments tbody td {
 table.listing {
     border-spacing: 0;
     margin-top: 3em;
+    width: 100%;
 }
 
 .fullpage table.listing {
@@ -811,7 +812,7 @@ table.listing th, table.listing td {
 table.listing thead { background: #e8eaf0 }
 table.listing thead th {
     font-size: 0.9em;
-    padding: 3px .5em 3px;
+    padding: 1rem .5em;
 }
 table.listing thead th :link:hover, table.listing thead th :visited:hover {
     background-color: transparent;
@@ -837,6 +838,7 @@ table.listing tbody td, table.listing tbody th {
 table.listing tbody td {
     font-weight: bold;
     vertical-align: middle;
+    padding: 1rem;
 }
 
 table.listing tbody td.tmp {
@@ -845,10 +847,13 @@ table.listing tbody td.tmp {
 table.listing tbody td a:hover, table.listing tbody th a:hover {
     background-color: transparent;
 }
-table.listing tbody tr { border-top: 1px solid #ddd }
+table.listing tbody tr { border-top: 1px solid #ddd; }
 table.listing tbody tr:hover { background: #cecece !important; }
 table.listing tbody tr:nth-child(even) {background: white;}
 table.listing tbody tr:nth-child(odd) {background: #f7f7f7;}
+
+table.listing caption {
+margin-bottom: 1rem;}
 
 table td.error {
     color: red;
@@ -859,6 +864,10 @@ table td.error {
     color: red;
     font-weight: bold;
     font-size: 110%;
+}
+
+.dropdown.v-select.searchable {
+    max-width: 500px;
 }
 
 .gmap {
