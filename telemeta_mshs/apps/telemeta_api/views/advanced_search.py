@@ -13,21 +13,26 @@ from ..models.collectioncollectors import CollectionCollectors
 from ..models.collection_location import CollectionLocation
 from ..models.collection_publisher import CollectionPublisher
 from ..models.collection_language import CollectionLanguage
+from ..models.item import Item
+from ..models.item_informer import ItemInformer
+from ..models.item_collector import ItemCollector
+from ..models.item_dance import ItemDance
+from ..models.item_language import ItemLanguage
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
 class AdvancedSearchList(generics.ListAPIView):
     serializer_class = AdvancedSearchSerializer
 
-    def get_related_entities(self, entity_name, table):
+    def get_related_entities(self, type, entity_name, table):
         result = []
         entities = self.request.query_params.get(entity_name, None)
         if entities is not None:
             value = self.request.query_params[entity_name]
             filter_entity = entity_name + '__exact'
-            result = table.objects.select_related('collection')\
+            result = table.objects.select_related('type')\
                 .filter(**{filter_entity: value})\
-                .values_list("collection", flat=True)
+                .values_list(type, flat=True)
         return (entities, result)
 
     def getIntersection(self, s):
@@ -39,10 +44,11 @@ class AdvancedSearchList(generics.ListAPIView):
 
     def get_queryset(self):
         limit = 5
-        collections_id = []
         all_results = []
 
-        list_entities = [
+        # Collections --------------------------------
+        collections_id = []
+        list_coll_entities = [
             ('informer', CollectionInformer),
             ('collector', CollectionCollectors),
             ('location', CollectionLocation),
@@ -52,8 +58,9 @@ class AdvancedSearchList(generics.ListAPIView):
 
         # Query collections related
         merge_collection = []
-        for l in list_entities:
-            entities, coll = self.get_related_entities(l[0], l[1])
+        for l in list_coll_entities:
+            entities, coll = self.get_related_entities(
+                "collection", l[0], l[1])
             if entities is not None:
                 merge_collection.append(coll)
 
@@ -68,6 +75,42 @@ class AdvancedSearchList(generics.ListAPIView):
         # Query collections with the Ids
         collections = Collection.objects.filter(**kwargs)[:limit]
 
+        # Items --------------------------------
+        items_id = []
+        list_item_entities = [
+            ('informer', ItemInformer),
+            ('collector', ItemCollector),
+            ('dance', ItemDance),
+            ('language', ItemLanguage)
+        ]
+
+        # Query items related
+        merge_item = []
+        for l in list_item_entities:
+            entities, coll = self.get_related_entities("item", l[0], l[1])
+            if entities is not None:
+                merge_item.append(coll)
+
+        # Intersection of the values_list
+        if len(merge_item) > 0:
+            items_id = self.getIntersection(merge_item)
+
+        # Composing the list of item IDs
+        kwargs = {}
+        kwargs['id__in'] = [x for x in items_id]
+
+        # Query items with the Ids
+        items = Item.objects.filter(**kwargs)[:limit]
+        import sys
+        print '-------- items ---------'
+        print items
+        print '------------------'
+        sys.stdout.flush()
+
         all_results = list(itertools.chain(
-            collections))
+            collections,
+            items))
+        # all_results["collection"] = list(collections)
+        # all_results["item"] = list(items)
+
         return all_results
