@@ -101,11 +101,6 @@ class AdvancedSearchList(generics.ListAPIView):
 
         # Query items with the Ids
         items = Item.objects.filter(**kwargs)[:limit]
-        import sys
-        print '-------- items ---------'
-        print items
-        print '------------------'
-        sys.stdout.flush()
 
         all_results = list(itertools.chain(
             collections,

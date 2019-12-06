@@ -86,21 +86,24 @@
 
   </div>
 
-  <button type="submit" id="btn" class="btn btn-default"><span
-    class="glyphicon glyphicon-search"></span></button>
+  <button type="submit" id="btn" class="btn btn-default">
+    <span class="glyphicon glyphicon-search">
+    </span>
+    {% trans "Effectuer une recherche" %}
+  </button>
 </form>
 
 <div v-if="search">
   <h2>Résultats</h2>
 
-  <div v-if="results.length">
+  <div v-if="result_collections.length">
     <table class="listing">
       <caption>{% trans "Enquête(s)" %}</caption>
       <thead>
         <th class="highlight">{% trans "Cote" %}</th>
         <th>{% trans "Titre" %}</th>
       </thead>
-      <tr  v-for="res in results">
+      <tr  v-for="res in result_collections">
         <td class="highlight">
           <a :href="'/collection/' + res.id">
             ${res.code}</a>
@@ -114,6 +117,29 @@
   <div v-else>
     {% trans "Il n'y pas d'enquête qui correspond à ces critères." %}
   </div>
+
+  <div v-if="result_items.length">
+    <table class="listing">
+      <caption>{% trans "Item(s)" %}</caption>
+      <thead>
+        <th class="highlight">{% trans "Cote" %}</th>
+        <th>{% trans "Titre" %}</th>
+      </thead>
+      <tr  v-for="res in result_items">
+        <td class="highlight">
+          <a :href="'/item/' + res.id">
+            ${res.code}</a>
+          </td>
+          <td>
+            ${res.title}
+          </td>
+        </tr>
+      </table>
+  </div>
+  <div v-else>
+    {% trans "Il n'y pas d'item qui correspond à ces critères." %}
+  </div>
+
 </div>
 
 
@@ -128,7 +154,8 @@ new Vue({
   delimiters: ['${', '}'],
   el: '#app',
   data: {
-    results: [],
+    result_collections: [],
+    result_items: [],
     informers: [],
     optionsInformers: [],
     collectors: [],
@@ -199,8 +226,19 @@ new Vue({
       this.informers_id+'&'+this.collectors_id)
       .then(res => {
         // response
-        this.results = res.data;
         this.search = true;
+        // RAZ previous results
+        this.result_collections = [];
+        this.result_items = [];
+        
+        res.data.forEach(element => {
+            if (element.entity == 'Collection'){
+              this.result_collections.push(element);
+            };
+            if (element.entity == 'Item'){
+              this.result_items.push(element);
+            };
+        });
       })
       .catch(err => {
         // error
