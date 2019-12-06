@@ -90,25 +90,31 @@
     class="glyphicon glyphicon-search"></span></button>
 </form>
 
-<h2>Résultats</h2>
+<div v-if="search">
+  <h2>Résultats</h2>
 
-<table class="listing">
-  <caption>{% trans "Collection(s)" %}</caption>
-  <thead>
-    <th class="highlight">{% trans "Cote" %}</th>
-    <th>{% trans "Titre" %}</th>
-  </thead>
-  <tr  v-for="res in results">
-    <td class="highlight">
-      <a :href="'/collection/' + res.id">
-        ${res.code}</a>
-    </td>
-    <td>
-      ${res.title}
-    </td>
-  </tr>
-</table>
-
+  <div v-if="results.length">
+    <table class="listing">
+      <caption>{% trans "Enquête(s)" %}</caption>
+      <thead>
+        <th class="highlight">{% trans "Cote" %}</th>
+        <th>{% trans "Titre" %}</th>
+      </thead>
+      <tr  v-for="res in results">
+        <td class="highlight">
+          <a :href="'/collection/' + res.id">
+            ${res.code}</a>
+          </td>
+          <td>
+            ${res.title}
+          </td>
+        </tr>
+      </table>
+  </div>
+  <div v-else>
+    {% trans "Il n'y pas d'enquête qui correspond à ces critères." %}
+  </div>
+</div>
 
 
 </div> <!-- end app -->
@@ -126,7 +132,8 @@ new Vue({
     informers: [],
     optionsInformers: [],
     collectors: [],
-    optionsCollectors: []
+    optionsCollectors: [],
+    search: false
   },
   watch: {
     results(){
@@ -193,6 +200,7 @@ new Vue({
       .then(res => {
         // response
         this.results = res.data;
+        this.search = true;
       })
       .catch(err => {
         // error
