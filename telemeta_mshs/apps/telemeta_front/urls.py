@@ -24,6 +24,7 @@ from .views import (
     item, item_add, item_detail, item_edit,
     item_delete,
     search as search_integration,
+    search_advanced,
 )
 
 from .views.enum import (
@@ -75,6 +76,8 @@ urlpatterns = [
     url(r'^select2/', include('django_select2.urls')),
     url(r'^search/', search_integration.SearchView.as_view(),
         name="search-simple"),
+    url(r'^search_advanced/', search_advanced.SearchAdvancedView.as_view(),
+        name="search-advanced"),
 
     # Institutions
     url(r'^institution$', institution.InstitutionView.as_view(),
