@@ -88,7 +88,7 @@
 
   <!-- LOCATIONS -->
   <div class="container_data">
-    <label class="control_label">{% trans "Lieux" %}</label>
+    <label class="control_label">{% trans "Lieu" %}</label>
     <v-select
       multiple
       v-model="locations"
@@ -108,6 +108,26 @@
         onclick="window.open(this.href); return false;">
         ${ option.code }</a>
       </template>
+    </v-select>
+  </div>
+
+  <!-- DANCES -->
+  <div class="container_data">
+    <label class="control_label">{% trans "Danse" %}</label>
+    <v-select
+      multiple
+      v-model="dances"
+      label="name"
+      :filterable="false"
+      @search="onSearchDance"
+      :options="optionsDances"
+      placeholder="{% trans "Recherche sur danse" %} ...">
+        <template slot="option" slot-scope="option">
+          <p>${ option.name }</p>
+        </template>
+        <template slot="selected-option" slot-scope="option">
+          ${ option.name }
+        </template>
     </v-select>
   </div>
 
@@ -188,6 +208,8 @@ new Vue({
     optionsCollectors: [],
     locations: [],
     optionsLocations: [],
+    dances: [],
+    optionsDances: [],
     search: false
   },
   watch: {
@@ -213,6 +235,12 @@ new Vue({
     locations_id: function(){
       if(this.locations.length > 0){
         return 'location='+this.locations[0].id;
+      }
+      return '';
+    },
+    dances_id: function(){
+      if(this.dances.length > 0){
+        return 'location='+this.dances[0].id;
       }
       return '';
     }
@@ -264,9 +292,21 @@ new Vue({
            'location_gis'
         );
     },
+    onSearchDance(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/dance?search=${escape(search)}`,
+        'optionsDances',
+        'dance'
+       );
+    },
     submitform(){
       axios.get('/advancedsearch?'+
-      this.informers_id+'&'+this.collectors_id+'&'+this.locations_id)
+      this.informers_id+'&'+
+      this.collectors_id+'&'+
+      this.locations_id+'&'+
+      this.dances.id)
       .then(res => {
         // response
         this.search = true;
