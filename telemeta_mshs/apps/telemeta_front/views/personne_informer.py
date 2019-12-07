@@ -19,7 +19,7 @@ class PersonneInformerView(FrancoraliteTemplateView):
             context = super(PersonneInformerView, self).get_context_data(
                 **kwargs)
             context['personnes'] = tools.request_api(
-                '/api/authority/?is_informer=true')
+                '/api/authority?is_informer=true')
             context['form'] = PersonneForm
         except Exception as err:
             context['personnes'] = []

@@ -19,7 +19,7 @@ class PersonneComposerView(FrancoraliteTemplateView):
             context = super(PersonneComposerView, self).get_context_data(
                 **kwargs)
             context['personnes'] = tools.request_api(
-                '/api/authority/?is_composer=true')
+                '/api/authority?is_composer=true')
             context['form'] = PersonneForm
         except Exception as err:
             context['personnes'] = []
