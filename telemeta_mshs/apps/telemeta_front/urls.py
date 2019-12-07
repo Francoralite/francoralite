@@ -165,7 +165,7 @@ urlpatterns = [
     # Fonds
     url(r'^fond$', fond.FondView.as_view(),
         name="fond"),
-    url(r'^fond/add$',
+    url(r'^institution/(?P<id_institution>[0-9]+)/fond/add$',
         fond_add.FondAdd.as_view(),
         name='fond-add'),
     url(r'^fond/(?P<id>[0-9]+)$',

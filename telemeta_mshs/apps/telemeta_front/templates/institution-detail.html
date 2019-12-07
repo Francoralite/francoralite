@@ -27,7 +27,7 @@
 
 {% block title_buttons %}
   {% if user.is_authenticated %}
-    <a href="{% url "fond-add" %}" class="btn_add btn btn-default">
+    <a href="{% url "fond-add" id_institution=institution.id %}" class="btn_add btn btn-default">
         <span class="glyphicon glyphicon-plus"></span>
         {% trans "Créer un fonds" %}
     </a>
