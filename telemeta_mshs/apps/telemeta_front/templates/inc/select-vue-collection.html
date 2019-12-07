@@ -267,12 +267,14 @@ new Vue({
      });
     },
     removeDoc (lineId) {
-       if (!this.blockRemoval) this.documents.splice(lineId, 1)
+       this.documents.splice(lineId, 1)
     },
     getDocuments: function(){
       axios.get(`/api/collection/${escape({{id}})}/document`).then(
         response => {
-          this.documents = response.data;
+          if(response.data.length>0){
+            this.documents = response.data;
+          }
         }
       );
     },
