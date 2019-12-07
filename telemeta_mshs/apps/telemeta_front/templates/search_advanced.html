@@ -35,6 +35,7 @@
 {{ form.media }}
 <div id="app">
 
+<!-- INFORMERS -->
 <form @submit.prevent="submitform">
   <div class="container_data">
     <label class="control_label">{% trans "Informateur" %}</label>
@@ -60,7 +61,7 @@
     </v-select>
   </div>
 
-
+  <!-- COLLECTORS -->
   <div class="container_data">
     <label class="control_label">{% trans "Enquêteur" %}</label>
     <v-select
@@ -83,8 +84,33 @@
           ${ option.first_name } ${ option.last_name }</a>
         </template>
     </v-select>
-
   </div>
+
+  <!-- LOCATIONS -->
+  <div class="container_data">
+    <label class="control_label">{% trans "Lieux" %}</label>
+    <v-select
+      multiple
+      v-model="locations"
+      label="name"
+      :filterable="false"
+      @search="onSearchLocations"
+      :options="optionsLocations"
+      placeholder="{% trans "Recherche sur lieu" %} ...">
+      <template slot="option" slot-scope="option">
+        <b>${ option.code }</b>
+        <p>${ option.name }</p>
+        <p><a :href="option.url"
+          onclick="window.open(this.href); return false;">Fiche...</a></p>
+      </template>
+      <template slot="selected-option" slot-scope="option">
+        <a :href="option.url"
+        onclick="window.open(this.href); return false;">
+        ${ option.code }</a>
+      </template>
+    </v-select>
+  </div>
+
 
   <button type="submit" id="btn" class="btn btn-default">
     <span class="glyphicon glyphicon-search">
@@ -160,6 +186,8 @@ new Vue({
     optionsInformers: [],
     collectors: [],
     optionsCollectors: [],
+    locations: [],
+    optionsLocations: [],
     search: false
   },
   watch: {
@@ -179,6 +207,12 @@ new Vue({
     collectors_id: function(){
       if(this.collectors.length > 0){
         return 'collector='+this.collectors[0].id;
+      }
+      return '';
+    },
+    locations_id: function(){
+      if(this.locations.length > 0){
+        return 'location='+this.locations[0].id;
       }
       return '';
     }
@@ -221,16 +255,25 @@ new Vue({
         'authority'
        );
     },
+    onSearchLocations(search, loading) {
+        loading(true);
+        this.searchRelated(
+          loading, search, this,
+           `/api/locationgis?ordering=code&search=${escape(search)}`,
+           'optionsLocations',
+           'location_gis'
+        );
+    },
     submitform(){
       axios.get('/advancedsearch?'+
-      this.informers_id+'&'+this.collectors_id)
+      this.informers_id+'&'+this.collectors_id+'&'+this.locations_id)
       .then(res => {
         // response
         this.search = true;
         // RAZ previous results
         this.result_collections = [];
         this.result_items = [];
-        
+
         res.data.forEach(element => {
             if (element.entity == 'Collection'){
               this.result_collections.push(element);
