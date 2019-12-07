@@ -13,7 +13,8 @@ import telemeta_front.tools as tools
 class InstitutionAdd(FormView):
     template_name = "../templates/institution-add.html"
     form_class = InstitutionForm
-    success_url = '/institution/'
+    success_url = '/institution'
 
     def post(self, request, *args, **kwargs):
-        return tools.post('dance', InstitutionForm, request, *args, **kwargs)
+        return tools.post(
+            'institution', InstitutionForm, request, *args, **kwargs)
