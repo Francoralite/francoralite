@@ -31,6 +31,11 @@ PROBLEM_NAMES = [
     "location_gis"
     ]
 
+LIST_ENTITIES = [
+    'fond',
+    'mission'
+]
+
 
 def get_token_header(request):
     auth_token = request.session['oidc_access_token']
@@ -103,7 +108,7 @@ def post(entity, form_entity, request, *args, **kwargs):
                     '/institution/' +
                     str(form.cleaned_data['institution']))
             # Previous page ( HTTP_REFERER -2 )
-            if entity == 'fond':
+            if entity in LIST_ENTITIES:
                 return HttpResponseRedirect(request.session["referers"][2])
             return HttpResponseRedirect('/' + entity)
 
@@ -172,7 +177,7 @@ def patch(entity, form_entity, request, *args, **kwargs):
                 return HttpResponseRedirect('/' + entity + '/edit/' +
                                             str(id))
             # Previous page ( HTTP_REFERER -2 )
-            if entity == 'fond':
+            if entity in LIST_ENTITIES:
                 return HttpResponseRedirect(request.session["referers"][2])
             return HttpResponseRedirect('/' + entity)
 

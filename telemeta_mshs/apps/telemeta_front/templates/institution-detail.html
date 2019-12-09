@@ -48,14 +48,14 @@
     {% if fonds|length > 0 %}
     <div class="with-rightcol">
       <table class="listing">
-      <tr>
+      <thead>
           <th class="highlight">{% trans "Cote" %}</th>
           <th>{% trans "Nom" %}</th>
           <th>{% trans "Description" %}</th>
           {% if user.is_authenticated %}
           <th>{% trans "Modifier" %}</th>
           {% endif %}
-      </tr>
+      </thead>
       {% for fond in fonds %}
         <tr>
             <td class="highlight">

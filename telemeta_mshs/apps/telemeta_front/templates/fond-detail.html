@@ -130,10 +130,26 @@
                   {{ mission.code|upper }}</a>
             </td>
             <td>{{ mission.title|safe }}</td>
-            <td>{{ mission.descriptions|truncatechars:50|markdown|safe}}          </td>
+            <td>{{ mission.descriptions|truncatechars:50|markdown|safe}}</td>
+            <td>
+              <a href="{% url "mission-edit" id=mission.id %}">
+                    <button type="button" class="btn btn-default">
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                    </button>
+              </a>
+              <button type="button" class="btn btn-default"
+                  data-toggle="modal" data-target="#modalDelete"
+                  data-name="{{mission.title}}"
+                  data-url="{% url "mission-delete" id=mission.id %}">
+                    <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+            </td>
           </tr>
           {% endfor %}
         </table>
+        {% if user.is_authenticated %}
+        	{% modal_delete %}
+        {% endif %}
       {% else %}
         <div class="block-grey">
         {% trans "Ce fonds ne possède pas de mission."%}
