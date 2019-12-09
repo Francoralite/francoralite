@@ -208,11 +208,12 @@
       {% if items|length > 0 %}
         <!-- Table to display the collections --->
         <table class="listing">
-        <tr>
+        <thead>
             <th class="highlight">{% trans "Cote" %}</th>
             <th>{% trans "Nom" %}</th>
             <th>{% trans "Description" %}</th>
-        </tr>
+            <th></th>
+        </thead>
         {% for item in items %}
         <tr>
             <td class="highlight">
@@ -221,9 +222,25 @@
             </td>
             <td>{{ item.title|safe }}</td>
             <td>{{ item.description|truncatechars:50|markdown|safe}}</td>
+            <td>
+              <a href="{% url "item-edit" id=item.id %}">
+                    <button type="button" class="btn btn-default">
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                    </button>
+              </a>
+              <button type="button" class="btn btn-default"
+                  data-toggle="modal" data-target="#modalDelete"
+                  data-name="{{item.title}}"
+                  data-url="{% url "item-delete" id=item.id %}">
+                    <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+            </td>
           </tr>
           {% endfor %}
         </table>
+        {% if user.is_authenticated %}
+        	{% modal_delete %}
+        {% endif %}
       {% else %}
         <div class="block-grey">
         {% trans "Cette enquête ne possède pas d'item."%}

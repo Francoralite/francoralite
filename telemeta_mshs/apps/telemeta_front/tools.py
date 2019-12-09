@@ -33,7 +33,8 @@ PROBLEM_NAMES = [
 
 LIST_ENTITIES = [
     'fond',
-    'mission'
+    'mission',
+    'collection'
 ]
 
 
