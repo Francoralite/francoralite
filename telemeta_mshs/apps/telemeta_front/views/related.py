@@ -165,7 +165,7 @@ def write_item_related(id_main, request, headers):
             "item",
             json.loads(request.POST[rel_item[1]]),
             FRONT_HOST_URL + '/api/item/' +
-            str(id_main["id"]) + '/' + rel_item[0] + '/',
+            str(id_main["id"]) + '/' + rel_item[0],
             rel_item[0],
             headers=headers
         )
