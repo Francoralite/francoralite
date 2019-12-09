@@ -56,6 +56,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'telemeta_mshs.middleware.keycloak_mw.KeycloakMiddleware',
+    'telemeta_mshs.middleware.session_history.SessionHistoryMiddleware',
     # 'telemeta_mshs.middleware.history_records.HistoryRecordsMiddleware',
 )
 

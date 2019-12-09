@@ -29,7 +29,6 @@ class FondDetail(FrancoraliteTemplateView):
         except Exception as err:
             context['fond'] = {}
             context['missions'] = []
-            context['form'] = FondForm()
             context['documents'] = []
             context['error'] = err.message
         return context

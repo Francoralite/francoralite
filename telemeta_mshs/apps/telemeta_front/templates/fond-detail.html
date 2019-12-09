@@ -118,11 +118,11 @@
       {% if missions|length > 0 %}
         <!-- Table to display the missions --->
         <table class="listing">
-        <tr>
+        <thead>
             <th class="highlight">{% trans "Cote" %}</th>
             <th>{% trans "Nom" %}</th>
             <th>{% trans "Description" %}</th>
-        </tr>
+        </thead>
         {% for mission in missions %}
         <tr>
             <td class="highlight">

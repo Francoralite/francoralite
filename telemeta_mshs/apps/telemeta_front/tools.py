@@ -98,6 +98,13 @@ def post(entity, form_entity, request, *args, **kwargs):
                      data=form.cleaned_data,
                      request=request,
                      entity=entity)
+            if entity == 'fond':
+                return HttpResponseRedirect(
+                    '/institution/' +
+                    str(form.cleaned_data['institution']))
+            # Previous page ( HTTP_REFERER -2 )
+            if entity == 'fond':
+                return HttpResponseRedirect(request.session["referers"][2])
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
@@ -164,12 +171,15 @@ def patch(entity, form_entity, request, *args, **kwargs):
             if(response.status_code != status.HTTP_200_OK):
                 return HttpResponseRedirect('/' + entity + '/edit/' +
                                             str(id))
+            # Previous page ( HTTP_REFERER -2 )
+            if entity == 'fond':
+                return HttpResponseRedirect(request.session["referers"][2])
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
             return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
-    return HttpResponseRedirect('/' + entity + '/edit' + str(id))
+    return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
 
 def patch_api(endpoint, data, request, entity):
@@ -218,7 +228,7 @@ def delete(entity, request, *args, **kwargs):
             FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
             request=request
             )
-        return HttpResponseRedirect('/' + entity)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     except RequestException:
         return HttpResponseRedirect('/' + entity)
