@@ -78,6 +78,7 @@
     {% bootstrap_field form.comment layout='vertical' %}
 
     <div id="app">
+      <div class="block-grey">
       <h3>{% trans "Média associés" %}</h3>
       <template>
         <div v-for="(doc, index) in documents"
@@ -124,6 +125,8 @@
         </div>
       </template>
       <input name="media" type="hidden" :value="JSON.stringify(documents,replacerMedia)" />
+    </div>
+    {% nakala_button %}
     </div>
 
     {% buttons_form %}

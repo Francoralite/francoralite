@@ -66,6 +66,7 @@
     </div>
     {% bootstrap_field form.description layout='vertical' %}
     <div id="app">
+      <div class="block-grey">
       <h3>{% trans "Média associés" %}</h3>
       <template>
         <div v-for="(doc, index) in documents"
@@ -104,17 +105,13 @@
 
             </div>
           </div>
-          <button type="button"
-          v-if="index + 1 === documents.length"
-          @click="addDoc" class="btn btn-default">
-          <span class="glyphicon glyphicon-plus"></span>
-          {% trans "Ajouter une référence NAKALA" %}
-        </button>
         </div>
       </template>
       <input name="media" type="hidden" :value="JSON.stringify(documents,replacerMedia)" />
-    </div>
 
+      {% nakala_button %}
+      </div>
+    </div>
 
     {% buttons_form %}
   </form>
@@ -160,7 +157,6 @@
         {% if id %}
         this.getDocuments();
         {% endif %}
-        this.addDoc();
       }
     });
 </script>

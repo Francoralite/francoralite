@@ -139,3 +139,8 @@ def display_documents(context):
             'documents': context['documents'],
         }
     return {}
+
+
+@register.inclusion_tag('inc/nakala_button.html')
+def nakala_button(*args, **kwargs):
+    return{}
