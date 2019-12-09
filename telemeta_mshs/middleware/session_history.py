@@ -16,4 +16,4 @@ class SessionHistoryMiddleware(object):
         else:
             session["referers"] = [referer] + session["referers"]
         # Purge list
-        session["referers"] = session["referers"][0:5]
+        session["referers"] = session["referers"][0:10]

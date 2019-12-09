@@ -111,6 +111,8 @@ def post(entity, form_entity, request, *args, **kwargs):
             # Previous page ( HTTP_REFERER -2 )
             if entity in LIST_ENTITIES:
                 return HttpResponseRedirect(request.session["referers"][2])
+            if entity == "item":
+                return HttpResponseRedirect(request.session["referers"][5])
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
@@ -180,6 +182,8 @@ def patch(entity, form_entity, request, *args, **kwargs):
             # Previous page ( HTTP_REFERER -2 )
             if entity in LIST_ENTITIES:
                 return HttpResponseRedirect(request.session["referers"][2])
+            if entity == "item":
+                return HttpResponseRedirect(request.session["referers"][5])
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
