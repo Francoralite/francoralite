@@ -116,12 +116,6 @@
               </div>
             </div>
           </div>
-          <button type="button"
-            v-if="index + 1 === documents.length"
-            @click="addDoc" class="btn btn-default">
-            <span class="glyphicon glyphicon-plus"></span>
-            {% trans "Ajouter une référence NAKALA" %}
-          </button>
         </div>
       </template>
       <input name="media" type="hidden" :value="JSON.stringify(documents,replacerMedia)" />
@@ -250,7 +244,6 @@ $('#id_death_location_name').on('typeahead:selected', function (event, result){
         {% if id %}
         this.getDocuments();
         {% endif %}
-        this.addDoc();
       }
     });
 </script>

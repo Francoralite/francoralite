@@ -221,7 +221,7 @@ def patch_api(endpoint, data, request, entity):
                     entity_json,
                     request,
                     headers=get_token_header(request=request))
-            return response
+        return response
 
     except Exception:
         raise

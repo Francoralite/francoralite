@@ -23,10 +23,10 @@ class FondForm(forms.Form):
     code_partner = forms.CharField(
         label=_('Cote dans l\'institution partenaire'), required=False)
     description = forms.CharField(label=_(u'Description'),
-                                  widget=forms.Textarea, required=False)
+                                  widget=forms.Textarea, required=True)
     conservation_site = forms.CharField(
         label=_(u'Lieu de conservation original'),
-        max_length=255, required=True)
+        max_length=255, required=False)
     comment = forms.CharField(label=_(u'Commentaires'),
                               widget=forms.Textarea,
                               required=False)

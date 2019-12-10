@@ -18,14 +18,14 @@ class FondSerializer(serializers.ModelSerializer):
     """
 
     title = serializers.CharField(required=True)
-    description = serializers.CharField(allow_blank=True)
+    description = serializers.CharField(required=True)
     code = serializers.CharField(required=True)
     institution = AsymetricRelatedField.from_serializer(
          InstitutionSerializer, kwargs={'required': True})
     code_partner = serializers.CharField(allow_blank=True)
     acquisition_mode = AsymetricRelatedField.from_serializer(
         AcquisitionModeSerializer, kwargs={'required': False})
-    conservation_site = serializers.CharField(required=True)
+    conservation_site = serializers.CharField(allow_blank=True)
     comment = serializers.CharField(allow_blank=True)
 
     class Meta:
