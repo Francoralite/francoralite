@@ -31,12 +31,6 @@ PROBLEM_NAMES = [
     "location_gis"
     ]
 
-LIST_ENTITIES = [
-    'fond',
-    'mission',
-    'collection'
-]
-
 
 def get_token_header(request):
     auth_token = request.session['oidc_access_token']
@@ -108,11 +102,11 @@ def post(entity, form_entity, request, *args, **kwargs):
                 return HttpResponseRedirect(
                     '/institution/' +
                     str(form.cleaned_data['institution']))
-            # Previous page ( HTTP_REFERER -2 )
-            if entity in LIST_ENTITIES:
-                return HttpResponseRedirect(request.session["referers"][2])
-            if entity == "item":
-                return HttpResponseRedirect(request.session["referers"][5])
+            # Previous page ( not an edit page ... )
+            if len(request.session["referers"]) > 1:
+                for referer in request.session["referers"]:
+                    if 'add' not in referer.split('/'):
+                        return HttpResponseRedirect(referer)
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
@@ -179,11 +173,11 @@ def patch(entity, form_entity, request, *args, **kwargs):
             if(response.status_code != status.HTTP_200_OK):
                 return HttpResponseRedirect('/' + entity + '/edit/' +
                                             str(id))
-            # Previous page ( HTTP_REFERER -2 )
-            if entity in LIST_ENTITIES:
-                return HttpResponseRedirect(request.session["referers"][2])
-            if entity == "item":
-                return HttpResponseRedirect(request.session["referers"][5])
+            # Previous page ( not an edit page ... )
+            if len(request.session["referers"]) > 1:
+                for referer in request.session["referers"]:
+                    if 'edit' not in referer.split('/'):
+                        return HttpResponseRedirect(referer)
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
