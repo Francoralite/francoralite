@@ -140,7 +140,7 @@ new Vue({
     },
     getLocations: function(){
       this.getRelated(
-        `/api/collection/${escape({{id}})}/location/`,
+        `/api/collection/${escape({{id}})}/location`,
         'locations',
         'location',
         'location_gis'
@@ -148,7 +148,7 @@ new Vue({
     },
     getLanguages: function(){
       this.getRelated(
-        `/api/collection/${escape({{id}})}/language/`,
+        `/api/collection/${escape({{id}})}/language`,
         'languages',
         'language',
         'language'
@@ -156,7 +156,7 @@ new Vue({
     },
     getPublishers: function(){
       this.getRelated(
-        `/api/collection/${escape({{id}})}/publisher/`,
+        `/api/collection/${escape({{id}})}/publisher`,
         'publishers',
         'publisher',
         'publisher'
@@ -197,7 +197,9 @@ new Vue({
     },
     replacerPerformance: function(key,value){
       if(key=="instrument"){
-        return value.id;
+        if( value != null){
+          return value.id;
+        }
       };
 
       if(key=="informers"){
