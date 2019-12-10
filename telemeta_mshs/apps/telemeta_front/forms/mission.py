@@ -24,7 +24,7 @@ class MissionForm(forms.Form):
     code_partner = forms.CharField(
         label=_('Cote dans l\'institution partenaire'), required=False)
     description = forms.CharField(label=_(u'Description'),
-                                  widget=forms.Textarea, required=False)
+                                  widget=forms.Textarea, required=True)
 
     def __init__(self, *args, **kwargs):
         super(MissionForm, self).__init__(*args, **kwargs)
