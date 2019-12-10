@@ -40,14 +40,14 @@
 {% if instruments|length > 0 %}
   <!-- Table to display the instruments --->
   <table class="listing">
-  <tr>
+  <thead>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
       <th>{% trans "Classification Hornbostel-Sachs" %}</th>
       {% if user.is_authenticated %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
-  </tr>
+  </thead>
   {% for instrument in instruments %}
   <tr>
       <td class="highlight">

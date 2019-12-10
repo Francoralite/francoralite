@@ -48,7 +48,7 @@
       {% if id %}
       <form action="/instrument/edit/{{id}}" method="POST">
       {% else %}
-      <form action="/instrument/add/" method="POST">
+      <form action="/instrument/add" method="POST">
       {% endif %}
         {% csrf_token %}
         {% bootstrap_field form.name layout='vertical' %}
@@ -74,7 +74,7 @@
             </span>
           </v-select>
         </div>
-        <input name="typology"
+        <input name="typology" type="hidden"
           :value="JSON.stringify(typologies,replacerTypology)" />
         {% buttons_form %}
       </form>
@@ -117,7 +117,7 @@
             loading(true);
             this.searchRelated(
               loading, search, this,
-               `/api/hornbostelsachs/?ordering=number&search=${escape(search)}`,
+               `/api/hornbostelsachs?ordering=number&search=${escape(search)}`,
                'optionsTypology',
                'hornbostelsachs'
             );
