@@ -18,7 +18,7 @@ class PerformanceCollectionSerializer(serializers.ModelSerializer):
         CollectionSerializer, kwargs={'required': False})
     number = serializers.CharField(required=True)
     instrument = AsymetricRelatedField.from_serializer(
-        InstrumentSerializer, kwargs={'required': True})
+        InstrumentSerializer, kwargs={'required': False})
     emit = AsymetricRelatedField.from_serializer(
         EmitVoxSerializer, kwargs={'required': True})
 
