@@ -224,9 +224,13 @@ def write_relations(id_main,
         for item in list_related:
             if name_related != "":
                 # Add the item ID to the set
-                set_related.add(item[name_related]["id"])
+                if name_related == 'performance':
+                    ID = item["id"]
+                else:
+                    ID = item[name_related]["id"]
+                set_related.add(ID)
                 # Feed the dict
-                dict_related[item[name_related]["id"]] = item["id"]
+                dict_related[ID] = item["id"]
             else:
                 # Add the item ID to the set
                 set_related.add(item["id"])
