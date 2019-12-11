@@ -72,7 +72,9 @@ class ItemSerializer(serializers.ModelSerializer):
     jingle = serializers.CharField(
         allow_null=True, allow_blank=True, required=False)
     coupe = AsymetricRelatedField.from_serializer(
-         CoupeSerializer, kwargs={'required': False})
+         CoupeSerializer, kwargs={
+             'required': False,
+             'allow_null': True})
 
     # Text / references -----------------
     #

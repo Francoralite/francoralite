@@ -33,5 +33,6 @@ class Core():
             # Feed the choices
             for a in data:
                 choices.append((a['id'], a[label_field]))
+            choices.append(("", ""))
 
         return choices
