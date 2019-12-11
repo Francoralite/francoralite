@@ -108,19 +108,20 @@ def write_collection_related(collection, request, headers):
             try:
                 performance["id"] = performances[index]["id"]
             except Exception:
-                pass
+                performance["id"] = 0
 
-        if("informers" in performance):
-            url_musicians = \
-                FRONT_HOST_URL + '/api/collection/' + \
-                str(collection["id"]) + '/performance/' + \
-                str(performance["id"]) + '/musician'
-            write_relations(performance["id"],
-                            "performance_collection",
-                            performance["informers"],
-                            url_musicians,
-                            "musician",
-                            headers)
+        if "informers" not in performance:
+            performance["informers"] = []
+        url_musicians = \
+            FRONT_HOST_URL + '/api/collection/' + \
+            str(collection["id"]) + '/performance/' + \
+            str(performance["id"]) + '/musician'
+        write_relations(performance["id"],
+                        "performance_collection",
+                        performance["informers"],
+                        url_musicians,
+                        "musician",
+                        headers)
         index = index + 1
 
     # Documents related (media)
