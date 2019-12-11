@@ -62,7 +62,7 @@
             </a>
           </dd>
         </dl>
-        {% field_data form.code_partner.label|safe collection.code_partner|safe %}
+        {% field_data form.code_partner.label|safe collection.code_partner|safe  empty=False %}
         {% field_data form.code.label|safe collection.code|upper|safe %}
         {% field_data form.title.label|safe collection.title|safe %}
       </div>
@@ -132,10 +132,11 @@
             {% endfor %}
           </dd>
         </dl>
-        {% field_data form.location_details.label|safe collection.location_details|markdown|safe %}
+        {% field_data form.location_details.label|safe collection.location_details|markdown|safe empty=False %}
         {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
       </div>
 
+      {% if collection.langues %}
       <dl class="container_data">
         <dt class="libelle"> {% trans 'Langues' %}</dt>
         <dd class="donnee">
@@ -145,7 +146,9 @@
           {% endfor %}
         </dd>
       </dl>
+      {% endif %}
 
+      {% if collection.publishers %}
       <dl class="container_data">
         <dt class="libelle"> {% trans 'Editeurs' %}</dt>
         <dd class="donnee">
@@ -158,6 +161,7 @@
           {% endfor %}
         </dd>
       </dl>
+      {% endif %}
 
 
       <div class="block-grey">
@@ -165,10 +169,14 @@
         <div class="container_data">
           {% for performance in collection.performances %}
           <div class="container_line">
+              {% if performance.number %}
               <dl class="container_data">
                 <dt class="libelle">{% trans 'Nombre' %}</dt>
                 <dd class="donnee">{{performance.number}}</dd>
               </dl>
+              {% endif %}
+
+              {% if performance.instrument %}
               <dl class="container_data">
                 <dt class="libelle">{% trans 'Instrument' %}</dt>
                 <dd class="donnee">{{performance.instrument.name}}</dd>
@@ -178,10 +186,16 @@
                 <dd class="donnee">{{performance.instrument.typology.number}} :
                 {{performance.instrument.typology.name}}</dd>
               </dl>
+              {% endif %}
+
+              {% if performance.emit %}
               <dl class="container_data">
                 <dt class="libelle">{% trans "Nature de l'émission vocale" %}</dt>
                 <dd class="donnee">{{performance.emit.name}}</dd>
               </dl>
+              {% endif %}
+
+              {% if performance.musicians %}
               <dl class="container_data">
                 <dt class="libelle">{% trans 'Musiciens' %}</dt>
                 {{performers}}
@@ -192,6 +206,7 @@
                   {% endfor %}
                 </dd>
               </dl>
+              {% endif %}
 
           </div>
           {% endfor %}
