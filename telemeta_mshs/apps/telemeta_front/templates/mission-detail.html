@@ -61,7 +61,7 @@
             </a>
           </dd>
         </dl>
-        {% field_data form.code_partner.label|safe mission.code_partner|safe %}
+        {% field_data form.code_partner.label|safe mission.code_partner|safe empty=False %}
         {% field_data form.code.label mission.code|upper|safe %}
         {% field_data form.title.label|safe mission.title|safe %}
         {% field_data form.public_access.label|safe mission.public_access|public_access|safe %}
