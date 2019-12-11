@@ -132,6 +132,7 @@ def related_list(*args, **kwargs):
         'url_detail': kwargs.get('url_detail', ""),
         'field': kwargs['field'],
         'field2': kwargs.get('field2', ""),
+        'empty': kwargs.get('empty', True),
         }
 
 

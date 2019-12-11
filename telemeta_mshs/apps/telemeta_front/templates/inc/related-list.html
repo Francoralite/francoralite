@@ -1,6 +1,8 @@
 {% load i18n %}
 {% load data_display %}
 
+{% if empty == False and not items  %}
+{% else %}
 <dl class="container_data">
   <dt class="libelle"> {% trans libelle %}</dt>
   <dd class="donnee">
@@ -18,3 +20,5 @@
     {% endfor %}
   </dd>
 </dl>
+
+{% endif %}
