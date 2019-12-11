@@ -20,7 +20,7 @@ class PerformanceCollectionSerializer(serializers.ModelSerializer):
     instrument = AsymetricRelatedField.from_serializer(
         InstrumentSerializer, kwargs={'required': False})
     emit = AsymetricRelatedField.from_serializer(
-        EmitVoxSerializer, kwargs={'required': True})
+        EmitVoxSerializer, kwargs={'required': False})
 
     class Meta:
         model = PerformanceCollectionModel
