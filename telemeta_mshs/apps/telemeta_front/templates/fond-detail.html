@@ -62,7 +62,7 @@
             </a>
           </dd>
         </dl>
-        {% field_data form.code_partner.label|safe fond.code_partner|safe %}
+        {% field_data form.code_partner.label|safe fond.code_partner|safe  empty=False %}
         {% field_data form.code.label|safe fond.code|upper|safe %}
         {% field_data form.title.label|safe fond.title|safe %}
       </div>
@@ -106,12 +106,10 @@
 
       <div class="block-grey">
         <h2>{% trans "Archivage" %}</h2>
-        {% field_data form.acquisition_mode.label|safe fond.acquisition_mode.name|safe %}
+        {% field_data form.acquisition_mode.label|safe fond.acquisition_mode.name|safe empty=False %}
         {% field_data form.conservation_site.label|safe fond.conservation_site|safe %}
       </div>
-      {% if fond.comment %}
-        {% field_data form.comment.label|safe fond.comment|markdown|safe %}
-      {% endif %}
+      {% field_data form.comment.label|safe fond.comment|markdown|safe empty=False %}
     </section>
 
     <section class="tab-pane" id="tab_mission">

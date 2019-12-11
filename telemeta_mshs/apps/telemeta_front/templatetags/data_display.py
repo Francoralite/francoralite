@@ -12,7 +12,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def field_data(label, data):
+def field_data(label, data, empty=True):
     try:
         str_label = str(label)
     except Exception:
@@ -25,9 +25,12 @@ def field_data(label, data):
     except Exception:
         str_data = data
 
-    code = "<dl class=\"container_data\"><dt class=\"libelle\">"
-    code = code + str_label + "</dt> <dd class=\"donnee\" >"
-    code = code + str_data + "</dd> </dl>"
+    if empty is False and str_data == "":
+        code = ""
+    else:
+        code = "<dl class=\"container_data\"><dt class=\"libelle\">"
+        code = code + str_label + "</dt> <dd class=\"donnee\" >"
+        code = code + str_data + "</dd> </dl>"
 
     return code
 
