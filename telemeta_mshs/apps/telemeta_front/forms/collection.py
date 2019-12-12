@@ -95,13 +95,13 @@ class CollectionForm(forms.Form):
             label=_(u'Contexte d\'enregistrement'),
             choices=Core.get_choices(
                 entity="recordingcontext", label_field="name"),
-            required=True)
+            required=False)
 
         self.fields['media_type'] = forms.ChoiceField(
             label=_(u'Type de média'),
             choices=Core.get_choices(
                 entity="mediatype", label_field="name"),
-            required=True)
+            required=False)
 
         self.fields['mission'] = forms.ChoiceField(
             label=_(u'Mission'),
@@ -113,4 +113,4 @@ class CollectionForm(forms.Form):
             label=_(u'Droits d\'utilisation'),
             choices=Core.get_choices(
                 entity="legalrights", label_field="name"),
-            required=True)
+            required=False)
