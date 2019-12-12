@@ -104,9 +104,12 @@ def post(entity, form_entity, request, *args, **kwargs):
                     str(form.cleaned_data['institution']))
             # Previous page ( not an edit page ... )
             if len(request.session["referers"]) > 1:
-                for referer in request.session["referers"]:
-                    if 'add' not in referer.split('/'):
-                        return HttpResponseRedirect(referer)
+                try:
+                    for referer in request.session["referers"]:
+                        if 'add' not in referer.split('/'):
+                            return HttpResponseRedirect(referer)
+                except Exception:
+                    return HttpResponseRedirect('/' + entity)
             return HttpResponseRedirect('/' + entity)
 
         except RequestException:
