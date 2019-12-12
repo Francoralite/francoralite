@@ -245,7 +245,13 @@
       {% field_data form.refrain.label|safe item.refrain|markdown|safe empty=False %}
       {% field_data form.jingle.label|safe item.jingle|markdown|safe empty=False %}
       {% field_data form.coupe.label|safe item.coupe.name|safe empty=False %}
+
+      <aside class="block-grey">
+        <h3>{% trans "Références" %}</h3>
+        {% related_list libelle='Coirault' items=item.coiraults url_detail="coirault-detail" field="number" field2="name"%}
+      </aside>
     </section>
+
 
     <!-- Tab Vox/Instruments ----------------------------------->
     <section class="tab-pane" id="tab_vox">

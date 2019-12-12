@@ -157,7 +157,8 @@ def write_item_related(id_main, request, headers):
         ["domain_music", "domainmusics"],
         ["domain_tale", "domaintales"],
         ["musical_organization", "musical_organizations"],
-        ["musical_group", "musical_groups"]
+        ["musical_group", "musical_groups"],
+        ["coirault", "coiraults"],
     ]
 
     for rel_item in related:

@@ -60,6 +60,8 @@ from ..serializers.item_musical_group import ItemMusicalGroupSerializer
 from ..models.item_musical_organization import ItemMusicalOrganization
 from ..serializers.item_musical_organization import \
     ItemMusicalOrganizationSerializer
+from ..models.item_coirault import ItemCoirault
+from ..serializers.item_coirault import ItemCoiraultSerializer
 
 
 entities = [
@@ -137,6 +139,11 @@ entities = [
         "names": "usefulnesses", "name": "usefulness",
         "model": ItemUsefulness,
         "serializer": ItemUsefulnessSerializer
+    },
+    {
+        "names": "coiraults", "name": "coirault",
+        "model": ItemCoirault,
+        "serializer": ItemCoiraultSerializer
     },
 ]
 

@@ -117,4 +117,4 @@ class ItemForm(forms.Form):
             label=_(u'Coupe'),
             choices=Core.get_choices(
                 entity="coupe", label_field="name"),
-            required=True)
+            required=False)
