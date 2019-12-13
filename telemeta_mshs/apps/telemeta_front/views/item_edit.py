@@ -35,6 +35,7 @@ class ItemEdit(FormView):
 
         # Obtain values of the record
         item = tools.request_api('/api/item/' + str(id))
+        item['collection'] = item['collection']['id']
 
         form = ItemForm(initial=item)
         form.fields['file'].required = False
