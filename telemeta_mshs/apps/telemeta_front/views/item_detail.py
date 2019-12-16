@@ -29,6 +29,13 @@ class ItemDetail(FrancoraliteTemplateView):
             # Obtain values of related documents
             context['documents'] = tools.request_api(
                 '/api/item/' + context['id'] + '/document')
+            locations = tools.request_api(
+                '/api/collection/'
+                + str(context["item"]["collection"]["id"])
+                + '/location')
+            context['locations'] = []
+            for l in locations:
+                context['locations'].append(l["location"])
 
             # Obtain gaphers of the record
             context['graphers'] = []
@@ -37,6 +44,7 @@ class ItemDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['item'] = {}
+            context['locations'] = []
             context['documents'] = []
             context['error'] = err.message
             response = requests.get(

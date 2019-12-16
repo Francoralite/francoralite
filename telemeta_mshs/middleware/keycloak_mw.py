@@ -245,7 +245,7 @@ class KeycloakMiddleware(object):
             return None
         # Related entities of a collection
         expr = re.compile(
-            "^api/collection/[0-9]*/(document|performance)$")
+            "^api/collection/[0-9]*/(document|performance|location)$")
         if expr.match(path) and \
                 (request.method == 'GET' or request.method == 'HEAD'):
             logger.debug('** exclude path : display template')
