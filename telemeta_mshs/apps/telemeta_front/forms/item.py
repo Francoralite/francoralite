@@ -66,7 +66,7 @@ class ItemForm(forms.Form):
         ('I', 'Expression instrumentale'),
         ('R', 'Conte ou récit légendaire')
     )
-    domains = forms.MultipleChoiceField(
+    domain = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
         choices=DOMAINS,
         label=_(u'Domaine(s)'),

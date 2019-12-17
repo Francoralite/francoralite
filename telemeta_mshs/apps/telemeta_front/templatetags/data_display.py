@@ -119,6 +119,26 @@ def public_access(self):
 
 
 @register.filter
+def domains(self):
+    values = str(self)
+    labels = ""
+    DOMAINS = (
+        ('T', _(u"Témoignage")),
+        ('C', _(u"Chanson")),
+        ('A', _(u"Autre expression vocale")),
+        ('I', _(u"Expression instrumentale")),
+        ('R', _(u"Conte ou récit légendaire"))
+    )
+    for (d, lib) in DOMAINS:
+        if len(labels) > 0:
+            labels = labels + ", "
+        if d in values:
+            labels = labels + str(lib)
+
+    return labels
+
+
+@register.filter
 def get_obj_attr(obj, attr):
     # return getattr(obj, attr)
     return obj[attr]

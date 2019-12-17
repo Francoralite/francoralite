@@ -6,7 +6,7 @@
 
 from django.views.generic.edit import FormView
 from rest_framework import status
-from settings import FRONT_HOST_URL, FRONT_HOST_URL_EXTERNAL
+from settings import FRONT_HOST_URL_EXTERNAL
 from telemeta_front.forms.item import ItemForm
 from django.shortcuts import render
 import telemeta_front.tools as tools

@@ -91,6 +91,8 @@ def post(entity, form_entity, request, *args, **kwargs):
     # Problem with old Telemeta fields/entities
     if form.is_valid():
         if entity == 'item':
+            # Concatenate domains
+            form.cleaned_data['domain'] = ''.join(form.cleaned_data['domain'])
             # Remove the 'file' entry : if not, there some bugs
             del form.cleaned_data['file']
         try:
@@ -166,6 +168,9 @@ def patch(entity, form_entity, request, *args, **kwargs):
                 form.data['recorded_to_year']
             if form.cleaned_data['year_published'] is None:
                 form.cleaned_data['year_published'] = ''
+        if entity == "item":
+            # Concatenate domains
+            form.cleaned_data['domain'] = ''.join(form.cleaned_data['domain'])
         try:
             response = patch_api(
                 FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),

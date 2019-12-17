@@ -191,7 +191,7 @@
       {% field_data form.timbre.label|safe item.timbre|safe empty=False %}
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe empty=False %}
 
-      {% field_data form.domains.label|safe item.domains|safe %}
+      {% field_data form.domain.label|safe item.domain|domains|safe %}
       {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
       {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
 
