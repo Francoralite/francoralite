@@ -228,15 +228,16 @@
         {% related_list libelle='Genre(s) du conte' items=item.domain_tales url_detail="domain_tale-detail" field="name" empty=False %}
       </div>
 
-
+      {% if item.deposit_digest or item.thematics or item_deposit_names or item.deposit_places or item.deposit_periods %}
       <aside class="block-grey">
         <h2>{% trans "Témoignage" %}</h2>
-        {% field_data form.deposit_digest.label|safe item.deposit_digest|markdown|safe %}
-        {% related_list libelle='Thématique(s)' items=item.thematics url_detail="thematic-detail" field="name" %}
+        {% field_data form.deposit_digest.label|safe item.deposit_digest|markdown|safe empty=False %}
+        {% related_list libelle='Thématique(s)' items=item.thematics url_detail="thematic-detail" field="name"  empty=False%}
         {% field_data form.deposit_names.label|safe item.deposit_names|safe empty=False %}
         {% field_data form.deposit_places.label|safe item.deposit_places|safe empty=False %}
         {% field_data form.deposit_periods.label|safe item.deposit_periods|safe empty=False %}
       </aside>
+      {% endif %}
     </section>
 
     <!-- Tab Text ---------------------------------------------->
