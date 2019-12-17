@@ -85,15 +85,26 @@ class ItemForm(forms.Form):
     text_bool = forms.BooleanField(
         label=_(u'Présence de texte'),
         required=False)
-    text = forms.CharField(label=_(u'Texte'), required=False)
-    incipit = forms.CharField(label=_(u'Incipit'), required=False)
-    refrain = forms.CharField(label=_(u'Refrain'), required=False)
+    text = forms.CharField(
+        label=_(u'Texte'),
+        widget=forms.Textarea, required=False)
+    incipit = forms.CharField(
+        label=_(u'Incipit'),
+        widget=forms.Textarea,
+        required=False)
+    refrain = forms.CharField(
+        label=_(u'Refrain'),
+        widget=forms.Textarea,
+        required=False)
 
     # refrain = forms.CharField(
     #    label=_(u'Refrain'),
     #    widget=forms.Textarea(attrs={"rows": 5, "cols": 20}, required=False))
 
-    jingle = forms.CharField(label=_(u'Ritournelle du conte'), required=False)
+    jingle = forms.CharField(
+        label=_(u'Ritournelle du conte'),
+        widget=forms.Textarea,
+        required=False)
     # Références
 
     # Voix-instruments -----------------------------
