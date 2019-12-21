@@ -42,7 +42,7 @@ docker-compose up
 We need to install tests dependencies inside container before and remove south
 
 ```
-docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip install --no-cache-dir .[tests] --process-dependency-links'
+docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip install --no-cache-dir .[tests]'
 docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip uninstall south'
 ```
 
