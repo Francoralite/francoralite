@@ -62,6 +62,7 @@
         {% bootstrap_field form.title layout='vertical' %}
         {% bootstrap_field form.alt_title layout='vertical' %}
 
+      <div class="app2">
       <!-- Collectors -->
       <div class="container_data">
         <label class="control_label">{% trans "Enquêteur(s)" %}</label>
@@ -114,8 +115,9 @@
       </div>
       <input name="informers" type="hidden"
         :value="JSON.stringify(informers, replacerInformer)" />
+      </div> <!-- app2 -->
 
-      {% bootstrap_field form.description layout='vertical' %}
+      {% markdown_editor component=form.description  %}
       <div class="block-grey">
         <h2>{% trans "Enregistrement" %}</h2>
         <div class="container_line">
@@ -127,6 +129,7 @@
       </div>
 
       <div class="block-grey">
+        <div class = "app2">
         <h2>{% trans "Localisation" %}</h2>
           <!-- Locations -->
           <div class="container_data">
@@ -153,12 +156,14 @@
         </div>
         <input name="locations" type="hidden"
           :value="JSON.stringify(locations, replacerLocation)" />
+        </div> <!-- app2 -->
         <div class="container_line">
-          {% bootstrap_field form.location_details layout='vertical' %}
+          {% markdown_editor component=form.location_details  %}
           {% bootstrap_field form.cultural_area layout='vertical' %}
         </div>
       </div>
 
+      <div class="app2">
       <!-- Languages -->
       <div class="container_data">
         <label class="control_label">{% trans "Langues" %}</label>
@@ -206,6 +211,7 @@
           {% bootstrap_field form.publisher_collection layout='vertical' %}
         </div>
       </div>
+      </div> <!-- app2 -->
 
       <div class="container_line">
         {% bootstrap_field form.booklet_author %}
@@ -218,14 +224,15 @@
       </div>
 
       <div class="container_line">
-        {% bootstrap_field form.booklet_description layout='vertical' %}
-        {% bootstrap_field form.comment layout='vertical' %}
+        {% markdown_editor component=form.booklet_description  %}
+        {% markdown_editor component=form.comment  %}
       </div>
       {% bootstrap_field form.physical_items_num layout='vertical' %}
       {% bootstrap_field form.media_type layout='vertical' %}
       {% bootstrap_field form.auto_period_access layout='vertical' %}
       {% bootstrap_field form.legal_rights layout='vertical' %}
 
+      <div class="app2">
       <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>
         <div class="container_line">
@@ -327,6 +334,7 @@
           :value="JSON.stringify(lines,replacerPerformance)" />
       </div>
     </div>
+    </div> <!-- app2 -->
 
     <div class="block-grey">
       <h2>{% trans "Média associés" %}</h2>
@@ -383,10 +391,6 @@
     {% select_vue_collection %}
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
 
-{% markdown_editor "id_descriptions" %}
-{% markdown_editor "id_location_details" %}
-{% markdown_editor "id_booklet_description" %}
-{% markdown_editor "id_comment" %}
 
 {{ form.media.js }}
 {% endblock %}

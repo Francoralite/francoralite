@@ -2,10 +2,11 @@
 
 
 Vue.component('v-select', VueSelect.VueSelect)
-
+let elements = document.getElementsByClassName('app2');
+for(let el of elements){
 new Vue({
   delimiters: ['${', '}'],
-  el: '#app',
+  el: el,
   data: {
       collectors: [],
       optionsCollectors: [],
@@ -300,5 +301,6 @@ new Vue({
      {% endif %}
    }
 })
+}
 
 </script>

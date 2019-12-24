@@ -48,7 +48,7 @@
 
 {{ form.media }}
 {% if not error|length %}
-<div id="app">
+
   <div class="fixedWidthAsPlayer">
     <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
   </div>
@@ -68,7 +68,7 @@
           <div id="player" class="ts-player">
           </div>
       </div>
-    </div>
+  </div>
   {% endblock %}
 <!-- Tabs -->
 <ul class="nav nav-tabs" role="tablist">
@@ -105,7 +105,7 @@
         {% bootstrap_field form.title layout='vertical' %}
         {% bootstrap_field form.alt_title layout='vertical' %}
         {% bootstrap_field form.trans_title layout='vertical' %}
-        {% bootstrap_field form.description layout='vertical' %}
+        {% markdown_editor component=form.description %}
         {% if id %}
           <div hidden=True>
         {% else %}
@@ -118,6 +118,8 @@
 
         <div class="block-grey">
           <h2>{% trans "Personnes" %}</h2>
+
+          <div class="app2">
 
           <!-- Collectors -->
           <div class="container_data">
@@ -170,13 +172,14 @@
           </div>
           <input name="informers" type="hidden"
             :value="JSON.stringify(informers, replacerInformer)" />
-
+          </div>
         </div>
 
         <div class="block-grey">
           <h2>{% trans "Indications géographiques et culturelles" %}</h2>
           {% related_list libelle='Lieux' items=collection.locations url_detail="location_gis-detail" field="code" %}
           <!-- Language -->
+          <div class="app2">
           <div class="container_data">
             <label class="control_label">{% trans "Langue(s)" %}</label>
             <v-select
@@ -196,7 +199,7 @@
           </div>
           <input name="languages" type="hidden"
           :value="JSON.stringify(languages,replacerLanguage)" />
-
+        </div>
         </div>
 
         <div class="block-grey">
@@ -204,7 +207,7 @@
           {% bootstrap_field form.code layout='vertical' %}
           {% bootstrap_field form.code_partner layout='vertical' %}
           {% bootstrap_field form.auto_period_access layout='vertical' %}
-          {% bootstrap_field form.remarks layout='vertical' %}
+          {% markdown_editor component=form.remarks %}
 
         </div>
 
@@ -266,6 +269,7 @@
       <!-- Tab Description --------------------------------------->
       <div class="tab-pane" id="tab_desc">
         <!-- Authors -->
+        <div class="app2">
         <div class="container_data">
           <label class="control_label">{% trans "Auteur(s)" %}</label>
           <v-select
@@ -290,8 +294,10 @@
         </div>
         <input name="authors" type="hidden"
           :value="JSON.stringify(authors,replacerAuthor)" />
+        </div>
 
         <!-- Compositors -->
+          <div class="app2">
         <div class="container_data">
           <label class="control_label">{% trans "Compositeur(s)" %}</label>
           <v-select
@@ -316,6 +322,7 @@
         </div>
         <input name="compositors" type="hidden"
           :value="JSON.stringify(compositors,replacerCompositor)" />
+        </div>
 
         {% bootstrap_field form.timbre layout='vertical' %}
         {% bootstrap_field form.timbre_ref layout='vertical' %}
@@ -450,9 +457,10 @@
 
         <div class="block-grey">
           <h2>{% trans "Témoignage" %}</h2>
-          {% bootstrap_field  form.deposit_digest layout='vertical' %}
+          {% markdown_editor component=form.deposit_digest %}
 
           <!-- Thematic -->
+          <div class="app2">
           <div class="container_data">
           <label class="control_label">{% trans "Thématique(s)" %}</label>
           <v-select
@@ -477,6 +485,7 @@
           </div>
           <input name="thematics" type="hidden"
           :value="JSON.stringify(thematics,replacerThematic)" />
+          </div> <!-- app2 -->
 
           {% bootstrap_field  form.deposit_names layout='vertical' %}
           {% bootstrap_field  form.deposit_places layout='vertical' %}
@@ -484,6 +493,7 @@
         </div>
 
         <!-- Usefulness -->
+        <div class="app2">
         <div class="container_data">
         <label class="control_label">{% trans "Fonction(s)" %}</label>
         <v-select
@@ -529,6 +539,7 @@
         </div>
         <input name="dances" type="hidden"
         :value="JSON.stringify(dances,replacerDance)" />
+      </div> <!-- app2 -->
 
 
       </div>
@@ -536,13 +547,14 @@
       <!-- Tab Text ---------------------------------------------->
       <div class="tab-pane" id="tab_text">
         {% bootstrap_field form.text_bool layout='vertical' %}
-        {% bootstrap_field form.text layout='vertical' %}
-        {% bootstrap_field form.incipit layout='vertical' %}
-        {% bootstrap_field form.refrain layout='vertical' %}
-        {% bootstrap_field form.jingle layout='vertical' %}
+        {% markdown_editor component=form.text %}
+        {% markdown_editor component=form.incipit %}
+        {% markdown_editor component=form.refrain %}
+        {% markdown_editor component=form.jingle %}
         {% bootstrap_field form.coupe layout='vertical' %}
 
         <div class="block-grey">
+          <div class="app2">
           <h2>{% trans "Références" %}</h2>
           <div class="container_data">
             <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Coirault" %}</label>
@@ -568,12 +580,13 @@
           </div>
           <input name="coiraults" type="hidden"
           :value="JSON.stringify(coiraults,replacerCoirault)" />
+          </div> <!-- app2 -->
         </div>
       </div>
 
       <!-- Tab Vox/Instruments ----------------------------------->
       <div class="tab-pane" id="tab_vox">
-
+        <div class="app2" >
         <!-- Musical organization -->
         <div class="container_data">
           <label class="control_label">{% trans "Organisation(s) musicale(s)" %}</label>
@@ -712,6 +725,8 @@
 
         <input name="performances" type="hidden"
           :value="JSON.stringify(lines,replacerPerformance)" />
+        </div> <!-- app2 -->
+
         </div>
         <!-- Tab Player/Markers ------------------------------------>
         <div class="tab-pane" id="tab_mark">
@@ -750,18 +765,10 @@
 
 </div>
 
+
 {% select_vue_item %}
 
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
-
-<!-- Markdown fields -->
-{% markdown_editor "id_descriptions" %}
-{% markdown_editor "id_remarks" %}
-{% markdown_editor "id_deposit_digest" %}
-{% markdown_editor "id_text" %}
-{% markdown_editor "id_incipit" %}
-{% markdown_editor "id_refrain" %}
-{% markdown_editor "id_jingle" %}
 
 {% else %}
   {% display_error error %}

@@ -39,13 +39,12 @@
     {% endif %}
       {% csrf_token %}
       {% bootstrap_field form.name layout='vertical' %}
-      {% bootstrap_field form.notes layout='vertical' %}
+      {% markdown_editor component=form.notes  %}
 
       {% buttons_form %}
     </form>
   </div>
 
-  {% markdown_editor "id_notes" %}
 {% else %}
   {% display_error error %}
 {% endif %}
