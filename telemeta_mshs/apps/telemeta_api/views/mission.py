@@ -46,6 +46,14 @@ class MissionViewSet(viewsets.ModelViewSet):
         'DELETE': 'mission:delete'
     }
 
+    def list_collections(self, id_mission, field='id'):
+        # Retrieve the collections, related to the current mission
+        collections = CollectionModel.objects.filter(
+            mission_id=id_mission).values_list(
+                field, flat=True)
+
+        return collections
+
     def related_collections(self,
                             id_mission,
                             model_related,
@@ -53,9 +61,7 @@ class MissionViewSet(viewsets.ModelViewSet):
                             entity,
                             serializer=AuthoritySerializer):
         # Retrieve the collections, related to the current mission
-        collections = CollectionModel.objects.filter(
-            mission_id=id_mission).values_list(
-                'id', flat=True)
+        collections = self.list_collections(id_mission=id_mission)
         # Retrieve the entities, related to the collections
         list_related = model_related.objects.filter(
                  collection_id__in=[str(x) for x in collections]
@@ -69,6 +75,30 @@ class MissionViewSet(viewsets.ModelViewSet):
         data = [serializer(i).data for i in entities]
 
         return data
+
+    @detail_route()
+    def dates(self, request, pk=None):
+        """
+        Determine the max and th min dates from
+          the related collections of a mission
+        """
+        instance = self.get_object()
+
+        # Retrieve the collections, related to the current mission
+
+        # Dates (start and end) of list_collections
+        from_years = self.list_collections(
+            id_mission=instance.id,
+            field='recorded_from_year')
+        to_years = self.list_collections(
+            id_mission=instance.id,
+            field='recorded_from_year')
+
+        # Use the min(early) an max(late)
+        date_start = min(from_years)
+        date_end = max(to_years)
+
+        return Response((date_start, date_end))
 
     @detail_route()
     def informers(self, request, pk=None):

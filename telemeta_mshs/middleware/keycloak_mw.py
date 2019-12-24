@@ -239,7 +239,7 @@ class KeycloakMiddleware(object):
             return None
         # Related entities of a mission
         expr = re.compile(
-            "^api/mission/[0-9]*/(informers|collectors|locations|document)$") # noqa
+            "^api/mission/[0-9]*/(informers|collectors|locations|document|dates)$") # noqa
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
