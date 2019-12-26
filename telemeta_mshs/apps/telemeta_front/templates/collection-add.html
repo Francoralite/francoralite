@@ -336,7 +336,9 @@
     </div>
     </div> <!-- app2 -->
 
+
     <div class="block-grey">
+      <div class="app2">
       <h2>{% trans "Média associés" %}</h2>
       <div class="container_line">
         <template>
@@ -381,6 +383,7 @@
         <input name="media" type="hidden" :value="JSON.stringify(documents,replacerMedia)" />
       </div>
       {% nakala_button %}
+    </div> <!-- app2 -->
     </div>
       {% buttons_form %}
     </form>
