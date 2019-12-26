@@ -128,8 +128,11 @@ def write_collection_related(collection, request, headers):
     url_documents = \
         FRONT_HOST_URL + '/api/collection/' + \
         str(collection["id"]) + '/document'
-
-    documents_selected = json.loads(request.POST['media'])
+    media = request.POST['media']
+    if media:
+        documents_selected = json.loads(media)
+    else:
+        documents_selected = []
 
     # Use only the collection ID (not all the data of a collection)
     for doc in documents_selected:
