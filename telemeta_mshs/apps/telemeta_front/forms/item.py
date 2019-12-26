@@ -116,7 +116,7 @@ class ItemForm(forms.Form):
             label=_(u'Type de média'),
             choices=Core.get_choices(
                 entity="mediatype", label_field="name"),
-            required=True)
+            required=False)
 
         self.fields['collection'] = forms.ChoiceField(
             label=_(u'Enquête'),
