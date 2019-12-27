@@ -124,6 +124,7 @@
     </div>
 
     {% buttons_form %}
+    
   </form>
 </div>
 
@@ -223,8 +224,6 @@ $('#id_death_location_name').on('typeahead:selected', function (event, result){
          });
         },
         removeDoc (lineId) {
-          console.log(lineId);
-          console.log(this.blockRemoval);
            this.documents.splice(lineId, 1)
         },
         getDocuments: function(){

@@ -1,23 +1,36 @@
 {% load bootstrap3 %}
+{%if component.field.required %}
+<div class="form-group has-warning">
+{% else %}
+<div class="form-group">
+{% endif %}
+  <label class="control-label" for="{{component.auto_id}}">
+    {{component.label}}
+  </label>
+  <textarea class="form-control" cols="40"
+    id="{{component.auto_id}}"
+    name="{{component.name}}"
+    {%if component.field.required %}
+    required="required"
+    {% endif %}
+    rows="10" title="" style="display:none;">
+  </textarea>
+</div>
 
-{% bootstrap_field component layout='vertical' %}
+<div id="editor_{{component.auto_id}}"></div>
+
 
 <script>
-var simpleMDE = new SimpleMDE({
-  element: $('#{{component.auto_id}}')[0],
-  toolbar: ["bold", "italic", "heading", "|",
-  {
-     name: "custom",
-     action: function customFunction(editor){
-     // Add your own code
-         var cm = editor.codemirror;
-         var doc = cm.getDoc();
-         var cursor = doc.getCursor();
-         doc.replaceRange('   \r\n', cursor);
-     },
-     className: "fa fa-paragraph",
-     title: "New line/paragraph",
-     },
-   "quote","unordered-list", "ordered-list", "|","preview", "guide"],
-});
+  var instance_{{component.auto_id}} = new tui.Editor({
+    el: document.querySelector('#editor_{{component.auto_id}}'),
+    initialEditType: 'markdown',
+    previewStyle: 'vertical',
+    height: '300px',
+    events: {
+           change: () => {
+             $("#{{component.auto_id}}").val(this.instance_{{component.auto_id}}.getValue());
+           },
+         },
+  });
+  instance_{{component.auto_id}}.setValue("{{component.value|escapejs}}");
 </script>
