@@ -94,9 +94,13 @@ class MissionViewSet(viewsets.ModelViewSet):
             id_mission=instance.id,
             field='recorded_from_year')
 
+        date_start = ""
+        date_end = ""
         # Use the min(early) an max(late)
-        date_start = min(from_years)
-        date_end = max(to_years)
+        if len(from_years) >= 1:
+            date_start = min(from_years)
+        if len(to_years) >= 1:
+            date_end = max(to_years)
 
         return Response((date_start, date_end))
 
