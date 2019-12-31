@@ -4,7 +4,8 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from rest_framework import viewsets, filters
+from django.db.models.query import QuerySet
+from rest_framework import viewsets
 from ..models.performance_collection_musician import (
     PerformanceCollectionMusician as PerformanceCollectionMusicianModel)
 from ..serializers.performance_collection_musician import (
@@ -19,12 +20,6 @@ class PerformanceCollectionMusicianViewSet(viewsets.ModelViewSet):
     queryset = PerformanceCollectionMusicianModel.objects.all()
     serializer_class = PerformanceCollectionMusicianSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
-                       filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('performance_collection', 'musician')
-    ordering = ('performance_collection', 'musician')
-    search_fields = ()
-
     keycloak_scopes = {
         'GET': 'performance_collection_musician:view',
         'POST': 'performance_collection_musician:add',
@@ -32,3 +27,12 @@ class PerformanceCollectionMusicianViewSet(viewsets.ModelViewSet):
         'PUT': 'performance_collection_musician:update',
         'DELETE': 'performance_collection_musician:delete'
     }
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if isinstance(queryset, QuerySet):
+            # Ensure queryset is re-evaluated on each request.
+            queryset = PerformanceCollectionMusicianModel.objects.filter(
+                performance_collection_id=self.kwargs['performance_pk']
+                )
+        return queryset

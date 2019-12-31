@@ -1,5 +1,16 @@
 <script type="application/javascript">
 
+function searchRelated(loading, search, vm, url, options, entity){
+  axios.get(url).then(
+  res => {
+    for(i = 0; i < res.data.length; i++) {
+      res.data[i].url= "/"+entity+"/"+res.data[i].id;
+    };
+    vm[options] = res.data;
+  }
+  );
+  loading(false);
+}
 
 Vue.component('v-select', VueSelect.VueSelect)
 let elements = document.getElementsByClassName('app2');
@@ -12,7 +23,6 @@ new Vue({
       optionsCollectors: [],
       informers: [],
       optionsInformers: [],
-      optionsMusicians: [],
       locations: [],
       optionsLocations: [],
       languages: [],
@@ -20,7 +30,6 @@ new Vue({
       publishers:[],
       optionsPublishers:[],
       lines: [],
-      optionsEmit:[],
       optionsInstruments: [],
       documents:[],
   },
@@ -59,17 +68,12 @@ new Vue({
      },
     onSearchInformers(search, loading) {
       loading(true);
-      this.searchRelated(
+      searchRelated(
       loading, search, this,
        `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
        'optionsInformers',
        'authority'
       );
-    },
-    onSearchMusicians(search, loading) {
-      loading(true);
-      this.optionsMusicians = this.informers
-      loading(false);
     },
     onSearchLocations(search, loading) {
         loading(true);
@@ -96,15 +100,6 @@ new Vue({
            `/api/publisher?ordering=code&search=${escape(search)}`,
            'optionsPublishers',
            'publisher'
-        );
-    },
-    onSearchInstruments(search, loading) {
-        loading(true);
-        this.searchRelated(
-          loading, search, this,
-           `/api/instrument?ordering=name&search=${escape(search)}`,
-           'optionsInstruments',
-           'instrument'
         );
     },
     getRelated: function(url, field, rel_entity, entity){
@@ -163,39 +158,6 @@ new Vue({
         'publisher'
       );
     },
-    getLines: function(){
-      // Get all performances, one per line
-      axios.get(`/api/collection/${escape({{id}})}/performance`).then(
-      res => {
-        // For each performance ...
-        for( var item in res.data) {
-          var rel_entity = 'musician'
-          var url = `/api/collection/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician`;
-          var listRelated = []; // list of musicians
-          // ... Get all musicians for a line (performance)
-          axios.get(url).then(
-          res => {
-            for(i = 0; i < res.data.length; i++) {
-              res.data[i][rel_entity].url= "/authority/"+res.data[i][rel_entity].id;
-            }
-            for( var item2 in res.data) {
-              // Fill the list of related
-              listRelated.push(res.data[item2][rel_entity]);
-            }
-          });
-
-          // Fill the performances
-          this.lines.push(
-          {
-            number: res.data[item].number,
-            instrument: res.data[item].instrument,
-            emit: res.data[item].emit.id,
-            informers: listRelated,
-            id: res.data[item].id
-          });
-        }
-      });
-    },
     replacerPerformance: function(key,value){
       if(key=="instrument"){
         if( value != null){
@@ -251,14 +213,6 @@ new Vue({
       this.lines.push({
        number: "1"
      });
-   },
-   removeLine (lineId) {
-      if (!this.blockRemoval) this.lines.splice(lineId, 1)
-   },
-   getEmits: function(){
-     axios.get('/api/emit_vox').then(response => {
-       this.optionsEmit = response.data;
-      });
     },
 
     // Documents related (media) -------------------------
@@ -286,21 +240,130 @@ new Vue({
     },
 
    },
-   mounted: function () {
-     this.getEmits();
+   created: function () {
      {% if id %}
        this.getCollectors();
        this.getInformers();
        this.getLocations();
        this.getLanguages();
        this.getPublishers();
-       this.getLines();
        this.getDocuments();
-     {% else %}
-      this.addLine();
      {% endif %}
    }
-})
-}
+});
+};
+
+
+new Vue({
+  delimiters: ['${', '}'],
+  el: "#appvox",
+  data: {
+    lines:[],
+    optionsInstruments: [],
+    optionsEmit:[],
+    optionsMusicians: [],
+  },
+  watch: {
+    lines () {
+     this.blockRemoval = this.lines.length <= 1;
+    }
+  },
+  computed: {},
+  created: function () {
+    this.getEmits();
+    {% if id %}
+      this.getLines();
+    {% else %}
+     this.addLine();
+    {% endif %}
+  },
+  methods: {
+    addLine(){
+      let checkEmptyLines = this.lines.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
+      this.lines.push({
+       number: "1"
+     });
+    },
+    removeLine (lineId) {
+       if (!this.blockRemoval) this.lines.splice(lineId, 1)
+    },
+    onSearchInstruments(search, loading) {
+        loading(true);
+        searchRelated(
+          loading, search, this,
+           `/api/instrument?ordering=name&search=${escape(search)}`,
+           'optionsInstruments',
+           'instrument'
+        );
+    },
+    onSearchMusicians(search, loading) {
+      loading(true);
+      searchRelated(
+      loading, search, this,
+       `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+       'optionsMusicians',
+       'authority'
+      );
+    },
+    getLines: function(){
+      // Get all performances, one per line
+      axios.get(`/api/collection/${escape({{id}})}/complete`).then(
+      res => {
+        // Fill the performances
+        for( item_perf in res.data["performances"]){
+          var perf = res.data["performances"][item_perf];
+          // Get the emit vox
+          var emit_vox;
+          if(perf.emit ){
+            emit_vox = perf.emit.id;
+          };
+          // ... Get all musicians for a line (performance)
+          var listRelated = []; // list of musicians
+          for(item_mus in perf.musicians){
+            var musician = perf.musicians[item_mus];
+            listRelated.push(musician);
+          }
+          this.lines.push(
+            {
+              number: perf.number,
+              instrument: perf.instrument,
+              emit: emit_vox,
+              informers: listRelated,
+              id: perf.id
+            });
+        }
+      });
+    },
+    getEmits: function(){
+      axios.get('/api/emit_vox').then(response => {
+        this.optionsEmit = response.data;
+      });
+    },
+    replacerPerformance: function(key,value) {
+      if(key=="instrument"){
+        if( value != null){
+          return value.id;
+        }
+      };
+
+      if(key=="informers"){
+        if(value.length > 0){
+          musicians=[];
+          for(i = 0; i< value.length; i++){
+            musicians.push({
+              musician: value[i].id
+            });
+          };
+          return musicians;
+        };
+        return undefined;
+      };
+
+      return value;
+    },
+  },
+});
+
 
 </script>

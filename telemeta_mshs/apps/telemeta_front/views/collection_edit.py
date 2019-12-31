@@ -29,7 +29,7 @@ class CollectionEdit(FormView):
             id = kwargs.get('id')
             # Obtain values of the record
             context['collection'] = tools.request_api(
-                '/api/collection/' + str(id))
+                '/api/collection/' + str(id) + '/complete')
         except Exception as err:
             context['collection'] = {}
             context['error'] = err.message
@@ -40,9 +40,8 @@ class CollectionEdit(FormView):
         id = kwargs.get('id')
 
         # Obtain values of the record
-        collection = requests.get(
-            FRONT_HOST_URL + '/api/collection/' + str(id))
-        data = collection.json()
+        data = tools.request_api(
+          '/api/collection/'+str(id)+'/complete')
         data['mission'] = data['mission']['id']
 
         form = CollectionForm(initial=data)

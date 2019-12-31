@@ -199,7 +199,6 @@
               {% if performance.musicians %}
               <dl class="container_data">
                 <dt class="libelle">{% trans 'Musiciens' %}</dt>
-                {{performers}}
                 <dd class="donnee">
                   {% for musician in performance.musicians %}
                     {% if not forloop.first %} | {% endif %}

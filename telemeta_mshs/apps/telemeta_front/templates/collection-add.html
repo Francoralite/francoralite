@@ -49,7 +49,6 @@
 
 {{ form.media }}
 <div class="container">
-  <div id="app">
     {% if id %}
     <form action="{% url "collection-edit" id %}" method="POST">
     {% else %}
@@ -232,109 +231,101 @@
       {% bootstrap_field form.auto_period_access layout='vertical' %}
       {% bootstrap_field form.legal_rights layout='vertical' %}
 
-      <div class="app2">
-      <div class="block-grey">
-        <h2>{% trans "Voix/Instruments" %}</h2>
-        <div class="container_line">
 
-        <div>
-          <template>
-            <div v-for="(line, index) in lines"
-              v-bind:key="index">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div class=container_line>
-                    <input v-model="line.id" hidden="True" type="number" />
-                    <span class="container_data one">
-                      <label class="control_label">{% trans "Nombre" %}</label>
-                      <input v-model="line.number" type="number" required="required"/>
-                    </span>
-                    <span class="container_data four">
-                      <label class="control_label">{% trans "Voix/Instrument" %}</label>
-                      <v-select
-                        single
-                        v-model="line.instrument"
-                        label="name"
-                        :filterable="false"
-                        @search="onSearchInstruments"
-                        :options="optionsInstruments">
-                          <template slot="option" slot-scope="option">
-                            <p>${ option.name }, ${ option.typology.number}</p>
-                          </template>
-                          <template slot="selected-option" slot-scope="option">
-                            ${ option.name }, ${ option.typology.number}
-                          </template>
-                        </v-select>
-                    </span>
-                    <span class="container_data one">
-                      <label class="control_label">{% trans "Nature émission vocale" %}</label>
-                      <select v-model="line.emit">
-                        <option value=""></option>
-                        <option v-for="option in optionsEmit" v-bind:value="option.id" required="required">
-                          ${option.name }
-                        </option>
-                      </select>
-                    </span>
-                  </div>
-                  <div class=container_line>
-                    <span class="container_data">
-                      <label class="control_label">{% trans "Informateur(s)" %}</label>
-                      <v-select
-                        multiple
-                          v-model="line.informers"
-                          label="first_name"
-                          :filterable="false"
-                          @search="onSearchMusicians"
-                          :options="optionsMusicians">
-                          <template slot="option" slot-scope="option">
-                            ${ option.first_name } ${ option.last_name } -
-                            <a :href="option.url"
-                              onclick="window.open(this.href); return false;">
-                              <i>Fiche...</i></a>
-                          </template>
-                          <template slot="selected-option" slot-scope="option">
-                            <a :href="option.url"
-                            onclick="window.open(this.href); return false;">
-                            ${ option.first_name } ${ option.last_name }</a>
-                          </template>
-                        </v-select>
-                        <input :name="'musicians'+index"
-                              type="hidden"
-                              :value="JSON.stringify(line.informers)" />
-                    </span>
-                  </div>
-                  <div class="center">
-                    <button type="button" @click="removeLine(index)"
-                      class="btn btn-default">
-                      <span class="glyphicon glyphicon-trash"></span>
-                      {% trans "Supprimer" %}
-                    </button>
-                    <button type="button"
-                      v-if="index + 1 === lines.length"
-                      @click="addLine" class="btn btn-default">
-                      <span class="glyphicon glyphicon-plus"></span>
-                      {% trans "Ajouter une voix/instrument" %}
-                    </button>
+      <div id="appvox">
+        <div class="block-grey">
+          <h2>{% trans "Voix/Instruments" %}</h2>
+          <div class="container_line">
+            <div>
+              <template>
+                <div v-for="(line, index) in lines"
+                  v-bind:key="index">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <div class=container_line>
+                        <input v-model="line.id" hidden="True" type="number" />
+                        <span class="container_data one">
+                          <label class="control_label">{% trans "Nombre" %}</label>
+                          <input v-model="line.number" type="number" required="required"/>
+                        </span>
+                        <span class="container_data four">
+                          <label class="control_label">{% trans "Voix/Instrument" %}</label>
+                          <v-select
+                            single
+                            v-model="line.instrument"
+                            label="name"
+                            :filterable="false"
+                            @search="onSearchInstruments"
+                            :options="optionsInstruments">
+                              <template slot="option" slot-scope="option">
+                                <p>${ option.name }, ${ option.typology.number}</p>
+                              </template>
+                              <template slot="selected-option" slot-scope="option">
+                                ${ option.name }, ${ option.typology.number}
+                              </template>
+                            </v-select>
+                        </span>
+                        <span class="container_data one">
+                          <label class="control_label">{% trans "Nature émission vocale" %}</label>
+                          <select v-model="line.emit">
+                            <option value=""></option>
+                            <option v-for="option in optionsEmit" v-bind:value="option.id" required="required">
+                              ${option.name }
+                            </option>
+                          </select>
+                        </span>
+                      </div>
+                      <div class=container_line>
+                        <span class="container_data">
+                          <label class="control_label">{% trans "Informateur(s)" %}</label>
+                          <v-select
+                            multiple
+                              v-model="line.informers"
+                              label="first_name"
+                              :filterable="false"
+                              @search="onSearchMusicians"
+                              :options="optionsMusicians">
+                              <template slot="option" slot-scope="option">
+                                ${ option.first_name } ${ option.last_name } -
+                                <a :href="option.url"
+                                  onclick="window.open(this.href); return false;">
+                                  <i>Fiche...</i></a>
+                              </template>
+                              <template slot="selected-option" slot-scope="option">
+                                <a :href="option.url"
+                                onclick="window.open(this.href); return false;">
+                                ${ option.first_name } ${ option.last_name }</a>
+                              </template>
+                            </v-select>
+                            <input :name="'musicians'+index"
+                                  type="hidden"
+                                  :value="JSON.stringify(line.informers)" />
+                        </span>
+                      </div>
+                      <div class="center">
+                        <button type="button" @click="removeLine(index)"
+                          class="btn btn-default">
+                          <span class="glyphicon glyphicon-trash"></span>
+                          {% trans "Supprimer" %}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+
+              </template>
+            <input name="performances"
+              type="hidden"
+              :value="JSON.stringify(lines,replacerPerformance)" />
+
             </div>
-
-            <button type="button"
-              v-if="lines.length === 0"
-              @click="addLine" class="btn btn-default">
-              <span class="glyphicon glyphicon-plus"></span>
-              {% trans "Ajouter une voix/instrument" %}
-            </button>
-
-          </template>
+          </div>
+          <button type="button" @click="addLine" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            {% trans "Ajouter une voix/instrument" %}
+          </button>
         </div>
-        <input name="performances"
-          type="hidden"
-          :value="JSON.stringify(lines,replacerPerformance)" />
       </div>
-    </div>
-    </div> <!-- app2 -->
 
 
     <div class="block-grey">

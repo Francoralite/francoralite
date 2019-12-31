@@ -16,9 +16,7 @@ class CollectionDetail(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         try:
             context = super(CollectionDetail, self).get_context_data(**kwargs)
-            context['collection'] = tools.request_api(
-                 '/api/collection/'+context['id'])
-            # # Obtain values of the record collection
+            # Obtain values of the record collection
             context['collection'] = tools.request_api(
               '/api/collection/'+context['id']+'/complete')
             # Obtain values of related items

@@ -224,7 +224,8 @@ def write_relations(id_main,
     # Query the list of related records in the database
     list_related = query_related(url_related, headers)
     dict_related = {}
-    if list_related != {} and list_related is not None:
+
+    if list_related != [] and list_related is not None:
         # create a dict to know the id of the related record
         for item in list_related:
             if name_related != "":
@@ -259,7 +260,7 @@ def write_relations(id_main,
         for id in list_intersect:
             update_record(url_related, id, dict_selected[id], headers)
 
-    if list_related is None:
+    if list_related == []:
         for item in list_to_create:
             try:
                 create_record(url_related, item[0], item[1], headers)
