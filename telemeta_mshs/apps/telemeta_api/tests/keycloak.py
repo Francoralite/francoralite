@@ -13,7 +13,7 @@ def get_token(test):
         "http://keycloak.francoralite.localhost:8080/auth/realms/francoralite/protocol/openid-connect/token", # noqa
         data={
             'client_id': 'admin-cli',
-            'username': 'toto1',
+            'username': 'contributeur',
             'password': "password",
             'grant_type': "password"
         })
@@ -23,4 +23,4 @@ def get_token(test):
         'HTTP_AUTHORIZATION': 'Bearer ' + token,
     }
 
-    test.client.auth = HTTPBasicAuth('toto1', 'password')
+    test.client.auth = HTTPBasicAuth('contributeur', 'password')
