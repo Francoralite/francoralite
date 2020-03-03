@@ -222,10 +222,10 @@
         {% bootstrap_field form.code_partner layout='vertical' %}
       </div>
 
-      <div class="container_line">
-        {% markdown_editor component=form.booklet_description  %}
-        {% markdown_editor component=form.comment  %}
-      </div>
+
+      {% markdown_editor component=form.booklet_description  %}
+      {% markdown_editor component=form.comment  %}
+
       {% bootstrap_field form.physical_items_num layout='vertical' %}
       {% bootstrap_field form.media_type layout='vertical' %}
       {% bootstrap_field form.auto_period_access layout='vertical' %}
