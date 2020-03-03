@@ -29,10 +29,9 @@ from .keycloak import get_token
 FOND_STRUCTURE = [
     ('id', int),
     ('title', str),
+    ('alt_title', str),
     ('description', str),
-    ('descriptions', str),
     ('code', str),
-    ('public_access', str),
     ('institution', dict),
     ('code_partner', str),
     ('acquisition_mode', dict),

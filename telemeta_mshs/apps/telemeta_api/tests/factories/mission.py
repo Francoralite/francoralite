@@ -22,7 +22,7 @@ class MissionFactory(factory.django.DjangoModelFactory):
 
     title = factory.Faker('word')
     description = factory.Faker('word')
-    descriptions = factory.Faker('word')
+    # descriptions = factory.Faker('word')
     code = factory.Faker('uuid4')
     fonds = factory.SubFactory(FondFactory)
     code_partner = factory.Faker('word')

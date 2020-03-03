@@ -22,12 +22,13 @@ class FondFactory(factory.django.DjangoModelFactory):
         model = Fond
 
     title = factory.Faker('word')
+    alt_title = factory.Faker('word')
     description = factory.Faker('word')
-    descriptions = factory.Faker('word')
+    # descriptions = factory.Faker('word')
     code = factory.Faker('uuid4')
     institution = factory.SubFactory(InstitutionFactory)
     code_partner = factory.Faker('word')
-    public_access = factory.Iterator(['metadata', 'full'])
+    # public_access = factory.Iterator(['metadata', 'full'])
     acquisition_mode = factory.SubFactory(AcquisitionModeFactory)
     conservation_site = factory.Faker('word')
     comment = factory.Faker('word')

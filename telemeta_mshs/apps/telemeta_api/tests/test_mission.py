@@ -29,7 +29,6 @@ MISSION_STRUCTURE = [
     ('id', int),
     ('title', str),
     ('description', str),
-    ('descriptions', str),
     ('code', str),
     ('public_access', str),
     ('fonds', dict),

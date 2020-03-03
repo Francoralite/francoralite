@@ -42,8 +42,8 @@ class MediaItemFactory(factory.django.DjangoModelFactory):
     collection = factory.SubFactory(MediacollectionFactory)
     recorded_from_date = factory.Faker('date')
     recorded_to_date = factory.Faker('date')
-    public_access = factory.fuzzy.FuzzyChoice(
-        ITEM_PUBLIC_ACCESS_CHOICES)
+    # public_access = factory.fuzzy.FuzzyChoice(
+    #     ITEM_PUBLIC_ACCESS_CHOICES)
     location = factory.SubFactory(LocationFactory)
     location_comment = factory.Faker('word')
     cultural_area = factory.Faker('word')
