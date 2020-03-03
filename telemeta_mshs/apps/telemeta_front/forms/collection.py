@@ -86,7 +86,7 @@ class CollectionForm(forms.Form):
     descriptions = forms.CharField(label=_(u'Description'),
                                    widget=forms.Textarea, required=False)
     description = forms.CharField(label=_(u'Description'),
-                                  widget=forms.Textarea, required=False)
+                                  widget=forms.Textarea, required=True)
 
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
