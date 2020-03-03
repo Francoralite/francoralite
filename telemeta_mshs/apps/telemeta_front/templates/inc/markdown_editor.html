@@ -32,5 +32,5 @@
            },
          },
   });
-  instance_{{component.auto_id}}.setValue("{{component.value|escapejs}}");
+  instance_{{component.auto_id}}.setValue("{{ component.value|default_if_none:''|escapejs }}");
 </script>
