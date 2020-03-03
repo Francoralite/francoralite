@@ -130,9 +130,9 @@ def domains(self):
         ('R', _(u"Conte ou récit légendaire"))
     )
     for (d, lib) in DOMAINS:
-        if len(labels) > 0:
-            labels = labels + ", "
         if d in values:
+            if len(labels) > 0:
+                labels = labels + ", "
             labels = labels + str(lib)
 
     return labels
