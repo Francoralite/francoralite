@@ -16,7 +16,7 @@
 
 
 {% block title_name %}
-{{ block.super }}
+  {% trans "Institution" %}
   {% if institution %}
    : {{ institution.name }}
   {% endif %}

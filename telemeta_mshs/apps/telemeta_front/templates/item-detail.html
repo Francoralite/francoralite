@@ -50,7 +50,7 @@
 
 
 {% block title_name %}
-    {{ block.super }}
+    {% trans "Item" %}
     {% if item %}
      : {{ item.code|upper }} - {{  item.title}}
     {% endif %}

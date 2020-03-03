@@ -15,7 +15,7 @@
 
 
 {% block title_name %}
-  {{ block.super }}
+  {% trans "Enquête" %}
   {% if collection %}
   : {{ collection.code|upper }} - {{  collection.title}}
   {% endif %}

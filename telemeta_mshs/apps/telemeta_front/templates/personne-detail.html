@@ -14,7 +14,7 @@
 
 
 {% block title_name %}
-    {{ block.super }}
+    {% trans "Personne" %}
     {% if personne %}
      : {{ personne.last_name }} {{personne.first_name}}
     {% endif %}

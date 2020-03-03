@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block title_name %}
-    {{ block.super }}
+    {% trans "Mission" %}
     {% if mission %}
      : {{ mission.code|upper }}
     {% endif %}
