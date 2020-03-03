@@ -5,9 +5,9 @@
 {% else %}
 <dl class="container_data">
   <dt class="libelle"> {% trans libelle %}</dt>
+  {% for item in items %}
   <dd class="donnee">
-    {% for item in items %}
-      {% if not forloop.first %} | {% endif %}
+
       {% if url_detail %}
       <a href="{% url url_detail id=item.id %}"
       onclick="window.open(this.href); return false;">
@@ -17,8 +17,8 @@
           {{ item|get_obj_attr:field2 }}
         {% endif %}
       {% if url_detail %}</a>{% endif %}
-    {% endfor %}
   </dd>
+  {% endfor %}
 </dl>
 
 {% endif %}
