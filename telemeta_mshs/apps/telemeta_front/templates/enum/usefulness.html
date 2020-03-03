@@ -17,7 +17,7 @@
 
 
 {% block title_name %}
-  {% trans "Utilité" %}
+  {% trans "Fonction" %}
 {% endblock %}
 
 
@@ -27,7 +27,7 @@
 {% if user.is_authenticated %}
   <a href="{% url "usefulness-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
-      {% trans "Créer une utilité" %}
+      {% trans "Créer une fonction" %}
   </a>
 {% endif %}
 {% endblock %}
@@ -84,7 +84,7 @@
   {% if error|length %}
       {% display_error error %}
     {% else %}
-      <p>{% trans "Il n'y a pas d'utilité" %}</p>
+      <p>{% trans "Il n'y a pas de fonction" %}</p>
     {% endif %}
 {% endif %}
 </div>
