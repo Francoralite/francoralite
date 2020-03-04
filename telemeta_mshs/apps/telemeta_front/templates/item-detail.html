@@ -195,7 +195,7 @@
       {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
       {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
 
-      {% if item.melody %}
+      {% if item.melody and item.melody != "None" %}
       <div class="block-grey row">
         <div class="col-md-6">
           <label for="id_melody" class="melody">Mélodie (transcription alphabétique)</label>
