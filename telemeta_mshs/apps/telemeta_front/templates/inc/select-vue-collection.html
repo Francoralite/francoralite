@@ -282,7 +282,7 @@ new Vue({
       let checkEmptyLines = this.lines.filter(line => line.number === null);
       if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
       this.lines.push({
-       number: "1"
+       number: "0"
      });
     },
     removeLine (lineId) {
