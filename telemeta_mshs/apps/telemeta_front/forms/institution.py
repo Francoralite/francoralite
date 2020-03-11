@@ -5,11 +5,11 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django import forms
-# import django_bootstrap3_form as form3
+from django.utils.translation import ugettext_lazy as _
 
 
 class InstitutionForm(forms.Form):
-    name = forms.CharField(label='Nom', max_length=255)
+    name = forms.CharField(label=_(u'Nom'), max_length=255, required=True)
     notes = forms.CharField(
-        label='Notes',
+        label=_(u'Notes'),
         widget=forms.Textarea, required=False)

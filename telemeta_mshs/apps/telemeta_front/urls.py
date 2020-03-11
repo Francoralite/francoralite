@@ -88,10 +88,10 @@ urlpatterns = [
     url(r'^institution/add$',
         institution_add.InstitutionAdd.as_view(),
         name='institution-add'),
-    url(r'^institution/edit(?P<id>[0-9]+)$',
+    url(r'^institution/edit/(?P<id>[0-9]+)$',
         institution_edit.InstitutionEdit.as_view(),
         name='institution-edit'),
-    url(r'^institution/delete(?P<id>[0-9]+)$',
+    url(r'^institution/delete/(?P<id>[0-9]+)$',
         institution_delete.InstitutionDelete.as_view(),
         name='institution-delete'),
 

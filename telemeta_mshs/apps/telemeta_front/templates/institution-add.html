@@ -33,9 +33,9 @@
 {% if not error|length %}
   <div class="container">
     {% if id %}
-    <form action="/institution/edit{{id}}" method="POST">
+    <form action="{% url "institution-edit" id %}" method="POST">
     {% else %}
-    <form action="/institution/add" method="POST">
+    <form action="{{request.path}}" method="POST">
     {% endif %}
       {% csrf_token %}
       {% bootstrap_field form.name layout='vertical' %}
