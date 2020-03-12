@@ -76,6 +76,14 @@
 
 {% if not error|length %}
   {% if item %}
+  <figure>
+    <figcaption>{{item.code}}.mp3</figcaption>
+    <audio
+        controls
+        src="{{url_external}}/api/item/{{item.id}}/download/{{item.code}}.mp3">
+            Votre navigateur Internet ne prend pas en charge cet élément audio
+    </audio>.
+ </figure>
 
   <!-- Tabs -->
   <ul class="nav nav-tabs" role="tablist">
