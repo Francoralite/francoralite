@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'leaflet',
     'markdownx',
     'corsheaders',
+    'debug_toolbar'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -143,3 +144,8 @@ OIDC_OP_JWKS_ENDPOINT = 'http://keycloak.francoralite.localhost:8080/auth/' +\
 LOGIN_REDIRECT_URL = "http://nginx.francoralite.localhost:8080/"
 LOGOUT_REDIRECT_URL = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/logout"
+
+#
+# BOWER
+#
+BOWER_PATH = '/usr/bin/bower'
