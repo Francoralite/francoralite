@@ -272,7 +272,7 @@ class KeycloakMiddleware(object):
             logger.debug('** exclude path : visualize sound image')
             return None
         expr = re.compile(
-            "^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/isAvailable/$")
+            "^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/isAvailable$")
         if expr.match(path):
             logger.debug('** exclude path : MP3 is available')
             return None
