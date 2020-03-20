@@ -68,8 +68,9 @@ services:
       - './telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py'
       - './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
-    volumes_from:
-      - 'data'
+      - './data/media/:/srv/media'
+      - './data/static:/srv/static'
+      - './data/bower:/srv/bower'
     env_file:
       - './telemeta_mshs/apps/Telemeta/env/debug.env'
       - './francoralite-env/app.env'

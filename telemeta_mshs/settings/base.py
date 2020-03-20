@@ -76,9 +76,13 @@ DATABASES = {
     }
 }
 
+APPEND_SLASH = False
+
 FRONT_HOST_URL = 'http://localhost:8000'
 FRONT_HOST_URL_EXTERNAL = 'http://nginx.francoralite.localhost:8080'
 USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+USE_X_FORWARDED_PROTO = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
