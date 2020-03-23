@@ -577,7 +577,7 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     @detail_route(
         methods=['get'],
-        url_path='download/(?P<file_names>[a-zA-Z0-9_.]+)/isAvailable/', # noqa
+        url_path='download/(?P<file_names>[a-zA-Z0-9_.]+)/isAvailable', # noqa
         url_name='sound_download_available')
     def download_is_available(self, request, pk=None, file_names=""):
         data = json.dumps({'available': True})
