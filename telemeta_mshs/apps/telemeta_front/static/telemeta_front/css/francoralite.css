@@ -1454,6 +1454,7 @@ label.melody {
   list-style: none;
   margin-top: 5px;
 }
+
 /* menu reconstruit par Laurence */
 
 #menu .menu {
@@ -1603,4 +1604,10 @@ label.melody {
 	}
 
 
+}
+
+
+/* ---  on cache l'icone tant que les playliste ne sont pas gérées  --- */
+.markersdivAddPlaylist {
+	display: none !important;
 }
