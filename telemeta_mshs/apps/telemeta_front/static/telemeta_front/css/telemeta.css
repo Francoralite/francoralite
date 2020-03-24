@@ -1327,8 +1327,10 @@ a:focus,div:focus{
     margin-top: 0.1em;
 }
 
-
-
+/* ---  on cache l'icone tant que les playliste ne sont pas gérées  --- */
+.markersdivAddPlaylist {
+	display: none;
+}
 
 /* menu reconstruit par Laurence */
 
