@@ -18,11 +18,11 @@ class FondViewSet(viewsets.ModelViewSet):
     queryset = FondModel.objects.all()
     serializer_class = FondSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
-                       filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('institution',)
-    ordering = ('institution', 'code',)
-    search_fields = ('institution', 'code', 'title')
+    filter_backends = (filters.DjangoFilterBackend,)
+    # filter_fields = ('institution',)
+    # ordering = ('institution', 'code',)
+    # search_fields = ('institution__name', 'code', 'title')
+    filter_fields = ('code', 'title')
 
     keycloak_scopes = {
         'GET': 'fond:view',
