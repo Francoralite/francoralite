@@ -92,7 +92,7 @@ class MissionViewSet(viewsets.ModelViewSet):
             field='recorded_from_year')
         to_years = self.list_collections(
             id_mission=instance.id,
-            field='recorded_from_year')
+            field='recorded_to_year')
 
         date_start = ""
         date_end = ""
