@@ -1611,3 +1611,8 @@ label.melody {
 .markersdivAddPlaylist {
 	display: none !important;
 }
+
+/* correction bug qui centrait tous les champs */
+.container_line {
+	margin: inherit;
+}
