@@ -1616,3 +1616,24 @@ label.melody {
 .container_line {
 	margin: inherit;
 }
+
+/* on fixe la largeur des champs pour permettre que les lignes soient alignées en  vertical */
+.container_data.number {
+	max-width: 75px;
+}
+
+.container_data.thb {
+	max-width: 430px;
+	width: auto;
+}
+
+.container_data.instrument {
+	max-width: 430px;
+	width: auto;
+}
+
+
+.voix-instrument .container_data:last-child {
+	min-width: 200px;
+	width: auto;
+}

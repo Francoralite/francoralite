@@ -167,22 +167,22 @@
 
       <div class="block-grey">
         <h2>{% trans "Voix/Instruments" %}</h2>
-        <div class="container_data">
+        <div class="container_data voix-instrument">
           {% for performance in collection.performances %}
           <div class="container_line">
               {% if performance.number %}
-              <dl class="container_data">
+              <dl class="container_data number">
                 <dt class="libelle">{% trans 'Nombre' %}</dt>
                 <dd class="donnee">{{performance.number}}</dd>
               </dl>
               {% endif %}
 
               {% if performance.instrument %}
-              <dl class="container_data">
+              <dl class="container_data instrument">
                 <dt class="libelle">{% trans 'Instrument' %}</dt>
                 <dd class="donnee">{{performance.instrument.name}}</dd>
               </dl>
-              <dl class="container_data">
+              <dl class="container_data thb">
                 <dt class="libelle">{% trans 'Typologie Horn-Bostel' %}</dt>
                 <dd class="donnee">{{performance.instrument.typology.number}} :
                 {{performance.instrument.typology.name}}</dd>
