@@ -85,6 +85,12 @@ def write_collection_related(collection, request, headers):
         url = \
             FRONT_HOST_URL + '/api/collection/' + \
             str(collection["id"]) + '/' + nested
+        if related == 'performance':
+            for item in items:
+                if "emit" in item:
+                    if item["emit"] == '0' or item["emit"] == 0:
+                        del item["emit"]
+
         # Create the related records
         write_relations(collection["id"],
                         "collection", items,

@@ -314,8 +314,8 @@ new Vue({
         for( item_perf in res.data["performances"]){
           var perf = res.data["performances"][item_perf];
           // Get the emit vox
-          var emit_vox;
-          if(perf.emit ){
+          var emit_vox = 0;
+          if(perf.emit){
             emit_vox = perf.emit.id;
           };
           // ... Get all musicians for a line (performance)

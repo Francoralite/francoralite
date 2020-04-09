@@ -22,6 +22,17 @@ class PerformanceCollectionSerializer(serializers.ModelSerializer):
     emit = AsymetricRelatedField.from_serializer(
         EmitVoxSerializer, kwargs={'required': False})
 
+    def update(self, instance, validated_data):
+        instance.collection = validated_data.get(
+            'collection', instance.collection)
+        instance.number = validated_data.get('number', instance.number)
+        instance.instrument = validated_data.get(
+            'instrument', instance.instrument)
+        instance.emit = validated_data.get('emit')
+
+        instance.save()
+        return instance
+
     class Meta:
         model = PerformanceCollectionModel
         fields = '__all__'

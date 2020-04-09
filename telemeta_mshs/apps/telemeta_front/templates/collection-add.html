@@ -268,7 +268,7 @@
                         <span class="container_data one">
                           <label class="control_label">{% trans "Nature émission vocale" %}</label>
                           <select v-model="line.emit">
-                            <option value=""></option>
+                            <option value="0"></option>
                             <option v-for="option in optionsEmit" v-bind:value="option.id" required="required">
                               ${option.name }
                             </option>
