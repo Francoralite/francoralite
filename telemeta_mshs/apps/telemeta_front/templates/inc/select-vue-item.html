@@ -246,6 +246,14 @@ new Vue({
          'authority'
        );
     },
+    getInitialCollectors: function(){
+       this.getRelated(
+         '/api/collection/'+$('#id-collection').data().name+'/collectors',
+         'collectors',
+         'collector',
+         'authority'
+       );
+    },
     getInformers: function(){
       this.getRelated(
         `/api/collection/${escape({{id}})}/informer`,
@@ -253,6 +261,14 @@ new Vue({
         'informer',
         'authority'
       );
+    },
+    getInitialInformers: function(){
+       this.getRelated(
+         '/api/collection/'+$('#id-collection').data().name+'/informer',
+         'informers',
+         'informer',
+         'authority'
+       );
     },
     getLanguages: function(){
        this.getRelated(
@@ -526,6 +542,8 @@ new Vue({
     this.getLines();
     this.getDocuments();
     {% else %}
+    this.getInitialCollectors();
+    this.getInitialInformers();
     this.addLine();
     {% endif %}
   }

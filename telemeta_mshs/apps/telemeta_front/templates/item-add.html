@@ -45,7 +45,7 @@
   {{ block.super }}
 {% endblock %}
 
-
+<meta id="id-collection" data-name="{{id_collection}}">
 {{ form.media }}
 {% if not error|length %}
 
@@ -769,5 +769,8 @@
   {% display_error error %}
 {% endif %}
 
+<script>
+var idCollection = {{ id_collection }};
+</script>
 {{ form.media.js }}
 {% endblock content %}

@@ -20,6 +20,11 @@ class ItemAdd(FormView):
     parser_classes = (MultiPartParser, FormParser)
     success_url = '/item/'
 
+    def get_context_data(self, **kwargs):
+        context = super(ItemAdd, self).get_context_data(**kwargs)
+        context['id_collection'] = self.kwargs['id_collection']
+        return context
+
     def get_initial(self):
         initial = super(ItemAdd, self).get_initial()
         initial['collection'] = self.kwargs['id_collection']
