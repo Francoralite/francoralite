@@ -23,6 +23,12 @@ class ItemAdd(FormView):
     def get_context_data(self, **kwargs):
         context = super(ItemAdd, self).get_context_data(**kwargs)
         context['id_collection'] = self.kwargs['id_collection']
+        # Obtain locations of the mission
+        response = requests.get(
+            FRONT_HOST_URL + '/api/collection/' +
+            self.kwargs['id_collection'] + '/location')
+        if response.status_code == status.HTTP_200_OK:
+            context['locations'] = response.json()
         return context
 
     def get_initial(self):

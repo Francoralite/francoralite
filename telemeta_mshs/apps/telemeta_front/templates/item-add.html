@@ -177,7 +177,17 @@
 
         <div class="block-grey">
           <h2>{% trans "Indications géographiques et culturelles" %}</h2>
-          {% related_list libelle='Lieux' items=collection.locations url_detail="location_gis-detail" field="code" %}
+
+          <!-- Locations from collection -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Lieux" %}</label>
+            <div>
+              {% for loc in locations %}
+              {{loc.location.code|safe}} | {{loc.location.name|markdown|safe}}
+              {% endfor %}
+            </div>
+          </div>
+
           <!-- Language -->
           <div class="app2">
           <div class="container_data">
