@@ -39,6 +39,8 @@ class ItemAdd(FormView):
             FRONT_HOST_URL + '/api/collection/' + self.kwargs['id_collection'])
         if response.status_code == status.HTTP_200_OK:
             initial['code'] = response.json()['code']
+        # Melody
+        initial['melody'] = ""
         return initial
 
     def post(self, request, *args, **kwargs):
