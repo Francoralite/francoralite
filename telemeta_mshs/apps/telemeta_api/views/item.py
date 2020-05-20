@@ -60,6 +60,12 @@ from ..serializers.item_musical_group import ItemMusicalGroupSerializer
 from ..models.item_musical_organization import ItemMusicalOrganization
 from ..serializers.item_musical_organization import \
     ItemMusicalOrganizationSerializer
+from ..models.performance_collection import PerformanceCollection
+from ..models.performance_collection_musician import (
+    PerformanceCollectionMusician)
+from ..serializers.performance_collection import PerformanceCollectionSerializer  # noqa
+from ..serializers.performance_collection_musician import (
+    PerformanceCollectionMusicianSerializer)
 from ..models.item_coirault import ItemCoirault
 from ..serializers.item_coirault import ItemCoiraultSerializer
 
@@ -219,6 +225,57 @@ class ItemViewSet(viewsets.ModelViewSet):
         # Retrieve most of the entities
         for entity in entities:
             self.collect(instance.id, data, entity)
+
+        # Retrieve the performances
+        performances = PerformanceCollection.objects.filter(
+            collection=instance.collection.id)
+        data["performances"] = []
+        for performance in performances:
+            serializer_performance = PerformanceCollectionSerializer(performance)  # noqa
+            data_performance = serializer_performance.data
+            # Don't retrieve all the collection proerties -> only the ID
+            data_performance["collection"] = instance.collection.id
+
+            # Retrieve the musicians
+            data_performance["musicians"] = []
+            musicians = PerformanceCollectionMusician.objects.filter(
+                performance_collection=performance.id)
+            for musician in musicians:
+                serializer_musician = PerformanceCollectionMusicianSerializer(
+                    musician)
+                data_performance["musicians"].append(
+                    serializer_musician.data["musician"])
+
+            data["performances"].append(data_performance)
+
+        return Response(data)
+
+    @detail_route()
+    def performances(self, request, pk=None):
+        instance = self.get_object()
+        data = {}
+
+        # Retrieve the performances
+        performances = PerformanceCollection.objects.filter(
+            collection=instance.collection.id)
+        data["performances"] = []
+        for performance in performances:
+            serializer_performance = PerformanceCollectionSerializer(performance)  # noqa
+            data_performance = serializer_performance.data
+            # Don't retrieve all the collection proerties -> only the ID
+            data_performance["collection"] = instance.collection.id
+
+            # Retrieve the musicians
+            data_performance["musicians"] = []
+            musicians = PerformanceCollectionMusician.objects.filter(
+                performance_collection=performance.id)
+            for musician in musicians:
+                serializer_musician = PerformanceCollectionMusicianSerializer(
+                    musician)
+                data_performance["musicians"].append(
+                    serializer_musician.data["musician"])
+
+            data["performances"].append(data_performance)
 
         return Response(data)
 

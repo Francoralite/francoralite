@@ -46,6 +46,7 @@ from .hornbostelsachs import HornbostelSachs
 from .instrument import Instrument
 from .performance_collection_musician import PerformanceCollectionMusician
 from .performance_collection import PerformanceCollection
+from .item_performance_collection import ItemPerformanceCollection
 from .musical_organization import MusicalOrganization
 from .musical_group import MusicalGroup
 from .thematic import Thematic
