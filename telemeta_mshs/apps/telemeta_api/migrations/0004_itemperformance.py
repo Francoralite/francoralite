@@ -12,16 +12,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ItemPerformanceCollection',
+            name='ItemPerformance',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item')),
-                ('performance_collection', models.ForeignKey(verbose_name='performance', to='telemeta_api.PerformanceCollection')),
+                ('performance', models.ForeignKey(verbose_name='performance', to='telemeta_api.PerformanceCollection')),
             ],
             options={
                 'ordering': [],
-                'db_table': 'item_performance_collection',
-                'verbose_name_plural': 'interpretes',
+                'db_table': 'item_performance',
+                'verbose_name_plural': 'item_performance',
             },
         ),
     ]

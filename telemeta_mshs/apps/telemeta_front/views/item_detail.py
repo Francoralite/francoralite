@@ -36,6 +36,12 @@ class ItemDetail(FrancoraliteTemplateView):
             context['locations'] = []
             for l in locations:
                 context['locations'].append(l["location"])
+            #   - performances
+            performances = tools.request_api(
+                '/api/item/'
+                + context['id']
+                + '/performance')
+            context['performances'] = performances
 
             # Obtain gaphers of the record
             context['graphers'] = []

@@ -171,6 +171,7 @@ def write_item_related(id_main, request, headers):
     ]
 
     for rel_item in related:
+
         write_relations(
             id_main["id"],
             "item",
@@ -199,6 +200,24 @@ def write_item_related(id_main, request, headers):
                     "",
                     headers)
 
+    # Performances ---------------
+    url_performances = \
+        FRONT_HOST_URL + '/api/item/' + \
+        str(id_main["id"]) + '/performance'
+
+    performances_selected = json.loads(request.POST['performances'])
+
+    # Use only the item ID (not all the data of an item)
+    for perf in performances_selected:
+        perf["item"] = id_main["id"]
+
+    write_relations(id_main["id"],
+                    "item_performance",
+                    performances_selected,
+                    url_performances,
+                    "performance",
+                    headers)
+
 
 def write_relations(id_main,
                     name_main, selected, url_related, name_related, headers):
@@ -214,6 +233,7 @@ def write_relations(id_main,
         # Selected entity
         obj = related(id_main, name_main, i)
         obj.add_data(item)
+
         list_selected.append((item, obj))
         # Is there an item ID ?
         if "id" in item:
@@ -235,11 +255,7 @@ def write_relations(id_main,
         # create a dict to know the id of the related record
         for item in list_related:
             if name_related != "":
-                # Add the item ID to the set
-                if name_related == 'performance':
-                    ID = item["id"]
-                else:
-                    ID = item[name_related]["id"]
+                ID = item[name_related]["id"]
                 set_related.add(ID)
                 # Feed the dict
                 dict_related[ID] = item["id"]
@@ -248,6 +264,21 @@ def write_relations(id_main,
                 set_related.add(item["id"])
                 # Feed the dict
                 dict_related[item["id"]] = item["id"]
+
+        if name_main == 'item_performance':
+            new_perfs = set_selected.difference(set_related)
+            for perf in new_perfs:
+                # Create a related performance
+                response = requests.post(
+                    url_related,
+                    data={
+                        'item': id_main,
+                        'performance': perf
+                    },
+                    headers=headers)
+                if response.status_code \
+                        != status.HTTP_201_CREATED:
+                    raise Exception(response.status_code)
 
         # No exists in list of related : delete the related record
         list_delete = set_related.difference(set_selected)
@@ -264,7 +295,11 @@ def write_relations(id_main,
 
         list_intersect = set_selected.intersection(set_related)
         for id in list_intersect:
-            update_record(url_related, id, dict_selected[id], headers)
+            if name_main == 'item_performance':
+                update_record(
+                    url_related, dict_related[id], dict_selected[id], headers)
+            else:
+                update_record(url_related, id, dict_selected[id], headers)
 
     if list_related == []:
         for item in list_to_create:
@@ -272,6 +307,19 @@ def write_relations(id_main,
                 create_record(url_related, item[0], item[1], headers)
             except Exception:
                 pass
+        if name_main == 'item_performance':
+            for perf in set_selected:
+                # Create a related performance
+                response = requests.post(
+                    url_related,
+                    data={
+                        'item': id_main,
+                        'performance': perf
+                    },
+                    headers=headers)
+                if response.status_code \
+                        != status.HTTP_201_CREATED:
+                    raise Exception(response.status_code)
 
 
 def create_record(url_related, item_selected, obj, headers):

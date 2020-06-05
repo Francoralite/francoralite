@@ -37,16 +37,13 @@ new Vue({
       optionsMusicalOrganizations: [],
       musical_groups: [],
       optionsMusicalGroups: [],
-      lines: [],
       optionsEmit: [],
-      optionsMusicians: [],
+      performances: [],
+      optionsPerformances: [],
       optionsInstruments: [],
       documents: [],
   },
   watch: {
-    lines () {
-      this.blockRemoval = this.lines.length <= 1
-    },
     documents () {
       this.blockRemoval = this.documents.length <= 1
     },
@@ -265,10 +262,34 @@ new Vue({
     getInitialInformers: function(){
        this.getRelated(
          '/api/collection/'+$('#id-collection').data().name+'/informer',
-         'informers',
-         'informer',
+         'performances',
+         'performance',
          'authority'
        );
+    },
+    getPerformances: function(){
+      axios.get("{{url_external}}" + '/api/item/{{id}}/performance').then(
+      res => {
+        var listRelated = [];
+        for( var item in res.data) {
+          // Fill the list of related
+          listRelated.push(res.data[item].performance);
+        }
+        // Use the list of related to feeds the select
+        this.performances = listRelated;
+      });
+    },
+    getOptionsPerformances: function(){
+      axios.get("{{url_external}}" + '/api/collection/' + $('#id_collection').val() + '/complete').then(
+      res => {
+        this.optionsPerformances = res.data.performances;
+      });
+    },
+    getInitialPerformances: function(){
+      axios.get("{{url_external}}"  + '/api/collection/' + $('#id_collection').val() + '/complete').then(
+      res => {
+        this.performances = res.data.performances;
+      });
     },
     getLanguages: function(){
        this.getRelated(
@@ -379,39 +400,6 @@ new Vue({
        this.optionsEmit = response.data;
       });
     },
-    getLines: function(){
-      // Get all performances, one per line
-      axios.get(`{{url_external}}/api/item/${escape({{id}})}/performance`).then(
-      res => {
-        // For each performance ...
-        for( var item in res.data) {
-          var rel_entity = 'musician'
-          var url = `{{url_external}}/api/item/${escape({{id}})}/performance/${escape(res.data[item].id)}/musician`;
-          var listRelated = []; // list of musicians
-          // ... Get all musicians for a line (performance)
-          axios.get(url).then(
-          res => {
-            for(i = 0; i < res.data.length; i++) {
-              res.data[i][rel_entity].url= "/authority/"+res.data[i][rel_entity].id;
-            }
-            for( var item2 in res.data) {
-              // Fill the list of related
-              listRelated.push(res.data[item2][rel_entity]);
-            }
-          });
-
-          // Fill the performances
-          this.lines.push(
-          {
-            number: res.data[item].number,
-            instrument: res.data[item].instrument,
-            emit: res.data[item].emit.id,
-            informers: listRelated,
-            id: res.data[item].id
-          });
-        }
-      });
-    },
     replacer: function(key,value,field){
        if(value.length > 0){
          items=[];
@@ -489,16 +477,6 @@ new Vue({
 
       return value;
     },
-    addLine(){
-      let checkEmptyLines = this.lines.filter(line => line.number === null);
-      if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
-      this.lines.push({
-       number: "1"
-      });
-    },
-    removeLine (lineId) {
-      this.lines.splice(lineId, 1);
-    },
     // Documents related (media) -------------------------
     addDoc(){
       let checkEmptyLines = this.documents.filter(line => line.number === null);
@@ -523,6 +501,7 @@ new Vue({
   },
   mounted: function () {
     this.getEmits();
+    this.getOptionsPerformances();
     {% if id %}
     this.getCollectors();
     this.getInformers();
@@ -539,12 +518,12 @@ new Vue({
     this.getCoiraults();
     this.getMusicalOrganizations();
     this.getMusicalGroups();
-    this.getLines();
+    this.getPerformances();
     this.getDocuments();
     {% else %}
     this.getInitialCollectors();
     this.getInitialInformers();
-    this.addLine();
+    this.getInitialPerformances();
     {% endif %}
   }
 })

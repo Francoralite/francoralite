@@ -10,15 +10,15 @@ from .item import Item
 from django.utils.translation import ugettext_lazy as _
 
 
-class ItemPerformanceCollection(models.Model):
+class ItemPerformance(models.Model):
     # Description of the table
     "Performance made by some musicians for a collection, used by an item"
     item = models.ForeignKey(Item, verbose_name=_('item'))
-    performance_collection = models.ForeignKey(
+    performance = models.ForeignKey(
         PerformanceCollection, verbose_name=_('performance'))
 
     class Meta:
         app_label = 'telemeta_api'
-        db_table = 'item_performance_collection'
-        verbose_name_plural = _('interpretes')
+        db_table = 'item_performance'
+        verbose_name_plural = _('item_performance')
         ordering = []

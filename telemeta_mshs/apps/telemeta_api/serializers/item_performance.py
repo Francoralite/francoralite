@@ -5,19 +5,20 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
-from ..models.item_performance_collection import (
-    ItemPerformanceCollection as ItemPerformanceCollectionModel)
+from ..models.item_performance import (
+    ItemPerformance as ItemPerformanceModel)
 from .asymetric_related_field import AsymetricRelatedField
 from .item import ItemSerializer
 from .performance_collection import PerformanceCollectionSerializer
 
 
-class ItemPerformanceCollectionSerializer(serializers.ModelSerializer):
+class ItemPerformanceSerializer(serializers.ModelSerializer):
     item = AsymetricRelatedField.from_serializer(
         ItemSerializer, kwargs={'required': True})
-    performance_collection = AsymetricRelatedField.from_serializer(
+    performance = AsymetricRelatedField.from_serializer(
         PerformanceCollectionSerializer, kwargs={'required': True})
 
+
     class Meta:
-        model = ItemPerformanceCollectionModel
+        model = ItemPerformanceModel
         fields = '__all__'

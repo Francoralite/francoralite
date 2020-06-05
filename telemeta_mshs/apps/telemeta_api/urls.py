@@ -38,7 +38,7 @@ from .views import (
     item_coirault,
     item_musical_organization,
     item_musical_group,
-    item_performance_collection,
+    item_performance,
     item_analysis,
     item_transcoding_flag,
     item_marker,
@@ -248,8 +248,7 @@ Item_router.register(
     r'musical_group',
     item_musical_group.ItemMusicalGroupViewSet)
 Item_router.register(
-    r'performance_collection',
-    item_performance_collection.ItemPerformanceCollectionViewSet)
+    r'performance', item_performance.ItemPerformanceViewSet)
 Item_router.register(
     r'analysis',
     item_analysis.ItemAnalysisViewSet)
