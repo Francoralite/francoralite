@@ -635,7 +635,7 @@
               <template slot="option" slot-scope="option">
                 ${option.number}
                 ${option.instrument.name}
-                - ${option.emit.name} - musiciens :
+                - {% if option.emit %} ${option.emit.name} - {% endif %} musiciens :
                 <div v-for="musician in option.musicians">
                   ${musician.first_name} ${musician.last_name}
                 </div>
@@ -643,7 +643,7 @@
               <template slot="selected-option" scope="option">
                 ${option.number}
                 ${option.instrument.name}
-                - ${option.emit.name} - musiciens :
+                - {% if option.emit %} ${option.emit.name} - {% endif %} musiciens :
                 <div v-for="musician in option.musicians">
                   ${musician.first_name} ${musician.last_name}
                 </div>

@@ -90,6 +90,7 @@ def write_collection_related(collection, request, headers):
                 if "emit" in item:
                     if item["emit"] == '0' or item["emit"] == 0:
                         del item["emit"]
+            related = ""
 
         # Create the related records
         write_relations(collection["id"],
