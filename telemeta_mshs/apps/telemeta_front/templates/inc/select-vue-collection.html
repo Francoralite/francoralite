@@ -34,12 +34,6 @@ new Vue({
       documents:[],
   },
   watch: {
-    lines () {
-      this.blockRemoval = this.lines.length <= 1
-    },
-    documents () {
-      this.blockRemoval = this.documents.length <= 1
-    }
   },
   computed: {
   },
@@ -286,7 +280,7 @@ new Vue({
      });
     },
     removeLine (lineId) {
-       if (!this.blockRemoval) this.lines.splice(lineId, 1)
+      this.lines.splice(lineId, 1);
     },
     onSearchInstruments(search, loading) {
         loading(true);
