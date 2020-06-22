@@ -15,6 +15,7 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'telemeta',
     'telemeta_mshs.apps.telemeta_api',
+    'rdflib',
 )
 
 DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}

@@ -87,6 +87,7 @@ setup(
     'python-keycloak==0.16.0',
     'python-jose==3.0.1',
     'mozilla-django-oidc @ git+https://github.com/lluc/mozilla-django-oidc.git@francoralite#egg=mozilla-django-oidc-francoralite', # noqa
+    'rdflib',
   ],
   extras_require={
     'tests': [

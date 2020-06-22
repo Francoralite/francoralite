@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'leaflet',
     'markdownx',
     'corsheaders',
-    'debug_toolbar'
+    'debug_toolbar',
+    'rdflib',
 )
 
 MIDDLEWARE_CLASSES = (
