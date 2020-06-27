@@ -264,7 +264,7 @@ class TestItemList(APITestCase):
         data['file'] = create_tmp_sound()
 
         response = self.client.get(
-            '/api/timeside/' + data['code'] + '/analyze/')
+            '/api/timeside/' + data['code'] + '/analyze')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data['approx_duration'] = '00:20'
 
@@ -339,7 +339,12 @@ class TestItemList(APITestCase):
 
         # The code is right --> there is some data
         response = self.client.get('/api/timeside/' +
-                                   str(item.id) + '/analyze/')
+                                   str(item.id) + '/analyze')
+        print '------------------'
+        print response
+        print response.status_code
+        print '------------------'
+        sys.stdout.flush()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['duration'], duration)
 
@@ -359,7 +364,7 @@ class TestItemList(APITestCase):
         code = str(item.code)
 
         # Call to the visualize endpoint
-        response = self.client.get('/api/timeside/' + id + '/visualize/')
+        response = self.client.get('/api/timeside/' + id + '/visualize')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.data
 
