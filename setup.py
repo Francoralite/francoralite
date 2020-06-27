@@ -45,7 +45,7 @@ setup(
     'ebooklib==0.16',
     'gunicorn==19.7.1',
     'saved_searches @ git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta', # noqa
-    'sorl-thumbnail-master-0 @ git+https://github.com/mariocesar/sorl-thumbnail.git@7ce76bc1ef798a63cbf89b5df83de4da4b12e98d#egg=sorl-thumbnail-master-0',  # noqa
+    'sorl-thumbnail-master-0 @ git+https://github.com/jazzband/sorl-thumbnail.git@7ce76bc1ef798a63cbf89b5df83de4da4b12e98d#egg=sorl-thumbnail-master',  # noqa
     'telemeta @ git+https://github.com/Parisson/Telemeta.git@9c6a77974b338781db2971d66c96834b94ab2bb8#egg=telemeta-1.7.0-dev',  # noqa
     # 'timeside==0.7', # See https://github.com/Parisson/TimeSide/issues/104
     'timeside-master @ git+https://github.com/Parisson/TimeSide.git@86f699cd61db2c0dc7fed61c4bb9f44ca3d8868f#egg=timeside-master-0', # noqa
