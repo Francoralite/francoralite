@@ -1,11 +1,53 @@
 <script type="application/javascript">
+
+function searchRelated(loading, search, vm, url, options, entity){
+  axios.get(url).then(
+  res => {
+    for(i = 0; i < res.data.length; i++) {
+      res.data[i].url= "/"+entity+"/"+res.data[i].id;
+    };
+    vm[options] = res.data;
+  }
+  );
+  loading(false);
+}
+
+function getRelated (component, url, field, rel_entity, entity){
+   // Get the data from a related table to display it in a field
+   axios.get("{{url_external}}" + url).then(
+   res => {
+     for(i = 0; i < res.data.length; i++) {
+       res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+     }
+     var listRelated = [];
+     for( var item in res.data) {
+       // Fill the list of related
+       listRelated.push(res.data[item][rel_entity]);
+     }
+     // Use the list of related to feeds the select
+     component[field] = listRelated;
+   });
+}
+
+function replacer(key,value,field){
+   if(value.length > 0){
+     items=[];
+     for(i = 0; i< value.length; i++){
+       var dict = {};
+       dict[field] = value[i].id;
+       items.push(dict);
+     };
+     return items;
+   };
+   return value;
+}
+
+
 Vue.component('v-select', VueSelect.VueSelect)
 
-let elements = document.getElementsByClassName('app2')
-for(let el of elements){
 new Vue({
   delimiters: ['${', '}'],
-  el:el,
+  el:"#app2",
   data: {
       collectors: [],
       optionsCollectors: [],
@@ -14,34 +56,112 @@ new Vue({
       languages: [],
       optionsLanguages: [],
       authors: [],
-      optionsAuthors: [],
-      usefulnesses: [],
-      optionsCompositors: [],
-      compositors: [],
-      optionsDomainsongs: [],
-      domainsongs: [],
-      optionsDomainvocals: [],
-      domainvocals: [],
-      optionsDomainmusics: [],
-      domainmusics: [],
-      optionsDomaintales: [],
-      domaintales: [],
-      optionsUsefullness: [],
-      dances: [],
-      optionsDances: [],
-      thematics: [],
-      optionsThematics: [],
-      coiraults: [],
-      optionsCoirault: [],
-      musical_organizations: [],
-      optionsMusicalOrganizations: [],
-      musical_groups: [],
-      optionsMusicalGroups: [],
-      optionsEmit: [],
-      performances: [],
-      optionsPerformances: [],
-      optionsInstruments: [],
-      documents: [],
+  },
+  watch: {
+ },
+  computed: {
+  },
+  methods: {
+    onSearchCollectors(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsCollectors',
+        'authority'
+       );
+    },
+    onSearchInformers(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsInformers',
+        'authority'
+       );
+    },
+    onSearchLanguages(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/language?ordering=name&search=${escape(search)}`,
+        'optionsLanguages',
+        'language'
+       );
+    },
+    getCollectors: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/collector`,
+         'collectors',
+         'collector',
+         'authority'
+       );
+    },
+    getInitialCollectors: function(){
+       getRelated(
+         this,
+         '/api/collection/'+$('#id-collection').data().name+'/collectors',
+         'collectors',
+         'collector',
+         'authority'
+       );
+    },
+    getInformers: function(){
+      getRelated(
+        this,
+        `/api/collection/${escape({{id}})}/informer`,
+        'informers',
+        'informer',
+        'authority'
+      );
+    },
+    getInitialInformers: function(){
+       getRelated(
+         this,
+         '/api/collection/'+$('#id-collection').data().name+'/informer',
+         'performances',
+         'performance',
+         'authority'
+       );
+    },
+    getLanguages: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/language`,
+         'languages',
+         'language',
+         'language'
+       );
+    },
+    replacerCollector: function(key,value){
+       return replacer(key,value,"collector");
+    },
+    replacerInformer: function(key,value){
+      return replacer(key,value,"informer");
+    },
+    replacerLanguage: function(key,value){
+       return replacer(key,value,"language");
+    },
+  },
+  mounted: function () {
+    {% if id %}
+    this.getCollectors();
+    this.getInformers();
+    this.getLanguages();
+    {% else %}
+    this.getInitialCollectors();
+    this.getInitialInformers();
+    {% endif %}
+  }
+});
+
+// Appmedia -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#appmedia",
+  data: {
+    documents: [],
   },
   watch: {
     documents () {
@@ -51,55 +171,60 @@ new Vue({
   computed: {
   },
   methods: {
-    searchRelated:
-    _.debounce((loading, search, vm, url, options, entity)=>
-    {
-      if(search.length > 2){
-        axios.get(url).then(
-          res => {
-            length = 5;
-            if(res.data.length > length){
-              res.data.length = length;
-            };
-            for(i = 0; i < res.data.length; i++) {
-              res.data[i].url= "/"+entity+"/"+res.data[i].id;
-            };
-            vm[options] = res.data;
-          }
-        );
-      };
-      loading(false);
-    }),
-    onSearchCollectors(search, loading) {
-      loading(true);
-       this.searchRelated(
-       loading, search, this,
-        `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
-        'optionsCollectors',
-        'authority'
-       );
+    // Documents related (media) -------------------------
+    addDoc(){
+      let checkEmptyLines = this.documents.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.documents.length > 0) return;
+      this.documents.push({
+       number: "1"
+     });
     },
-    onSearchInformers(search, loading) {
-      loading(true);
-       this.searchRelated(
-       loading, search, this,
-        `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
-        'optionsInformers',
-        'authority'
-       );
+    removeDoc (lineId) {
+       if (!this.blockRemoval) this.documents.splice(lineId, 1)
     },
-    onSearchLanguages(search, loading) {
-      loading(true);
-       this.searchRelated(
-       loading, search, this,
-        `/api/language?ordering=name&search=${escape(search)}`,
-        'optionsLanguages',
-        'language'
-       );
+    getDocuments: function(){
+      axios.get(`/api/item/${escape({{id}})}/document`).then(
+        response => {
+          this.documents = response.data;
+        }
+      );
     },
+    replacerMedia: function(key,value){
+      return value;
+    },
+  },
+  mounted: function () {
+      {% if id %}
+      this.getDocuments();
+      {% endif %}
+  }
+});
+
+// App3 -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#app3",
+  data: {
+    authors: [],
+    optionsAuthors: [],
+    usefulnesses: [],
+    optionsCompositors: [],
+    compositors: [],
+    optionsDomainsongs: [],
+    domainsongs: [],
+    optionsDomainvocals: [],
+    domainvocals: [],
+    optionsDomainmusics: [],
+    domainmusics: [],
+    optionsDomaintales: [],
+    domaintales: [],
+  },
+  computed: {
+  },
+  methods: {
     onSearchAuthors(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/authority?is_author=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsAuthors',
@@ -108,7 +233,7 @@ new Vue({
     },
     onSearchCompositors(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/authority?is_compositor=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsCompositors',
@@ -117,7 +242,7 @@ new Vue({
     },
     onSearchDomainsongs(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/domain_song?search=${escape(search)}`,
         'optionsDomainsongs',
@@ -126,7 +251,7 @@ new Vue({
     },
     onSearchDomainvocals(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/domain_vocal?search=${escape(search)}`,
         'optionsDomainvocals',
@@ -135,7 +260,7 @@ new Vue({
     },
     onSearchDomainmusics(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/domain_music?search=${escape(search)}`,
         'optionsDomainmusics',
@@ -144,16 +269,117 @@ new Vue({
     },
     onSearchDomaintales(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/domain_tale?search=${escape(search)}`,
         'optionsDomaintales',
         'domain_tale'
        );
     },
+    getAuthors: function(){
+        getRelated(
+          this,
+         `/api/item/${escape({{id}})}/author`,
+         'authors',
+         'author',
+         'authority'
+       );
+    },
+    getCompositors: function(){
+        getRelated(
+          this,
+         `/api/item/${escape({{id}})}/compositor`,
+         'compositors',
+         'compositor',
+         'authority'
+       );
+    },
+    getDomainsongs: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_song`,
+         'domainsongs',
+         'domainsong',
+         'domain_song'
+       );        <!-- Musical organization -->
+    },
+    getDomainvocals: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_vocal`,
+         'domainvocals',
+         'domainvocal',
+         'domain_vocal'
+       );
+    },
+    getDomainmusics: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_music`,
+         'domainmusics',
+         'domainmusic',
+         'domain_music'
+       );
+    },
+    getDomaintales: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_tale`,
+         'domaintales',
+         'domaintale',
+         'domain_tale'
+       );
+    },
+    replacerAuthor: function(key,value){
+       return replacer(key,value,"author");
+    },
+    replacerCompositor: function(key,value){
+       return replacer(key,value,"compositor");
+    },
+    replacerDomainsong: function(key,value){
+       return replacer(key,value,"domain_song");
+    },
+    replacerDomainvocal: function(key,value){
+       return replacer(key,value,"domain_vocal");
+    },
+    replacerDomainmusic: function(key,value){
+       return replacer(key,value,"domain_music");
+    },
+    replacerDomaintale: function(key,value){
+       return replacer(key,value,"domain_tale");
+    },
+
+  },
+  mounted: function () {
+      {% if id %}
+      this.getAuthors();
+      this.getCompositors();
+      this.getDomainsongs();
+      this.getDomainvocals();
+      this.getDomainmusics();
+      this.getDomaintales();
+      {% endif %}
+  }
+});
+
+// App4 -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#app4",
+  data: {
+    thematics: [],
+    optionsThematics: [],
+    usefulnesses: [],
+    optionsUsefullness: [],
+    dances: [],
+    optionsDances: [],
+  },
+  computed: {
+  },
+  methods: {
     onSearchUsefulness(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/usefulness?search=${escape(search)}`,
         'optionsUsefullness',
@@ -162,7 +388,7 @@ new Vue({
     },
     onSearchDance(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/dance?search=${escape(search)}`,
         'optionsDances',
@@ -171,39 +397,120 @@ new Vue({
     },
     onSearchThematics(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/thematic?search=${escape(search)}`,
         'optionsThematics',
         'thematic'
        );
     },
+    getUsefulness: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/usefulness`,
+         'usefulnesses',
+         'usefulness',
+         'usefulness'
+       );
+    },
+    getDance: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/dance`,
+         'dances',
+         'dance',
+         'dance'
+       );
+    },
+    getThematics: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/thematic`,
+         'thematics',
+         'thematic',
+         'thematic'
+       );
+    },
+    replacerUsefulness: function(key,value){
+       return replacer(key,value,"usefulness");
+    },
+    replacerDance: function(key,value){
+       return replacer(key,value,"dance");
+    },
+    replacerThematic: function(key,value){
+       return replacer(key,value,"thematic");
+    },
+  },
+  mounted: function () {
+      {% if id %}
+      this.getUsefulness();
+      this.getDance();
+      this.getThematics();
+      {% endif %}
+  }
+});
+
+
+// App5 -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#app5",
+  data: {
+    coiraults: [],
+    optionsCoirault: [],
+  },
+  computed: {
+  },
+  methods: {
     onSearchCoirault(search, loading) {
       loading(true);
-       this.searchRelated(
+       searchRelated(
        loading, search, this,
         `/api/skos_concept?search=${escape(search)}`,
         'optionsCoirault',
         'coirault'
        );
     },
-    onSearchMusicians(search, loading) {
-      loading(true);
-      this.optionsMusicians = this.informers
-      loading(false);
+    getCoiraults: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/coirault`,
+         'coiraults',
+         'coirault',
+         'coirault'
+       );
     },
-    onSearchInstruments(search, loading) {
-        loading(true);
-        this.searchRelated(
-          loading, search, this,
-           `/api/instrument?ordering=name&search=${escape(search)}`,
-           'optionsInstruments',
-           'instrument'
-        );
+    replacerCoirault: function(key,value){
+       return replacer(key,value,"coirault");
     },
+  },
+  mounted: function () {
+    {% if id %}
+    this.getCoiraults();
+      {% endif %}
+  }
+});
+
+
+// AppVox -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#appvox",
+  data: {
+    musical_organizations: [],
+    optionsMusicalOrganizations: [],
+    musical_groups: [],
+    optionsMusicalGroups: [],
+    optionsEmit: [],
+    performances: [],
+    optionsPerformances: [],
+  },
+  computed: {
+  },
+  methods: {
     onSearchMusicalOrganizations(search, loading) {
         loading(true);
-        this.searchRelated(
+        searchRelated(
           loading, search, this,
            `/api/musical_organization?ordering=name&search=${escape(search)}`,
            'optionsMusicalOrganizations',
@@ -212,59 +519,29 @@ new Vue({
     },
     onSearchMusicalGroups(search, loading) {
         loading(true);
-        this.searchRelated(
+        searchRelated(
           loading, search, this,
            `/api/musical_group?ordering=name&search=${escape(search)}`,
            'optionsMusicalGroups',
            'musical_group'
         );
     },
-    getRelated: function(url, field, rel_entity, entity){
-       // Get the data from a related table to display it in a field
-       axios.get("{{url_external}}" + url).then(
-       res => {
-         for(i = 0; i < res.data.length; i++) {
-           res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
-         }
-         var listRelated = [];
-         for( var item in res.data) {
-           // Fill the list of related
-           listRelated.push(res.data[item][rel_entity]);
-         }
-         // Use the list of related to feeds the select
-         this[field] = listRelated;
-       });
-    },
-    getCollectors: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/collector`,
-         'collectors',
-         'collector',
-         'authority'
+    getMusicalOrganizations: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/musical_organization`,
+         'musical_organizations',
+         'musical_organization',
+         'musical_organization'
        );
     },
-    getInitialCollectors: function(){
-       this.getRelated(
-         '/api/collection/'+$('#id-collection').data().name+'/collectors',
-         'collectors',
-         'collector',
-         'authority'
-       );
-    },
-    getInformers: function(){
-      this.getRelated(
-        `/api/collection/${escape({{id}})}/informer`,
-        'informers',
-        'informer',
-        'authority'
-      );
-    },
-    getInitialInformers: function(){
-       this.getRelated(
-         '/api/collection/'+$('#id-collection').data().name+'/informer',
-         'performances',
-         'performance',
-         'authority'
+    getMusicalGroups: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/musical_group`,
+         'musical_groups',
+         'musical_group',
+         'musical_group'
        );
     },
     getPerformances: function(){
@@ -291,171 +568,11 @@ new Vue({
         this.performances = res.data.performances;
       });
     },
-    getLanguages: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/language`,
-         'languages',
-         'language',
-         'language'
-       );
-    },
-    getAuthors: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/author`,
-         'authors',
-         'author',
-         'authority'
-       );
-    },
-    getCompositors: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/compositor`,
-         'compositors',
-         'compositor',
-         'authority'
-       );
-    },
-    getDomainsongs: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/domain_song`,
-         'domainsongs',
-         'domainsong',
-         'domain_song'
-       );        <!-- Musical organization -->
-    },
-    getDomainvocals: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/domain_vocal`,
-         'domainvocals',
-         'domainvocal',
-         'domain_vocal'
-       );
-    },
-    getDomainmusics: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/domain_music`,
-         'domainmusics',
-         'domainmusic',
-         'domain_music'
-       );
-    },
-    getDomaintales: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/domain_tale`,
-         'domaintales',
-         'domaintale',
-         'domain_tale'
-       );
-    },
-    getUsefulness: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/usefulness`,
-         'usefulnesses',
-         'usefulness',
-         'usefulness'
-       );
-    },
-    getDance: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/dance`,
-         'dances',
-         'dance',
-         'dance'
-       );
-    },
-    getThematics: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/thematic`,
-         'thematics',
-         'thematic',
-         'thematic'
-       );
-    },
-    getCoiraults: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/coirault`,
-         'coiraults',
-         'coirault',
-         'coirault'
-       );
-    },
-    getMusicalOrganizations: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/musical_organization`,
-         'musical_organizations',
-         'musical_organization',
-         'musical_organization'
-       );
-    },
-    getMusicalGroups: function(){
-       this.getRelated(
-         `/api/item/${escape({{id}})}/musical_group`,
-         'musical_groups',
-         'musical_group',
-         'musical_group'
-       );
-    },
-    getEmits: function(){
-     axios.get('{{url_external}}/api/emit_vox').then(response => {
-       this.optionsEmit = response.data;
-      });
-    },
-    replacer: function(key,value,field){
-       if(value.length > 0){
-         items=[];
-         for(i = 0; i< value.length; i++){
-           var dict = {};
-           dict[field] = value[i].id;
-           items.push(dict);
-         };
-         return items;
-       };
-       return value;
-    },
-    replacerCollector: function(key,value){
-       return this.replacer(key,value,"collector");
-    },
-    replacerInformer: function(key,value){
-      return this.replacer(key,value,"informer");
-    },
-    replacerLanguage: function(key,value){
-       return this.replacer(key,value,"language");
-    },
-    replacerAuthor: function(key,value){
-       return this.replacer(key,value,"author");
-    },
-    replacerCompositor: function(key,value){
-       return this.replacer(key,value,"compositor");
-    },
-    replacerDomainsong: function(key,value){
-       return this.replacer(key,value,"domain_song");
-    },
-    replacerDomainvocal: function(key,value){
-       return this.replacer(key,value,"domain_vocal");
-    },
-    replacerDomainmusic: function(key,value){
-       return this.replacer(key,value,"domain_music");
-    },
-    replacerDomaintale: function(key,value){
-       return this.replacer(key,value,"domain_tale");
-    },
-    replacerUsefulness: function(key,value){
-       return this.replacer(key,value,"usefulness");
-    },
-    replacerDance: function(key,value){
-       return this.replacer(key,value,"dance");
-    },
-    replacerThematic: function(key,value){
-       return this.replacer(key,value,"thematic");
-    },
-    replacerCoirault: function(key,value){
-       return this.replacer(key,value,"coirault");
-    },
     replacerMusicalOrganization: function(key,value){
-       return this.replacer(key,value,"musical_organization");
+       return replacer(key,value,"musical_organization");
     },
     replacerMusicalGroup: function(key,value){
-       return this.replacer(key,value,"musical_group");
+       return replacer(key,value,"musical_group");
     },
     replacerPerformance: function(key,value){
       if(key=="instrument"){
@@ -477,55 +594,18 @@ new Vue({
 
       return value;
     },
-    // Documents related (media) -------------------------
-    addDoc(){
-      let checkEmptyLines = this.documents.filter(line => line.number === null);
-      if (checkEmptyLines.length >= 1 && this.documents.length > 0) return;
-      this.documents.push({
-       number: "1"
-     });
-    },
-    removeDoc (lineId) {
-       if (!this.blockRemoval) this.documents.splice(lineId, 1)
-    },
-    getDocuments: function(){
-      axios.get(`/api/item/${escape({{id}})}/document`).then(
-        response => {
-          this.documents = response.data;
-        }
-      );
-    },
-    replacerMedia: function(key,value){
-      return value;
-    },
+
   },
   mounted: function () {
-    this.getEmits();
     this.getOptionsPerformances();
     {% if id %}
-    this.getCollectors();
-    this.getInformers();
-    this.getLanguages();
-    this.getAuthors();
-    this.getCompositors();
-    this.getDomainsongs();
-    this.getDomainvocals();
-    this.getDomainmusics();
-    this.getDomaintales();
-    this.getUsefulness();
-    this.getDance();
-    this.getThematics();
-    this.getCoiraults();
     this.getMusicalOrganizations();
     this.getMusicalGroups();
     this.getPerformances();
-    this.getDocuments();
     {% else %}
-    this.getInitialCollectors();
-    this.getInitialInformers();
     this.getInitialPerformances();
     {% endif %}
   }
-})
-}
+});
+
 </script>

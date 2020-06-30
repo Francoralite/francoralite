@@ -98,7 +98,7 @@
   {% endif %}
     {% csrf_token %}
 
-  <div class="app2">
+
     <div class="tab-content">
       <!-- Tab General -->
       <div class="tab-pane fade active in" id="tab_general">
@@ -107,6 +107,7 @@
         {% bootstrap_field form.alt_title layout='vertical' %}
         {% bootstrap_field form.trans_title layout='vertical' %}
         {% markdown_editor component=form.description %}
+
         {% if id %}
           <div hidden=True>
         {% else %}
@@ -117,6 +118,7 @@
 
 
 
+        <div id="app2">
         <div class="block-grey">
           <h2>{% trans "Personnes" %}</h2>
 
@@ -207,6 +209,7 @@
           <input name="languages" type="hidden"
           :value="JSON.stringify(languages,replacerLanguage)" />
         </div>
+      </div> <!-- app2 -->
 
         <div class="block-grey">
           <h2>{% trans "Données d'archivage" %}</h2>
@@ -222,6 +225,7 @@
           {% bootstrap_field form.media_type layout='vertical' %}
         </div>
 
+      <div id="appmedia">
         <!-- Media ---------------------------------------------->
         <div class="block-grey">
           <h2>{% trans "Média associés" %}</h2>
@@ -269,10 +273,12 @@
           </div>
           {% nakala_button %}
         </div>
+      </div><!-- appmedia -->
       </div>
 
       <!-- Tab Description --------------------------------------->
       <div class="tab-pane" id="tab_desc">
+        <div id="app3">
         <!-- Authors -->
         <div class="container_data">
           <label class="control_label">{% trans "Auteur(s)" %}</label>
@@ -324,6 +330,7 @@
         </div>
         <input name="compositors" type="hidden"
           :value="JSON.stringify(compositors,replacerCompositor)" />
+
 
         {% bootstrap_field form.timbre layout='vertical' %}
         {% bootstrap_field form.timbre_ref layout='vertical' %}
@@ -453,13 +460,14 @@
           </div>
           <input name="domaintales" type="hidden"
           :value="JSON.stringify(domaintales,replacerDomaintale)" />
-
         </div>
+        </div> <!-- app3 -->
 
         <div class="block-grey">
           <h2>{% trans "Témoignage" %}</h2>
           {% markdown_editor component=form.deposit_digest %}
 
+          <div id="app4">
           <!-- Thematic -->
           <div class="container_data">
           <label class="control_label">{% trans "Thématique(s)" %}</label>
@@ -489,7 +497,6 @@
           {% bootstrap_field  form.deposit_names layout='vertical' %}
           {% bootstrap_field  form.deposit_places layout='vertical' %}
           {% bootstrap_field  form.deposit_periods layout='vertical' %}
-        </div>
 
         <!-- Usefulness -->
         <div class="container_data">
@@ -538,8 +545,11 @@
         <input name="dances" type="hidden"
         :value="JSON.stringify(dances,replacerDance)" />
 
-
+      </div> <!-- app4 -->
       </div>
+      </div> <!-- tab_desc -->
+
+
 
       <!-- Tab Text ---------------------------------------------->
       <div class="tab-pane" id="tab_text">
@@ -550,6 +560,7 @@
         {% markdown_editor component=form.jingle %}
         {% bootstrap_field form.coupe layout='vertical' %}
 
+        <div id="app5">
         <div class="block-grey">
           <h2>{% trans "Références" %}</h2>
           <div class="container_data">
@@ -577,10 +588,13 @@
           <input name="coiraults" type="hidden"
           :value="JSON.stringify(coiraults,replacerCoirault)" />
         </div>
-      </div>
+      </div> <!-- app5 -->
+      </div> <!-- tab_text-->
+
 
       <!-- Tab Vox/Instruments ----------------------------------->
       <div class="tab-pane" id="tab_vox">
+        <div id="appvox">
         <!-- Musical organization -->
         <div class="container_data">
           <label class="control_label">{% trans "Organisation(s) musicale(s)" %}</label>
@@ -653,7 +667,8 @@
         <input name="performances" type="hidden"
           :value="JSON.stringify(performances,replacerPerformance)" />
 
-      </div>
+        </div> <!-- appvox -->
+      </div> <!-- tab_vox-->
 
       <!-- Tab Player/Markers ------------------------------------>
       <div class="tab-pane" id="tab_mark">
@@ -675,7 +690,7 @@
                 </tr>
             </table>
           </div>
-      </div>
+      </div> <!-- tab_mark -->
 
     </div>
     <!-- end tab-content -->
