@@ -7,17 +7,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from .core import Core
-import telemeta_front.tools as tools
-from django.core.exceptions import ValidationError
-
-
-def validate_code(value):
-    test_code = tools.request_api('/api/fond?code=' + value)
-    if len(test_code) > 0:
-        raise ValidationError(
-            _(u"Il existe déja un fonds avec la même cote. %(value)s"),
-            params={'code': str(value)},
-            code='invalid')
 
 
 class FondForm(forms.Form):
@@ -30,7 +19,6 @@ class FondForm(forms.Form):
                                     'style': 'text-transform:uppercase;'
                                 }
                            ),
-                           validators=[validate_code],
                            max_length=16, required=True)
     code_partner = forms.CharField(
         label=_('Cote dans l\'institution partenaire'), required=False)
