@@ -76,8 +76,8 @@
         {% bootstrap_field form.code layout='vertical' %}
         {% bootstrap_field form.name layout='vertical' %}
     </div>
-    <div class="container_line">
-      {% bootstrap_field form.notes layout='vertical' %}
+    <div >
+      {% markdown_editor component=form.notes %}
     </div>
 
 
@@ -141,7 +141,6 @@ function map_init_basic (map, options) {
   }
 }
 </script>
-{% markdown_editor component=form.notes %}
 
 
 {% endblock %}
