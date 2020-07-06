@@ -194,14 +194,14 @@
     <!-- Tab Description --------------------------------------->
     <section class="tab-pane" id="tab_desc">
       <h2>Description</h2>
+      {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
+      {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
       {% related_list libelle='Auteurs' items=item.authors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
       {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
       {% field_data form.timbre.label|safe item.timbre|safe empty=False %}
       {% field_data form.timbre_ref.label|safe item.timbre_ref|safe empty=False %}
 
       {% field_data form.domain.label|safe item.domain|domains|safe %}
-      {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
-      {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
 
       {% if item.melody and item.melody != "None" %}
       <div class="block-grey row">

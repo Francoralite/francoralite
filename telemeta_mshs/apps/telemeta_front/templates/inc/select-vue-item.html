@@ -205,6 +205,10 @@ new Vue({
   delimiters: ['${', '}'],
   el:"#app3",
   data: {
+    usefulnesses: [],
+    optionsUsefullness: [],
+    dances: [],
+    optionsDances: [],
     authors: [],
     optionsAuthors: [],
     usefulnesses: [],
@@ -222,6 +226,24 @@ new Vue({
   computed: {
   },
   methods: {
+    onSearchUsefulness(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/usefulness?search=${escape(search)}`,
+        'optionsUsefullness',
+        'usefulness'
+       );
+    },
+    onSearchDance(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/dance?search=${escape(search)}`,
+        'optionsDances',
+        'dance'
+       );
+    },
     onSearchAuthors(search, loading) {
       loading(true);
        searchRelated(
@@ -274,6 +296,24 @@ new Vue({
         `/api/domain_tale?search=${escape(search)}`,
         'optionsDomaintales',
         'domain_tale'
+       );
+    },
+    getUsefulness: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/usefulness`,
+         'usefulnesses',
+         'usefulness',
+         'usefulness'
+       );
+    },
+    getDance: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/dance`,
+         'dances',
+         'dance',
+         'dance'
        );
     },
     getAuthors: function(){
@@ -330,6 +370,12 @@ new Vue({
          'domain_tale'
        );
     },
+    replacerUsefulness: function(key,value){
+       return replacer(key,value,"usefulness");
+    },
+    replacerDance: function(key,value){
+       return replacer(key,value,"dance");
+    },
     replacerAuthor: function(key,value){
        return replacer(key,value,"author");
     },
@@ -352,6 +398,8 @@ new Vue({
   },
   mounted: function () {
       {% if id %}
+      this.getUsefulness();
+      this.getDance();
       this.getAuthors();
       this.getCompositors();
       this.getDomainsongs();
@@ -369,32 +417,10 @@ new Vue({
   data: {
     thematics: [],
     optionsThematics: [],
-    usefulnesses: [],
-    optionsUsefullness: [],
-    dances: [],
-    optionsDances: [],
   },
   computed: {
   },
   methods: {
-    onSearchUsefulness(search, loading) {
-      loading(true);
-       searchRelated(
-       loading, search, this,
-        `/api/usefulness?search=${escape(search)}`,
-        'optionsUsefullness',
-        'usefulness'
-       );
-    },
-    onSearchDance(search, loading) {
-      loading(true);
-       searchRelated(
-       loading, search, this,
-        `/api/dance?search=${escape(search)}`,
-        'optionsDances',
-        'dance'
-       );
-    },
     onSearchThematics(search, loading) {
       loading(true);
        searchRelated(
@@ -402,24 +428,6 @@ new Vue({
         `/api/thematic?search=${escape(search)}`,
         'optionsThematics',
         'thematic'
-       );
-    },
-    getUsefulness: function(){
-       getRelated(
-         this,
-         `/api/item/${escape({{id}})}/usefulness`,
-         'usefulnesses',
-         'usefulness',
-         'usefulness'
-       );
-    },
-    getDance: function(){
-       getRelated(
-         this,
-         `/api/item/${escape({{id}})}/dance`,
-         'dances',
-         'dance',
-         'dance'
        );
     },
     getThematics: function(){
@@ -431,20 +439,12 @@ new Vue({
          'thematic'
        );
     },
-    replacerUsefulness: function(key,value){
-       return replacer(key,value,"usefulness");
-    },
-    replacerDance: function(key,value){
-       return replacer(key,value,"dance");
-    },
     replacerThematic: function(key,value){
        return replacer(key,value,"thematic");
     },
   },
   mounted: function () {
       {% if id %}
-      this.getUsefulness();
-      this.getDance();
       this.getThematics();
       {% endif %}
   }
