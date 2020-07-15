@@ -69,6 +69,8 @@ from ..serializers.performance_collection_musician import (
 from ..models.item_coirault import ItemCoirault
 from ..serializers.item_coirault import ItemCoiraultSerializer
 
+from ..models.recording_context import RecordingContext
+
 
 entities = [
     {
@@ -222,6 +224,10 @@ class ItemViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         data = serializer.data
+        # Recording_context (collection)
+        recording = RecordingContext.objects.get(
+            pk=data['collection']['recording_context'])
+        data['collection']['recording_context'] = unicode(recording.name)
         # Retrieve most of the entities
         for entity in entities:
             self.collect(instance.id, data, entity)
