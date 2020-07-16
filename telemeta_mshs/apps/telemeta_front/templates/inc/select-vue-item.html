@@ -110,7 +110,7 @@ new Vue({
     getInformers: function(){
       getRelated(
         this,
-        `/api/collection/${escape({{id}})}/informer`,
+        `/api/item/${escape({{id}})}/informer`,
         'informers',
         'informer',
         'authority'
