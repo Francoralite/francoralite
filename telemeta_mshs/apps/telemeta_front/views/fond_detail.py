@@ -26,9 +26,13 @@ class FondDetail(FrancoraliteTemplateView):
             # Obtain values of related documents
             context['documents'] = tools.request_api(
                 '/api/fond/' + context['id'] + '/document')
+            # Obtain values of the start and en dates of related collections
+            context['dates'] = tools.request_api(
+                '/api/mission/' + context['id'] + '/dates')
         except Exception as err:
             context['fond'] = {}
             context['missions'] = []
             context['documents'] = []
+            context['dates'] = ['', '']
             context['error'] = err.message
         return context
