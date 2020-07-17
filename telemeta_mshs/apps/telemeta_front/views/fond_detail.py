@@ -23,12 +23,12 @@ class FondDetail(FrancoraliteTemplateView):
             # Obtain values of related fonds
             context['missions'] = tools.request_api(
                 '/api/mission?fonds=' + context['id'])
-            # # Obtain values of related informers
-            # context['informers'] = tools.request_api(
-            #     '/api/fond/' + context['id'] + '/informers')
-            # # Obtain values of related collectors
-            # context['collectors'] = tools.request_api(
-            #     '/api/fond/' + context['id'] + '/collectors')
+            # Obtain values of related informers
+            context['informers'] = tools.request_api(
+                '/api/fond/' + context['id'] + '/informers')
+            # Obtain values of related collectors
+            context['collectors'] = tools.request_api(
+                '/api/fond/' + context['id'] + '/collectors')
             # Obtain values of related documents
             context['documents'] = tools.request_api(
                 '/api/fond/' + context['id'] + '/document')
@@ -38,8 +38,8 @@ class FondDetail(FrancoraliteTemplateView):
         except Exception as err:
             context['fond'] = {}
             context['missions'] = []
-            # context['informers'] = []
-            # context['collectors'] = []
+            context['informers'] = []
+            context['collectors'] = []
             context['documents'] = []
             context['dates'] = ['', '']
             context['error'] = err.message
