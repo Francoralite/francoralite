@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 from ..models.fond import Fond as FondModel
 from ..models.mission import Mission as MissionModel
+from ..models.collection import Collection as CollectionModel
 from ..serializers.fond import FondSerializer
 
 
@@ -37,12 +38,44 @@ class FondViewSet(viewsets.ModelViewSet):
     }
 
     def list_missions(self, id_fonds, field='id'):
+
+        collection_list = []
+
         # Retrieve the missions, related to the current fonds
         missions = MissionModel.objects.filter(
-            fonds_id=id_fonds).values_list(
-                field, flat=True)
+            fonds_id=id_fonds)
 
-        return missions
+        # Retrieve the collections, for each mission
+        for mission in missions:
+            collections = CollectionModel.objects.filter(
+                mission_id=mission.id).values_list(
+                    field, flat=True)
+            for collection in collections:
+                collection_list.append(collection)
+
+        return collection_list
+
+    # def related_missions(self,
+    #                      id_fonds,
+    #                      model_related,
+    #                      model,
+    #                      entity,
+    #                      serializer=AuthoritySerializer):
+    #     # Retrieve the missions, related to the current fonds
+    #     missions = self.list_missions(id_fonds=id_fonds)
+    #     # Retrieve the entities, related to the missions
+    #     list_related = model_related.objects.filter(
+    #              mission_id__in=[str(x) for x in missions]
+    #              ).values_list(
+    #                  entity, flat=True)
+    #     # Retrieve the entity
+    #     entities = model.objects.filter(
+    #         id__in=[str(x) for x in list_related])
+    #
+    #     # Push the authorities to the data results
+    #     data = [serializer(i).data for i in entities]
+    #
+    #     return data
 
     @detail_route()
     def dates(self, request, pk=None):
@@ -71,3 +104,27 @@ class FondViewSet(viewsets.ModelViewSet):
             date_end = max(to_years)
 
         return Response((date_start, date_end))
+
+    # @detail_route()
+    # def informers(self, request, pk=None):
+    #     instance = self.get_object()
+    #
+    #     data = self.related_collections(
+    #         id_mission=instance.id,
+    #         model_related=CollectionInformerModel,
+    #         model=AuthorityModel,
+    #         entity='informer'
+    #         )
+    #     return Response(data)
+    #
+    # @detail_route()
+    # def collectors(self, request, pk=None):
+    #     instance = self.get_object()
+    #     data = self.related_collections(
+    #         id_mission=instance.id,
+    #         model_related=CollectionCollectorModel,
+    #         model=AuthorityModel,
+    #         entity='collector'
+    #         )
+    #
+    #     return Response(data)

@@ -233,7 +233,7 @@ class KeycloakMiddleware(object):
             return None
         # Related entities of a fond
         expr = re.compile(
-            "^api/fond/[0-9]*/(document)$") # noqa
+            "^api/fond/[0-9]*/(document|dates)$") # noqa
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
