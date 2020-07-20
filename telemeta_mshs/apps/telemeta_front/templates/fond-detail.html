@@ -97,25 +97,31 @@
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
           <dd class="donnee">
-            {% for collector in collectors %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "personne-detail" id=collector.id %}"
-              target="_blank">
+            <ul>
+              {% for collector in collectors %}
+              <li>
+                <a href="{% url "personne-detail" id=collector.id %}"
+                target="_blank">
                 {{collector.first_name}} {{collector.last_name}}
               </a>
-            {% endfor %}
+              </li>
+              {% endfor %}
+            </ul>
           </dd>
         </dl>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Informateurs' %}</dt>
           <dd class="donnee">
-            {% for informer in informers %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "personne-detail" id=informer.id %}"
-              target="_blank">
+            <ul>
+              {% for informer in informers %}
+              <li>
+                <a href="{% url "personne-detail" id=informer.id %}"
+                target="_blank">
                 {{informer.first_name}} {{informer.last_name}}
               </a>
-            {% endfor %}
+              </li>
+              {% endfor %}
+            </ul>
           </dd>
         </dl>
       </div>
