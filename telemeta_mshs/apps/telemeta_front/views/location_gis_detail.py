@@ -21,13 +21,13 @@ class LocationDetail(FrancoraliteTemplateView):
                 '/api/locationgis/' + context['id'])
             # Obtain values of related collections
             context['collections'] = tools.request_api(
-                '/api/locationgis/' + context['id'] + '/collections/')
+                '/api/locationgis/' + context['id'] + '/collections')
             # Obtain values of related items
             context['items'] = tools.request_api(
-                '/api/locationgis/' + context['id'] + '/items/')
+                '/api/locationgis/' + context['id'] + '/items')
             context['form'] = LocationForm
         except Exception as err:
-            context['institution'] = {}
+            context['location'] = {}
             context['collections'] = []
             context['items'] = []
             context['error'] = err.message

@@ -258,7 +258,7 @@ class KeycloakMiddleware(object):
             return None
         # Related entities of a location
         expr = re.compile(
-            "^api/locationgis/[0-9]*/(collections/|items/)$")
+            "^api/locationgis/[0-9]*/(collections|items)$")
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
