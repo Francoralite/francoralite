@@ -95,13 +95,16 @@
         <dl class="container_data">
           <dt class="libelle"></dt>
           <dd class="donnee">
-            {% for location in locations %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "location_gis-detail" id=location.id %}"
-              target="_blank">
-                {{location.code}}/{{location.name}}
-              </a>
+            <ul>
+              {% for location in locations %}
+              <li>
+                <a href="{% url "location_gis-detail" id=location.id %}"
+                target="_blank">
+                <b>{{location.code}}</b> - {{location.name}}
+              </li>
+            </a>
             {% endfor %}
+            </ul>
           </dd>
         </dl>
       </div>
