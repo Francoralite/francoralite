@@ -156,10 +156,8 @@
         <input name="locations" type="hidden"
           :value="JSON.stringify(locations, replacerLocation)" />
         </div> <!-- app2 -->
-        <div class="container_line">
-          {% markdown_editor component=form.location_details  %}
-          {% bootstrap_field form.cultural_area layout='vertical' %}
-        </div>
+        {% markdown_editor component=form.location_details layout='vertical'  %}
+        {% bootstrap_field form.cultural_area layout='vertical' %}
       </div>
 
       <div class="app2">
