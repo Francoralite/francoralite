@@ -43,8 +43,10 @@ class CollectionEdit(FormView):
         data = tools.request_api(
           '/api/collection/'+str(id)+'/complete')
         data['mission'] = data['mission']['id']
-        data['media_type'] = data['media_type']['id']
-        data['legal_rights'] = data['legal_rights']['id']
+        if data['media_type']:
+            data['media_type'] = data['media_type']['id']
+        if data['legal_rights']:
+            data['legal_rights'] = data['legal_rights']['id']
 
         form = CollectionForm(initial=data)
 
