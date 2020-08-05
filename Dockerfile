@@ -18,8 +18,8 @@ ADD . / ./
 COPY ./telemeta_mshs/settings/base.py ./settings.py
 COPY ./telemeta_mshs/apps/Telemeta/app/settings.py ./telemeta.py
 RUN apt-get install -y python-pip
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip uninstall -y South
+RUN python2.7 -m pip install --no-cache-dir -r requirements.txt
+RUN python2.7 -m pip uninstall -y South
 
 # EXPOSE port 8000 to allow communication to/from server
 EXPOSE 8000
