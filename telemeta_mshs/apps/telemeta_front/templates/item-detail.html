@@ -183,7 +183,7 @@
         <h2>{% trans "Indications géographiques et culturelles" %}</h2>
         {% related_list libelle='Lieux' items=locations url_detail="location_gis-detail" field="code" %}
         {% field_data form_collection.location_details.label|safe item.collection.location_details|markdown|safe empty=False %}
-        {% related_list libelle='Langues' items=collection.languages field="name" empty=False %}
+        {% related_list libelle='Langues' items=item.languages  url_detail="language-detail" field="name" empty=False %}
         {% field_data form_collection.recording_context.label|safe item.collection.recording_context|safe %}
       </div>
 
