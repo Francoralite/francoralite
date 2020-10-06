@@ -32,11 +32,12 @@ setup(
   version = '1.7.0',
   install_requires = [
     'django==1.8.18',
+    'django-urls==1.0.0',
     'django-appconf==1.0.3',
     'django-environ==0.4.4',
     'django-haystack==2.5.1',
     'django-ipauth @ git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev', # noqa
-    'django-jqchat',
+    'django-jqchat==0.2',
     'django-rest-swagger==2.2.0',
     'djangorestframework==3.6.4',
     'djangorestframework-xml==1.4.0',
@@ -47,14 +48,15 @@ setup(
     'saved_searches @ git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta', # noqa
     'sorl-thumbnail-master @ git+https://github.com/jazzband/sorl-thumbnail.git@7ce76bc1ef798a63cbf89b5df83de4da4b12e98d#egg=sorl-thumbnail-master',  # noqa
     'telemeta @ git+https://github.com/Parisson/Telemeta.git@9c6a77974b338781db2971d66c96834b94ab2bb8#egg=telemeta-1.7.0-dev',  # noqa
+    'timeside @ git+https://github.com/Parisson/TimeSide.git@915a3052fdd19dac732db6c2c3cd724a9ffba6c0#egg=timeside-0.7.0', # noqa
     # 'timeside==0.7', # See https://github.com/Parisson/TimeSide/issues/104
-    'timeside-master @ git+https://github.com/Parisson/TimeSide.git@86f699cd61db2c0dc7fed61c4bb9f44ca3d8868f#egg=timeside-master-0', # noqa
     # V2
     'django-model-utils==3.1.1',
     'psycopg2-binary==2.7.4',
     'pyaml==17.12.1',
     'django-google-tools==1.1.0',
-    'MySQL-python==1.2.5',
+    #'MySQL-python==1.2.5',
+    'mysqlclient==1.4.6',
     # V3
     'django-registration-redux',
     'django-extensions',
@@ -68,6 +70,7 @@ setup(
     'django-json-rpc',
     'django-suit',
     'django-celery',
+    'django-bower==5.2.0',
     'docutils',
     'psutil',
     'pyyaml',
