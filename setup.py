@@ -32,12 +32,11 @@ setup(
   version = '1.7.0',
   install_requires = [
     'django==1.8.18',
-    'django-urls==1.0.0',
     'django-appconf==1.0.3',
     'django-environ==0.4.4',
     'django-haystack==2.5.1',
     'django-ipauth @ git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev', # noqa
-    'django-jqchat==0.2',
+    'django-jqchat',
     'django-rest-swagger==2.2.0',
     'djangorestframework==3.6.4',
     'djangorestframework-xml==1.4.0',

@@ -1,4 +1,4 @@
-FROM parisson/timeside:latest-dev
+FROM parisson/timeside:0.9
 
 ENV KEYCLOAK_DEFAULT_ACCESS ALLOW
 ENV KEYCLOAK_REALM francoralite
@@ -18,7 +18,6 @@ ADD . / ./
 COPY ./telemeta_mshs/settings/base.py ./settings.py
 COPY ./telemeta_mshs/apps/Telemeta/app/settings.py ./telemeta.py
 RUN apt-get update
-RUN apt-get install -y default-libmysqlclient-dev
 RUN apt-get install -y python-pip
 RUN python2.7 -m pip install simple-yaml
 RUN python2.7 -m pip install --no-cache-dir -r requirements.txt
