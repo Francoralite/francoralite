@@ -45,7 +45,7 @@ setup(
     'ebooklib==0.16',
     'gunicorn==19.7.1',
     'saved_searches @ git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta', # noqa
-    'sorl-thumbnail-master @ git+https://github.com/jazzband/sorl-thumbnail.git@7ce76bc1ef798a63cbf89b5df83de4da4b12e98d#egg=sorl-thumbnail-master',  # noqa
+    'sorl-thumbnail @ git+https://github.com/jazzband/sorl-thumbnail.git@9abaa727b4f1f83bf50804386a35f9382cfd499d#egg=sorl-thumbnail-master',  # noqa
     'telemeta @ git+https://github.com/Parisson/Telemeta.git@9c6a77974b338781db2971d66c96834b94ab2bb8#egg=telemeta-1.7.0-dev',  # noqa
     'timeside @ git+https://github.com/Parisson/TimeSide.git@915a3052fdd19dac732db6c2c3cd724a9ffba6c0#egg=timeside-0.7.0', # noqa
     # 'timeside==0.7', # See https://github.com/Parisson/TimeSide/issues/104
@@ -87,6 +87,7 @@ setup(
     'django-geojson==2.11.0',
     'django-cors-headers==2.4.1',
     'python-keycloak==0.16.0',
+    'rsa==4.0',
     'python-jose==3.0.1',
     'mozilla-django-oidc @ git+https://github.com/lluc/mozilla-django-oidc.git@francoralite#egg=mozilla-django-oidc-francoralite', # noqa
     'rdflib',
