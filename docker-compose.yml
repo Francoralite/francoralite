@@ -29,7 +29,7 @@ services:
     image: 'mysql:8.0.2'
     volumes:
       - './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
-      - './data/mysql/:/var/lib/mysql'
+      - 'francoralite_db:/var/lib/mysql'
     networks:
       - 'francoralite'
     volumes_from:
@@ -156,4 +156,5 @@ services:
       - 'keycloak_db:/var/lib/postgresql/data'
 
 volumes:
+  francoralite_db: {}
   keycloak_db: {}
