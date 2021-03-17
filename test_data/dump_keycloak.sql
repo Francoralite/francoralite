@@ -2164,6 +2164,7 @@ d5447076-ea4f-4493-b0f9-dbea011ad108	39965e67-dd49-4054-874a-5ce643fe1149
 COPY public.credential (id, device, hash_iterations, salt, type, value, user_id, created_date, counter, digits, period, algorithm) FROM stdin;
 67d3b1d2-23a6-4f56-9347-5e098d7f0f5b	\N	27500	\\xf3abe529a0b76f3bda1d0ce04797707f	password	wd+QiB/M30ue7Dctr+QS1VmUdT6oLcHSXsG8YEO3hPtFdw/RQdVnWqjm8KguVXTe/l2jrvwJfWhELjuESK9+pg==	ddf2637a-e7d1-4396-93c2-514135e73261	\N	0	0	0	pbkdf2-sha256
 9f916b60-4f8d-4189-844f-352f0227c91f	\N	27500	\\xe7cfb8d370f422860aadbf2bf499c901	password	6w2nw06Tbw7M8Fa16+ZEzQYX7kNk+ka9hLmjTkf3E3e+YTpkQuGQnSIs+2V2YzaU8s+S2rEmVxCpQn/6ytll6A==	9ad0229f-029c-4941-b5ca-6f63c499b903	1567435501352	0	0	0	pbkdf2-sha256
+0ebc8486-0e79-41d5-96fb-872c4b9891c0	\N	27500	\\x5ecf12a9a9de2948cf495c26e32a3d43	password	d5GiBI2jC78GXKRdT2IeSZBS1V6/kUEM9iXiM6gtQwp1mICpn/Xj6TytRV0n8ZuYIHEqEG4F4GQ3RLkunxKAfQ==	741b7983-9033-47ad-b7f9-72097e50920b	1615993171169	0	0	0	pbkdf2-sha256
 \.
 
 
@@ -4252,6 +4253,7 @@ COPY public.user_entity (id, email, email_constraint, email_verified, enabled, f
 ddf2637a-e7d1-4396-93c2-514135e73261	\N	8004afb0-a72b-4959-8db9-a82cb713d371	f	t	\N	\N	\N	master	admin	1565685875145	\N	0
 78181ea0-a785-4fd2-8273-e66901be11a1	service-account-francoralite@placeholder.org	service-account-francoralite@placeholder.org	f	t	\N	\N	\N	francoralite	service-account-francoralite	1567415962237	6ca8b749-cba1-4453-8a20-0c189d9b9447	0
 9ad0229f-029c-4941-b5ca-6f63c499b903	toto1@toto.com	toto1@toto.com	t	t	\N	Toto1	Nom de toto	francoralite	toto1	1567435441623	\N	0
+741b7983-9033-47ad-b7f9-72097e50920b	\N	4dfefa02-fced-464c-ae00-b99a1517dc06	t	t	\N	\N	\N	francoralite	contributeur	1615993158748	\N	0
 \.
 
 
@@ -4322,6 +4324,10 @@ b684e64f-9250-42e0-a055-2a18ffa4df88	78181ea0-a785-4fd2-8273-e66901be11a1
 b684e64f-9250-42e0-a055-2a18ffa4df88	9ad0229f-029c-4941-b5ca-6f63c499b903
 818c584b-976b-40ee-a442-403c98bb668c	9ad0229f-029c-4941-b5ca-6f63c499b903
 850b0803-fc35-445d-a23e-d6479241bb60	9ad0229f-029c-4941-b5ca-6f63c499b903
+5531c621-ad97-4da9-8896-bed73d09c285	741b7983-9033-47ad-b7f9-72097e50920b
+b684e64f-9250-42e0-a055-2a18ffa4df88	741b7983-9033-47ad-b7f9-72097e50920b
+818c584b-976b-40ee-a442-403c98bb668c	741b7983-9033-47ad-b7f9-72097e50920b
+850b0803-fc35-445d-a23e-d6479241bb60	741b7983-9033-47ad-b7f9-72097e50920b
 \.
 
 
