@@ -255,7 +255,8 @@ BOWER_PATH = '/usr/bin/bower'
 #
 # DEBUG MANAGEMENT
 #
-if os.getenv('DEBUG'):
+if os.getenv('DEBUG').lower() == "true":
+    DEBUG = True
     INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     DEBUG_TOOLBAR_CONFIG = {
