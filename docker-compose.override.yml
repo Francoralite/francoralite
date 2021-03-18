@@ -3,10 +3,6 @@
 version: '2.1'
 
 services:
-  data:
-    labels:
-      - 'traefik.frontend.rule=Host:data.francoralite.localhost'
-
   db:
     labels:
       - 'traefik.frontend.rule=Host:db.francoralite.localhost'

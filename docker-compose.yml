@@ -12,27 +12,12 @@ networks:
       name: 'services'
 
 services:
-  data:
-    image: 'debian:jessie'
-    networks:
-      - 'francoralite'
-    volumes:
-       - './data/media/:/srv/media'
-       - './data/backup/:/srv/backup'
-       - './data/static:/srv/static'
-       - './data/bower:/srv/bower'
-       - './data/log/nginx:/var/log/nginx'
-       - './data/log/uwsgi:/var/log/uwsgi'
-    command: 'true'
-
   db:
     image: 'mysql:8.0.2'
     volumes:
       - 'francoralite_db:/var/lib/mysql'
     networks:
       - 'francoralite'
-    volumes_from:
-      - 'data'
     env_file:
       - './francoralite-env/prod.env'
     healthcheck:
@@ -77,8 +62,6 @@ services:
       - 'services'
     volumes:
       - './etc/nginx.conf:/etc/nginx/conf.d/default.conf'
-    volumes_from:
-      - 'data'
 
   adminer:
     image: "${ADMINER_IMAGE}:${ADMINER_VERSION}"
