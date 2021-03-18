@@ -6,7 +6,7 @@
 
 from django.views.generic.edit import FormView
 from rest_framework import status
-from settings import FRONT_HOST_URL_EXTERNAL
+from django.conf import settings
 from telemeta_front.forms.item import ItemForm
 from django.shortcuts import render
 import telemeta_front.tools as tools
@@ -19,7 +19,7 @@ class ItemEdit(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ItemEdit, self).get_context_data(**kwargs)
-        context["url_external"] = FRONT_HOST_URL_EXTERNAL
+        context["url_external"] = settings.FRONT_HOST_URL_EXTERNAL
 
         id = kwargs.get('id')
         # Obtain values of the record
@@ -55,7 +55,7 @@ class ItemEdit(FormView):
                       '../templates/item-add.html',
                       {'form': form, 'id': id, 'item': item,
                        'graphers': graphers,
-                       'url_external': FRONT_HOST_URL_EXTERNAL})
+                       'url_external': settings.FRONT_HOST_URL_EXTERNAL})
 
     def post(self, request, *args, **kwargs):
         return tools.patch(

@@ -7,7 +7,7 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.domain_vocal import DomainVocalForm
 from django.shortcuts import render
 import telemeta_front.tools as tools
@@ -24,7 +24,7 @@ class DomainVocalEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/domain_vocal/' + str(id))
+            settings.FRONT_HOST_URL + '/api/domain_vocal/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['domain_vocal'] = response.json
         return context
@@ -35,7 +35,7 @@ class DomainVocalEdit(FormView):
 
         # Obtain values of the record
         domain_vocal = requests.get(
-            FRONT_HOST_URL + '/api/domain_vocal/' + str(id))
+            settings.FRONT_HOST_URL + '/api/domain_vocal/' + str(id))
         form = DomainVocalForm(initial=domain_vocal.json())
 
         return render(request,

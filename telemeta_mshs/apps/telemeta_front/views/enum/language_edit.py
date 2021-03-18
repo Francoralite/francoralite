@@ -7,7 +7,7 @@
 
 from django.views.generic.edit import FormView
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.language import LanguageForm
 from django.shortcuts import render
 import telemeta_front.tools as tools
@@ -42,7 +42,7 @@ class LanguageEdit(FormView):
 
         # Obtain values of the record
         language = requests.get(
-            FRONT_HOST_URL + '/api/language/' + str(id))
+            settings.FRONT_HOST_URL + '/api/language/' + str(id))
         data = language.json()
         form = LanguageForm(initial=data)
 

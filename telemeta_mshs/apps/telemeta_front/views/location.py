@@ -6,7 +6,7 @@
 
 from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 
 
 class LocationView(FrancoraliteTemplateView):
@@ -15,5 +15,5 @@ class LocationView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         context = super(LocationView, self).get_context_data(**kwargs)
         context['locations'] = requests.get(
-            FRONT_HOST_URL+'/api/location/').json
+            settings.FRONT_HOST_URL+'/api/location/').json
         return context

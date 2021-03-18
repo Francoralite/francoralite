@@ -8,7 +8,7 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.musical_group import MusicalGroupForm
 from django.shortcuts import render
 import telemeta_front.tools as tools
@@ -25,7 +25,7 @@ class MusicalGroupEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/musical_group/' + str(id))
+            settings.FRONT_HOST_URL + '/api/musical_group/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['musical_group'] = response.json
         return context
@@ -36,7 +36,7 @@ class MusicalGroupEdit(FormView):
 
         # Obtain values of the record
         musical_group = requests.get(
-            FRONT_HOST_URL + '/api/musical_group/' + str(id))
+            settings.FRONT_HOST_URL + '/api/musical_group/' + str(id))
         form = MusicalGroupForm(initial=musical_group.json())
 
         return render(request,

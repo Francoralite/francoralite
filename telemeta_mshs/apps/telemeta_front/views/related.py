@@ -6,7 +6,7 @@
 from rest_framework import status
 import requests
 import json
-from settings import FRONT_HOST_URL
+from django.conf import settings
 
 
 class related():
@@ -30,7 +30,7 @@ class related():
 
 def write_fond_related(fond, request, headers):
     url_documents = \
-        FRONT_HOST_URL + '/api/fond/' + \
+        settings.FRONT_HOST_URL + '/api/fond/' + \
         str(fond["id"]) + '/document'
 
     documents_selected = json.loads(request.POST['media'])
@@ -49,7 +49,7 @@ def write_fond_related(fond, request, headers):
 
 def write_mission_related(mission, request, headers):
     url_documents = \
-        FRONT_HOST_URL + '/api/mission/' + \
+        settings.FRONT_HOST_URL + '/api/mission/' + \
         str(mission["id"]) + '/document'
 
     documents_selected = json.loads(request.POST['media'])
@@ -83,7 +83,7 @@ def write_collection_related(collection, request, headers):
         if related == 'collector':
             nested = 'collectors'
         url = \
-            FRONT_HOST_URL + '/api/collection/' + \
+            settings.FRONT_HOST_URL + '/api/collection/' + \
             str(collection["id"]) + '/' + nested
         if related == 'performance':
             for item in items:
@@ -98,7 +98,7 @@ def write_collection_related(collection, request, headers):
                         url, related, headers)
 
     url_performances = \
-        FRONT_HOST_URL + '/api/collection/' + \
+        settings.FRONT_HOST_URL + '/api/collection/' + \
         str(collection["id"]) + '/performance'
     index = 0
     # Request the performances ordered by ID
@@ -120,7 +120,7 @@ def write_collection_related(collection, request, headers):
         if "informers" not in performance:
             performance["informers"] = []
         url_musicians = \
-            FRONT_HOST_URL + '/api/collection/' + \
+            settings.FRONT_HOST_URL + '/api/collection/' + \
             str(collection["id"]) + '/performance/' + \
             str(performance["id"]) + '/musician'
         write_relations(performance["id"],
@@ -133,7 +133,7 @@ def write_collection_related(collection, request, headers):
 
     # Documents related (media)
     url_documents = \
-        FRONT_HOST_URL + '/api/collection/' + \
+        settings.FRONT_HOST_URL + '/api/collection/' + \
         str(collection["id"]) + '/document'
     media = request.POST['media']
     if media:
@@ -178,7 +178,7 @@ def write_item_related(id_main, request, headers):
             id_main["id"],
             "item",
             json.loads(request.POST[rel_item[1]]),
-            FRONT_HOST_URL + '/api/item/' +
+            settings.FRONT_HOST_URL + '/api/item/' +
             str(id_main["id"]) + '/' + rel_item[0],
             rel_item[0],
             headers=headers
@@ -186,7 +186,7 @@ def write_item_related(id_main, request, headers):
 
     # Documents related (media)
     url_documents = \
-        FRONT_HOST_URL + '/api/item/' + \
+        settings.FRONT_HOST_URL + '/api/item/' + \
         str(id_main["id"]) + '/document'
 
     documents_selected = json.loads(request.POST['media'])
@@ -204,7 +204,7 @@ def write_item_related(id_main, request, headers):
 
     # Performances ---------------
     url_performances = \
-        FRONT_HOST_URL + '/api/item/' + \
+        settings.FRONT_HOST_URL + '/api/item/' + \
         str(id_main["id"]) + '/performance'
 
     performances_selected = json.loads(request.POST['performances'])

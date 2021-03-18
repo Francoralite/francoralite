@@ -8,7 +8,7 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.domain_tale import DomainTaleForm
 from django.shortcuts import render
 import telemeta_front.tools as tools
@@ -25,7 +25,7 @@ class DomainTaleEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/domain_tale/' + str(id))
+            settings.FRONT_HOST_URL + '/api/domain_tale/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['domain_tale'] = response.json
         return context
@@ -36,7 +36,7 @@ class DomainTaleEdit(FormView):
 
         # Obtain values of the record
         domain_tale = requests.get(
-            FRONT_HOST_URL + '/api/domain_tale/' + str(id))
+            settings.FRONT_HOST_URL + '/api/domain_tale/' + str(id))
         form = DomainTaleForm(initial=domain_tale.json())
 
         return render(request,

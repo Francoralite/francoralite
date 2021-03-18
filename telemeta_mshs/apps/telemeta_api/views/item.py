@@ -5,7 +5,6 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 import os
-import settings
 import mimetypes
 import datetime
 from django.http import Http404, HttpResponse

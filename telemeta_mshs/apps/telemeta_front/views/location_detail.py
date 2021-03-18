@@ -8,7 +8,7 @@ from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 from rest_framework import status
 import requests
 
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.location import LocationForm
 
 
@@ -20,7 +20,7 @@ class LocationDetail(FrancoraliteTemplateView):
 
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/location/' + context['id'])
+            settings.FRONT_HOST_URL + '/api/location/' + context['id'])
         if response.status_code == status.HTTP_200_OK:
             context['location'] = response.json
             context['form'] = LocationForm

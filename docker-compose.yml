@@ -50,7 +50,6 @@ services:
     volumes:
       - './:/srv/app'
       - './scripts:/srv/scripts'
-      - './telemeta_mshs/settings/base.py:/srv/app/settings.py'
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
       - './data/media/:/srv/media'
       - './data/static:/srv/static'

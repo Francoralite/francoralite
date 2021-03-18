@@ -8,7 +8,7 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.publisher import PublisherForm
 from django.shortcuts import render
 import telemeta_front.tools as tools
@@ -25,7 +25,7 @@ class PublisherEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/publisher/' + str(id))
+            settings.FRONT_HOST_URL + '/api/publisher/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['publisher'] = response.json
         return context
@@ -36,7 +36,7 @@ class PublisherEdit(FormView):
 
         # Obtain values of the record
         publisher = requests.get(
-            FRONT_HOST_URL + '/api/publisher/' + str(id))
+            settings.FRONT_HOST_URL + '/api/publisher/' + str(id))
         form = PublisherForm(initial=publisher.json())
 
         return render(request,

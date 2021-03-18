@@ -8,7 +8,7 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.mediatype import MediaTypeForm
 from django.shortcuts import render
 import telemeta_front.tools as tools
@@ -25,7 +25,7 @@ class MediaTypeEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/mediatype/' + str(id))
+            settings.FRONT_HOST_URL + '/api/mediatype/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['mediatype'] = response.json
         return context
@@ -36,7 +36,7 @@ class MediaTypeEdit(FormView):
 
         # Obtain values of the record
         mediatype = requests.get(
-            FRONT_HOST_URL + '/api/mediatype/' + str(id))
+            settings.FRONT_HOST_URL + '/api/mediatype/' + str(id))
         form = MediaTypeForm(initial=mediatype.json())
 
         return render(request,

@@ -12,7 +12,6 @@ import factory
 import pytest
 import sys
 import os
-import settings
 from types import NoneType
 
 from django.core.management import call_command

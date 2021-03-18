@@ -8,7 +8,7 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 from telemeta_front.forms.collection import CollectionForm
 import telemeta_front.tools as tools
 
@@ -23,7 +23,7 @@ class CollectionAdd(FormView):
         initial['mission'] = self.kwargs['id_mission']
         # Obtain code of the mission
         response = requests.get(
-            FRONT_HOST_URL + '/api/mission/' + self.kwargs['id_mission'])
+            settings.FRONT_HOST_URL + '/api/mission/' + self.kwargs['id_mission'])
         if response.status_code == status.HTTP_200_OK:
             initial['code'] = response.json()['code']
         return initial

@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import status
-from settings import FRONT_HOST_URL
+from django.conf import settings
 import requests
 
 from django.http import HttpResponseRedirect
@@ -45,7 +45,7 @@ def request_api(endpoint):
 
     try:
         response = requests.get(
-            FRONT_HOST_URL + endpoint)
+            settings.FRONT_HOST_URL + endpoint)
 
         if response.status_code == status.HTTP_200_OK:
             return response.json()
@@ -96,7 +96,7 @@ def post(entity, form_entity, request, *args, **kwargs):
             # Remove the 'file' entry : if not, there some bugs
             del form.cleaned_data['file']
         try:
-            post_api(FRONT_HOST_URL + '/api/' + entity_api,
+            post_api(settings.FRONT_HOST_URL + '/api/' + entity_api,
                      data=form.cleaned_data,
                      request=request,
                      entity=entity)
@@ -173,7 +173,7 @@ def patch(entity, form_entity, request, *args, **kwargs):
             form.cleaned_data['domain'] = ''.join(form.cleaned_data['domain'])
         try:
             response = patch_api(
-                FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
+                settings.FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
                 data=form.cleaned_data,
                 request=request,
                 entity=entity
@@ -237,7 +237,7 @@ def delete(entity, request, *args, **kwargs):
         entity_api = entity.replace('_', '')
     try:
         delete_api(
-            FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
+            settings.FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
             request=request
             )
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
