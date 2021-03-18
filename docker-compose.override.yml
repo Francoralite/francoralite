@@ -11,10 +11,6 @@ services:
     labels:
       - 'traefik.frontend.rule=Host:db.francoralite.localhost'
 
-  broker:
-    labels:
-      - 'traefik.frontend.rule=Host:broker.francoralite.localhost'
-
   app:
     labels:
       - 'traefik.frontend.rule=Host:app.francoralite.localhost'

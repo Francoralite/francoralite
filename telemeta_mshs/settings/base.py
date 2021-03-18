@@ -86,8 +86,6 @@ LOGGING = {
     }
 }
 
-BROKER_URL = os.getenv('BROKER_URL')
-
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
 BOWER_PATH = '/usr/local/bin/bower'
 BOWER_INSTALLED_APPS = (

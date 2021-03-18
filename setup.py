@@ -60,7 +60,6 @@ setup(
     'django-json-rpc',
     'django-bower==5.2.0',
     'pyyaml',
-    'redis',
     'Werkzeug',
     'django-dirtyfields==1.2.1',
     'sqlparse==0.2.2',

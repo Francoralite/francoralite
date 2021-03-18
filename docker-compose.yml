@@ -42,11 +42,6 @@ services:
       timeout: '2s'
       retries: 3
 
-  broker:
-    image: 'redis'
-    networks:
-      - 'francoralite'
-
   app:
     build:
       context: .
