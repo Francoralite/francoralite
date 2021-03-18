@@ -28,7 +28,6 @@ services:
   db:
     image: 'mysql:8.0.2'
     volumes:
-        #- './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
       - 'francoralite_db:/var/lib/mysql'
     networks:
       - 'francoralite'
@@ -51,11 +50,7 @@ services:
     volumes:
       - './:/srv/app'
       - './scripts:/srv/scripts'
-        #- './telemeta_mshs/apps/Telemeta/app/enumeration:/srv/app/enumeration'
-        #- './telemeta_mshs/apps/Telemeta/app/fixtures:/srv/app/fixtures'
       - './telemeta_mshs/settings/base.py:/srv/app/settings.py'
-        #- './telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py'
-        #- './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
       - './data/media/:/srv/media'
       - './data/static:/srv/static'
