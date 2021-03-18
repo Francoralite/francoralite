@@ -17,7 +17,6 @@ from .views import (
     collection_publisher,
     collection_location,
     collection_language,
-    location,
     location_gis,
     location_gis_collection,
     language,
@@ -39,9 +38,6 @@ from .views import (
     item_musical_organization,
     item_musical_group,
     item_performance,
-    item_analysis,
-    item_transcoding_flag,
-    item_marker,
     mediatype,
     metadata_author,
     publisher,
@@ -61,7 +57,6 @@ from .views import (
     domain_vocal,
     domain_song,
     usefulness,
-    timeside_item,
     global_search,
     advanced_search,
     skos_collection,
@@ -69,7 +64,6 @@ from .views import (
     )
 
 urlpatterns = [
-    url(r'^jsonrpc/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),
     url(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
         name="search"),
     url(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
@@ -98,9 +92,6 @@ router.register(r'authority',
 router.register(r'collection',
                 collection.CollectionViewSet,
                 base_name='collection')
-router.register(r'location',
-                location.LocationViewSet,
-                base_name='location')
 router.register(r'locationgis',
                 location_gis.LocationGISViewSet,
                 base_name='location_gis')
@@ -161,9 +152,6 @@ router.register(r'usefulness',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 base_name='performance_collection_musician')
 
-router.register(r'timeside',
-                timeside_item.TimeSideViewSet,
-                base_name='timeside')
 router.register(r'skos_collection',
                 skos_collection.SkosCollectionViewSet,
                 base_name='coirault')
@@ -249,12 +237,3 @@ Item_router.register(
     item_musical_group.ItemMusicalGroupViewSet)
 Item_router.register(
     r'performance', item_performance.ItemPerformanceViewSet)
-Item_router.register(
-    r'analysis',
-    item_analysis.ItemAnalysisViewSet)
-Item_router.register(
-    r'itemtranscodingflag',
-    item_transcoding_flag.ItemTranscodingFlagViewSet)
-Item_router.register(
-    r'marker',
-    item_marker.ItemMarkerViewSet)

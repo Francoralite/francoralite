@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import telemeta_mshs.apps.telemeta_api.models.ext_media_item
 import dirtyfields.dirtyfields
 import django.db.models.deletion
 from django.conf import settings
@@ -13,7 +12,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('telemeta', '0006_enumerationproperty'),
     ]
 
     operations = [
@@ -236,54 +234,6 @@ class Migration(migrations.Migration):
                 'db_table': 'emit_vox',
                 'verbose_name_plural': 'nature des emissions vocales',
             },
-        ),
-        migrations.CreateModel(
-            name='ExtMediaItem',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('mshs_alt_title', models.CharField(max_length=255, verbose_name='alternate title', blank=True)),
-                ('description', models.TextField(help_text='Describe the item', verbose_name='description', blank=True)),
-                ('mshs_timbre', models.CharField(max_length=255, verbose_name="Timbre de l'air", blank=True)),
-                ('mshs_timbre_ref', models.CharField(max_length=1024, verbose_name='Timbre(s) r\xe9f\xe9renc\xe9(s)', blank=True)),
-                ('mshs_timbre_code', models.CharField(max_length=255, verbose_name='Cote du timbre', blank=True)),
-                ('mshs_melody', models.TextField(help_text='You can use ABC notation', verbose_name='M\xe9lodie (transcription alphab\xe9tique)', blank=True)),
-                ('mshs_domain', models.CharField(blank=True, max_length=5, verbose_name='Domain', choices=[(b'T', b'T\xc3\xa9moignage'), (b'C', b'Chanson'), (b'A', b'Autre expression vocale'), (b'I', b'Expression instrumentale'), (b'R', b'Conte ou r\xc3\xa9cit l\xc3\xa9gendaire')])),
-                ('mshs_domain_song', models.CharField(max_length=255, verbose_name='kind of song', blank=True)),
-                ('mshs_domain_vocal', models.CharField(max_length=255, verbose_name='Autre expression vocale', blank=True)),
-                ('mshs_domain_music', models.CharField(max_length=255, verbose_name='Expression instrumentale', blank=True)),
-                ('mshs_domain_tale', models.CharField(max_length=255, verbose_name='Conte', blank=True)),
-                ('mshs_details', models.TextField(verbose_name="Pr\xe9cisions sur l'item", blank=True)),
-                ('mshs_function', models.CharField(max_length=255, verbose_name='Fonction(s)', blank=True)),
-                ('mshs_dance', models.CharField(max_length=255, verbose_name='Danse(s)', blank=True)),
-                ('mshs_dance_details', models.TextField(verbose_name='Pr\xe9cisions sur la danse', blank=True)),
-                ('mshs_deposit_digest', models.TextField(verbose_name='R\xe9sum\xe9', blank=True)),
-                ('mshs_deposit_thematic', models.TextField(verbose_name='Th\xe9matiques', blank=True)),
-                ('mshs_deposit_names', models.TextField(help_text='First name, Last name ; First name, Last name', verbose_name='Nom(s) propre(s) cit\xe9(s) ', blank=True)),
-                ('mshs_deposit_places', models.TextField(help_text='Place named; place named; ...', verbose_name='Lieu(x) cit\xe9(s)', blank=True)),
-                ('mshs_deposit_periods', models.TextField(help_text='Period recounted; period recounted; ...', verbose_name='P\xe9riode(s) cit\xe9e(s)', blank=True)),
-                ('mshs_text_bool', models.BooleanField(default=False, verbose_name='Text ?')),
-                ('mshs_text', models.TextField(verbose_name='Text', blank=True)),
-                ('mshs_incipit', models.TextField(verbose_name='incipit', blank=True)),
-                ('mshs_refrain', models.TextField(verbose_name='refrain', blank=True)),
-                ('mshs_jingle', models.TextField(verbose_name='jingle', blank=True)),
-                ('mshs_title_ref_coirault', models.CharField(max_length=255, verbose_name='Title ref. Coirault', blank=True)),
-                ('mshs_code_coirault', models.CharField(max_length=255, verbose_name='code Coirault', blank=True)),
-                ('mshs_title_ref_laforte', models.CharField(max_length=255, verbose_name='Title ref. Laforte', blank=True)),
-                ('mshs_code_laforte', models.CharField(max_length=255, verbose_name='code Laforte', blank=True)),
-                ('mshs_title_ref_Dela', models.CharField(max_length=255, verbose_name='Title ref. Delarue-Teneze', blank=True)),
-                ('mshs_code_Dela', models.CharField(max_length=255, verbose_name='code Delarue-Teneze', blank=True)),
-                ('mshs_title_ref_Aare', models.CharField(max_length=255, verbose_name='Title ref. Aare-Thomson', blank=True)),
-                ('mshs_code_Aare', models.CharField(max_length=255, verbose_name='code Aare-Thomson', blank=True)),
-                ('mshs_musical_organization', models.CharField(max_length=255, verbose_name='Organisation musicale', blank=True)),
-                ('mshs_group', models.CharField(max_length=255, verbose_name='Formation', blank=True)),
-                ('code', models.CharField(default=telemeta_mshs.apps.telemeta_api.models.ext_media_item.default_code, validators=[django.core.validators.RegexValidator(regex=b'^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}_[0-9]{4}_[0-9]{3}$', message=b'Code must conform to XXXX_XXX_000X_0000_000', code=b'invalid_code')], max_length=255, blank=True, help_text='CollectionCode_ItemCode', unique=True, verbose_name='code')),
-                ('media_item', models.OneToOneField(to='telemeta.MediaItem')),
-                ('mshs_ch_coupe', models.ForeignKey(verbose_name='coupe', blank=True, to='telemeta_api.Coupe', null=True)),
-            ],
-            options={
-                'db_table': 'ext_media_item',
-            },
-            bases=(models.Model, dirtyfields.dirtyfields.DirtyFieldsMixin),
         ),
         migrations.CreateModel(
             name='Fond',

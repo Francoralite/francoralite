@@ -1,5 +1,56 @@
 # Processus de migration vers Python3 / Django3
 
+## Référencement des applications à supprimer
+
+'telemeta',
+'timeside.player',
+# 'timeside.server',
+'sorl.thumbnail',
+'jqchat',
+'haystack',
+# 'ipauth',
+'suit',
+'saved_searches',
+
+
+
+# A verifier
+'jsonrpc',
+'extra_views',
+
+
+
+# A garder
+'django.contrib.auth',
+'mozilla_django_oidc',  # Load after auth
+'django.contrib.contenttypes',
+'django.contrib.sessions',
+'django.contrib.sites',
+'django.contrib.messages',
+'django.contrib.admin',
+'django.contrib.staticfiles',
+'django_extensions',
+'timezones',
+'bootstrap3',
+'bootstrap_datepicker',
+'bootstrap_pagination',
+'registration',
+'rest_framework',
+'rest_framework_xml',
+'djcelery',
+'djangobower', # A verifier
+'django',
+'rest_framework_swagger',
+'django_filters',
+'telemeta_mshs.apps.telemeta_api',
+'telemeta_mshs.apps.telemeta_front',
+'django_select2',
+'leaflet',
+'markdownx',
+'corsheaders',
+'debug_toolbar',
+'rdflib',
+
 
 ## Suppression de Telemeta
 

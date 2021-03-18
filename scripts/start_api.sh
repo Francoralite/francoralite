@@ -21,15 +21,7 @@ python ./manage.py syncdb
 python ./manage.py migrate --noinput -v 3
 python ./manage.py bower_install -- --allow-root
 
-# telemeta setup
-python ./manage.py telemeta-create-admin-user
-python ./manage.py telemeta-create-boilerplate
-python ./manage.py telemeta-setup-enumerations
-
-# Delete Timeside database if it exists
-cat ./telemeta_mshs/apps/Telemeta/scripts/sql/drop_timeside.sql | python ./manage.py dbshell
-
-if [ $REINDEX = "True" ]; then
+if [ "${REINDEX}" = "True" ]; then
     python ./manage.py rebuild_index --noinput
 fi
 

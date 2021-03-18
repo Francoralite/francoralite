@@ -7,7 +7,6 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from telemeta.models.collection import MediaCollection
 # Add nested/related tables
 from .item import Item
 from .domain_music import DomainMusic

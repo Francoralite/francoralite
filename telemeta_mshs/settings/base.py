@@ -1,9 +1,115 @@
 import os
 
+# Reminder
+ALLOWED_HOSTS = ['*']
+PROJECT_ROOT = '/srv/app/'
+TIME_ZONE = 'Europe/Paris'
+LANGUAGES = [('fr', 'French'),
+             ('en', 'English'),
+             ('de', 'German'),
+             ('zh_CN', 'Simplified Chinese'),
+             ('ar_TN', 'Arabic'),
+             ('pt_BR', 'Portuguese'),
+             ('es', 'Spanish'),
+             ]
+SITE_ID = 1
+USE_I18N = True
+USE_L10N = True
+MEDIA_ROOT = '/srv/media/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = '/srv/static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = ()
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+)
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-# Original Telemeta application settings
-# from .telemeta_settings import *  # noqa
-from telemeta_settings import *  # noqa
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.core.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+AUTH_USER_MODEL = 'auth.User'
+
+# Settings for django-bootstrap3
+BOOTSTRAP3 = {
+    'set_required': True,
+    'set_placeholder': False,
+    'error_css_class': 'has-error',
+    'required_css_class': 'has-warning',
+    'javascript_in_head': True,
+}
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+}
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
+BROKER_URL = os.getenv('BROKER_URL')
+
+BOWER_COMPONENTS_ROOT = '/srv/bower/'
+BOWER_PATH = '/usr/local/bin/bower'
+BOWER_INSTALLED_APPS = (
+    'jquery#2.2.4',
+    'jquery-migrate#~1.2.1',
+    'underscore#1.8.3',
+    'bootstrap#3.3.7',
+    'bootstrap-select#1.5.4',
+    'font-awesome#4.4.0',
+    'angular#1.2.26',
+    'angular-bootstrap-select#0.0.5',
+    'angular-resource#1.2.26',
+    'raphael#2.2.7',
+    'soundmanager#V2.97a.20150601',
+    'jquery-ui#1.11.4',
+    'tablesorter',
+    'video.js',
+    'sass-bootstrap-glyphicons',
+    # 'https://github.com/Parisson/loaders.git',
+    # 'https://github.com/Parisson/ui.git',
+)
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -12,30 +118,18 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'suit',
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
-    'telemeta',
-    'timeside.player',
-    # 'timeside.server',
-    'jsonrpc',
-    'sorl.thumbnail',
     'timezones',
-    'jqchat',
-    # 'ipauth',
-    'extra_views',
     'bootstrap3',
     'bootstrap_datepicker',
     'bootstrap_pagination',
     'registration',
     'rest_framework',
     'rest_framework_xml',
-    'djcelery',
-    'haystack',
     'djangobower',
     'django',
-    'saved_searches',
     'rest_framework_swagger',
     'django_filters',
     'telemeta_mshs.apps.telemeta_api',
@@ -44,13 +138,15 @@ INSTALLED_APPS = (
     'leaflet',
     'markdownx',
     'corsheaders',
-    'debug_toolbar',
+    #'debug_toolbar',
     'rdflib',
+    # Check if always needed
+    'extra_views',
 )
 
 MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -154,3 +250,33 @@ LOGOUT_REDIRECT_URL = 'http://keycloak.francoralite.localhost:8080/auth/' +\
 # BOWER
 #
 BOWER_PATH = '/usr/bin/bower'
+
+
+#
+# DEBUG MANAGEMENT
+#
+if os.getenv('DEBUG'):
+    INSTALLED_APPS += ('debug_toolbar',)
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda x: True
+    }
+    DEBUG_TOOLBAR_PATCH_SETTINGS = False
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        'JQUERY_URL': '/static/jquery/dist/jquery.min.js',
+    }
+    INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', '172.17.0.1']

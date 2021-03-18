@@ -28,14 +28,14 @@ services:
   db:
     image: 'mysql:8.0.2'
     volumes:
-      - './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
+        #- './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
       - 'francoralite_db:/var/lib/mysql'
     networks:
       - 'francoralite'
     volumes_from:
       - 'data'
     env_file:
-      - './telemeta_mshs/apps/Telemeta/env/prod.env'
+      - './francoralite-env/prod.env'
     healthcheck:
       test: ["CMD-SHELL", "mysql -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SHOW DATABASES;'"]
       interval: '30s'
@@ -61,18 +61,18 @@ services:
     volumes:
       - './:/srv/app'
       - './scripts:/srv/scripts'
-      - './telemeta_mshs/apps/Telemeta/app/enumeration:/srv/app/enumeration'
-      - './telemeta_mshs/apps/Telemeta/app/fixtures:/srv/app/fixtures'
+        #- './telemeta_mshs/apps/Telemeta/app/enumeration:/srv/app/enumeration'
+        #- './telemeta_mshs/apps/Telemeta/app/fixtures:/srv/app/fixtures'
       - './telemeta_mshs/settings/base.py:/srv/app/settings.py'
-      - './telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py'
-      - './telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py'
-      - './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
+        #- './telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py'
+        #- './telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py'
+        #- './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
       - './data/media/:/srv/media'
       - './data/static:/srv/static'
       - './data/bower:/srv/bower'
     env_file:
-      - './telemeta_mshs/apps/Telemeta/env/debug.env'
+      - './francoralite-env/prod.env'
       - './francoralite-env/app.env'
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
@@ -92,7 +92,7 @@ services:
     volumes_from:
       - 'app'
     env_file:
-      - './telemeta_mshs/apps/Telemeta/env/prod.env'
+      - './francoralite-env/prod.env'
     command: '/bin/bash /srv/scripts/start_worker.sh'
     depends_on:
       app:

@@ -16,7 +16,6 @@ RUN chown www-data:www-data $PYTHON_EGG_CACHE
 
 ADD . / ./
 COPY ./telemeta_mshs/settings/base.py ./settings.py
-COPY ./telemeta_mshs/apps/Telemeta/app/settings.py ./telemeta.py
 RUN apt-get update
 RUN apt-get install -y python-pip
 RUN python2.7 -m pip install simple-yaml

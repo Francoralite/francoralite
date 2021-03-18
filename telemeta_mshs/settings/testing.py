@@ -9,11 +9,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
-    'jqchat',
-    'saved_searches',
     'rest_framework',
     'rest_framework_swagger',
-    'telemeta',
     'telemeta_mshs.apps.telemeta_api',
     'rdflib',
 )

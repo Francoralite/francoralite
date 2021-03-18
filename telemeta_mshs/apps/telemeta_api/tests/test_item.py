@@ -15,8 +15,6 @@ import os
 import settings
 from types import NoneType
 
-from telemeta.cache import TelemetaCache
-
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from parameterized import parameterized
@@ -82,7 +80,6 @@ class TestItemList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
         ItemFactory.create_batch(6)
@@ -205,41 +202,6 @@ class TestItemList(APITestCase):
         self.assertIsInstance(response_get.data, dict)
         item = response.data
 
-        # Item Analysis ----------------------------------
-        # Test if related ItemAnalyzis are presents
-        url = reverse('itemanalysis-list', kwargs={
-            'item_pk': item['id']})
-        response = self.client.get(url)
-
-        self.assertIsInstance(response.data, list)
-        # Number of analysis per item
-        self.assertEqual(len(response.data), 12)
-        for data_analysis in response.data:
-            # number of feature per analysis
-            self.assertEqual(len(data_analysis), 7)
-
-        # Transcoding ------------------------------------
-        # Test if related ItemTrancodingFlags are presents
-        url = reverse('itemtranscodingflag-list', kwargs={
-            'item_pk':  item['id']})
-        response = self.client.get(url)
-
-        self.assertIsInstance(response.data, list)
-        for transcoding_flag in response.data:
-            # number of feature per transcoding_flag
-            self.assertEqual(len(transcoding_flag), 5)
-
-        # Grapher ----------------------------------------
-        default_grapher_id = getattr(
-             settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_centroid'))
-        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
-        CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
-        cache_data = TelemetaCache(
-            getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
-        list_file = os.listdir(cache_data.dir)
-        self.assertEqual(
-            item['code'] + '.' + default_grapher_id +
-            '.346_130.png' in list_file, True)
 
     def test_update_an_item(self):
         """
@@ -263,9 +225,6 @@ class TestItemList(APITestCase):
         # Create a fake file.
         data['file'] = create_tmp_sound()
 
-        response = self.client.get(
-            '/api/timeside/' + data['code'] + '/analyze')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data['approx_duration'] = '00:20'
 
         url = reverse(
@@ -324,61 +283,3 @@ class TestItemList(APITestCase):
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_timeside_analyze(self):
-        """
-        Ensure we can retrieve analysis data of an item's sound
-        """
-
-        # Retrieve a valid item's code
-        item = Item.objects.first()
-
-        # Retrieve some analysis data
-        # FIXIT ------------------------
-        duration = str(item.approx_duration)
-
-        # The code is right --> there is some data
-        response = self.client.get('/api/timeside/' +
-                                   str(item.id) + '/analyze')
-        print '------------------'
-        print response
-        print response.status_code
-        print '------------------'
-        sys.stdout.flush()
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['duration'], duration)
-
-        # The code is wrong/not-present --> there is no data
-        response = self.client.get('/api/timeside/0/analyze/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
-
-    def test_timeside_visualize(self):
-        """
-        Test if the spectrogram's image exists
-        """
-
-        # Retrieve a valid item's code
-        item = Item.objects.first()
-        id = str(item.id)
-        code = str(item.code)
-
-        # Call to the visualize endpoint
-        response = self.client.get('/api/timeside/' + id + '/visualize')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.data
-
-        # Grapher ----------------------------------------
-        default_grapher_id = data['grapher']
-
-        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
-        CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
-        cache_data = TelemetaCache(
-            getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
-        list_file = os.listdir(cache_data.dir)
-
-        # Test if the file exists
-        self.assertEqual(
-            code + '.' + default_grapher_id +
-            '.' + str(data['width']) + '_' +
-            str(data['height']) + '.png' in list_file, True)
