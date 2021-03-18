@@ -47,11 +47,6 @@ services:
     networks:
       - 'francoralite'
 
-  search:
-    image: 'elasticsearch:1'
-    networks:
-      - 'francoralite'
-
   app:
     build:
       context: .
