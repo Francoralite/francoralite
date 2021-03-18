@@ -42,7 +42,6 @@ class TestAcquistionList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         AcquisitionModeFactory.create_batch(6)
 

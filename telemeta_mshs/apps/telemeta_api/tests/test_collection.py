@@ -73,7 +73,6 @@ class TestCollectionList(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
-        call_command('telemeta-setup-enumerations')
 
         CollectionFactory.create_batch(6)
 

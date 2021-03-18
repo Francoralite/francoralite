@@ -13,10 +13,6 @@ from .publisher import PublisherFactory
 # from .collection_publisher import CollectionPublisherFactory
 from .acquistion_mode import AcquisitionModeFactory
 from .recording_context import RecordingContextFactory
-from .enumeration import (
-    PublishingStatusFactory,
-    StatusFactory,
-    MetadataWriterFactory,)
 
 
 class CollectionFactory(factory.django.DjangoModelFactory):
