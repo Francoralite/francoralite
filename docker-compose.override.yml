@@ -20,10 +20,6 @@ services:
       - 'traefik.frontend.rule=Host:app.francoralite.localhost'
       - 'traefik.docker.network=services'
 
-  worker:
-    labels:
-      - 'traefik.frontend.rule=Host:worker.francoralite.localhost'
-
   nginx:
     labels:
       - 'traefik.frontend.rule=Host:nginx.francoralite.localhost'

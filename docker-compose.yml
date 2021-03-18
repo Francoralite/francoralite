@@ -60,7 +60,6 @@ services:
         #- './telemeta_mshs/apps/Telemeta/app/fixtures:/srv/app/fixtures'
       - './telemeta_mshs/settings/base.py:/srv/app/settings.py'
         #- './telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py'
-        #- './telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py'
         #- './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
       - './data/media/:/srv/media'
@@ -77,20 +76,6 @@ services:
     command: '/bin/bash /srv/scripts/start_api.sh'
     depends_on:
       db:
-        condition: 'service_healthy'
-
-  worker:
-    build:
-      context: .
-    networks:
-      - 'francoralite'
-    volumes_from:
-      - 'app'
-    env_file:
-      - './francoralite-env/prod.env'
-    command: '/bin/bash /srv/scripts/start_worker.sh'
-    depends_on:
-      app:
         condition: 'service_healthy'
 
   nginx:
