@@ -72,7 +72,7 @@ services:
     depends_on:
       - 'app'
       - 'keycloak'
-      - 'phpmyadmin'
+      - 'adminer'
     networks:
       - 'services'
     volumes:
@@ -80,13 +80,17 @@ services:
     volumes_from:
       - 'data'
 
-  phpmyadmin:
-    image: 'nazarpc/phpmyadmin'
+  adminer:
+    image: "${ADMINER_IMAGE}:${ADMINER_VERSION}"
+    restart: 'unless-stopped'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: "${LOGGING_MAX_SIZE}"
+        max-file: "${LOGGING_MAX_FILE}"
     networks:
       - 'services'
       - 'francoralite'
-    environment:
-      - ABSOLUTE_URI=http://phpmyadmin.francoralite.localhost:50000/phpmyadmin/
 
   keycloak:
     image: "${KEYCLOAK_IMAGE}:${KEYCLOAK_VERSION}"
