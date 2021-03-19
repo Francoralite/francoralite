@@ -13,7 +13,7 @@ networks:
 
 services:
   db:
-    image: 'mysql:8.0.2'
+    image: "${MYSQL_IMAGE}:${MYSQL_VERSION}"
     volumes:
       - 'francoralite_db:/var/lib/mysql'
     networks:
