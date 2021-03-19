@@ -32,8 +32,8 @@ services:
       db:
         condition: 'service_healthy'
     env_file:
-      - './francoralite-env/prod.env'
-      - './francoralite-env/app.env'
+      - './env/app.env'
+      - './env/francoralite_db.env'
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
       interval: '10s'
@@ -55,7 +55,7 @@ services:
     image: "${MYSQL_IMAGE}:${MYSQL_VERSION}"
     restart: 'unless-stopped'
     env_file:
-      - './francoralite-env/prod.env'
+      - './env/francoralite_db.env'
     healthcheck:
       test: ["CMD-SHELL", "mysql -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SHOW DATABASES;'"]
       interval: '30s'
@@ -74,7 +74,7 @@ services:
     depends_on:
       - 'keycloak_db'
     env_file:
-      - './francoralite-env/keycloak.env'
+      - './env/keycloak.env'
     logging:
       <<: *logging
     networks:
@@ -90,7 +90,7 @@ services:
     image: "${POSTGRES_IMAGE}:${POSTGRES_VERSION}"
     restart: 'unless-stopped'
     env_file:
-      - './francoralite-env/keycloak_database.env'
+      - './env/keycloak_database.env'
     logging:
       <<: *logging
     networks:
