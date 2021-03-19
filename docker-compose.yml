@@ -51,7 +51,7 @@ services:
         condition: 'service_healthy'
 
   nginx:
-    image: 'nginx'
+    image: "${NGINX_IMAGE}:${NGINX_VERSION}"
     depends_on:
       - 'app'
       - 'keycloak'
