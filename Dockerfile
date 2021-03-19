@@ -1,5 +1,6 @@
-FROM parisson/timeside:0.9
+FROM python:2.7.18-slim-buster
 
+ENV DJANGO_SETTINGS_MODULE telemeta_mshs.settings.base
 ENV KEYCLOAK_DEFAULT_ACCESS ALLOW
 ENV KEYCLOAK_REALM francoralite
 ENV KEYCLOAK_SERVER_URL http://keycloak.francoralite.localhost:50000/auth/
@@ -9,21 +10,29 @@ ENV KEYCLOAK_CLIENT_ID francoralite
 ENV KEYCLOAK_CLIENT_SECRET_KEY abc123
 ENV KEYCLOAK_AUTHORIZATION_CONFIG /tmp/authorization_config.json
 
+WORKDIR /srv/app
 
-ENV PYTHON_EGG_CACHE=/srv/.python-eggs
-RUN mkdir -p /srv/src/.python-eggs
-RUN chown www-data:www-data $PYTHON_EGG_CACHE
+# Prepare volumes targets
+RUN mkdir -p /srv/app \
+  && mkdir -p /srv/bower \
+  && mkdir -p /srv/media \
+  && mkdir -p /srv/static \
+  && chown -R www-data:www-data /srv/bower /srv/media /srv/static
+VOLUME ["/srv/app", "/srv/bower", "/srv/media", "/srv/static"]
 
-ADD . / ./
-COPY ./telemeta_mshs/settings/base.py ./settings.py
-RUN apt-get update
-RUN apt-get install -y python-pip
-RUN python2.7 -m pip install simple-yaml
-RUN python2.7 -m pip install --no-cache-dir -r requirements.txt
-RUN python2.7 -m pip uninstall -y South
+# Prepare dependencies
+RUN apt update \
+  && apt install -y default-libmysqlclient-dev gcc git
 
-# EXPOSE port 8000 to allow communication to/from server
+# Add dependencies requirements
+ADD README.md requirements.txt setup.py /srv/app/
+
+# Install Python dependencies
+RUN pip install simple-yaml \
+  && pip install --no-cache-dir -r /srv/app/requirements.txt
+
+# Expose port
 EXPOSE 8000
 
-# CMD specifcies the command to execute to start the server running.
-CMD ["./scripts/start_api.sh"]
+# Command
+CMD ["/srv/app/scripts/start_api.sh"]

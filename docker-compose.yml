@@ -34,11 +34,10 @@ services:
       - 'francoralite'
     volumes:
       - './:/srv/app'
-      - './scripts:/srv/scripts'
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
-      - './data/media/:/srv/media'
-      - './data/static:/srv/static'
-      - './data/bower:/srv/bower'
+      - 'francoralite_app_bower:/srv/bower'
+      - 'francoralite_app_media:/srv/media'
+      - 'francoralite_app_static:/srv/static'
     env_file:
       - './francoralite-env/prod.env'
       - './francoralite-env/app.env'
@@ -47,7 +46,6 @@ services:
       interval: '10s'
       timeout: '2s'
       retries: 20
-    command: '/bin/bash /srv/scripts/start_api.sh'
     depends_on:
       db:
         condition: 'service_healthy'
@@ -62,6 +60,9 @@ services:
       - 'services'
     volumes:
       - './etc/nginx.conf:/etc/nginx/conf.d/default.conf'
+      - 'francoralite_app_bower:/srv/bower'
+      - 'francoralite_app_media:/srv/media'
+      - 'francoralite_app_static:/srv/static'
 
   adminer:
     image: "${ADMINER_IMAGE}:${ADMINER_VERSION}"
@@ -112,5 +113,8 @@ services:
       - 'keycloak_db:/var/lib/postgresql/data'
 
 volumes:
+  francoralite_app_bower: {}
+  francoralite_app_media: {}
+  francoralite_app_static: {}
   francoralite_db: {}
   keycloak_db: {}

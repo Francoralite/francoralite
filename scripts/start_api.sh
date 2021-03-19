@@ -1,20 +1,5 @@
 #!/bin/bash
 
-# paths
-app='/srv/app'
-static='/srv/static/'
-media='/srv/media/'
-src='/srv/src/'
-log='/var/log/uwsgi/app.log'
-
-# uwsgi params
-port=8000
-processes=8
-threads=8
-autoreload=3
-uid='www-data'
-gid='www-data'
-
 export PYTHONPATH=$PWD/telemeta_mshs/apps:$PYTHONPATH
 
 python ./manage.py syncdb
@@ -25,18 +10,14 @@ if [ "${REINDEX}" = "True" ]; then
     python ./manage.py rebuild_index --noinput
 fi
 
-# choose dev or prod mode
-if [ "$1" = "--runserver" ]; then
-    python ./manage.py runserver 0.0.0.0:8000
-else
-    python ./manage.py collectstatic --noinput
+python ./manage.py collectstatic --noinput
 
-    # fix media access rights
-    find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
+# Fix media access rights
+find /srv/media -exec chown www-data:www-data {} \;
+find /srv/static -exec chown www-data:www-data {} \;
 
-    # Start Gunicorn processes
-    echo Starting Gunicorn.
-    exec gunicorn telemeta_mshs.wsgi:application \
-            --bind :$port \
-            --workers 3
-fi
+# Start Gunicorn processes
+echo Starting Gunicorn.
+exec gunicorn telemeta_mshs.wsgi:application \
+        --bind :8000 \
+        --workers 3
