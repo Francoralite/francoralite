@@ -2,7 +2,7 @@ import os
 
 from django.conf import settings
 from django.conf.urls import url, include
-from django.contrib import admin
+#from django.contrib import admin
 from django.http import HttpResponse
 #from django.views.i18n import javascript_catalog
 
@@ -23,7 +23,7 @@ schema_view = get_schema_view(
     renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer]
 )
 
-admin.autodiscover()
+# admin.autodiscover()
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 robots_rules = open(PROJECT_ROOT + os.sep + 'robots.txt', 'r').read()
@@ -32,7 +32,7 @@ urlpatterns = [
     # New frontend endpoints
     url(r'', include(telemeta_front_urls)),
 
-    url(r'^admin/django/', include(admin.site.urls)),
+#    url(r'^admin/django/', include(admin.site.urls)),
     url(r'^', include(telemeta_api_urls)),
     url(r'^api/', include(telemeta_api_urls.router.urls)),
     url(r'^api/', include(telemeta_api_urls.Fond_router.urls)),
