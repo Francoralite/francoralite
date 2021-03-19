@@ -77,6 +77,7 @@ setup(
   ],
   extras_require={
     'tests': [
+      'attrs==19.1.0',
       'factory_boy==2.10.0',
       'ipython==5.5.0',
       'parameterized==0.6.1',
