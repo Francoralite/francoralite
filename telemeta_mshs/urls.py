@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.http import HttpResponse
-from django.views.i18n import javascript_catalog
+#from django.views.i18n import javascript_catalog
 
 from rest_framework.schemas import get_schema_view
 from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^oidc/', include(mozilla_django_oidc.urls)),
 
     # Languages
-    url(r'^i18n/', include('django.conf.urls.i18n')),
+#    url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^robots\.txt$', lambda r: HttpResponse(
         robots_rules, content_type="text/plain")),
 ]
