@@ -6,7 +6,7 @@
 
 
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ..models.mission import Mission as MissionModel
@@ -76,7 +76,7 @@ class MissionViewSet(viewsets.ModelViewSet):
 
         return data
 
-    @detail_route()
+    @action(detail=True)
     def dates(self, request, pk=None):
         """
         Determine the max and th min dates from
@@ -104,7 +104,7 @@ class MissionViewSet(viewsets.ModelViewSet):
 
         return Response((date_start, date_end))
 
-    @detail_route()
+    @action(detail=True)
     def informers(self, request, pk=None):
         instance = self.get_object()
 
@@ -116,7 +116,7 @@ class MissionViewSet(viewsets.ModelViewSet):
             )
         return Response(data)
 
-    @detail_route()
+    @action(detail=True)
     def collectors(self, request, pk=None):
         instance = self.get_object()
         data = self.related_collections(
@@ -128,7 +128,7 @@ class MissionViewSet(viewsets.ModelViewSet):
 
         return Response(data)
 
-    @detail_route()
+    @action(detail=True)
     def locations(self, request, pk=None):
         instance = self.get_object()
         data = self.related_collections(

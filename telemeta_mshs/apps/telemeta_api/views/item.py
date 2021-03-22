@@ -12,7 +12,7 @@ import json
 
 
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 from ..models.item import Item as ItemModel
@@ -180,7 +180,7 @@ class ItemViewSet(viewsets.ModelViewSet):
             except Exception:
                 pass
 
-    @detail_route()
+    @action(detail=True)
     def complete(self, request, pk=None):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
@@ -217,7 +217,7 @@ class ItemViewSet(viewsets.ModelViewSet):
 
         return Response(data)
 
-    @detail_route()
+    @action(detail=True)
     def performances(self, request, pk=None):
         instance = self.get_object()
         data = {}

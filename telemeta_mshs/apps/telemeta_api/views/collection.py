@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from ..models.collection import Collection as CollectionModel
 from ..models.collectioncollectors import CollectionCollectors
@@ -92,7 +92,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
             serializer_item = entity["serializer"](item)
             data[entity["names"]].append(serializer_item.data[entity["name"]])
 
-    @detail_route()
+    @action(detail=True)
     def complete(self, request, pk=None):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
