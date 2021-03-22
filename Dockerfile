@@ -1,4 +1,4 @@
-FROM python:2.7.18-slim-buster
+FROM python:3.7.10-slim-buster
 
 ENV DJANGO_SETTINGS_MODULE telemeta_mshs.settings.base
 ENV KEYCLOAK_DEFAULT_ACCESS ALLOW
