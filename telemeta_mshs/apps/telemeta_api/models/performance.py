@@ -5,8 +5,8 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 from django.db import models
-from instrument import Instrument
-from emit_vox import EmitVox
+from .instrument import Instrument
+from .emit_vox import EmitVox
 from django.utils.translation import ugettext_lazy as _
 
 
