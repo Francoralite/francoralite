@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from ..models.emit_vox import EmitVox as EmitVoxModel
 from ..serializers.emit_vox import EmitVoxSerializer
@@ -18,7 +19,7 @@ class EmitVoxViewSet(viewsets.ModelViewSet):
     queryset = EmitVoxModel.objects.all()
     serializer_class = EmitVoxSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
+    filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
     filter_fields = ()
     ordering = ('name')

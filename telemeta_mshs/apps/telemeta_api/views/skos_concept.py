@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..serializers.skos_concept import SkosConceptSerializer
@@ -18,7 +19,7 @@ class SkosConceptViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SkosConceptModel.objects.all()
     serializer_class = SkosConceptSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
+    filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
     filter_fields = ('collection', 'number')
     ordering = ('name', 'number', 'collection')

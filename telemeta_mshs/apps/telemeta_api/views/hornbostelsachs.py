@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from ..models.hornbostelsachs import HornbostelSachs as HornbostelSachsModel
 from ..serializers.hornbostelsachs import HornbostelSachsSerializer
@@ -18,7 +19,7 @@ class HornbostelSachsViewSet(viewsets.ModelViewSet):
     queryset = HornbostelSachsModel.objects.all()
     serializer_class = HornbostelSachsSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
+    filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
     filter_fields = ('number',)
     ordering = ('number', 'name',)

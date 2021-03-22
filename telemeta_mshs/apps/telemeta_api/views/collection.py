@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -64,7 +65,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = CollectionModel.objects.all()
     serializer_class = CollectionSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
+    filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
     filter_fields = ('mission', 'code')
     ordering = ('mission', 'code')

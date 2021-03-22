@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -32,7 +33,7 @@ class MissionViewSet(viewsets.ModelViewSet):
     queryset = MissionModel.objects.all()
     serializer_class = MissionSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
+    filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
     filter_fields = ('fonds',)
     ordering = ('fonds', 'code',)
