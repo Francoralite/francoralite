@@ -1,6 +1,5 @@
 from rest_framework_nested import routers
 from django.conf.urls import url
-from jsonrpc import jsonrpc_site
 from .views import (
     authority,
     coupe,
