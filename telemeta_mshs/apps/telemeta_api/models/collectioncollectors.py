@@ -14,8 +14,10 @@ class CollectionCollectors(models.Model):
     # Description of the table
     "The collectors who collect a media_collection"
 
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
-    collector = models.ForeignKey(Authority, verbose_name=_('collector'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
+    collector = models.ForeignKey(Authority, verbose_name=_('collector'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

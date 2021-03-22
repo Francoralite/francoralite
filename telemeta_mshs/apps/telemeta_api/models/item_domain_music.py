@@ -16,9 +16,11 @@ class ItemDomainMusic(models.Model):
     "Relation betwwen Item an DomainMusic"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('Item'))
+    item = models.ForeignKey(Item, verbose_name=_('Item'),
+            on_delete=models.CASCADE)
     domain_music = models.ForeignKey(
-        DomainMusic, verbose_name=_('Genre de l\'expression instrumentale'))
+        DomainMusic, verbose_name=_('Genre de l\'expression instrumentale'),
+        on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

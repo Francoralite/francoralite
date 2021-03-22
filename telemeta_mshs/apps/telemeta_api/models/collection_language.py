@@ -15,7 +15,8 @@ class CollectionLanguage(models.Model):
     "List of Language_ISO used by a MediaCollection"
 
     # List of the fields
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
     language = models.ForeignKey(Language,
                                  verbose_name=_('language'),
                                  on_delete=models.PROTECT)

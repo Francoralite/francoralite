@@ -21,7 +21,8 @@ class Mission(models.Model):
     fonds = models.ForeignKey(
             'telemeta_api.Fond',
             related_name='mission',
-            verbose_name=_('Fonds'))
+            verbose_name=_('Fonds'),
+            on_delete=models.CASCADE)
     title = models.CharField(_('titre'), max_length=255)
     description = models.TextField(_('description'), null=True, blank=True)
     public_access = models.CharField(

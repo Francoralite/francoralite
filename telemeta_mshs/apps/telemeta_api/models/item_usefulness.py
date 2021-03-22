@@ -19,8 +19,9 @@ class ItemUsefulness(models.Model):
 
     # List of the fields
     usefulness = models.ForeignKey(Usefulness, verbose_name=_(
-        'Fonction'))
-    item = models.ForeignKey(Item, verbose_name=_('Item'))
+        'Fonction'), on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, verbose_name=_('Item'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

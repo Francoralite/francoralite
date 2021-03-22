@@ -19,8 +19,10 @@ class ItemMusicalOrganization(models.Model):
 
     # List of the fields
     musical_organization = models.ForeignKey(MusicalOrganization,
-                                             verbose_name=_('Fonction'))
-    item = models.ForeignKey(Item, verbose_name=_('Item'))
+                                             verbose_name=_('Fonction'),
+                                             on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, verbose_name=_('Item'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

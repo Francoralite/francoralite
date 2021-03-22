@@ -17,7 +17,8 @@ class Fond(models.Model):
     institution = models.ForeignKey(
         'telemeta_api.Institution',
         related_name='fonds',
-        verbose_name=_('Institution'))
+        verbose_name=_('Institution'),
+        on_delete=models.CASCADE)
     title = models.CharField(_('titre'), max_length=255)
     alt_title = models.CharField(
         _(u'Titre original'), blank=True, max_length=255)

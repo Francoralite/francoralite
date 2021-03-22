@@ -15,7 +15,8 @@ class CollectionLocation(models.Model):
     "The locations related to a media_collection"
 
     # List of the fields
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
     location = models.ForeignKey(
         Location, verbose_name=_('location'),
         on_delete=models.PROTECT)

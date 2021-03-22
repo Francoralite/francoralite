@@ -19,8 +19,9 @@ class ItemDomainTale(models.Model):
 
     # List of the fields
     domain_tale = models.ForeignKey(DomainTale, verbose_name=_(
-        'Genre du conte'))
-    item = models.ForeignKey(Item, verbose_name=_('Item'))
+        'Genre du conte'), on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, verbose_name=_('Item'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

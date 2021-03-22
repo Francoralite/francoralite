@@ -19,8 +19,9 @@ class ItemDomainVocal(models.Model):
 
     # List of the fields
     domain_vocal = models.ForeignKey(DomainVocal, verbose_name=_(
-        'Genre de l\'autre expression vocale'))
-    item = models.ForeignKey(Item, verbose_name=_('Item'))
+        'Genre de l\'autre expression vocale'), on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, verbose_name=_('Item'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

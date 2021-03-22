@@ -17,10 +17,12 @@ class Performance(models.Model):
     number = models.IntegerField(_("Nombre"))
     instrument = models.ForeignKey(Instrument,
                                    blank=True, null=True,
-                                   verbose_name=_('instrument'))
+                                   verbose_name=_('instrument'),
+                                   on_delete=models.SET_NULL)
     emit = models.ForeignKey(EmitVox,
                              blank=True, null=True,
-                             verbose_name=_(u'Nature de l\'émission vocale'))
+                             verbose_name=_(u'Nature de l\'émission vocale'),
+                             on_delete=models.SET_NULL)
 
     class Meta:
         abstract = True

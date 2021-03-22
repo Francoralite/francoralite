@@ -14,7 +14,8 @@ class Instrument(models.Model):
     notes = models.TextField(_('Notes'), null=True, blank=True)
     typology = models.ForeignKey(HornbostelSachs,
                                  blank=True, null=True,
-                                 verbose_name=_('HornbostelSachs'))
+                                 verbose_name=_('HornbostelSachs'),
+                                 on_delete=models.SET_NULL)
 
     class Meta:
         app_label = 'telemeta_api'

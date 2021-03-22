@@ -22,7 +22,8 @@ class Item(models.Model):
     collection = models.ForeignKey(
             'telemeta_api.Collection',
             related_name='collection',
-            verbose_name=_('Collection'))
+            verbose_name=_('Collection'),
+            on_delete=models.CASCADE)
     title = models.CharField(_('titre'), max_length=255)
     alt_title = models.CharField(
         _('autre titre'), default="", blank=True, max_length=255)

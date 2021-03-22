@@ -17,8 +17,10 @@ class ItemCoirault(models.Model):
     "Table of relation between Item and Coirault"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('item'))
-    coirault = models.ForeignKey(SkosConcept, verbose_name=_('Coirault'))
+    item = models.ForeignKey(Item, verbose_name=_('item'),
+            on_delete=models.CASCADE)
+    coirault = models.ForeignKey(SkosConcept, verbose_name=_('Coirault'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

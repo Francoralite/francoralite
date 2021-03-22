@@ -15,8 +15,10 @@ class CollectionPublisher(models.Model):
     "The publishers who produce a media_collection"
 
     # List of the fields
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
-    publisher = models.ForeignKey(Publisher, verbose_name=_('publisher'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
+    publisher = models.ForeignKey(Publisher, verbose_name=_('publisher'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

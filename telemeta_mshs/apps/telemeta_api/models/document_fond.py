@@ -16,7 +16,8 @@ class DocumentFond(Document):
     fond = models.ForeignKey(
         Fond,
         related_name="related_document",
-        verbose_name=_('fond')
+        verbose_name=_('fond'),
+        on_delete=models.CASCADE
         )
 
     class Meta:

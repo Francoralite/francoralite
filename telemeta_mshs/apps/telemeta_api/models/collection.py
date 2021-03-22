@@ -18,7 +18,8 @@ class Collection(models.Model):
     mission = models.ForeignKey(
             'telemeta_api.Mission',
             related_name='collection',
-            verbose_name=_('Mission'), blank=True, default="")
+            verbose_name=_('Mission'), blank=True, default="",
+            on_delete=models.CASCADE)
     title = models.CharField(_('titre'), max_length=255)
     alt_title = models.CharField(
         _(u'Titre original'), blank=True, max_length=255)

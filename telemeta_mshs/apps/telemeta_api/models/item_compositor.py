@@ -17,8 +17,10 @@ class ItemCompositor(models.Model):
     "Compositors of an item"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('item'))
-    compositor = models.ForeignKey(Authority, verbose_name=_('XXXXXX'))
+    item = models.ForeignKey(Item, verbose_name=_('item'),
+            on_delete=models.CASCADE)
+    compositor = models.ForeignKey(Authority, verbose_name=_('XXXXXX'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

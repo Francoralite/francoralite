@@ -22,7 +22,8 @@ class SkosConcept(models.Model):
             'telemeta_api.SkosCollection',
             related_name='skos_concept',
             verbose_name=_('Collection parente'),
-            default=None)
+            default=None,
+            on_delete=models.CASCADE)
     abstract = models.TextField(blank=True, null=True)
 
     class Meta:

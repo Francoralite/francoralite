@@ -16,7 +16,8 @@ class ItemLanguage(models.Model):
     "Language(s) of an item"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('item'))
+    item = models.ForeignKey(Item, verbose_name=_('item'),
+            on_delete=models.CASCADE)
     language = models.ForeignKey(Language,
                                  verbose_name=_('language'),
                                  on_delete=models.PROTECT)

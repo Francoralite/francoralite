@@ -19,8 +19,9 @@ class ItemThematic(models.Model):
 
     # List of the fields
     thematic = models.ForeignKey(Thematic, verbose_name=_(
-        'Fonction'))
-    item = models.ForeignKey(Item, verbose_name=_('Item'))
+        'Fonction'), on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, verbose_name=_('Item'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

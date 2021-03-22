@@ -21,7 +21,8 @@ class SkosCollection(models.Model):
             'telemeta_api.SkosCollection',
             related_name='skos_collection',
             verbose_name=_('Collection parente'),
-            null=True, blank=True, default=None)
+            null=True, blank=True, default=None,
+            on_delete=models.SET_NULL)
     type = models.CharField(_('type'), max_length=40)
 
     class Meta:

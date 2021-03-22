@@ -16,7 +16,8 @@ class DocumentMission(Document):
     mission = models.ForeignKey(
         Mission,
         related_name="related_document",
-        verbose_name=_('mission')
+        verbose_name=_('mission'),
+        on_delete=models.CASCADE
         )
 
     class Meta:

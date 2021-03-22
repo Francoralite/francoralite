@@ -17,8 +17,10 @@ class PerformanceCollectionMusician(models.Model):
 
     # List of the fields
     performance_collection = models.ForeignKey(
-        PerformanceCollection, verbose_name=_('performance'))
-    musician = models.ForeignKey(Authority, verbose_name=_('musician'))
+        PerformanceCollection, verbose_name=_('performance'),
+        on_delete=models.CASCADE)
+    musician = models.ForeignKey(Authority, verbose_name=_('musician'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

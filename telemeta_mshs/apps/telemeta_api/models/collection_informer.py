@@ -17,8 +17,10 @@ class CollectionInformer(models.Model):
 
     # List of the fields
 
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
-    informer = models.ForeignKey(Authority, verbose_name=_('informer'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
+    informer = models.ForeignKey(Authority, verbose_name=_('informer'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

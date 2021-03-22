@@ -16,7 +16,8 @@ class DocumentItem(Document):
     item = models.ForeignKey(
         Item,
         related_name="related_document",
-        verbose_name=_('item')
+        verbose_name=_('item'),
+        on_delete=models.CASCADE
     )
 
     class Meta:

@@ -16,7 +16,8 @@ class DocumentCollection(Document):
     collection = models.ForeignKey(
         Collection,
         related_name="related_document",
-        verbose_name=_('collection')
+        verbose_name=_('collection'),
+        on_delete=models.CASCADE
         )
 
     class Meta:
