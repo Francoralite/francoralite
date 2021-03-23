@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name='ItemPerformance',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item')),
-                ('performance', models.ForeignKey(verbose_name='performance', to='telemeta_api.PerformanceCollection')),
+                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
+                ('performance', models.ForeignKey(verbose_name='performance', to='telemeta_api.PerformanceCollection', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],

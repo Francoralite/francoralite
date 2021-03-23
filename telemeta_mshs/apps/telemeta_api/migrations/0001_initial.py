@@ -86,8 +86,8 @@ class Migration(migrations.Migration):
             name='CollectionCollectors',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection')),
-                ('collector', models.ForeignKey(verbose_name='collector', to='telemeta_api.Authority')),
+                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
+                ('collector', models.ForeignKey(verbose_name='collector', to='telemeta_api.Authority', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -99,8 +99,8 @@ class Migration(migrations.Migration):
             name='CollectionInformer',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection')),
-                ('informer', models.ForeignKey(verbose_name='informer', to='telemeta_api.Authority')),
+                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
+                ('informer', models.ForeignKey(verbose_name='informer', to='telemeta_api.Authority', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -112,7 +112,7 @@ class Migration(migrations.Migration):
             name='CollectionLanguage',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection')),
+                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -124,7 +124,7 @@ class Migration(migrations.Migration):
             name='CollectionLocation',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection')),
+                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -136,7 +136,7 @@ class Migration(migrations.Migration):
             name='CollectionPublisher',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection')),
+                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -285,7 +285,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(unique=True, max_length=255, verbose_name='Nom')),
                 ('notes', models.TextField(null=True, verbose_name='Notes', blank=True)),
-                ('typology', models.ForeignKey(verbose_name='HornbostelSachs', blank=True, to='telemeta_api.HornbostelSachs', null=True)),
+                ('typology', models.ForeignKey(verbose_name='HornbostelSachs', blank=True, to='telemeta_api.HornbostelSachs', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -321,7 +321,7 @@ class Migration(migrations.Migration):
                 ('incipit', models.TextField(null=True, verbose_name='incipit', blank=True)),
                 ('refrain', models.TextField(null=True, verbose_name='refrain', blank=True)),
                 ('jingle', models.TextField(null=True, verbose_name='jingle', blank=True)),
-                ('collection', models.ForeignKey(related_name='collection', verbose_name='Collection', to='telemeta_api.Collection')),
+                ('collection', models.ForeignKey(related_name='collection', verbose_name='Collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
                 ('coupe', models.ForeignKey(related_name='items', on_delete=django.db.models.deletion.SET_NULL, verbose_name='coupe', blank=True, to='telemeta_api.Coupe', null=True)),
             ],
             options={
@@ -339,7 +339,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(default='', max_length=255, verbose_name='nom', blank=True)),
                 ('value', models.CharField(default='', max_length=255, verbose_name='valeur', blank=True)),
                 ('unit', models.CharField(default='', max_length=255, verbose_name='unit\xe9', blank=True)),
-                ('item', models.ForeignKey(related_name='analysis', verbose_name='item', to='telemeta_api.Item')),
+                ('item', models.ForeignKey(related_name='analysis', verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -351,8 +351,8 @@ class Migration(migrations.Migration):
             name='ItemAuthor',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('author', models.ForeignKey(verbose_name='author', to='telemeta_api.Authority')),
-                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item')),
+                ('author', models.ForeignKey(verbose_name='author', to='telemeta_api.Authority', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -375,8 +375,8 @@ class Migration(migrations.Migration):
             name='ItemCollector',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('collector', models.ForeignKey(verbose_name='collector', to='telemeta_api.Authority')),
-                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item')),
+                ('collector', models.ForeignKey(verbose_name='collector', to='telemeta_api.Authority', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -388,8 +388,8 @@ class Migration(migrations.Migration):
             name='ItemCompositor',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('compositor', models.ForeignKey(verbose_name='XXXXXX', to='telemeta_api.Authority')),
-                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item')),
+                ('compositor', models.ForeignKey(verbose_name='XXXXXX', to='telemeta_api.Authority', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -401,8 +401,8 @@ class Migration(migrations.Migration):
             name='ItemDance',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('dance', models.ForeignKey(verbose_name='Fonction', to='telemeta_api.Dance')),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('dance', models.ForeignKey(verbose_name='Fonction', to='telemeta_api.Dance', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -414,8 +414,8 @@ class Migration(migrations.Migration):
             name='ItemDomainMusic',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('domain_music', models.ForeignKey(verbose_name="Genre de l'expression instrumentale", to='telemeta_api.DomainMusic')),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('domain_music', models.ForeignKey(verbose_name="Genre de l'expression instrumentale", to='telemeta_api.DomainMusic', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -427,8 +427,8 @@ class Migration(migrations.Migration):
             name='ItemDomainSong',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('domain_song', models.ForeignKey(verbose_name='Genre de la chanson', to='telemeta_api.DomainSong')),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('domain_song', models.ForeignKey(verbose_name='Genre de la chanson', to='telemeta_api.DomainSong', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -440,8 +440,8 @@ class Migration(migrations.Migration):
             name='ItemDomainTale',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('domain_tale', models.ForeignKey(verbose_name='Genre du conte', to='telemeta_api.DomainTale')),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('domain_tale', models.ForeignKey(verbose_name='Genre du conte', to='telemeta_api.DomainTale', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -453,8 +453,8 @@ class Migration(migrations.Migration):
             name='ItemDomainVocal',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('domain_vocal', models.ForeignKey(verbose_name="Genre de l'autre expression vocale", to='telemeta_api.DomainVocal')),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('domain_vocal', models.ForeignKey(verbose_name="Genre de l'autre expression vocale", to='telemeta_api.DomainVocal', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -466,8 +466,8 @@ class Migration(migrations.Migration):
             name='ItemInformer',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('informer', models.ForeignKey(verbose_name='XXXXXX', to='telemeta_api.Authority')),
-                ('item', models.ForeignKey(verbose_name='XXXXXX', to='telemeta_api.Item')),
+                ('informer', models.ForeignKey(verbose_name='XXXXXX', to='telemeta_api.Authority', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(verbose_name='XXXXXX', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -479,7 +479,7 @@ class Migration(migrations.Migration):
             name='ItemLanguage',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item')),
+                ('item', models.ForeignKey(verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'api_item_language',
@@ -494,8 +494,8 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(default='', max_length=255, verbose_name='nom', blank=True)),
                 ('date', models.DateTimeField(auto_now=True, verbose_name='date')),
                 ('description', models.TextField(null=True, verbose_name='description', blank=True)),
-                ('author', models.ForeignKey(related_name='api_markers', verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('item', models.ForeignKey(related_name='marker', verbose_name='item', to='telemeta_api.Item')),
+                ('author', models.ForeignKey(related_name='api_markers', verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(related_name='marker', verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -507,7 +507,7 @@ class Migration(migrations.Migration):
             name='ItemMusicalGroup',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -519,7 +519,7 @@ class Migration(migrations.Migration):
             name='ItemMusicalOrganization',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -531,7 +531,7 @@ class Migration(migrations.Migration):
             name='ItemThematic',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -546,7 +546,7 @@ class Migration(migrations.Migration):
                 ('mime_type', models.CharField(default='', max_length=255, verbose_name='type MIME')),
                 ('date', models.DateTimeField(auto_now=True, verbose_name='date')),
                 ('value', models.BooleanField(verbose_name='Transcod\xe9')),
-                ('item', models.ForeignKey(related_name='trancoded', verbose_name='item', to='telemeta_api.Item')),
+                ('item', models.ForeignKey(related_name='trancoded', verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -558,7 +558,7 @@ class Migration(migrations.Migration):
             name='ItemUsefulness',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item')),
+                ('item', models.ForeignKey(verbose_name='Item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -644,7 +644,7 @@ class Migration(migrations.Migration):
                 ('public_access', models.CharField(default='metadata', max_length=16, verbose_name='access type', choices=[(b'none', 'none'), (b'metadata', 'metadata'), (b'mixed', 'mixed'), (b'full', 'full')])),
                 ('code', models.CharField(max_length=255, verbose_name='cote', validators=[django.core.validators.RegexValidator(regex='^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}$', message='Code must conform to XXXX_XXX_000X', code='invalid_code')])),
                 ('code_partner', models.CharField(max_length=255, null=True, verbose_name="Cote de la mission dans l'institution partenaire", blank=True)),
-                ('fonds', models.ForeignKey(related_name='mission', verbose_name='Fonds', to='telemeta_api.Fond')),
+                ('fonds', models.ForeignKey(related_name='mission', verbose_name='Fonds', to='telemeta_api.Fond', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['code', 'title'],
@@ -683,9 +683,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('number', models.IntegerField(verbose_name='Nombre')),
-                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection')),
-                ('emit', models.ForeignKey(verbose_name="Nature de l'\xe9mission vocale", blank=True, to='telemeta_api.EmitVox', null=True)),
-                ('instrument', models.ForeignKey(verbose_name='instrument', blank=True, to='telemeta_api.Instrument', null=True)),
+                ('collection', models.ForeignKey(verbose_name='collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
+                ('emit', models.ForeignKey(verbose_name="Nature de l'\xe9mission vocale", blank=True, to='telemeta_api.EmitVox', null=True, on_delete=models.CASCADE)),
+                ('instrument', models.ForeignKey(verbose_name='instrument', blank=True, to='telemeta_api.Instrument', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -697,8 +697,8 @@ class Migration(migrations.Migration):
             name='PerformanceCollectionMusician',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('musician', models.ForeignKey(verbose_name='musician', to='telemeta_api.Authority')),
-                ('performance_collection', models.ForeignKey(verbose_name='performance', to='telemeta_api.PerformanceCollection')),
+                ('musician', models.ForeignKey(verbose_name='musician', to='telemeta_api.Authority', on_delete=models.CASCADE)),
+                ('performance_collection', models.ForeignKey(verbose_name='performance', to='telemeta_api.PerformanceCollection', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -740,7 +740,7 @@ class Migration(migrations.Migration):
                 ('uri', models.CharField(max_length=500, verbose_name='uri')),
                 ('number', models.CharField(max_length=40, verbose_name='num\xe9rotation')),
                 ('type', models.CharField(max_length=40, verbose_name='type')),
-                ('collection', models.ForeignKey(related_name='skos_collection', default=None, blank=True, to='telemeta_api.SkosCollection', null=True, verbose_name='Collection parente')),
+                ('collection', models.ForeignKey(related_name='skos_collection', default=None, blank=True, to='telemeta_api.SkosCollection', null=True, verbose_name='Collection parente', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': [],
@@ -756,7 +756,7 @@ class Migration(migrations.Migration):
                 ('uri', models.CharField(max_length=500, verbose_name='uri')),
                 ('number', models.CharField(max_length=40, verbose_name='num\xe9rotation')),
                 ('abstract', models.TextField(null=True, blank=True)),
-                ('collection', models.ForeignKey(related_name='skos_concept', default=None, verbose_name='Collection parente', to='telemeta_api.SkosCollection')),
+                ('collection', models.ForeignKey(related_name='skos_concept', default=None, verbose_name='Collection parente', to='telemeta_api.SkosCollection', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['number'],
@@ -793,22 +793,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='itemusefulness',
             name='usefulness',
-            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.Usefulness'),
+            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.Usefulness', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='itemthematic',
             name='thematic',
-            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.Thematic'),
+            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.Thematic', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='itemmusicalorganization',
             name='musical_organization',
-            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.MusicalOrganization'),
+            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.MusicalOrganization', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='itemmusicalgroup',
             name='musical_group',
-            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.MusicalGroup'),
+            field=models.ForeignKey(verbose_name='Fonction', to='telemeta_api.MusicalGroup', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='itemlanguage',
@@ -818,12 +818,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='itemcoirault',
             name='coirault',
-            field=models.ForeignKey(verbose_name='Coirault', to='telemeta_api.SkosConcept'),
+            field=models.ForeignKey(verbose_name='Coirault', to='telemeta_api.SkosConcept', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='itemcoirault',
             name='item',
-            field=models.ForeignKey(verbose_name='item', to='telemeta_api.Item'),
+            field=models.ForeignKey(verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='item',
@@ -833,12 +833,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='fond',
             name='institution',
-            field=models.ForeignKey(related_name='fonds', verbose_name='Institution', to='telemeta_api.Institution'),
+            field=models.ForeignKey(related_name='fonds', verbose_name='Institution', to='telemeta_api.Institution', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='collectionpublisher',
             name='publisher',
-            field=models.ForeignKey(verbose_name='publisher', to='telemeta_api.Publisher'),
+            field=models.ForeignKey(verbose_name='publisher', to='telemeta_api.Publisher', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='collectionlocation',
@@ -863,7 +863,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='collection',
             name='mission',
-            field=models.ForeignKey(related_name='collection', default='', verbose_name='Mission', blank=True, to='telemeta_api.Mission'),
+            field=models.ForeignKey(related_name='collection', default='', verbose_name='Mission', blank=True, to='telemeta_api.Mission', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='authority',

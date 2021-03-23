@@ -30,8 +30,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DocumentCollection',
             fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='telemeta_api.Document')),
-                ('collection', models.ForeignKey(related_name='related_document', verbose_name='collection', to='telemeta_api.Collection')),
+                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='telemeta_api.Document', on_delete=models.CASCADE)),
+                ('collection', models.ForeignKey(related_name='related_document', verbose_name='collection', to='telemeta_api.Collection', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['collection', 'title'],
@@ -43,8 +43,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DocumentItem',
             fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='telemeta_api.Document')),
-                ('item', models.ForeignKey(related_name='related_document', verbose_name='item', to='telemeta_api.Item')),
+                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='telemeta_api.Document', on_delete=models.CASCADE)),
+                ('item', models.ForeignKey(related_name='related_document', verbose_name='item', to='telemeta_api.Item', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['item', 'title'],
@@ -56,8 +56,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DocumentMission',
             fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='telemeta_api.Document')),
-                ('mission', models.ForeignKey(related_name='related_document', verbose_name='mission', to='telemeta_api.Mission')),
+                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='telemeta_api.Document', on_delete=models.CASCADE)),
+                ('mission', models.ForeignKey(related_name='related_document', verbose_name='mission', to='telemeta_api.Mission', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['mission', 'title'],
