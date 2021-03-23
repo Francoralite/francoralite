@@ -8,7 +8,7 @@ import sys
 
 # from django.forms.models import model_to_dict
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase

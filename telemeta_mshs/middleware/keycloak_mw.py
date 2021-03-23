@@ -24,7 +24,7 @@ from keycloak import KeycloakOpenID
 from keycloak.exceptions import KeycloakInvalidTokenError
 from rest_framework.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 logger = logging.getLogger(__name__)
