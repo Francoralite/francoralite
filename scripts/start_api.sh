@@ -2,7 +2,6 @@
 
 export PYTHONPATH=$PWD/telemeta_mshs/apps:$PYTHONPATH
 
-python ./manage.py syncdb
 python ./manage.py migrate --noinput -v 3
 python ./manage.py bower_install -- --allow-root
 
