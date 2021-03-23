@@ -74,89 +74,89 @@ urlpatterns = [
 
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'institution',
-                institution.InstitutionViewSet, base_name='institution')
-router.register(r'coupe', coupe.CoupeViewSet, base_name='coupe')
+                institution.InstitutionViewSet, basename='institution')
+router.register(r'coupe', coupe.CoupeViewSet, basename='coupe')
 router.register(r'mediatype',
-                mediatype.MediaTypeViewSet, base_name='mediatype')
+                mediatype.MediaTypeViewSet, basename='mediatype')
 router.register(r'metadata_author',
                 metadata_author.MetadataAuthorViewSet,
-                base_name='metadata_author')
+                basename='metadata_author')
 router.register(r'legalrights',
-                legal_rights.LegalRightsViewSet, base_name='legal_rights')
+                legal_rights.LegalRightsViewSet, basename='legal_rights')
 router.register(r'recordingcontext',
                 recording_context.RecordingContextViewSet,
-                base_name='recordingcontext')
+                basename='recordingcontext')
 router.register(r'authority',
-                authority.AuthorityViewSet, base_name='authority')
+                authority.AuthorityViewSet, basename='authority')
 router.register(r'collection',
                 collection.CollectionViewSet,
-                base_name='collection')
+                basename='collection')
 router.register(r'locationgis',
                 location_gis.LocationGISViewSet,
-                base_name='location_gis')
+                basename='location_gis')
 # router.register(r'locationgiscollection',
 #                 location_gis_collection.LocationGisCollectionList,
-#                 base_name='location_gis_collection')
-router.register(r'fond', fond.FondViewSet, base_name='fond'),
+#                 basename='location_gis_collection')
+router.register(r'fond', fond.FondViewSet, basename='fond'),
 router.register(r'acquisitionmode',
                 acquisition_mode.AcquisitionModeViewSet,
-                base_name='acquisition_mode'),
-router.register(r'mission', mission.MissionViewSet, base_name='mission'),
+                basename='acquisition_mode'),
+router.register(r'mission', mission.MissionViewSet, basename='mission'),
 router.register(r'language',
                 language.LanguageViewSet,
-                base_name='language')
+                basename='language')
 router.register(r'publisher',
                 publisher.PublisherViewSet,
-                base_name='publisher')
+                basename='publisher')
 router.register(r'item',
                 item.ItemViewSet,
-                base_name='item')
+                basename='item')
 router.register(r'emit_vox',
                 emit_vox.EmitVoxViewSet,
-                base_name='emit_vox')
+                basename='emit_vox')
 router.register(r'hornbostelsachs',
                 hornbostelsachs.HornbostelSachsViewSet,
-                base_name='hornbostelsachs')
+                basename='hornbostelsachs')
 router.register(r'instrument',
                 instrument.InstrumentViewSet,
-                base_name='instrument')
+                basename='instrument')
 router.register(r'musical_organization',
                 musical_organization.MusicalOrganizationViewSet,
-                base_name='musicalorganization')
+                basename='musicalorganization')
 router.register(r'musical_group',
                 musical_group.MusicalGroupViewSet,
-                base_name='musicalgroup')
+                basename='musicalgroup')
 router.register(r'thematic',
                 thematic.ThematicViewSet,
-                base_name='thematic')
+                basename='thematic')
 router.register(r'dance',
                 dance.DanceViewSet,
-                base_name='dance')
+                basename='dance')
 router.register(r'domain_tale',
                 domain_tale.DomainTaleViewSet,
-                base_name='domaintale')
+                basename='domaintale')
 router.register(r'domain_music',
                 domain_music.DomainMusicViewSet,
-                base_name='domainmusic')
+                basename='domainmusic')
 router.register(r'domain_vocal',
                 domain_vocal.DomainVocalViewSet,
-                base_name='domainvocal')
+                basename='domainvocal')
 router.register(r'domain_song',
                 domain_song.DomainSongViewSet,
-                base_name='domainsong')
+                basename='domainsong')
 router.register(r'usefulness',
                 usefulness.UsefulnessViewSet,
-                base_name='usefulness')
+                basename='usefulness')
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
-#                 base_name='performance_collection_musician')
+#                 basename='performance_collection_musician')
 
 router.register(r'skos_collection',
                 skos_collection.SkosCollectionViewSet,
-                base_name='coirault')
+                basename='coirault')
 router.register(r'skos_concept',
                 skos_concept.SkosConceptViewSet,
-                base_name='coirault')
+                basename='coirault')
 
 # Nested routers
 
