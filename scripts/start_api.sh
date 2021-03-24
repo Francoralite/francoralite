@@ -2,21 +2,28 @@
 
 export PYTHONPATH=$PWD/telemeta_mshs/apps:$PYTHONPATH
 
-python ./manage.py migrate --noinput -v 3
-python ./manage.py bower_install -- --allow-root
+django-admin migrate --noinput -v 3
+django-admin bower_install --allow-root
 
 if [ "${REINDEX}" = "True" ]; then
-    python ./manage.py rebuild_index --noinput
+    django-admin rebuild_index --noinput
 fi
 
-python ./manage.py collectstatic --noinput
+django-admin collectstatic --noinput
 
 # Fix media access rights
+find /srv/bower -exec chown www-data:www-data {} \;
 find /srv/media -exec chown www-data:www-data {} \;
 find /srv/static -exec chown www-data:www-data {} \;
 
-# Start Gunicorn processes
-echo Starting Gunicorn.
-exec gunicorn telemeta_mshs.wsgi:application \
-        --bind :8000 \
-        --workers 3
+if [ "${LOCAL_DEV}" = "True" ]; then
+    # Start Django internal server
+    echo Starting Django web server.
+    exec django-admin runserver 0.0.0.0:8000
+else
+    # Start Gunicorn processes
+    echo Starting Gunicorn.
+    exec gunicorn telemeta_mshs.wsgi:application \
+            --bind :8000 \
+            --workers 3
+fi
