@@ -12,7 +12,6 @@ import factory
 import pytest
 import sys
 import os
-from types import NoneType
 
 from django.core.management import call_command
 from django.urls import reverse
@@ -124,13 +123,13 @@ class TestItemList(APITestCase):
                         self.assertIsInstance(item[attribute], basestring)
                     except AssertionError:
                         # Because of serializer.DurationField
-                        self.assertIsInstance(item[attribute], NoneType)
+                        self.assertIsInstance(item[attribute], type(None))
                 else:
                     try:
                         self.assertIsInstance(item[attribute], str)
                     except AssertionError:
                         # Because of serializer.DurationField
-                        self.assertIsInstance(item[attribute], NoneType)
+                        self.assertIsInstance(item[attribute], type(None))
             else:
                 self.assertIsInstance(item[attribute], attribute_type)
             self.assertIsNot(item[attribute], '')
