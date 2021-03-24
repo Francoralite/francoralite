@@ -9,8 +9,8 @@ from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
 from django.conf import settings
-from telemeta_front.forms.mission import MissionForm
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.forms.mission import MissionForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class MissionAdd(FormView):

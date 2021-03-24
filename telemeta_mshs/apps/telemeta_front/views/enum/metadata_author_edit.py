@@ -9,9 +9,9 @@ from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
 from django.conf import settings
-from telemeta_front.forms.metadata_author import MetadataAuthorForm
+from telemeta_mshs.apps.telemeta_front.forms.metadata_author import MetadataAuthorForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class MetadataAuthorEdit(FormView):

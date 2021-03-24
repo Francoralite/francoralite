@@ -11,7 +11,7 @@ import requests
 from django.http import HttpResponseRedirect
 from requests.exceptions import RequestException
 
-from telemeta_front.errors import APPLICATION_ERRORS
+from telemeta_mshs.apps.telemeta_front.errors import APPLICATION_ERRORS
 from .views.related import (
     write_fond_related,
     write_mission_related,

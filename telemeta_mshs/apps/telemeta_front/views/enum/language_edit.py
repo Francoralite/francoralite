@@ -8,9 +8,9 @@
 from django.views.generic.edit import FormView
 import requests
 from django.conf import settings
-from telemeta_front.forms.language import LanguageForm
+from telemeta_mshs.apps.telemeta_front.forms.language import LanguageForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class LanguageEdit(FormView):

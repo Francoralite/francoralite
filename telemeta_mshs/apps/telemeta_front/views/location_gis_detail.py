@@ -4,10 +4,10 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
-from telemeta_front.forms.location_gis import LocationForm
+from telemeta_mshs.apps.telemeta_front.forms.location_gis import LocationForm
 
 
 class LocationDetail(FrancoraliteTemplateView):

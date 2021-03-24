@@ -5,9 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
-from telemeta_front.forms.domain_vocal import DomainVocalForm
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+from telemeta_mshs.apps.telemeta_front.forms.domain_vocal import DomainVocalForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class DomainVocalDetail(FrancoraliteTemplateView):

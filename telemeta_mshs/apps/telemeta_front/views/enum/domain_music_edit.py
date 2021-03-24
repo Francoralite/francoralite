@@ -9,9 +9,9 @@ from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
 from django.conf import settings
-from telemeta_front.forms.domain_music import DomainMusicForm
+from telemeta_mshs.apps.telemeta_front.forms.domain_music import DomainMusicForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class DomainMusicEdit(FormView):

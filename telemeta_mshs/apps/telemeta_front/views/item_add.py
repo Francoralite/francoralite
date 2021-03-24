@@ -9,9 +9,9 @@ from django.views.generic.edit import FormView
 import requests
 from rest_framework import status
 from django.conf import settings
-from telemeta_front.forms.item import ItemForm
+from telemeta_mshs.apps.telemeta_front.forms.item import ItemForm
 from rest_framework.parsers import MultiPartParser, FormParser
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class ItemAdd(FormView):

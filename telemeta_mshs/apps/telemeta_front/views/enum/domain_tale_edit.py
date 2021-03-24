@@ -9,9 +9,9 @@ from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
 from django.conf import settings
-from telemeta_front.forms.domain_tale import DomainTaleForm
+from telemeta_mshs.apps.telemeta_front.forms.domain_tale import DomainTaleForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class DomainTaleEdit(FormView):

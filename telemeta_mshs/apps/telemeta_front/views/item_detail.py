@@ -5,13 +5,13 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+from telemeta_mshs.apps.telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import requests
 
 from django.conf import settings
-from telemeta_front.forms.item import ItemForm
-from telemeta_front.forms.collection import CollectionForm
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.forms.item import ItemForm
+from telemeta_mshs.apps.telemeta_front.forms.collection import CollectionForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class ItemDetail(FrancoraliteTemplateView):

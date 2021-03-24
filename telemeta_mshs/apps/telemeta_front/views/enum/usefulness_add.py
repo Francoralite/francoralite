@@ -6,8 +6,8 @@
 
 
 from django.views.generic.edit import FormView
-from telemeta_front.forms.usefulness import UsefulnessForm
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.forms.usefulness import UsefulnessForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class UsefulnessAdd(FormView):

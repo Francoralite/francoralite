@@ -8,9 +8,9 @@
 from django.views.generic.edit import FormView
 import requests
 from django.conf import settings
-from telemeta_front.forms.collection import CollectionForm
+from telemeta_mshs.apps.telemeta_front.forms.collection import CollectionForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class CollectionEdit(FormView):

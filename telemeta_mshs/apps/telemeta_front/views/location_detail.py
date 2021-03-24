@@ -4,12 +4,12 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+from telemeta_mshs.apps.telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 from rest_framework import status
 import requests
 
 from django.conf import settings
-from telemeta_front.forms.location import LocationForm
+from telemeta_mshs.apps.telemeta_front.forms.location import LocationForm
 
 
 class LocationDetail(FrancoraliteTemplateView):

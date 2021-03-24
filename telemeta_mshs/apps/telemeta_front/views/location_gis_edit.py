@@ -10,9 +10,9 @@ from rest_framework import status
 import requests
 from requests.exceptions import RequestException
 from django.conf import settings
-from telemeta_front.forms.location_gis import LocationForm
+from telemeta_mshs.apps.telemeta_front.forms.location_gis import LocationForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class LocationEdit(FormView):
