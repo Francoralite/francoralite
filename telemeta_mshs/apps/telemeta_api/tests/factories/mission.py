@@ -9,7 +9,6 @@ Mission factory to execute tests
 
 import factory
 from ...models.mission import Mission
-from .fond import FondFactory
 
 
 class MissionFactory(factory.django.DjangoModelFactory):
@@ -24,6 +23,6 @@ class MissionFactory(factory.django.DjangoModelFactory):
     description = factory.Faker('word')
     # descriptions = factory.Faker('word')
     code = factory.Faker('uuid4')
-    fonds = factory.SubFactory(FondFactory)
+    fonds = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.fond.FondFactory")
     code_partner = factory.Faker('word')
     public_access = factory.Iterator(['metadata', 'full'])

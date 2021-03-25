@@ -18,8 +18,9 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.fond import FondFactory
+from .factories.fond import FondFactory, FondFactoryMission
 from ..models.fond import Fond
+from ..models.mission import Mission
 from ..models.institution import Institution
 from ..models.acquisition_mode import AcquisitionMode
 
@@ -58,7 +59,7 @@ class TestFondList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         # Create a set of sample data
-        FondFactory.create_batch(6)
+        FondFactoryMission.create_batch(6, missions__nb_missions=4)
 
     def test_can_get_fond_list(self):
         """
@@ -76,6 +77,25 @@ class TestFondList(APITestCase):
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
+
+
+    def test_can_get_fond_missions_list(self):
+        """
+        Ensure related missions exist
+        """
+        url = reverse('mission-list')
+        
+        # ORM side
+        missions = Mission.objects.all()
+        self.assertEqual(len(missions), 24)
+
+        # API side
+        response = self.client.get(url)
+
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 24)
+
 
     @parameterized.expand(FOND_STRUCTURE)
     def test_has_valid_fond_values(self, attribute, attribute_type):
