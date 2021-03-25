@@ -6,7 +6,7 @@
 
 
 from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),

@@ -6,7 +6,7 @@
 
 from telemeta_mshs.apps.telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import telemeta_mshs.apps.telemeta_front.tools as tools
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class SearchView(FrancoraliteTemplateView):

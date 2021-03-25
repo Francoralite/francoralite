@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 from .document import Document
 from .collection import Collection
