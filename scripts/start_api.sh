@@ -3,7 +3,6 @@
 export PYTHONPATH=$PWD/telemeta_mshs/apps:$PYTHONPATH
 
 django-admin migrate --noinput -v 3
-django-admin bower_install --allow-root
 
 if [ "${REINDEX}" = "True" ]; then
     django-admin rebuild_index --noinput
@@ -12,7 +11,6 @@ fi
 django-admin collectstatic --noinput
 
 # Fix media access rights
-find /srv/bower -exec chown www-data:www-data {} \;
 find /srv/media -exec chown www-data:www-data {} \;
 find /srv/static -exec chown www-data:www-data {} \;
 

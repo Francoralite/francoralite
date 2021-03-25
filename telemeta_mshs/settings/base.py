@@ -20,7 +20,6 @@ STATICFILES_DIRS = ()
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'djangobower.finders.BowerFinder',
 )
 SECRET_KEY = os.getenv('SECRET_KEY')
 
@@ -83,28 +82,6 @@ LOGGING = {
     }
 }
 
-BOWER_COMPONENTS_ROOT = '/srv/bower/'
-BOWER_PATH = '/usr/local/bin/bower'
-BOWER_INSTALLED_APPS = (
-    'jquery#2.2.4',
-    'jquery-migrate#~1.2.1',
-    'underscore#1.8.3',
-    'bootstrap#3.3.7',
-    'bootstrap-select#1.5.4',
-    'font-awesome#4.4.0',
-    'angular#1.2.26',
-    'angular-bootstrap-select#0.0.5',
-    'angular-resource#1.2.26',
-    'raphael#2.2.7',
-    'soundmanager#V2.97a.20150601',
-    'jquery-ui#1.11.4',
-    'tablesorter',
-    'video.js',
-    'sass-bootstrap-glyphicons',
-    # 'https://github.com/Parisson/loaders.git',
-    # 'https://github.com/Parisson/ui.git',
-)
-
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -123,7 +100,6 @@ INSTALLED_APPS = (
     'registration',
     'rest_framework',
     'rest_framework_xml',
-    'djangobower',
     'django',
     'rest_framework_swagger',
     'django_filters',
@@ -240,12 +216,6 @@ OIDC_OP_JWKS_ENDPOINT = 'http://keycloak.francoralite.localhost:8080/auth/' +\
 LOGIN_REDIRECT_URL = "http://nginx.francoralite.localhost:8080/"
 LOGOUT_REDIRECT_URL = 'http://keycloak.francoralite.localhost:8080/auth/' +\
     "realms/francoralite/protocol/openid-connect/logout"
-
-#
-# BOWER
-#
-BOWER_PATH = '/usr/bin/bower'
-
 
 #
 # DEBUG MANAGEMENT

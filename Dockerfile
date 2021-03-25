@@ -14,11 +14,10 @@ WORKDIR /srv/app
 
 # Prepare volumes targets
 RUN mkdir -p /srv/app \
-  && mkdir -p /srv/bower \
   && mkdir -p /srv/media \
   && mkdir -p /srv/static \
-  && chown -R www-data:www-data /srv/bower /srv/media /srv/static
-VOLUME ["/srv/app", "/srv/bower", "/srv/media", "/srv/static"]
+  && chown -R www-data:www-data /srv/media /srv/static
+VOLUME ["/srv/app", "/srv/media", "/srv/static"]
 
 # Prepare dependencies
 RUN apt update \
