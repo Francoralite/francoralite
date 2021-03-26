@@ -5,7 +5,6 @@ extMediaCollection factory to execute tests
 
 import factory
 from ...models.collection import Collection
-from .mission import MissionFactory
 from .location_gis import LocationGisFactory
 from .mediatype import MediaTypeFactory
 from .legalrights import LegalRightsFactory
@@ -24,7 +23,7 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Collection
 
-    mission = factory.SubFactory(MissionFactory)
+    mission = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.fond.MissionFactory")
     title = factory.Faker('word')
     alt_title = factory.Faker('word')
     description = factory.Faker('paragraph', nb_sentences=5)
