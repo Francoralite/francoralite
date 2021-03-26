@@ -45,6 +45,49 @@ class FondViewSet(viewsets.ModelViewSet):
         'DELETE': 'fond:delete'
     }
 
+
+    def list_missions(self, id_fonds, field='id'):
+
+        collection_list = []
+
+        # Retrieve the missions, related to the current fonds
+        missions = MissionModel.objects.filter(
+            fonds_id=id_fonds)
+
+        # Retrieve the collections, for each mission
+        for mission in missions:
+            collections = CollectionModel.objects.filter(
+                mission_id=mission.id).values_list(
+                    field, flat=True)
+            for collection in collections:
+                collection_list.append(collection)
+
+        return collection_list
+
+    def related_collections(self,
+                            id_fonds,
+                            model_related,
+                            model,
+                            entity,
+                            serializer=AuthoritySerializer):
+
+        # Retrieve the collections, related to the current fonds
+        collections = self.list_missions(id_fonds=id_fonds)
+
+        # Retrieve the entities, related to the collections
+        list_related = model_related.objects.filter(
+                 collection_id__in=[str(x) for x in collections]
+                 ).values_list(
+                     entity, flat=True)
+        # Retrieve the entity
+        entities = model.objects.filter(
+            id__in=[str(x) for x in list_related])
+
+        # Push the authorities to the data results
+        data = [serializer(i).data for i in entities]
+
+        return data
+
     @action(detail=True)
     def dates(self, request, pk=None):
         """

@@ -97,6 +97,47 @@ class TestFondList(APITestCase):
         self.assertEqual(len(response.data), 24)
 
 
+    def test_fond_dates(self):
+        """
+        Max and min dates from the related missions of a fonds
+        """
+
+        item = Fond.objects.first()
+        url = '/api/fond/' + str(item.id) + "/dates"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+
+    def test_fond_informers(self):
+        """
+        Informers from the related collections of a fonds
+        """
+
+        item = Fond.objects.first()
+        url = '/api/fond/' + str(item.id) + "/informers"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+
+
+    def test_fond_collectors(self):
+        """
+        Informers from the related collections of a fonds
+        """
+
+        item = Fond.objects.first()
+        url = '/api/fond/' + str(item.id) + "/collectors"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+
+
+
+
     @parameterized.expand(FOND_STRUCTURE)
     def test_has_valid_fond_values(self, attribute, attribute_type):
         """
