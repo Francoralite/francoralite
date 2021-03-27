@@ -39,15 +39,15 @@ docker-compose up
 
 ### Run tests
 
-We need to install tests dependencies inside container before and remove south
+We need to install tests dependencies inside container before run tests
 
 ```
-docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip install --no-cache-dir .[tests]'
+docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
 ```
 
 Now, we can launch tests
 ```
-docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps python manage.py test --settings=telemeta_mshs.settings.testing -v 3'
+docker-compose exec app bash -c 'py.test'
 ```
 
 ## URLs
