@@ -10,7 +10,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'rest_framework',
-    'rest_framework_swagger',
+    'drf_yasg',
     'telemeta_mshs.apps.telemeta_api',
     'rdflib',
 )

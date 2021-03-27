@@ -52,9 +52,20 @@ docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps python manage.py 
 
 ## URLs
 
+> Replace **50000** with your Traefik listening port
+
 With Traefik as reverse proxy, you can use explicit fqdn instead IP addresses.
 
 * [Root app](http://nginx.francoralite.localhost:50000)
 * [Keycloak](http://keycloak.francoralite.localhost:50000)
 
 During development, all services are accessible behind the reverse proxy but this must be change for the production deployment.
+
+### Documentation
+
+> You **MUST** update the permission linked to these URLs
+
+* [Redoc UI](http://nginx.francoralite.localhost:50000/redoc/)
+* [Swagger UI](http://nginx.francoralite.localhost:50000/swagger/)
+* [JSON Swagger export](http://nginx.francoralite.localhost:50000/swagger.json)
+* [YAML Swagger export](http://nginx.francoralite.localhost:50000/swagger.yaml)

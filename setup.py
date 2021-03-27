@@ -34,11 +34,11 @@ setup(
     'django==3.0.13',
     'django-appconf==1.0.4',
     'django-environ==0.4.5',
-    'django-rest-swagger==2.2.0', # Replaced by https://github.com/axnsan12/drf-yasg - drf-yasg
+    'django-filter==2.4.0',
     'djangorestframework==3.12.2',
     'djangorestframework-xml==2.0.0',
     'drf-nested-routers==0.93.3',
-    'django-filter==2.4.0',
+    'drf-yasg==1.20.0',
     'gunicorn==20.0.4',
     # V2
     'django-model-utils==4.1.1',

@@ -101,7 +101,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_xml',
     'django',
-    'rest_framework_swagger',
+    'drf_yasg',
     'django_filters',
     'telemeta_mshs.apps.telemeta_api',
     'telemeta_mshs.apps.telemeta_front',
