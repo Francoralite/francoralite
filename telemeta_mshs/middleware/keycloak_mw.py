@@ -75,7 +75,7 @@ class KeycloakMiddleware(object):
     header_key = "HTTP_AUTHORIZATION"
     set_session_state_cookie = True
 
-    def __init__(self):
+    def __init__(self, get_response):
         """
         :param get_response:
         """
@@ -113,7 +113,18 @@ class KeycloakMiddleware(object):
                 self.keycloak_authorization_config)
 
         # Django
-        # self.get_response = get_response
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Code to be executed for each request before
+        # the view (and later middleware) are called.
+
+        response = self.get_response(request)
+
+        # Code to be executed for each request/response after
+        # the view is called.
+
+        return response
 
     @property
     def keycloak(self):
