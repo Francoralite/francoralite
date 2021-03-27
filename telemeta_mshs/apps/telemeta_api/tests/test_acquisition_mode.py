@@ -13,24 +13,24 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.acquistion_mode import AcquisitionModeFactory
+from .factories.acquisition_mode import AcquisitionModeFactory
 from ..models.acquisition_mode import AcquisitionMode
 
 from .keycloak import get_token
 
 # Expected structure for Coupe objects
-ACQUSITION_STRUCTURE = [
+ACQUISITION_STRUCTURE = [
     ('id', int),
     ('name', str),
     ('notes', str),
 ]
 
 # Expected keys for Coupe objects
-ACQUISITION_FIELDS = sorted([item[0] for item in ACQUSITION_STRUCTURE])
+ACQUISITION_FIELDS = sorted([item[0] for item in ACQUISITION_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestAcquistionList(APITestCase):
+class TestAcquisitionList(APITestCase):
     """
     This class manage all acquisition mode tests
     """
@@ -62,7 +62,7 @@ class TestAcquistionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
 
-    @parameterized.expand(ACQUSITION_STRUCTURE)
+    @parameterized.expand(ACQUISITION_STRUCTURE)
     def test_has_valid_acquisition_values(self, attribute, attribute_type):
         """
         Ensure acquisition_mode objects have valid values

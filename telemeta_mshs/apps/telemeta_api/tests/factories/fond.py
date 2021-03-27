@@ -9,7 +9,7 @@ Fond factory to execute tests
 
 import factory
 from ...models.fond import Fond
-from .acquistion_mode import AcquisitionModeFactory
+from .acquisition_mode import AcquisitionModeFactory
 from .institution import InstitutionFactory
 from .mission import MissionFactory
 

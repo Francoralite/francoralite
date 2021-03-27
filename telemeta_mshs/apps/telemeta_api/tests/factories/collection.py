@@ -10,7 +10,7 @@ from .mediatype import MediaTypeFactory
 from .legalrights import LegalRightsFactory
 from .publisher import PublisherFactory
 # from .collection_publisher import CollectionPublisherFactory
-from .acquistion_mode import AcquisitionModeFactory
+from .acquisition_mode import AcquisitionModeFactory
 from .recording_context import RecordingContextFactory
 
 
