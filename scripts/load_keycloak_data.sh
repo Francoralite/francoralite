@@ -16,5 +16,6 @@ docker-compose stop keycloak \
     && docker-compose up --no-start \
     && docker-compose start keycloak_db \
     && docker cp "${data_file_path}" "${current_folder}_keycloak_db_1:/tmp/keycloak_data.sql" \
-    && docker-compose exec keycloak_db bash -c "psql -U keycloak -W keycloak < '/tmp/keycloak_data.sql'" \
+    && sleep 10 \
+    && docker-compose exec keycloak_db bash -c "PGPASSWORD=password psql -U keycloak -w keycloak < '/tmp/keycloak_data.sql'" \
     && docker-compose up -d
