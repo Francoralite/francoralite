@@ -20,8 +20,19 @@ before_script:
   - docker network create services
 
 script:
-  - docker-compose up -d
+  - docker-compose up -d --no-start
   - sleep 30
+  - docker-compose stop keycloak
+  - docker-compose rm -f keycloak
+  - docker-compose stop keycloak_db
+  - docker-compose rm -f keycloak_db
+  - docker volume rm -f "$(basename $PWD)_keycloak_db"
+  - docker-compose up --no-start
+  - docker-compose start keycloak_db
+  - docker cp "test_data/dump_keycloak.sql" "$(basename $PWD)_keycloak_db_1:/tmp/keycloak_data.sql"
+  - sleep 10
+  - docker-compose exec keycloak_db bash -c "PGPASSWORD=password psql -U keycloak -w keycloak < '/tmp/keycloak_data.sql'"
+  - docker-compose up -d
   - ./scripts/load_keycloak_data.sh
   - docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
   - docker-compose exec app bash -c 'py.test'
