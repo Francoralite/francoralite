@@ -84,6 +84,7 @@ setup(
       'pytest-django==4.1.0',
       'pytest-env==0.6.2',
       'pytest-pythonpath==0.7.3',
+      'coveralls==3.0.1',
     ],
   },
   platforms = ['OS Independent'],
