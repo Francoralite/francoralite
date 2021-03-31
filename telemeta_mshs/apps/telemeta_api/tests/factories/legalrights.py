@@ -15,5 +15,5 @@ class LegalRightsFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = LegalRights
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'legal%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

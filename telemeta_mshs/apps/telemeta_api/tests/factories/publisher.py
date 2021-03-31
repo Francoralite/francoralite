@@ -15,5 +15,5 @@ class PublisherFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Publisher
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'publisher%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

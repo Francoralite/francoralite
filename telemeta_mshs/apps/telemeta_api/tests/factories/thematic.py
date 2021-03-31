@@ -19,5 +19,5 @@ class ThematicFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Thematic
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'theme%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

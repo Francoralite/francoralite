@@ -19,5 +19,5 @@ class DanceFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Dance
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'dance%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

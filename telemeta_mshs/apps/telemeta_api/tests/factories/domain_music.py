@@ -19,5 +19,5 @@ class DomainMusicFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = DomainMusic
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'domain_m%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

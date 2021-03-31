@@ -20,5 +20,5 @@ class AcquisitionModeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = AcquisitionMode
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'acquisition%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

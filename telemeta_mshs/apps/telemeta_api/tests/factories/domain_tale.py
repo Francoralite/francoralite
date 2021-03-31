@@ -19,5 +19,5 @@ class DomainTaleFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = DomainTale
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'domain_t%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)
