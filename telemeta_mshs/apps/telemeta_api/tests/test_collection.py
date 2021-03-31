@@ -94,7 +94,7 @@ class TestCollectionList(APITestCase):
         self.assertEqual(len(response.data), 6)
 
     @parameterized.expand(COLLECTION_STRUCTURE)
-    @pytest.mark.skipif(True)
+    @pytest.mark.skipif(True, reason="WIP")
     def test_has_valid_collection_values(self, attribute, attribute_type):
         """
         Ensure collection objects have valid values
