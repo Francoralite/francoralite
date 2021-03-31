@@ -42,7 +42,7 @@ COLLECTION_STRUCTURE = [
     ('location_details', str),
     ('cultural_area', str),
     ('language', str),
-    ('publisher_collection', str),
+    #('publisher_collection', str),
     ('booklet_author', str),
     ('metadata_author', str),
     ('code', str),
