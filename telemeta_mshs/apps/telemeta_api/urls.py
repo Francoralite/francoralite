@@ -45,7 +45,6 @@ from .views import (
     emit_vox,
     hornbostelsachs,
     instrument,
-    performance,
     performance_collection,
     performance_collection_musician,
     musical_organization,
@@ -148,10 +147,6 @@ router.register(r'domain_song',
 router.register(r'usefulness',
                 usefulness.UsefulnessViewSet,
                 basename='usefulness')
-router.register(r'performance',
-                performance.PerformanceViewSet,
-                basename='performance')
-
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 basename='performance_collection_musician')
