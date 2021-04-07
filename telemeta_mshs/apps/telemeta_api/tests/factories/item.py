@@ -14,6 +14,8 @@ from ...models.item import Item
 from .collection import CollectionFactory
 from .mediatype import MediaTypeFactory
 from .coupe import CoupeFactory
+from .performancecollection import PerformanceCollectionFactory
+from .performancecollectionmusician import PerformanceCollectionMusicianFactory
 from ..fake_data.fake_sound import create_tmp_sound
 
 
@@ -61,3 +63,13 @@ class ItemFactory(factory.django.DjangoModelFactory):
     refrain = factory.Faker('paragraph', nb_sentences=5)
     jingle = factory.Faker('paragraph', nb_sentences=5)
     coupe = factory.SubFactory(CoupeFactory)
+
+    @factory.post_generation
+    def performances( self, create, extracted, **kwargs):
+        if not create: return
+        nb_perfomances = kwargs.get('nb_perfomances',1)
+
+        for n in range(nb_perfomances):
+           performance = PerformanceCollectionFactory(collection = self.collection)
+           musician = PerformanceCollectionMusicianFactory(performance_collection = performance)
+

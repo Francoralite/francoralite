@@ -20,16 +20,18 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item import ItemFactory
+from .factories.performancecollectionmusician import PerformanceCollectionMusicianFactory
 from ..models.item import Item
 from ..models.collection import Collection
 from ..models.mediatype import MediaType
 from ..models.coupe import Coupe
+from ..models.performance_collection_musician import PerformanceCollectionMusician
 from .fake_data.fake_sound import create_tmp_sound
 
 from .keycloak import get_token
 
 # Expected structure for Item objects
-# FIXIT ----
+
 ITEM_STRUCTURE = [
     ('id', int),
     ('collection', dict),
@@ -81,6 +83,7 @@ class TestItemList(APITestCase):
 
         # Create a set of sample data
         ItemFactory.create_batch(6)
+        PerformanceCollectionMusicianFactory.create_batch(3)
 
     def test_can_get_item_list(self):
         """
@@ -198,15 +201,21 @@ class TestItemList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
-        item = response.data
 
+    def test_performances(self):
+        item = Item.objects.first()
+        url = reverse('item-performances', kwargs={'pk': item.id})
+        response = self.client.get(url)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data["performances"]), 1)
+        
     def test_update_an_item(self):
         """
         Ensure we can update an Item object
         """
 
-        # item = Item.objects.last()
         item = Item.objects.first()
         self.assertNotEqual(item.title, 'foobar_test_put')
 
