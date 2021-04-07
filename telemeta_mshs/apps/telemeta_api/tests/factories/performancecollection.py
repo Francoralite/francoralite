@@ -22,7 +22,6 @@ class PerformanceCollectionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PerformanceCollection
     
-    # FIXIT------------------
     collection = factory.SubFactory(CollectionFactory)
     number = factory.Faker('pyint')
     instrument = factory.SubFactory(InstrumentFactory)
