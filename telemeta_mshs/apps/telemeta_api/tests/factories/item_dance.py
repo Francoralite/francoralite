@@ -10,7 +10,6 @@ item_dance factory to execute tests
 import factory
 from ...models.item_dance import ItemDance
 # import nested/related factories
-from .item import ItemFactory
 from .dance import DanceFactory
 
 
@@ -26,5 +25,5 @@ class ItemDanceFactory(factory.django.DjangoModelFactory):
             'dance',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     dance = factory.SubFactory(DanceFactory)

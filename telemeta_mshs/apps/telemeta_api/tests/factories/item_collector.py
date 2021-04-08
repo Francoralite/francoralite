@@ -10,7 +10,6 @@ item_collector factory to execute tests
 import factory
 from ...models.item_collector import ItemCollector
 # Import nested/related factories
-from .item import ItemFactory
 from .authority import AuthorityFactory
 
 
@@ -26,5 +25,5 @@ class ItemCollectorFactory(factory.django.DjangoModelFactory):
             'collector',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     collector = factory.SubFactory(AuthorityFactory)

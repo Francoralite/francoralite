@@ -10,7 +10,6 @@ item_informer factory to execute tests
 import factory
 from ...models.item_informer import ItemInformer
 # Import nested/related factories
-from .item import ItemFactory
 from .authority import AuthorityFactory
 
 
@@ -26,5 +25,5 @@ class ItemInformerFactory(factory.django.DjangoModelFactory):
             'informer',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     informer = factory.SubFactory(AuthorityFactory)

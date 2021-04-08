@@ -10,7 +10,6 @@ item_domain_music factory to execute tests
 import factory
 from ...models.item_domain_music import ItemDomainMusic
 # import nested/related factories
-from .item import ItemFactory
 from .domain_music import DomainMusicFactory
 
 
@@ -26,5 +25,5 @@ class ItemDomainMusicFactory(factory.django.DjangoModelFactory):
             'domain_music',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     domain_music = factory.SubFactory(DomainMusicFactory)

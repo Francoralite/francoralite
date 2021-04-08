@@ -10,7 +10,6 @@ item_compositor factory to execute tests
 import factory
 from ...models.item_compositor import ItemCompositor
 # import nested/related factories
-from .item import ItemFactory
 from .authority import AuthorityFactory
 
 
@@ -26,5 +25,5 @@ class ItemCompositorFactory(factory.django.DjangoModelFactory):
             'compositor',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     compositor = factory.SubFactory(AuthorityFactory)

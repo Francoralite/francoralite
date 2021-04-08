@@ -16,6 +16,22 @@ from .mediatype import MediaTypeFactory
 from .coupe import CoupeFactory
 from .performancecollection import PerformanceCollectionFactory
 from .performancecollectionmusician import PerformanceCollectionMusicianFactory
+from .item_collector import ItemCollectorFactory
+from .item_informer import ItemInformerFactory
+from .item_author import ItemAuthorFactory
+from .item_compositor import ItemCompositorFactory
+from .item_dance import ItemDanceFactory
+from .item_domain_music import ItemDomainMusicFactory
+from .item_domain_song import ItemDomainSongFactory
+from .item_domain_tale import ItemDomainTaleFactory
+from .item_domain_vocal import ItemDomainVocalFactory
+from .item_musical_group import ItemMusicalGroupFactory
+from .item_musical_organization import ItemMusicalOrganizationFactory
+from .item_thematic import ItemThematicFactory
+from .item_usefulness import ItemUsefulnessFactory
+from .item_coirault import ItemCoiraultFactory
+
+
 from ..fake_data.fake_sound import create_tmp_sound
 
 
@@ -64,6 +80,13 @@ class ItemFactory(factory.django.DjangoModelFactory):
     jingle = factory.Faker('paragraph', nb_sentences=5)
     coupe = factory.SubFactory(CoupeFactory)
 
+
+
+class ItemCompleteFactory(ItemFactory):
+    """
+    Fond factory with missions
+    """
+
     @factory.post_generation
     def performances( self, create, extracted, **kwargs):
         if not create: return
@@ -71,5 +94,27 @@ class ItemFactory(factory.django.DjangoModelFactory):
 
         for n in range(nb_perfomances):
            performance = PerformanceCollectionFactory(collection = self.collection)
-           musician = PerformanceCollectionMusicianFactory(performance_collection = performance)
+           musician = PerformanceCollectionMusicianFactory(performance_collection = performance)   
+
+    @factory.post_generation
+    def complete( self, create, extracted, **kwargs):
+        if not create: return
+
+        ItemCollectorFactory.create_batch(2, item = self)
+        ItemInformerFactory.create_batch(3, item = self)
+        ItemAuthorFactory.create_batch(1, item = self)
+        ItemCompositorFactory.create_batch(1, item = self)
+        ItemDanceFactory.create_batch(2, item = self)
+        ItemDomainMusicFactory.create_batch(2, item = self)
+        ItemDomainSongFactory.create_batch(2, item = self)
+        ItemDomainTaleFactory.create_batch(2, item = self)
+        ItemDomainVocalFactory.create_batch(2, item = self)
+        ItemMusicalGroupFactory.create_batch(2, item = self)
+        ItemMusicalOrganizationFactory.create_batch(2, item = self)
+        ItemThematicFactory.create_batch(2, item = self)
+        ItemUsefulnessFactory.create_batch(2, item = self)
+        ItemCoiraultFactory.create_batch(2, item = self)
+
+
+
 

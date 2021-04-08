@@ -29,7 +29,7 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     description = factory.Faker('paragraph', nb_sentences=5)
     # descriptions = factory.Faker('paragraph', nb_sentences=5)
 
-    recording_context = factory.SubFactory(RecordingContextFactory)
+    recording_context = factory.Faker('word')
     recorded_from_year = factory.Faker('date')
     recorded_to_year = factory.Faker('date')
     year_published = factory.Faker('year')

@@ -19,7 +19,7 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.item import ItemFactory
+from .factories.item import ItemFactory, ItemCompleteFactory
 from .factories.performancecollectionmusician import PerformanceCollectionMusicianFactory
 from ..models.item import Item
 from ..models.collection import Collection
@@ -82,7 +82,7 @@ class TestItemList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         # Create a set of sample data
-        ItemFactory.create_batch(6)
+        ItemCompleteFactory.create_batch(6)
         PerformanceCollectionMusicianFactory.create_batch(3)
 
     def test_can_get_item_list(self):
@@ -201,6 +201,30 @@ class TestItemList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
+
+    def test_complete(self):
+        item = Item.objects.first()
+        url = reverse('item-complete', kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data["performances"]), 1)
+        self.assertEqual(len(response.data["collectors"]), 2)
+        self.assertEqual(len(response.data["informers"]), 3)
+        self.assertEqual(len(response.data["authors"]), 1)
+        self.assertEqual(len(response.data["compositors"]), 1)
+        self.assertEqual(len(response.data["dances"]), 2)
+        self.assertEqual(len(response.data["domain_musics"]), 2)
+        self.assertEqual(len(response.data["domain_songs"]), 2)
+        self.assertEqual(len(response.data["domain_tales"]), 2)
+        self.assertEqual(len(response.data["domain_vocals"]), 2)
+        self.assertEqual(len(response.data["musical_groups"]), 2)
+        self.assertEqual(len(response.data["musical_organizations"]), 2)
+        self.assertEqual(len(response.data["thematics"]), 2)
+        self.assertEqual(len(response.data["usefulnesses"]), 2)
+        self.assertEqual(len(response.data["coiraults"]), 2)
+
 
     def test_performances(self):
         item = Item.objects.first()
