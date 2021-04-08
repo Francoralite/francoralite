@@ -5,7 +5,6 @@ CollectionCollectors factory to execute tests
 
 import factory
 from ...models.collectioncollectors import CollectionCollectors
-from .collection import CollectionFactory
 from .authority import AuthorityFactory
 
 
@@ -20,5 +19,5 @@ class CollectionCollectorsFactory(factory.django.DjangoModelFactory):
             'collection',
             'collector',)
 
-    collection = factory.SubFactory(CollectionFactory)
+    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
     collector = factory.SubFactory(AuthorityFactory)

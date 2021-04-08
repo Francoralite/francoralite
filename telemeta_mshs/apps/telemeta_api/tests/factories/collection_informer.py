@@ -9,7 +9,6 @@ collection_informer factory to execute tests
 
 import factory
 from ...models.collection_informer import CollectionInformer
-from .collection import CollectionFactory
 from .authority import AuthorityFactory
 
 
@@ -25,5 +24,5 @@ class CollectionInformerFactory(factory.django.DjangoModelFactory):
             'informer',)
 
     # Nested/related factories
-    collection = factory.SubFactory(CollectionFactory)
+    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
     informer = factory.SubFactory(AuthorityFactory)

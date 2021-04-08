@@ -19,7 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-from .factories.collection import CollectionFactory
+from .factories.collection import CollectionFactory, CollectionCompleteFactory
 from ..models.collection import Collection
 from ..models.mission import Mission
 from ..models.mediatype import MediaType
@@ -74,7 +74,7 @@ class TestCollectionList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
 
-        CollectionFactory.create_batch(6)
+        CollectionCompleteFactory.create_batch(6)
 
     def test_can_get_collection_list(self):
         """
@@ -94,7 +94,6 @@ class TestCollectionList(APITestCase):
         self.assertEqual(len(response.data), 6)
 
     @parameterized.expand(COLLECTION_STRUCTURE)
-    @pytest.mark.skipif(True, reason="WIP")
     def test_has_valid_collection_values(self, attribute, attribute_type):
         """
         Ensure collection objects have valid values
@@ -136,6 +135,28 @@ class TestCollectionList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
+
+    def test_complete(self):
+        """
+        Ensure we can collect the data of all entities
+        related to a collection
+        """
+
+        item = Collection.objects.first()
+        url = reverse('collection-complete',
+                      kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data["collectors"]), 2)
+        self.assertEqual(len(response.data["informers"]), 2)
+        self.assertEqual(len(response.data["locations"]), 2)
+        self.assertEqual(len(response.data["languages"]), 2)
+        self.assertEqual(len(response.data["publishers"]), 2)
+        self.assertEqual(len(response.data["performances"]), 2)
+        self.assertEqual(len(response.data["performances"][0]["musicians"]), 2)
+
 
     def test_create_a_collection(self):
         """

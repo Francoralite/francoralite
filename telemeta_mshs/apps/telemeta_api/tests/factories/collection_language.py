@@ -10,7 +10,6 @@ collection_language factory to execute tests
 import factory
 from ...models.collection_language import CollectionLanguage
 # Import nested/related factories
-from .collection import CollectionFactory
 from .language import LanguageFactory
 
 
@@ -26,5 +25,5 @@ class CollectionLanguageFactory(factory.django.DjangoModelFactory):
             'language',)
 
     # Nested/related factories
-    collection = factory.SubFactory(CollectionFactory)
+    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
     language = factory.SubFactory(LanguageFactory)

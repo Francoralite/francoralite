@@ -9,7 +9,6 @@ PerformanceCollection factory to execute tests
 
 import factory
 from ...models.performance_collection import PerformanceCollection
-from .collection import CollectionFactory
 from .instrument import InstrumentFactory
 from .emit_vox import EmitVoxFactory
 
@@ -22,7 +21,7 @@ class PerformanceCollectionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PerformanceCollection
     
-    collection = factory.SubFactory(CollectionFactory)
+    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
     number = factory.Faker('pyint')
     instrument = factory.SubFactory(InstrumentFactory)
     emit = factory.SubFactory(EmitVoxFactory)

@@ -10,7 +10,6 @@ collection_location factory to execute tests
 import factory
 from ...models.collection_location import CollectionLocation
 # Import nested/related factories
-from .collection import CollectionFactory
 from .location_gis import LocationGisFactory
 
 
@@ -26,5 +25,5 @@ class CollectionLocationFactory(factory.django.DjangoModelFactory):
             'location',)
 
     # Nested/related factories
-    collection = factory.SubFactory(CollectionFactory)
+    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
     location = factory.SubFactory(LocationGisFactory)

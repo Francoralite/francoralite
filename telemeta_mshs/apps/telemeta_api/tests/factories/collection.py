@@ -9,9 +9,16 @@ from .location_gis import LocationGisFactory
 from .mediatype import MediaTypeFactory
 from .legalrights import LegalRightsFactory
 from .publisher import PublisherFactory
-# from .collection_publisher import CollectionPublisherFactory
 from .acquisition_mode import AcquisitionModeFactory
 from .recording_context import RecordingContextFactory
+from .collectioncollectors import CollectionCollectorsFactory
+from .collection_informer import CollectionInformerFactory
+from .collection_location import CollectionLocationFactory
+from .collection_language import CollectionLanguageFactory
+from .collection_publisher import CollectionPublisherFactory
+from .performancecollectionmusician import PerformanceCollectionMusicianFactory
+from .performancecollection import PerformanceCollectionFactory
+
 
 
 class CollectionFactory(factory.django.DjangoModelFactory):
@@ -42,7 +49,7 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     # publisher = factory.SubFactory(PublisherFactory)
     # publisher = factory.Faker('word')
     # publisher_collection = factory.SubFactory(CollectionPublisherFactory)
-    # publisher_collection = factory.Faker('word')
+    publisher_collection = factory.Faker('word')
     booklet_author = factory.Faker('word')
     metadata_author = factory.Faker('word')
     code_partner = factory.Faker('word')
@@ -53,3 +60,25 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     auto_period_access = factory.Faker('boolean')
     legal_rights = factory.SubFactory(LegalRightsFactory)
     # public_access = factory.Faker('word')
+
+
+class CollectionCompleteFactory(CollectionFactory):
+    """
+    Collection with all related entities
+    """
+
+    @factory.post_generation
+    def complete( self, create, extracted, **kwargs):
+        if not create: return
+
+        CollectionCollectorsFactory.create_batch(2, collection = self)
+        CollectionInformerFactory.create_batch(2, collection = self)
+        CollectionLocationFactory.create_batch(2, collection = self)
+        CollectionLanguageFactory.create_batch(2, collection = self)
+        CollectionPublisherFactory.create_batch(2, collection = self)
+        perfs = PerformanceCollectionFactory.create_batch(2, collection = self)
+
+        for perf in perfs:
+            PerformanceCollectionMusicianFactory.create_batch(
+                2, performance_collection = perf)
+            
