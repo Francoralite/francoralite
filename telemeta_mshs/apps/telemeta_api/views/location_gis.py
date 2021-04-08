@@ -21,7 +21,7 @@ class LocationGISViewSet(viewsets.ModelViewSet):
     serializer_class = LocationGisSerializer
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ()
+    filterset_fields = ()
     ordering = ('name',)
     search_fields = ('name',)
 

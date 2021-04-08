@@ -20,7 +20,7 @@ class InstrumentViewSet(viewsets.ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('name', 'typology')
+    filterset_fields = ('name', 'typology')
     ordering = ('name', 'typology')
     search_fields = ('name', 'notes')
 

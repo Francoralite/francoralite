@@ -21,7 +21,7 @@ class HornbostelSachsViewSet(viewsets.ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('number',)
+    filterset_fields = ('number',)
     ordering = ('number', 'name',)
     search_fields = ('number', 'name')
 

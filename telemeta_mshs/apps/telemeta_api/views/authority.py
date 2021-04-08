@@ -12,7 +12,7 @@ class AuthorityViewSet(viewsets.ModelViewSet):
     queryset = AuthorityModel.objects.all()
     serializer_class = AuthoritySerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = (
+    filterset_fields = (
         'is_collector', 'is_informer',
         'is_author', 'is_composer', 'is_editor')
     ordering = ('first_name', 'last_name',)

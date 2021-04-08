@@ -35,7 +35,7 @@ class MissionViewSet(viewsets.ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('fonds',)
+    filterset_fields = ('fonds',)
     ordering = ('fonds', 'code',)
     search_fields = ('fonds', 'code', 'title')
 

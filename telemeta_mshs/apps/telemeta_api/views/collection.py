@@ -67,7 +67,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('mission', 'code')
+    filterset_fields = ('mission', 'code')
     ordering = ('mission', 'code')
     search_fields = (
         'code',

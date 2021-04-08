@@ -152,9 +152,9 @@ class ItemViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
 
-    filter_fields = ('collection', 'media_type',)
+    filterset_fields = ('collection', 'media_type',)
     ordering = ('title', 'code',)
-    search_fields = ('title', 'code', 'collection' 'media_type')
+    search_fields = ('title', 'code', 'collection', 'media_type')
 
     keycloak_scopes = {
         'GET': 'item:view',
@@ -186,10 +186,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         data = serializer.data
-        # Recording_context (collection)
-        recording = RecordingContext.objects.get(
-            pk=data['collection']['recording_context'])
-        data['collection']['recording_context'] = unicode(recording.name)
+       
         # Retrieve most of the entities
         for entity in entities:
             self.collect(instance.id, data, entity)
