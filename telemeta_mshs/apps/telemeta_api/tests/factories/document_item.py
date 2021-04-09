@@ -8,20 +8,20 @@ document_collection factory to execute tests
 """
 
 import factory
-from ...models.document_collection import DocumentCollection
+from ...models.document_item import DocumentItem
 # Import nested/related factories
 from .document import DocumentFactory
 
 
-class DocumentCollectionFactory(DocumentFactory):
+class DocumentItemFactory(DocumentFactory):
     """
-    DocumentCollection factory
+    DocumentItem factory
     """
 
     class Meta:
-        model = DocumentCollection
+        model = DocumentItem
         django_get_or_create = (
-            'collection',)
+            'item',)
 
     # Nested/related factories
-    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
