@@ -18,6 +18,7 @@ from .collection_language import CollectionLanguageFactory
 from .collection_publisher import CollectionPublisherFactory
 from .performancecollectionmusician import PerformanceCollectionMusicianFactory
 from .performancecollection import PerformanceCollectionFactory
+from .item import ItemFactory
 
 
 
@@ -82,3 +83,13 @@ class CollectionCompleteFactory(CollectionFactory):
             PerformanceCollectionMusicianFactory.create_batch(
                 2, performance_collection = perf)
             
+class CollectionItemsFactory(CollectionFactory):
+    """
+    Collection with items related
+    """
+
+    @factory.post_generation
+    def items( self, create, extracted, **kwargs):
+        if not create: return
+
+        ItemFactory.create_batch(5, collection = self)

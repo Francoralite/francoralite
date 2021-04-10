@@ -11,7 +11,6 @@ import factory
 import factory.fuzzy
 import datetime
 from ...models.item import Item
-from .collection import CollectionFactory
 from .mediatype import MediaTypeFactory
 from .coupe import CoupeFactory
 from .performancecollection import PerformanceCollectionFactory
@@ -46,7 +45,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
 
     # FIXIT------------------
     # General -----------
-    collection = factory.SubFactory(CollectionFactory)
+    collection = factory.SubFactory('telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory')
     title = factory.Faker('word')
     alt_title = factory.Faker('word')
     trans_title = factory.Faker('word')

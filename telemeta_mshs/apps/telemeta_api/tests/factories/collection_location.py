@@ -25,5 +25,5 @@ class CollectionLocationFactory(factory.django.DjangoModelFactory):
             'location',)
 
     # Nested/related factories
-    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
+    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionItemsFactory")
     location = factory.SubFactory(LocationGisFactory)

@@ -122,6 +122,19 @@ class TestLocationList(APITestCase):
         self.assertIsInstance(response.data, list)
         self.assertEqual(len(response.data),3)
 
+    def test_items(self):
+        """
+        Ensure we can can collect all items that use this location
+        """
+        
+        item = Location.objects.first()
+        url = reverse('location_gis-items', kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data),15)
+
     def test_create_a_location(self):
         """
         Ensure we can create an Location object
