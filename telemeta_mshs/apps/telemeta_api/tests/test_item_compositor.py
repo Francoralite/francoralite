@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Compositor tests
 """
 
 import factory
@@ -96,12 +96,7 @@ class TestItemCompositorList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_compositor[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        item_compositor[attribute], str)
+                elf.assertIsInstance(item_compositor[attribute], str)
             else:
                 self.assertIsInstance(
                     item_compositor[attribute], attribute_type)

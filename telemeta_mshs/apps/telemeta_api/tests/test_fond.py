@@ -157,10 +157,7 @@ class TestFondList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(fond[attribute], basestring)
-                else:
-                    self.assertIsInstance(fond[attribute], str)
+                self.assertIsInstance(fond[attribute], str)
             else:
                 self.assertIsInstance(fond[attribute], attribute_type)
             self.assertIsNot(fond[attribute], '')

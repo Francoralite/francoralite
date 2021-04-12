@@ -95,11 +95,7 @@ class TestItemDomainMusicList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_domain_music[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_domain_music[attribute], str)
+                self.assertIsInstance(item_domain_music[attribute], str)
             else:
                 self.assertIsInstance(
                     item_domain_music[attribute], attribute_type)

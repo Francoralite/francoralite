@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+DocumentCollection tests
 """
 
 import factory
@@ -97,10 +97,7 @@ class TestDocumentCollectionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(document_collection[attribute], basestring)
-                else:
-                    self.assertIsInstance(document_collection[attribute], str)
+                self.assertIsInstance(document_collection[attribute], str)
             else:
                 self.assertIsInstance(document_collection[attribute], attribute_type)
             self.assertIsNot(document_collection[attribute], '')

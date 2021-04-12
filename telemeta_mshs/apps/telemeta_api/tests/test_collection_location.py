@@ -96,11 +96,7 @@ class TestCollectionLocationList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        collection_location[attribute], basestring)
-                else:
-                    self.assertIsInstance(collection_location[attribute], str)
+                self.assertIsInstance(collection_location[attribute], str)
             else:
                 self.assertIsInstance(
                     collection_location[attribute], attribute_type)

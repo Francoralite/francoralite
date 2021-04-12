@@ -94,10 +94,7 @@ class TestItemAuthorList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(item_author[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_author[attribute], str)
+                self.assertIsInstance(item_author[attribute], str)
             else:
                 self.assertIsInstance(item_author[attribute], attribute_type)
             self.assertIsNot(item_author[attribute], '')

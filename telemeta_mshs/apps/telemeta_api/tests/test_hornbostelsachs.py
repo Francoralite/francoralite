@@ -88,10 +88,7 @@ class TestHornbostelSachsList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(hornbostelsachs[attribute], basestring)
-                else:
-                    self.assertIsInstance(hornbostelsachs[attribute], str)
+                self.assertIsInstance(hornbostelsachs[attribute], str)
             else:
                 self.assertIsInstance(hornbostelsachs[attribute], attribute_type)
             self.assertIsNot(hornbostelsachs[attribute], '')

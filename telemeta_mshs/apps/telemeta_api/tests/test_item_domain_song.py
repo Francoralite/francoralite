@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item DomainSong tests
 """
 
 import factory
@@ -94,12 +94,7 @@ class TestItemDomainSongList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_domain_song[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        item_domain_song[attribute], str)
+                self.assertIsInstance(item_domain_song[attribute], str)
             else:
                 self.assertIsInstance(
                     item_domain_song[attribute], attribute_type)

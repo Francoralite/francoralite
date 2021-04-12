@@ -93,10 +93,7 @@ class TestLanguageList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(language[attribute], basestring)
-                else:
-                    self.assertIsInstance(language[attribute], str)
+               self.assertIsInstance(language[attribute], str)
             else:
                 self.assertIsInstance(language[attribute], attribute_type)
             self.assertIsNot(language[attribute], '')

@@ -95,10 +95,7 @@ class TestItemCoiraultList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(item_coirault[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_coirault[attribute], str)
+                self.assertIsInstance(item_coirault[attribute], str)
             else:
                 self.assertIsInstance(item_coirault[attribute], attribute_type)
             self.assertIsNot(item_coirault[attribute], '')

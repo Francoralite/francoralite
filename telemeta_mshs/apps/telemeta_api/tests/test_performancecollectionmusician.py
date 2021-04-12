@@ -91,10 +91,7 @@ class TestPerformanceCollectionMusicianList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(performancecollectionmusician[attribute], basestring)
-                else:
-                    self.assertIsInstance(performancecollectionmusician[attribute], str)
+                self.assertIsInstance(performancecollectionmusician[attribute], str)
             else:
                 self.assertIsInstance(performancecollectionmusician[attribute], attribute_type)
             self.assertIsNot(performancecollectionmusician[attribute], '')

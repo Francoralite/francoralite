@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Domain Tale tests
 """
 
 import factory
@@ -96,11 +96,7 @@ class TestItemDomainTaleList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_domain_tale[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_domain_tale[attribute], str)
+                self.assertIsInstance(item_domain_tale[attribute], str)
             else:
                 self.assertIsInstance(
                     item_domain_tale[attribute], attribute_type)

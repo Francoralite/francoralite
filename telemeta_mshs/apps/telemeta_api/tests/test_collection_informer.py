@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Collection_informer tests
 """
 
 import factory
@@ -95,11 +95,7 @@ class TestCollectionInformerList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        collection_informer[attribute], basestring)
-                else:
-                    self.assertIsInstance(collection_informer[attribute], str)
+                self.assertIsInstance(collection_informer[attribute], str)
             else:
                 self.assertIsInstance(
                     collection_informer[attribute], attribute_type)

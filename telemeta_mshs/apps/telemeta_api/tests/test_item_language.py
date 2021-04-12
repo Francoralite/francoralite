@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Language tests
 """
 
 import factory
@@ -95,10 +95,7 @@ class TestItemLanguageList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(item_language[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_language[attribute], str)
+                self.assertIsInstance(item_language[attribute], str)
             else:
                 self.assertIsInstance(item_language[attribute], attribute_type)
             self.assertIsNot(item_language[attribute], '')

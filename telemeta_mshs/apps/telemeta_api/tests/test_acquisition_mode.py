@@ -1,12 +1,12 @@
 """
-Coupe tests
+Acquisition_mode tests
 """
 
 import factory
 import pytest
 import sys
 
-# from django.forms.models import model_to_dict
+
 from django.core.management import call_command
 from django.urls import reverse
 from parameterized import parameterized
@@ -81,12 +81,7 @@ class TestAcquisitionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        acquisition_mode[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        acquisition_mode[attribute], str)
+                self.assertIsInstance(acquisition_mode[attribute], str)
             else:
                 self.assertIsInstance(
                     acquisition_mode[attribute], attribute_type)

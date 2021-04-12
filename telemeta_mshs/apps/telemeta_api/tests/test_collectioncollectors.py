@@ -1,5 +1,5 @@
 """
-Coupe tests
+CollectionCollectors tests
 """
 
 import factory
@@ -86,10 +86,7 @@ class TestCollectionCollectorsList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(collectors[attribute], basestring)
-                else:
-                    self.assertIsInstance(collectors[attribute], str)
+                self.assertIsInstance(collectors[attribute], str)
             else:
                 self.assertIsInstance(collectors[attribute], attribute_type)
             self.assertIsNot(collectors[attribute], '')
@@ -139,46 +136,6 @@ class TestCollectionCollectorsList(APITestCase):
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
 
-    # def test_update_an_collectioncollectors(self):
-    #     """
-    #     Ensure we can update an CollectionCollectors object
-    #     """
-    #
-    #     item = CollectionCollectors.objects.first()
-    #     self.assertNotEqual(item.value, 'foobar_test_put')
-    #
-    #     # Get existing object from API
-    #     url_get = reverse('coupe-detail', kwargs={'pk': item.id})
-    #     data = self.client.get(url_get).data
-    #
-    #     data['value'] = 'foobar_test_put'
-    #     url = reverse('coupe-detail', kwargs={'pk': item.id})
-    #     response = self.client.put(url, data, format='json')
-    #
-    #     # Ensure new value returned
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIsInstance(response.data, dict)
-    #     self.assertEqual(sorted(response.data.keys()), COLLECTORS_FIELDS)
-    #     self.assertEqual(response.data['value'], 'foobar_test_put')
-
-    # def test_patch_an_coupe(self):
-    #     """
-    #     Ensure we can patch an Coupe object
-    #     """
-    #
-    #     item = Coupe.objects.first()
-    #     self.assertNotEqual(item.value, 'foobar_test_patch')
-    #
-    #     data = {'value': 'foobar_test_patch'}
-    #     url = reverse('coupe-detail', kwargs={'pk': item.id})
-    #     response = self.client.patch(url, data, format='json')
-    #
-    #     # Ensure new value returned
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIsInstance(response.data, dict)
-    #     self.assertEqual(sorted(response.data.keys()), INSTITUTION_FIELDS)
-    #     self.assertEqual(response.data['value'], 'foobar_test_patch')
-    #
     def test_delete_an_collectioncollectors(self):
         """
         Ensure we can delete an CollectionCollectors object

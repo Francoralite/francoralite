@@ -90,12 +90,7 @@ class TestDomainVocalList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        domain_vocal[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        domain_vocal[attribute], str)
+                self.assertIsInstance(domain_vocal[attribute], str)
             else:
                 self.assertIsInstance(
                     domain_vocal[attribute], attribute_type)

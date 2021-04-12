@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Domain Vocal tests
 """
 
 import factory
@@ -96,11 +96,7 @@ class TestItemDomainVocalList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_domain_vocal[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_domain_vocal[attribute], str)
+                self.assertIsInstance(item_domain_vocal[attribute], str)
             else:
                 self.assertIsInstance(
                     item_domain_vocal[attribute], attribute_type)

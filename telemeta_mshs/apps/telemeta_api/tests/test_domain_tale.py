@@ -90,12 +90,7 @@ class TestDomainTaleList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        domain_tale[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        domain_tale[attribute], str)
+                self.assertIsInstance(domain_tale[attribute], str)
             else:
                 self.assertIsInstance(
                     domain_tale[attribute], attribute_type)

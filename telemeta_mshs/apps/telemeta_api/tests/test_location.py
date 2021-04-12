@@ -1,5 +1,5 @@
 """
-Institution tests
+Location tests
 """
 
 import factory
@@ -88,10 +88,7 @@ class TestLocationList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(location[attribute], basestring)
-                else:
-                    self.assertIsInstance(location[attribute], str)
+                self.assertIsInstance(location[attribute], str)
             else:
                 self.assertIsInstance(
                     location[attribute], attribute_type)

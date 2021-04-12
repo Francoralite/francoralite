@@ -97,10 +97,7 @@ class TestDocumentMissionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(document_mission[attribute], basestring)
-                else:
-                    self.assertIsInstance(document_mission[attribute], str)
+                self.assertIsInstance(document_mission[attribute], str)
             else:
                 self.assertIsInstance(document_mission[attribute], attribute_type)
             self.assertIsNot(document_mission[attribute], '')

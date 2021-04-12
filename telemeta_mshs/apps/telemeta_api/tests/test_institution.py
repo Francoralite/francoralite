@@ -87,10 +87,7 @@ class TestInstitutionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(institution[attribute], basestring)
-                else:
-                    self.assertIsInstance(institution[attribute], str)
+                self.assertIsInstance(institution[attribute], str)
             else:
                 self.assertIsInstance(institution[attribute], attribute_type)
             self.assertIsNot(institution[attribute], '')

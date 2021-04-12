@@ -164,10 +164,7 @@ class TestMissionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(mission[attribute], basestring)
-                else:
-                    self.assertIsInstance(mission[attribute], str)
+                self.assertIsInstance(mission[attribute], str)
             else:
                 self.assertIsInstance(mission[attribute], attribute_type)
             self.assertIsNot(mission[attribute], '')

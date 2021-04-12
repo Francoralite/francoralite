@@ -112,11 +112,7 @@ class TestCollectionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        collection[attribute], basestring)
-                else:
-                    self.assertIsInstance(collection[attribute], str)
+                self.assertIsInstance(collection[attribute], str)
             else:
                 self.assertIsInstance(
                     collection[attribute], attribute_type)
@@ -183,12 +179,6 @@ class TestCollectionList(APITestCase):
         data['recorded_from_year'] = str(data['recorded_from_year'])
         data['recorded_to_year'] = str(data['recorded_to_year'])
         data['recording_context'] = str(data['recording_context'])
-        # data['legal_rights'] = str(data['legal_rights'])
-        # data['metadata_author'] = str(data['metadata_author'])
-        # data['publishing_status'] = str(data['publishing_status'])
-        # data['status'] = str(data['status'])
-        # data['metadata_writer'] = str(data['metadata_writer'])
-        # data['media_type'] = str(data['media_type'])
 
         url = reverse('collection-list')
         response = self.client.post(url, data, format='json')

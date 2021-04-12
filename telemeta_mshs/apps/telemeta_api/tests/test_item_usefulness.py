@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Usefulness tests
 """
 
 import factory
@@ -96,15 +96,9 @@ class TestItemUsefulnessList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_usefulness[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        item_usefulness[attribute], str)
+                self.assertIsInstance(item_usefulness[attribute], str)
             else:
-                self.assertIsInstance(
-                    item_usefulness[attribute], attribute_type)
+                self.assertIsInstance(item_usefulness[attribute], attribute_type)
             self.assertIsNot(item_usefulness[attribute], '')
 
     def test_get_an_item_usefulness(self):

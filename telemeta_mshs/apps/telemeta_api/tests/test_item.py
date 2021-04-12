@@ -121,18 +121,11 @@ class TestItemList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    try:
-                        self.assertIsInstance(item[attribute], basestring)
-                    except AssertionError:
-                        # Because of serializer.DurationField
-                        self.assertIsInstance(item[attribute], type(None))
-                else:
-                    try:
-                        self.assertIsInstance(item[attribute], str)
-                    except AssertionError:
-                        # Because of serializer.DurationField
-                        self.assertIsInstance(item[attribute], type(None))
+                try:
+                    self.assertIsInstance(item[attribute], str)
+                except AssertionError:
+                    # Because of serializer.DurationField
+                    self.assertIsInstance(item[attribute], type(None))
             else:
                 self.assertIsInstance(item[attribute], attribute_type)
             self.assertIsNot(item[attribute], '')

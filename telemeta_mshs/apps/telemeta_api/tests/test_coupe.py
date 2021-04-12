@@ -1,5 +1,5 @@
 """
-AcquisitionMode tests
+Coupe tests
 """
 
 import factory
@@ -80,10 +80,7 @@ class TestAcquisitionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(coupe[attribute], basestring)
-                else:
-                    self.assertIsInstance(coupe[attribute], str)
+                self.assertIsInstance(coupe[attribute], str)
             else:
                 self.assertIsInstance(coupe[attribute], attribute_type)
             self.assertIsNot(coupe[attribute], '')

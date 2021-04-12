@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+CollectionPublisher tests
 """
 
 import factory
@@ -96,11 +96,7 @@ class TestCollectionPublisherList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        collection_publisher[attribute], basestring)
-                else:
-                    self.assertIsInstance(collection_publisher[attribute], str)
+                self.assertIsInstance(collection_publisher[attribute], str)
             else:
                 self.assertIsInstance(
                     collection_publisher[attribute], attribute_type)

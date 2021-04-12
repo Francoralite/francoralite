@@ -94,10 +94,7 @@ class TestItemPerformanceList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(itemperformance[attribute], basestring)
-                else:
-                    self.assertIsInstance(itemperformance[attribute], str)
+                self.assertIsInstance(itemperformance[attribute], str)
             else:
                 self.assertIsInstance(itemperformance[attribute], attribute_type)
             self.assertIsNot(itemperformance[attribute], '')

@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Document Item tests
+Document Fonds tests
 """
 
 import factory
@@ -97,10 +97,7 @@ class TestDocumentFondsList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(document_fonds[attribute], basestring)
-                else:
-                    self.assertIsInstance(document_fonds[attribute], str)
+                self.assertIsInstance(document_fonds[attribute], str)
             else:
                 self.assertIsInstance(document_fonds[attribute], attribute_type)
             self.assertIsNot(document_fonds[attribute], '')

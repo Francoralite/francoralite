@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Musical organization tests
 """
 
 import factory
@@ -99,11 +99,7 @@ class TestItemMusicalOrganizationList(APITestCase):
             # Ensure type of each attribute
             if attribute_type == str:
                 if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_musical_organization[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        item_musical_organization[attribute], str)
+                    self.assertIsInstance(item_musical_organization[attribute], str)
             else:
                 self.assertIsInstance(
                     item_musical_organization[attribute], attribute_type)

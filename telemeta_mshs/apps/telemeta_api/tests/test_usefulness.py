@@ -90,15 +90,9 @@ class TestUsefulnessList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        usefulness[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        usefulness[attribute], str)
+                self.assertIsInstance(usefulness[attribute], str)
             else:
-                self.assertIsInstance(
-                    usefulness[attribute], attribute_type)
+                self.assertIsInstance(usefulness[attribute], attribute_type)
             self.assertIsNot(usefulness[attribute], '')
 
     def test_get_an_usefulness(self):

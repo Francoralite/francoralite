@@ -90,12 +90,7 @@ class TestMusicalOrganizationList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        musical_organization[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        musical_organization[attribute], str)
+                self.assertIsInstance(musical_organization[attribute], str)
             else:
                 self.assertIsInstance(
                     musical_organization[attribute], attribute_type)

@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Thematic tests
 """
 
 import factory
@@ -95,10 +95,7 @@ class TestItemThematicList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(item_thematic[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_thematic[attribute], str)
+                self.assertIsInstance(item_thematic[attribute], str)
             else:
                 self.assertIsInstance(item_thematic[attribute], attribute_type)
             self.assertIsNot(item_thematic[attribute], '')

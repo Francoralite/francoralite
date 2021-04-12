@@ -90,10 +90,7 @@ class TestInstrumentList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(instrument[attribute], basestring)
-                else:
-                    self.assertIsInstance(instrument[attribute], str)
+                self.assertIsInstance(instrument[attribute], str)
             else:
                 self.assertIsInstance(instrument[attribute], attribute_type)
             self.assertIsNot(instrument[attribute], '')
