@@ -8,6 +8,8 @@ services:
       - 'traefik.frontend.rule=Host:db.francoralite.localhost'
 
   app:
+    environment:
+      COVERALLS_REPO_TOKEN: "${COVERALLS_REPO_TOKEN}"
     labels:
       - 'traefik.frontend.rule=Host:app.francoralite.localhost'
       - 'traefik.docker.network=services'
