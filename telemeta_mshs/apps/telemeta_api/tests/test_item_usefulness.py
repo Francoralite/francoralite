@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+Item Usefulness tests
 """
 
 import factory
@@ -13,7 +13,7 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -51,7 +51,6 @@ class TestItemUsefulnessList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
         ItemUsefulnessFactory.create_batch(1)
@@ -97,15 +96,9 @@ class TestItemUsefulnessList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        item_usefulness[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        item_usefulness[attribute], str)
+                self.assertIsInstance(item_usefulness[attribute], str)
             else:
-                self.assertIsInstance(
-                    item_usefulness[attribute], attribute_type)
+                self.assertIsInstance(item_usefulness[attribute], attribute_type)
             self.assertIsNot(item_usefulness[attribute], '')
 
     def test_get_an_item_usefulness(self):

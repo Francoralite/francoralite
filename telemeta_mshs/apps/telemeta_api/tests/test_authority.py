@@ -1,20 +1,18 @@
 """
-Institution tests
+Authority tests
 """
 
 import factory
 import pytest
 import sys
 
-# from django.forms.models import model_to_dict
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.authority import AuthorityFactory
-# from .factories.location import LocationFactory
 from ..models.authority import Authority
 from ..models.location import Location
 
@@ -57,7 +55,6 @@ class TestAuthorityList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         AuthorityFactory.create_batch(6)
 
@@ -97,9 +94,6 @@ class TestAuthorityList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(authority[attribute], basestring)
-                else:
                     self.assertIsInstance(authority[attribute], str)
             else:
                 self.assertIsInstance(authority[attribute], attribute_type)

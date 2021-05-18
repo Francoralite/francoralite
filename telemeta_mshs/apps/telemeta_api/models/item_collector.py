@@ -6,7 +6,7 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .item import Item
 from .authority import Authority
@@ -17,8 +17,10 @@ class ItemCollector(models.Model):
     "Table of the items"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('item'))
-    collector = models.ForeignKey(Authority, verbose_name=_('collector'))
+    item = models.ForeignKey(Item, verbose_name=_('item'),
+            on_delete=models.CASCADE)
+    collector = models.ForeignKey(Authority, verbose_name=_('collector'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

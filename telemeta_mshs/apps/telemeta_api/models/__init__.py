@@ -9,7 +9,6 @@ from .legal_rights import LegalRights
 from .metadata_author import MetadataAuthor
 from .publisher import Publisher
 from .recording_context import RecordingContext
-from .ext_media_item import ExtMediaItem
 from .item import Item
 from .item_collector import ItemCollector
 from .item_informer import ItemInformer
@@ -26,9 +25,6 @@ from .item_language import ItemLanguage
 from .item_musical_organization import ItemMusicalOrganization
 from .item_musical_group import ItemMusicalGroup
 from .item_coirault import ItemCoirault
-from .item_analysis import ItemAnalysis
-from .item_transcoding_flag import ItemTranscodingFlag
-from .item_marker import ItemMarker
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
 from .collection_informer import CollectionInformer

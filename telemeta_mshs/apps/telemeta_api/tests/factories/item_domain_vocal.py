@@ -10,7 +10,6 @@ item_domain_vocal factory to execute tests
 import factory
 from ...models.item_domain_vocal import ItemDomainVocal
 # import nested/related factories
-from .item import ItemFactory
 from .domain_vocal import DomainVocalFactory
 
 
@@ -26,6 +25,5 @@ class ItemDomainVocalFactory(factory.django.DjangoModelFactory):
             'domain_vocal',)
 
     # Nested/related factories
-    # FIXIT ----
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     domain_vocal = factory.SubFactory(DomainVocalFactory)

@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 from .document import Document
 from .collection import Collection
@@ -16,7 +16,8 @@ class DocumentCollection(Document):
     collection = models.ForeignKey(
         Collection,
         related_name="related_document",
-        verbose_name=_('collection')
+        verbose_name=_('collection'),
+        on_delete=models.CASCADE
         )
 
     class Meta:

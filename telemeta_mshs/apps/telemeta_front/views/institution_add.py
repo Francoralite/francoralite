@@ -6,8 +6,8 @@
 
 
 from django.views.generic.edit import FormView
-from telemeta_front.forms.institution import InstitutionForm
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.forms.institution import InstitutionForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class InstitutionAdd(FormView):

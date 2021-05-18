@@ -6,7 +6,7 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class SkosConcept(models.Model):
@@ -22,7 +22,8 @@ class SkosConcept(models.Model):
             'telemeta_api.SkosCollection',
             related_name='skos_concept',
             verbose_name=_('Collection parente'),
-            default=None)
+            default=None,
+            on_delete=models.CASCADE)
     abstract = models.TextField(blank=True, null=True)
 
     class Meta:

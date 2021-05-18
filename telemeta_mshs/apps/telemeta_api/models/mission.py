@@ -6,7 +6,7 @@
 
 
 from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
@@ -21,7 +21,8 @@ class Mission(models.Model):
     fonds = models.ForeignKey(
             'telemeta_api.Fond',
             related_name='mission',
-            verbose_name=_('Fonds'))
+            verbose_name=_('Fonds'),
+            on_delete=models.CASCADE)
     title = models.CharField(_('titre'), max_length=255)
     description = models.TextField(_('description'), null=True, blank=True)
     public_access = models.CharField(

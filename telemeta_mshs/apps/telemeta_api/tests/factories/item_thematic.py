@@ -10,7 +10,6 @@ item_thematic factory to execute tests
 import factory
 from ...models.item_thematic import ItemThematic
 # import nested/related factories
-from .item import ItemFactory
 from .thematic import ThematicFactory
 
 
@@ -26,5 +25,5 @@ class ItemThematicFactory(factory.django.DjangoModelFactory):
             'thematic',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     thematic = factory.SubFactory(ThematicFactory)

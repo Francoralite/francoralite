@@ -8,10 +8,10 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.hornbostelsachs import HornbostelsachsForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.hornbostelsachs import HornbostelsachsForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class HornbostelsachsEdit(FormView):
@@ -25,7 +25,7 @@ class HornbostelsachsEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/hornbostelsachs/' + str(id))
+            settings.FRONT_HOST_URL + '/api/hornbostelsachs/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['hornbostelsachs'] = response.json
         return context
@@ -36,7 +36,7 @@ class HornbostelsachsEdit(FormView):
 
         # Obtain values of the record
         hornbostelsachs = requests.get(
-            FRONT_HOST_URL + '/api/hornbostelsachs/' + str(id))
+            settings.FRONT_HOST_URL + '/api/hornbostelsachs/' + str(id))
         form = HornbostelsachsForm(initial=hornbostelsachs.json())
 
         return render(request,

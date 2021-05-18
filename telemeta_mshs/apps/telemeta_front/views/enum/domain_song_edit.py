@@ -8,10 +8,10 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.domain_song import DomainSongForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.domain_song import DomainSongForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class DomainSongEdit(FormView):
@@ -25,7 +25,7 @@ class DomainSongEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/domain_song/' + str(id))
+            settings.FRONT_HOST_URL + '/api/domain_song/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['domain_song'] = response.json
         return context
@@ -36,7 +36,7 @@ class DomainSongEdit(FormView):
 
         # Obtain values of the record
         domain_song = requests.get(
-            FRONT_HOST_URL + '/api/domain_song/' + str(id))
+            settings.FRONT_HOST_URL + '/api/domain_song/' + str(id))
         form = DomainSongForm(initial=domain_song.json())
 
         return render(request,

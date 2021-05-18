@@ -6,7 +6,6 @@
 
 
 from rest_framework import viewsets
-# from telemeta.models.user import User as UserModel
 from django.contrib.auth.models import User as UserModel
 from ..serializers.user import CurrentUserSerializer
 

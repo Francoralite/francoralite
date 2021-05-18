@@ -6,7 +6,7 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .item import Item
 from .authority import Authority
@@ -17,8 +17,10 @@ class ItemAuthor(models.Model):
     "Authors of an item"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('item'))
-    author = models.ForeignKey(Authority, verbose_name=_('author'))
+    item = models.ForeignKey(Item, verbose_name=_('item'),
+            on_delete=models.CASCADE)
+    author = models.ForeignKey(Authority, verbose_name=_('author'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

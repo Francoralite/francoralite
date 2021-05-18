@@ -1,12 +1,11 @@
 {% load i18n %}
-{% load telemeta_tags %}
 {% load bootstrap3 %}
 
 {# spaces between li and a elements breaks layout #}
 <nav role="navigation" aria-label="Menu principal" class="nav">
   <ul class="menu">
       {% if user.is_authenticated %}
-        <li><a href="{% url "telemeta-home" %}" class="blue">{% trans "Bureau" %}</a></li>
+        <li><a href="{% url "home" %}" class="blue">{% trans "Bureau" %}</a></li>
       {% else %}
         <li class="blue"><a href="{% url "home" %}">{% trans "Accueil" %}</a></li>
       {% endif %}

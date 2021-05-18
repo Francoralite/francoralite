@@ -13,14 +13,15 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.mission import MissionFactory
+from .factories.mission import MissionFactory, MissionCollectionFactory
 from ..models.mission import Mission
 from ..models.fond import Fond
+from ..models.collection import Collection
 
 from .keycloak import get_token
 
@@ -52,10 +53,9 @@ class TestMissionList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        MissionFactory.create_batch(6)
+        MissionCollectionFactory.create_batch(6, collections__nb_collections=4)
 
     def test_can_get_mission_list(self):
         """
@@ -73,6 +73,77 @@ class TestMissionList(APITestCase):
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
+
+
+    def test_can_get_mission_collections_list(self):
+        """
+        Ensure related collections exist
+        """
+        url = reverse('collection-list')
+        
+        # ORM side
+        collections = Collection.objects.all()
+        self.assertEqual(len(collections), 24)
+
+        # API side
+        response = self.client.get(url)
+
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 24)
+
+
+    def test_mission_dates(self):
+        """
+        Max and min dates from the related collections of a mission
+        """
+
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/dates"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+
+    def test_mission_informers(self):
+        """
+        Informers from the related collections of a mission
+        """
+
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/informers"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list) 
+    
+    
+    def test_mission_collectors(self):
+        """
+        Collectors from the related collections of a mission
+        """
+
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/collectors"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+    
+    
+    def test_mission_locations(self):
+        """
+        Locations from the related collections of a mission
+        """
+
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/locations"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+
 
     @parameterized.expand(MISSION_STRUCTURE)
     def test_has_valid_mission_values(self, attribute, attribute_type):
@@ -93,10 +164,7 @@ class TestMissionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(mission[attribute], basestring)
-                else:
-                    self.assertIsInstance(mission[attribute], str)
+                self.assertIsInstance(mission[attribute], str)
             else:
                 self.assertIsInstance(mission[attribute], attribute_type)
             self.assertIsNot(mission[attribute], '')

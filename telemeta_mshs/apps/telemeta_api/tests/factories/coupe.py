@@ -15,5 +15,5 @@ class CoupeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Coupe
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'coupe%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

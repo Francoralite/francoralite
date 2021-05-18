@@ -10,7 +10,6 @@ collection_publisher factory to execute tests
 import factory
 from ...models.collection_publisher import CollectionPublisher
 
-from .collection import CollectionFactory
 from .publisher import PublisherFactory
 
 
@@ -26,5 +25,5 @@ class CollectionPublisherFactory(factory.django.DjangoModelFactory):
             'publisher',)
 
     # Nested/related factories
-    collection = factory.SubFactory(CollectionFactory)
+    collection = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.collection.CollectionFactory")
     publisher = factory.SubFactory(PublisherFactory)

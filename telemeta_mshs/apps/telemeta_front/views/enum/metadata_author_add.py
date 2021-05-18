@@ -6,8 +6,8 @@
 
 
 from django.views.generic.edit import FormView
-from telemeta_front.forms.metadata_author import MetadataAuthorForm
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.forms.metadata_author import MetadataAuthorForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class MetadataAuthorAdd(FormView):

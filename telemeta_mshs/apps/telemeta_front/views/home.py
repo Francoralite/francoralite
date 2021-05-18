@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+from telemeta_mshs.apps.telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 
 
 class HomePageView(FrancoraliteTemplateView):

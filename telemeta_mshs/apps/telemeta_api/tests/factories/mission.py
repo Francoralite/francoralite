@@ -9,7 +9,7 @@ Mission factory to execute tests
 
 import factory
 from ...models.mission import Mission
-from .fond import FondFactory
+from .collection import CollectionFactory
 
 
 class MissionFactory(factory.django.DjangoModelFactory):
@@ -22,8 +22,21 @@ class MissionFactory(factory.django.DjangoModelFactory):
 
     title = factory.Faker('word')
     description = factory.Faker('word')
-    # descriptions = factory.Faker('word')
     code = factory.Faker('uuid4')
-    fonds = factory.SubFactory(FondFactory)
+    fonds = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.fond.FondFactory")
     code_partner = factory.Faker('word')
     public_access = factory.Iterator(['metadata', 'full'])
+
+
+class MissionCollectionFactory(MissionFactory):
+    """
+    Mission with collections
+    """
+
+    @factory.post_generation
+    def collections( self, create, extracted, **kwargs):
+        if not create: return
+        nb_collections = kwargs.get('nb_collections',1)
+
+        for n in range(nb_collections):
+            CollectionFactory(mission = self)

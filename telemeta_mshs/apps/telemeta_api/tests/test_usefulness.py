@@ -13,7 +13,7 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -48,7 +48,6 @@ class TestUsefulnessList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
         UsefulnessFactory.create_batch(6)
@@ -91,15 +90,9 @@ class TestUsefulnessList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        usefulness[attribute], basestring)
-                else:
-                    self.assertIsInstance(
-                        usefulness[attribute], str)
+                self.assertIsInstance(usefulness[attribute], str)
             else:
-                self.assertIsInstance(
-                    usefulness[attribute], attribute_type)
+                self.assertIsInstance(usefulness[attribute], attribute_type)
             self.assertIsNot(usefulness[attribute], '')
 
     def test_get_an_usefulness(self):

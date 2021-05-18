@@ -10,7 +10,6 @@ item_coirault factory to execute tests
 import factory
 from ...models.item_coirault import ItemCoirault
 # Import nested/related factories
-from .item import ItemFactory
 from .skos_concept import SkosConceptFactory
 
 
@@ -26,5 +25,5 @@ class ItemCoiraultFactory(factory.django.DjangoModelFactory):
             'coirault',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     coirault = factory.SubFactory(SkosConceptFactory)

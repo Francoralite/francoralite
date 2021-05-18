@@ -10,7 +10,6 @@ item_author factory to execute tests
 import factory
 from ...models.item_author import ItemAuthor
 # import nested/related factories
-from .item import ItemFactory
 from .authority import AuthorityFactory
 
 
@@ -26,5 +25,5 @@ class ItemAuthorFactory(factory.django.DjangoModelFactory):
             'author',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     author = factory.SubFactory(AuthorityFactory)

@@ -14,7 +14,7 @@ import sys
 import random
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -52,7 +52,6 @@ class TestCollectionLocationList(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
         CollectionLocationFactory.create_batch(1)
@@ -97,11 +96,7 @@ class TestCollectionLocationList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        collection_location[attribute], basestring)
-                else:
-                    self.assertIsInstance(collection_location[attribute], str)
+                self.assertIsInstance(collection_location[attribute], str)
             else:
                 self.assertIsInstance(
                     collection_location[attribute], attribute_type)

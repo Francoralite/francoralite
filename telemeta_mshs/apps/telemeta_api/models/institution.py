@@ -6,7 +6,7 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class Institution(models.Model):
@@ -15,19 +15,6 @@ class Institution(models.Model):
     name = models.CharField(_('name'), max_length=255)
     notes = models.TextField(_('notes'), null=True, blank=True)
 
-    @property
-    def has_fonds(self):
-        if self.objects.MediaFonds.all().count() > 0:
-            return True
-        return False
-
-    @property
-    def fonds(self):
-        "Return the fonds of the institution"
-        fonds = self.objects.MediaFonds.all()
-        return fonds
-
-        fonds.verbose_name = _("fonds")
 
     class Meta:
         app_label = 'telemeta_api'

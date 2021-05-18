@@ -6,7 +6,7 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 # Add nested/related tables
 from .authority import Authority
@@ -18,8 +18,10 @@ class ItemInformer(models.Model):
     "Item's informers"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('XXXXXX'))
-    informer = models.ForeignKey(Authority, verbose_name=_('XXXXXX'))
+    item = models.ForeignKey(Item, verbose_name=_('XXXXXX'),
+            on_delete=models.CASCADE)
+    informer = models.ForeignKey(Authority, verbose_name=_('XXXXXX'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

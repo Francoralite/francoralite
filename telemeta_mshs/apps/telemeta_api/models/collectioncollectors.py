@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from .collection import Collection
 from .authority import Authority
 
@@ -14,8 +14,10 @@ class CollectionCollectors(models.Model):
     # Description of the table
     "The collectors who collect a media_collection"
 
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
-    collector = models.ForeignKey(Authority, verbose_name=_('collector'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
+    collector = models.ForeignKey(Authority, verbose_name=_('collector'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 from .document import Document
 from .fond import Fond
@@ -16,7 +16,8 @@ class DocumentFond(Document):
     fond = models.ForeignKey(
         Fond,
         related_name="related_document",
-        verbose_name=_('fond')
+        verbose_name=_('fond'),
+        on_delete=models.CASCADE
         )
 
     class Meta:

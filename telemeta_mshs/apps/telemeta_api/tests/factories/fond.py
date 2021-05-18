@@ -9,8 +9,9 @@ Fond factory to execute tests
 
 import factory
 from ...models.fond import Fond
-from .acquistion_mode import AcquisitionModeFactory
+from .acquisition_mode import AcquisitionModeFactory
 from .institution import InstitutionFactory
+from .mission import MissionFactory
 
 
 class FondFactory(factory.django.DjangoModelFactory):
@@ -32,3 +33,18 @@ class FondFactory(factory.django.DjangoModelFactory):
     acquisition_mode = factory.SubFactory(AcquisitionModeFactory)
     conservation_site = factory.Faker('word')
     comment = factory.Faker('word')
+
+
+class FondFactoryMission(FondFactory):
+    """
+    Fond factory with missions
+    """
+
+    @factory.post_generation
+    def missions( self, create, extracted, **kwargs):
+        if not create: return
+        nb_missions = kwargs.get('nb_missions',1)
+
+
+        for n in range(nb_missions):
+           MissionFactory(fonds = self)

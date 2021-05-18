@@ -1,16 +1,14 @@
-env:
-  - DJANGO_VERSION=1.8
 
 language: python
 python:
-  - "2.7"
+  - "3.7"
 
 sudo: required
 
 services:
   - docker
 
-# Install Telemeta
+# Install Francoralite
 install:
   - git clone https://github.com/lluc/telemeta-integration.git
   - git submodule update --recursive --init
@@ -22,15 +20,27 @@ before_script:
   - docker network create services
 
 script:
-  - docker-compose up -d
+  - docker-compose up --no-start
   - sleep 30
-  - docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip install --no-cache-dir .[tests]'
-  - docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip uninstall south -y'
-  - docker-compose exec app bash -c "PYTEST_ADDOPTS='-k telemeta_mshs/apps/telemeta_api/' PYTHONPATH=telemeta_mshs/apps python manage.py test --settings=telemeta_mshs.settings.testing -v 3"
+  - docker-compose stop keycloak
+  - docker-compose rm -f keycloak
+  - docker-compose stop keycloak_db
+  - docker-compose rm -f keycloak_db
+  - docker volume rm -f "$(basename $PWD)_keycloak_db"
+  - docker-compose up --no-start
+  - docker-compose start keycloak_db
+  - sleep 10
+  - docker-compose exec keycloak_db bash -c "PGPASSWORD=password psql -U keycloak -w keycloak < '/tmp/keycloak_data.sql'"
+  - docker-compose up -d
+  - docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
+  - docker-compose exec app bash -c 'py.test'
+
 after_script:
   - docker-compose stop
   - docker-compose down
 
+after_success:
+  - docker-compose exec app bash -c 'coveralls'
 
 after_failure:
   - docker-compose logs

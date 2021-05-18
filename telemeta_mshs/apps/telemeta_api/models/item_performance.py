@@ -7,15 +7,17 @@
 from django.db import models
 from .performance_collection import PerformanceCollection
 from .item import Item
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class ItemPerformance(models.Model):
     # Description of the table
     "Performance made by some musicians for a collection, used by an item"
-    item = models.ForeignKey(Item, verbose_name=_('item'))
+    item = models.ForeignKey(Item, verbose_name=_('item'),
+            on_delete=models.CASCADE)
     performance = models.ForeignKey(
-        PerformanceCollection, verbose_name=_('performance'))
+        PerformanceCollection, verbose_name=_('performance'),
+        on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

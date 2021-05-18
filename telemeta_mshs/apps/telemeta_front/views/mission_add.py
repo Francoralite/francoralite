@@ -8,9 +8,9 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.mission import MissionForm
-import telemeta_front.tools as tools
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.mission import MissionForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class MissionAdd(FormView):
@@ -23,7 +23,7 @@ class MissionAdd(FormView):
         initial['fonds'] = self.kwargs['id_fond']
         # Obtain code of the fonds
         response = requests.get(
-            FRONT_HOST_URL + '/api/fond/' + self.kwargs['id_fond'])
+            settings.FRONT_HOST_URL + '/api/fond/' + self.kwargs['id_fond'])
         if response.status_code == status.HTTP_200_OK:
             initial['code'] = response.json()['code']
         return initial

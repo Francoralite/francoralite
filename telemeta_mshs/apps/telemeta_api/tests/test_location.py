@@ -1,5 +1,5 @@
 """
-Institution tests
+Location tests
 """
 
 import factory
@@ -7,12 +7,13 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.location_gis import LocationGisFactory
+from .factories.collection_location import CollectionLocationFactory
 from ..models.location import Location
 
 from .keycloak import get_token
@@ -44,10 +45,12 @@ class TestLocationList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
         LocationGisFactory.create_batch(6)
+        location = Location.objects.first()
+        # ... samples of collection/location
+        CollectionLocationFactory.create_batch(3, location = location)
 
     def test_can_get_location_list(self):
         """
@@ -85,10 +88,7 @@ class TestLocationList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(location[attribute], basestring)
-                else:
-                    self.assertIsInstance(location[attribute], str)
+                self.assertIsInstance(location[attribute], str)
             else:
                 self.assertIsInstance(
                     location[attribute], attribute_type)
@@ -105,6 +105,32 @@ class TestLocationList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
+
+    def test_collections(self):
+        """
+        Ensure we can can collect all collections that use this location
+        """
+        
+        item = Location.objects.first()
+        url = reverse('location_gis-collections', kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data),3)
+
+    def test_items(self):
+        """
+        Ensure we can can collect all items that use this location
+        """
+        
+        item = Location.objects.first()
+        url = reverse('location_gis-items', kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data),15)
 
     def test_create_a_location(self):
         """
@@ -175,7 +201,7 @@ class TestLocationList(APITestCase):
         Ensure we can delete an Location object
         """
 
-        item = Location.objects.first()
+        item = Location.objects.last()
 
         # Delete this object
         url = reverse('location_gis-detail', kwargs={'pk': item.id})

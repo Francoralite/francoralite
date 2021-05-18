@@ -10,7 +10,6 @@ item_musical_group factory to execute tests
 import factory
 from ...models.item_musical_group import ItemMusicalGroup
 # import nested/related factories
-from .item import ItemFactory
 from .musical_group import MusicalGroupFactory
 
 
@@ -26,5 +25,5 @@ class ItemMusicalGroupFactory(factory.django.DjangoModelFactory):
             'musical_group',)
 
     # Nested/related factories
-    item = factory.SubFactory(ItemFactory)
+    item = factory.SubFactory("telemeta_mshs.apps.telemeta_api.tests.factories.item.ItemFactory")
     musical_group = factory.SubFactory(MusicalGroupFactory)

@@ -12,28 +12,26 @@ import factory
 import pytest
 import sys
 import os
-import settings
-from types import NoneType
-
-from telemeta.cache import TelemetaCache
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.item import ItemFactory
+from .factories.item import ItemFactory, ItemCompleteFactory
+from .factories.performancecollectionmusician import PerformanceCollectionMusicianFactory
 from ..models.item import Item
 from ..models.collection import Collection
 from ..models.mediatype import MediaType
 from ..models.coupe import Coupe
+from ..models.performance_collection_musician import PerformanceCollectionMusician
 from .fake_data.fake_sound import create_tmp_sound
 
 from .keycloak import get_token
 
 # Expected structure for Item objects
-# FIXIT ----
+
 ITEM_STRUCTURE = [
     ('id', int),
     ('collection', dict),
@@ -82,10 +80,10 @@ class TestItemList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
-        ItemFactory.create_batch(6)
+        ItemCompleteFactory.create_batch(6)
+        PerformanceCollectionMusicianFactory.create_batch(3)
 
     def test_can_get_item_list(self):
         """
@@ -123,18 +121,11 @@ class TestItemList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    try:
-                        self.assertIsInstance(item[attribute], basestring)
-                    except AssertionError:
-                        # Because of serializer.DurationField
-                        self.assertIsInstance(item[attribute], NoneType)
-                else:
-                    try:
-                        self.assertIsInstance(item[attribute], str)
-                    except AssertionError:
-                        # Because of serializer.DurationField
-                        self.assertIsInstance(item[attribute], NoneType)
+                try:
+                    self.assertIsInstance(item[attribute], str)
+                except AssertionError:
+                    # Because of serializer.DurationField
+                    self.assertIsInstance(item[attribute], type(None))
             else:
                 self.assertIsInstance(item[attribute], attribute_type)
             self.assertIsNot(item[attribute], '')
@@ -203,50 +194,45 @@ class TestItemList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
-        item = response.data
 
-        # Item Analysis ----------------------------------
-        # Test if related ItemAnalyzis are presents
-        url = reverse('itemanalysis-list', kwargs={
-            'item_pk': item['id']})
+    def test_complete(self):
+        item = Item.objects.first()
+        url = reverse('item-complete', kwargs={'pk': item.id})
         response = self.client.get(url)
 
-        self.assertIsInstance(response.data, list)
-        # Number of analysis per item
-        self.assertEqual(len(response.data), 12)
-        for data_analysis in response.data:
-            # number of feature per analysis
-            self.assertEqual(len(data_analysis), 7)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data["performances"]), 1)
+        self.assertEqual(len(response.data["collectors"]), 2)
+        self.assertEqual(len(response.data["informers"]), 3)
+        self.assertEqual(len(response.data["authors"]), 1)
+        self.assertEqual(len(response.data["compositors"]), 1)
+        self.assertEqual(len(response.data["dances"]), 2)
+        self.assertEqual(len(response.data["domain_musics"]), 2)
+        self.assertEqual(len(response.data["domain_songs"]), 2)
+        self.assertEqual(len(response.data["domain_tales"]), 2)
+        self.assertEqual(len(response.data["domain_vocals"]), 2)
+        self.assertEqual(len(response.data["musical_groups"]), 2)
+        self.assertEqual(len(response.data["musical_organizations"]), 2)
+        self.assertEqual(len(response.data["thematics"]), 2)
+        self.assertEqual(len(response.data["usefulnesses"]), 2)
+        self.assertEqual(len(response.data["coiraults"]), 2)
 
-        # Transcoding ------------------------------------
-        # Test if related ItemTrancodingFlags are presents
-        url = reverse('itemtranscodingflag-list', kwargs={
-            'item_pk':  item['id']})
+
+    def test_performances(self):
+        item = Item.objects.first()
+        url = reverse('item-performances', kwargs={'pk': item.id})
         response = self.client.get(url)
 
-        self.assertIsInstance(response.data, list)
-        for transcoding_flag in response.data:
-            # number of feature per transcoding_flag
-            self.assertEqual(len(transcoding_flag), 5)
-
-        # Grapher ----------------------------------------
-        default_grapher_id = getattr(
-             settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_centroid'))
-        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
-        CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
-        cache_data = TelemetaCache(
-            getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
-        list_file = os.listdir(cache_data.dir)
-        self.assertEqual(
-            item['code'] + '.' + default_grapher_id +
-            '.346_130.png' in list_file, True)
-
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data["performances"]), 1)
+        
     def test_update_an_item(self):
         """
         Ensure we can update an Item object
         """
 
-        # item = Item.objects.last()
         item = Item.objects.first()
         self.assertNotEqual(item.title, 'foobar_test_put')
 
@@ -263,9 +249,6 @@ class TestItemList(APITestCase):
         # Create a fake file.
         data['file'] = create_tmp_sound()
 
-        response = self.client.get(
-            '/api/timeside/' + data['code'] + '/analyze')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data['approx_duration'] = '00:20'
 
         url = reverse(
@@ -324,61 +307,3 @@ class TestItemList(APITestCase):
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_timeside_analyze(self):
-        """
-        Ensure we can retrieve analysis data of an item's sound
-        """
-
-        # Retrieve a valid item's code
-        item = Item.objects.first()
-
-        # Retrieve some analysis data
-        # FIXIT ------------------------
-        duration = str(item.approx_duration)
-
-        # The code is right --> there is some data
-        response = self.client.get('/api/timeside/' +
-                                   str(item.id) + '/analyze')
-        print '------------------'
-        print response
-        print response.status_code
-        print '------------------'
-        sys.stdout.flush()
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['duration'], duration)
-
-        # The code is wrong/not-present --> there is no data
-        response = self.client.get('/api/timeside/0/analyze/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
-
-    def test_timeside_visualize(self):
-        """
-        Test if the spectrogram's image exists
-        """
-
-        # Retrieve a valid item's code
-        item = Item.objects.first()
-        id = str(item.id)
-        code = str(item.code)
-
-        # Call to the visualize endpoint
-        response = self.client.get('/api/timeside/' + id + '/visualize')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.data
-
-        # Grapher ----------------------------------------
-        default_grapher_id = data['grapher']
-
-        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
-        CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
-        cache_data = TelemetaCache(
-            getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
-        list_file = os.listdir(cache_data.dir)
-
-        # Test if the file exists
-        self.assertEqual(
-            code + '.' + default_grapher_id +
-            '.' + str(data['width']) + '_' +
-            str(data['height']) + '.png' in list_file, True)

@@ -7,10 +7,10 @@
 
 from django.views.generic.edit import FormView
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.personne import PersonneForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.personne import PersonneForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class PersonneEdit(FormView):
@@ -42,7 +42,7 @@ class PersonneEdit(FormView):
 
         # Obtain values of the record
         personne = requests.get(
-            FRONT_HOST_URL + '/api/authority/' + str(id))
+            settings.FRONT_HOST_URL + '/api/authority/' + str(id))
         data = personne.json()
         form = PersonneForm(initial=data)
         # authority = personne.json()

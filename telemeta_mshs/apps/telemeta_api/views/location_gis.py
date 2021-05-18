@@ -1,5 +1,6 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, status
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from ..models.location import Location as LocationModel
 from ..models.collection_location import (
@@ -18,9 +19,9 @@ class LocationGISViewSet(viewsets.ModelViewSet):
 
     queryset = LocationModel.objects.all()
     serializer_class = LocationGisSerializer
-    filter_backends = (filters.DjangoFilterBackend,
+    filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ()
+    filterset_fields = ()
     ordering = ('name',)
     search_fields = ('name',)
 
@@ -41,7 +42,7 @@ class LocationGISViewSet(viewsets.ModelViewSet):
             content = {'error': e}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-    @detail_route()
+    @action(detail=True)
     def collections(self, request, pk=None):
         instance = self.get_object()
 
@@ -57,7 +58,7 @@ class LocationGISViewSet(viewsets.ModelViewSet):
 
         return Response(data)
 
-    @detail_route()
+    @action(detail=True)
     def items(self, request, pk=None):
         instance = self.get_object()
 

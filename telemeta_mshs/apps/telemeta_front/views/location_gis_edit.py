@@ -9,10 +9,10 @@ from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
 from requests.exceptions import RequestException
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.location_gis import LocationForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.location_gis import LocationForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class LocationEdit(FormView):
@@ -26,7 +26,7 @@ class LocationEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/locationgis/' + str(id))
+            settings.FRONT_HOST_URL + '/api/locationgis/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['location'] = response.json
         return context
@@ -37,7 +37,7 @@ class LocationEdit(FormView):
 
         # Obtain values of the record
         location = requests.get(
-            FRONT_HOST_URL + '/api/locationgis/' + str(id))
+            settings.FRONT_HOST_URL + '/api/locationgis/' + str(id))
         form = LocationForm(initial=location.json())
 
         return render(request,

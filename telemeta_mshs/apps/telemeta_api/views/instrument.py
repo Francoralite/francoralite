@@ -4,7 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from ..models.instrument import Instrument as InstrumentModel
 from ..serializers.instrument import InstrumentSerializer
@@ -18,9 +18,9 @@ class InstrumentViewSet(viewsets.ModelViewSet):
     queryset = InstrumentModel.objects.all()
     serializer_class = InstrumentSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,
+    filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('name', 'typology')
+    filterset_fields = ('name', 'typology')
     ordering = ('name', 'typology')
     search_fields = ('name', 'notes')
 

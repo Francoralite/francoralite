@@ -6,7 +6,7 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .item import Item
 from .skos_concept import SkosConcept
@@ -17,8 +17,10 @@ class ItemCoirault(models.Model):
     "Table of relation between Item and Coirault"
 
     # List of the fields
-    item = models.ForeignKey(Item, verbose_name=_('item'))
-    coirault = models.ForeignKey(SkosConcept, verbose_name=_('Coirault'))
+    item = models.ForeignKey(Item, verbose_name=_('item'),
+            on_delete=models.CASCADE)
+    coirault = models.ForeignKey(SkosConcept, verbose_name=_('Coirault'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

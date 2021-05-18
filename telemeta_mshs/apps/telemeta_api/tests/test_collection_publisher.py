@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 """
-Institution tests
+CollectionPublisher tests
 """
 
 import factory
@@ -13,7 +13,7 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -51,7 +51,6 @@ class TestCollectionPublisherList(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
         CollectionPublisherFactory.create_batch(1)
@@ -97,11 +96,7 @@ class TestCollectionPublisherList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        collection_publisher[attribute], basestring)
-                else:
-                    self.assertIsInstance(collection_publisher[attribute], str)
+                self.assertIsInstance(collection_publisher[attribute], str)
             else:
                 self.assertIsInstance(
                     collection_publisher[attribute], attribute_type)

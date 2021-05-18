@@ -13,13 +13,13 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-from .factories.collection import CollectionFactory
+from .factories.collection import CollectionFactory, CollectionCompleteFactory
 from ..models.collection import Collection
 from ..models.mission import Mission
 from ..models.mediatype import MediaType
@@ -73,9 +73,8 @@ class TestCollectionList(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
-        call_command('telemeta-setup-enumerations')
 
-        CollectionFactory.create_batch(6)
+        CollectionCompleteFactory.create_batch(6)
 
     def test_can_get_collection_list(self):
         """
@@ -113,11 +112,7 @@ class TestCollectionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(
-                        collection[attribute], basestring)
-                else:
-                    self.assertIsInstance(collection[attribute], str)
+                self.assertIsInstance(collection[attribute], str)
             else:
                 self.assertIsInstance(
                     collection[attribute], attribute_type)
@@ -136,6 +131,28 @@ class TestCollectionList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
+
+    def test_complete(self):
+        """
+        Ensure we can collect the data of all entities
+        related to a collection
+        """
+
+        item = Collection.objects.first()
+        url = reverse('collection-complete',
+                      kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data["collectors"]), 2)
+        self.assertEqual(len(response.data["informers"]), 2)
+        self.assertEqual(len(response.data["locations"]), 2)
+        self.assertEqual(len(response.data["languages"]), 2)
+        self.assertEqual(len(response.data["publishers"]), 2)
+        self.assertEqual(len(response.data["performances"]), 2)
+        self.assertEqual(len(response.data["performances"][0]["musicians"]), 2)
+
 
     def test_create_a_collection(self):
         """
@@ -162,12 +179,6 @@ class TestCollectionList(APITestCase):
         data['recorded_from_year'] = str(data['recorded_from_year'])
         data['recorded_to_year'] = str(data['recorded_to_year'])
         data['recording_context'] = str(data['recording_context'])
-        # data['legal_rights'] = str(data['legal_rights'])
-        # data['metadata_author'] = str(data['metadata_author'])
-        # data['publishing_status'] = str(data['publishing_status'])
-        # data['status'] = str(data['status'])
-        # data['metadata_writer'] = str(data['metadata_writer'])
-        # data['media_type'] = str(data['media_type'])
 
         url = reverse('collection-list')
         response = self.client.post(url, data, format='json')

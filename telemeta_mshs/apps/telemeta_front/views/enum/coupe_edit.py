@@ -7,10 +7,10 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.coupe import CoupeForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.coupe import CoupeForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class CoupeEdit(FormView):
@@ -24,7 +24,7 @@ class CoupeEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/coupe/' + str(id))
+            settings.FRONT_HOST_URL + '/api/coupe/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['coupe'] = response.json
         return context
@@ -35,7 +35,7 @@ class CoupeEdit(FormView):
 
         # Obtain values of the record
         coupe = requests.get(
-            FRONT_HOST_URL + '/api/coupe/' + str(id))
+            settings.FRONT_HOST_URL + '/api/coupe/' + str(id))
         form = CoupeForm(initial=coupe.json())
 
         return render(request,

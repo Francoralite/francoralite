@@ -8,10 +8,10 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.emit_vox import EmitVoxForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.emit_vox import EmitVoxForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class EmitVoxEdit(FormView):
@@ -25,7 +25,7 @@ class EmitVoxEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/emit_vox/' + str(id))
+            settings.FRONT_HOST_URL + '/api/emit_vox/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['emit_vox'] = response.json
         return context
@@ -36,7 +36,7 @@ class EmitVoxEdit(FormView):
 
         # Obtain values of the record
         emit_vox = requests.get(
-            FRONT_HOST_URL + '/api/emit_vox/' + str(id))
+            settings.FRONT_HOST_URL + '/api/emit_vox/' + str(id))
         form = EmitVoxForm(initial=emit_vox.json())
 
         return render(request,

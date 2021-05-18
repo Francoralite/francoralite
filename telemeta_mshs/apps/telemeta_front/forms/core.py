@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 import requests
-from settings import FRONT_HOST_URL
+from django.conf import settings
 
 
 class Core():
@@ -25,7 +25,7 @@ class Core():
 
         # Calling the entity via the API
         response = requests.get(
-            FRONT_HOST_URL+'/api/' + entity)
+            settings.FRONT_HOST_URL + '/api/' + entity)
         if response.status_code == 200:
             # Make a JSON structure
             data = response.json()

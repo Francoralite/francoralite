@@ -3,39 +3,25 @@
 version: '2.1'
 
 services:
-  data:
-    labels:
-      - 'traefik.frontend.rule=Host:data.francoralite.localhost'
-
   db:
     labels:
       - 'traefik.frontend.rule=Host:db.francoralite.localhost'
 
-  broker:
-    labels:
-      - 'traefik.frontend.rule=Host:broker.francoralite.localhost'
-
-  search:
-    labels:
-      - 'traefik.frontend.rule=Host:search.francoralite.localhost'
-
   app:
+    environment:
+      COVERALLS_REPO_TOKEN: "${COVERALLS_REPO_TOKEN}"
     labels:
       - 'traefik.frontend.rule=Host:app.francoralite.localhost'
       - 'traefik.docker.network=services'
-
-  worker:
-    labels:
-      - 'traefik.frontend.rule=Host:worker.francoralite.localhost'
 
   nginx:
     labels:
       - 'traefik.frontend.rule=Host:nginx.francoralite.localhost'
       - 'traefik.docker.network=services'
 
-  phpmyadmin:
+  adminer:
     labels:
-      - 'traefik.frontend.rule=Host:phpmyadmin.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:adminer.francoralite.localhost'
       - 'traefik.docker.network=services'
 
   keycloak:
@@ -46,6 +32,8 @@ services:
   keycloak_db:
     labels:
       - 'traefik.frontend.rule=Host:keycloak-db.francoralite.localhost'
+    volumes:
+      - './test_data/dump_keycloak.sql:/tmp/keycloak_data.sql'
 
   reverse_proxy:
     image: 'traefik:1.7.11'

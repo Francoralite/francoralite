@@ -1,50 +1,27 @@
 #!/bin/bash
 
-# paths
-app='/srv/app'
-static='/srv/static/'
-media='/srv/media/'
-src='/srv/src/'
-log='/var/log/uwsgi/app.log'
-
-# uwsgi params
-port=8000
-processes=8
-threads=8
-autoreload=3
-uid='www-data'
-gid='www-data'
-
 export PYTHONPATH=$PWD/telemeta_mshs/apps:$PYTHONPATH
 
-python ./manage.py syncdb
-python ./manage.py migrate --noinput -v 3
-python ./manage.py bower_install -- --allow-root
+django-admin migrate --noinput -v 3
 
-# telemeta setup
-python ./manage.py telemeta-create-admin-user
-python ./manage.py telemeta-create-boilerplate
-python ./manage.py telemeta-setup-enumerations
-
-# Delete Timeside database if it exists
-cat ./telemeta_mshs/apps/Telemeta/scripts/sql/drop_timeside.sql | python ./manage.py dbshell
-
-if [ $REINDEX = "True" ]; then
-    python ./manage.py rebuild_index --noinput
+if [ "${REINDEX}" = "True" ]; then
+    django-admin rebuild_index --noinput
 fi
 
-# choose dev or prod mode
-if [ "$1" = "--runserver" ]; then
-    python ./manage.py runserver 0.0.0.0:8000
+django-admin collectstatic --noinput
+
+# Fix media access rights
+find /srv/media -exec chown www-data:www-data {} \;
+find /srv/static -exec chown www-data:www-data {} \;
+
+if [ "${LOCAL_DEV}" = "True" ]; then
+    # Start Django internal server
+    echo Starting Django web server.
+    exec django-admin runserver 0.0.0.0:8000
 else
-    python ./manage.py collectstatic --noinput
-
-    # fix media access rights
-    find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
-
     # Start Gunicorn processes
     echo Starting Gunicorn.
     exec gunicorn telemeta_mshs.wsgi:application \
-            --bind :$port \
+            --bind :8000 \
             --workers 3
 fi

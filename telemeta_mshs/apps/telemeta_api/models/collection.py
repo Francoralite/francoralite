@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
@@ -18,7 +18,8 @@ class Collection(models.Model):
     mission = models.ForeignKey(
             'telemeta_api.Mission',
             related_name='collection',
-            verbose_name=_('Mission'), blank=True, default="")
+            verbose_name=_('Mission'), blank=True, default="",
+            on_delete=models.CASCADE)
     title = models.CharField(_('titre'), max_length=255)
     alt_title = models.CharField(
         _(u'Titre original'), blank=True, max_length=255)

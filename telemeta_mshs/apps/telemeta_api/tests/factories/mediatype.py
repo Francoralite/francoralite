@@ -15,5 +15,5 @@ class MediaTypeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = MediaType
 
-    name = factory.Faker('sentence', nb_words=3)
+    name = factory.Sequence(lambda n: 'media%d' % n)
     notes = factory.Faker('paragraph', nb_sentences=1)

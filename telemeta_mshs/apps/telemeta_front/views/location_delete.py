@@ -6,7 +6,7 @@
 
 
 from django.views.generic.base import View
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class LocationDelete(View):

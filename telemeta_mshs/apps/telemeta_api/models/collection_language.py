@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from .collection import Collection
 from .language import Language
 
@@ -15,7 +15,8 @@ class CollectionLanguage(models.Model):
     "List of Language_ISO used by a MediaCollection"
 
     # List of the fields
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
     language = models.ForeignKey(Language,
                                  verbose_name=_('language'),
                                  on_delete=models.PROTECT)

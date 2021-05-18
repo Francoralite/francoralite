@@ -5,10 +5,10 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from telemeta_front.francoralite_template_view import FrancoraliteTemplateView
+from telemeta_mshs.apps.telemeta_front.francoralite_template_view import FrancoraliteTemplateView
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.item import ItemForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.item import ItemForm
 
 
 class ItemView(FrancoraliteTemplateView):
@@ -17,6 +17,6 @@ class ItemView(FrancoraliteTemplateView):
     def get_context_data(self, **kwargs):
         context = super(ItemView, self).get_context_data(**kwargs)
         context['items'] = requests.get(
-            FRONT_HOST_URL + '/api/item').json
+            settings.FRONT_HOST_URL + '/api/item').json
         context['form'] = ItemForm
         return context

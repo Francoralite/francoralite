@@ -7,10 +7,10 @@
 
 from django.views.generic.edit import FormView
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.institution import InstitutionForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.institution import InstitutionForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class InstitutionEdit(FormView):
@@ -36,7 +36,7 @@ class InstitutionEdit(FormView):
 
         # Obtain values of the record
         institution = requests.get(
-            FRONT_HOST_URL + '/api/institution/' + str(id))
+            settings.FRONT_HOST_URL + '/api/institution/' + str(id))
         form = InstitutionForm(initial=institution.json())
 
         return render(request,

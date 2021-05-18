@@ -13,7 +13,7 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -51,7 +51,6 @@ class TestItemCoiraultList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         # Create a set of sample data
         ItemCoiraultFactory.create_batch(1)
@@ -96,10 +95,7 @@ class TestItemCoiraultList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(item_coirault[attribute], basestring)
-                else:
-                    self.assertIsInstance(item_coirault[attribute], str)
+                self.assertIsInstance(item_coirault[attribute], str)
             else:
                 self.assertIsInstance(item_coirault[attribute], attribute_type)
             self.assertIsNot(item_coirault[attribute], '')

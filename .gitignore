@@ -73,15 +73,11 @@ telemeta_mshs/assets-src/vendor/
 
 # Data
 data/
-enumeration/
-settings.py
 src/
-telemeta_mshs/robots.txt
-telemeta_settings.py
-worker.py
 
 # Testing
 .pytest_cache/
+htmlcov/
 
 # Vim
 *.swo

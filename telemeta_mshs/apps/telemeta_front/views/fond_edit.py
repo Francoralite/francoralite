@@ -7,10 +7,10 @@
 
 from django.views.generic.edit import FormView
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.fond import FondForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.fond import FondForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class FondEdit(FormView):
@@ -41,7 +41,7 @@ class FondEdit(FormView):
 
         # Obtain values of the record
         fond = requests.get(
-            FRONT_HOST_URL + '/api/fond/' + str(id))
+            settings.FRONT_HOST_URL + '/api/fond/' + str(id))
         data = fond.json()
         data['institution'] = data['institution']['id']
         form = FondForm(initial=data)

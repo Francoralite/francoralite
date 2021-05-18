@@ -1,5 +1,5 @@
 """
-AcquisitionMode tests
+Coupe tests
 """
 
 import factory
@@ -7,7 +7,7 @@ import pytest
 import sys
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -41,7 +41,6 @@ class TestAcquisitionList(APITestCase):
         get_token(self)
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        call_command('telemeta-setup-enumerations')
 
         CoupeFactory.create_batch(6)
 
@@ -81,10 +80,7 @@ class TestAcquisitionList(APITestCase):
 
             # Ensure type of each attribute
             if attribute_type == str:
-                if sys.version_info.major == 2:
-                    self.assertIsInstance(coupe[attribute], basestring)
-                else:
-                    self.assertIsInstance(coupe[attribute], str)
+                self.assertIsInstance(coupe[attribute], str)
             else:
                 self.assertIsInstance(coupe[attribute], attribute_type)
             self.assertIsNot(coupe[attribute], '')

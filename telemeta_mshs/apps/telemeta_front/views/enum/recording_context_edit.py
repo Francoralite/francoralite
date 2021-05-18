@@ -8,10 +8,10 @@
 from django.views.generic.edit import FormView
 from rest_framework import status
 import requests
-from settings import FRONT_HOST_URL
-from telemeta_front.forms.recording_context import RecordingContextForm
+from django.conf import settings
+from telemeta_mshs.apps.telemeta_front.forms.recording_context import RecordingContextForm
 from django.shortcuts import render
-import telemeta_front.tools as tools
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class RecordingContextEdit(FormView):
@@ -25,7 +25,7 @@ class RecordingContextEdit(FormView):
         id = kwargs.get('id')
         # Obtain values of the record
         response = requests.get(
-            FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
+            settings.FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
         if response.status_code == status.HTTP_200_OK:
             context['recording_context'] = response.json
         return context
@@ -36,7 +36,7 @@ class RecordingContextEdit(FormView):
 
         # Obtain values of the record
         recording_context = requests.get(
-            FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
+            settings.FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
         form = RecordingContextForm(initial=recording_context.json())
 
         return render(request,

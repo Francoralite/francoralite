@@ -6,7 +6,7 @@
 
 from django.db import models
 from .hornbostelsachs import HornbostelSachs
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class Instrument(models.Model):
@@ -14,7 +14,8 @@ class Instrument(models.Model):
     notes = models.TextField(_('Notes'), null=True, blank=True)
     typology = models.ForeignKey(HornbostelSachs,
                                  blank=True, null=True,
-                                 verbose_name=_('HornbostelSachs'))
+                                 verbose_name=_('HornbostelSachs'),
+                                 on_delete=models.SET_NULL)
 
     class Meta:
         app_label = 'telemeta_api'

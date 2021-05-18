@@ -6,7 +6,7 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from .collection import Collection
 from .authority import Authority
 
@@ -17,8 +17,10 @@ class CollectionInformer(models.Model):
 
     # List of the fields
 
-    collection = models.ForeignKey(Collection, verbose_name=_('collection'))
-    informer = models.ForeignKey(Authority, verbose_name=_('informer'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+            on_delete=models.CASCADE)
+    informer = models.ForeignKey(Authority, verbose_name=_('informer'),
+            on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'telemeta_api'

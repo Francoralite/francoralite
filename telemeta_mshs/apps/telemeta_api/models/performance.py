@@ -5,9 +5,9 @@
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
 from django.db import models
-from instrument import Instrument
-from emit_vox import EmitVox
-from django.utils.translation import ugettext_lazy as _
+from .instrument import Instrument
+from .emit_vox import EmitVox
+from django.utils.translation import gettext_lazy as _
 
 
 class Performance(models.Model):
@@ -17,10 +17,12 @@ class Performance(models.Model):
     number = models.IntegerField(_("Nombre"))
     instrument = models.ForeignKey(Instrument,
                                    blank=True, null=True,
-                                   verbose_name=_('instrument'))
+                                   verbose_name=_('instrument'),
+                                   on_delete=models.SET_NULL)
     emit = models.ForeignKey(EmitVox,
                              blank=True, null=True,
-                             verbose_name=_(u'Nature de l\'émission vocale'))
+                             verbose_name=_(u'Nature de l\'émission vocale'),
+                             on_delete=models.SET_NULL)
 
     class Meta:
         abstract = True

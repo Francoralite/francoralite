@@ -6,8 +6,8 @@
 
 
 from django.views.generic.edit import FormView
-from telemeta_front.forms.dance import DanceForm
-import telemeta_front.tools as tools
+from telemeta_mshs.apps.telemeta_front.forms.dance import DanceForm
+import telemeta_mshs.apps.telemeta_front.tools as tools
 
 
 class DanceAdd(FormView):

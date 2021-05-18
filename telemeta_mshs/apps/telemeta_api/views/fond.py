@@ -5,8 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ..models.fond import Fond as FondModel
@@ -30,11 +31,11 @@ class FondViewSet(viewsets.ModelViewSet):
     queryset = FondModel.objects.all()
     serializer_class = FondSerializer
 
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend,)
     # filter_fields = ('institution',)
     # ordering = ('institution', 'code',)
     # search_fields = ('institution__name', 'code', 'title')
-    filter_fields = ('code', 'title')
+    filterset_fields = ('code', 'title')
 
     keycloak_scopes = {
         'GET': 'fond:view',
@@ -43,6 +44,7 @@ class FondViewSet(viewsets.ModelViewSet):
         'PUT': 'fond:update',
         'DELETE': 'fond:delete'
     }
+
 
     def list_missions(self, id_fonds, field='id'):
 
@@ -86,7 +88,7 @@ class FondViewSet(viewsets.ModelViewSet):
 
         return data
 
-    @detail_route()
+    @action(detail=True)
     def dates(self, request, pk=None):
         """
         Determine the max and th min dates from
@@ -114,7 +116,7 @@ class FondViewSet(viewsets.ModelViewSet):
 
         return Response((date_start, date_end))
 
-    @detail_route()
+    @action(detail=True)
     def informers(self, request, pk=None):
         instance = self.get_object()
 
@@ -126,7 +128,7 @@ class FondViewSet(viewsets.ModelViewSet):
             )
         return Response(data)
 
-    @detail_route()
+    @action(detail=True)
     def collectors(self, request, pk=None):
         instance = self.get_object()
         data = self.related_collections(
