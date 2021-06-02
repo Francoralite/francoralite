@@ -33,7 +33,7 @@ services:
     labels:
       - 'traefik.frontend.rule=Host:keycloak-db.francoralite.localhost'
     volumes:
-      - './test_data/dump_keycloak.sql:/tmp/keycloak_data.sql'
+      - './test_data/dump_keycloak.sql'
 
   reverse_proxy:
     image: 'traefik:1.7.11'
