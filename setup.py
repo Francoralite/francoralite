@@ -70,7 +70,7 @@ setup(
     'django-cors-headers==3.7.0',
     'python-keycloak==0.24.0',
     'rsa==4.7.2',
-    'python-jose==3.2.0',
+    'python-jose==3.3.0',
     'mozilla-django-oidc==1.2.4',
     'rdflib==5.0.0',
   ],
