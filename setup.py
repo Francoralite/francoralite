@@ -23,8 +23,8 @@ CLASSIFIERS = ['Environment :: Web Environment',
 
 
 setup(
-  name = "Telemeta-MSHS",
-  url = "http://telemeta-mshs.org",
+  name = "Francoralite",
+  url = "http://francoralite.org",
   description = "Open web audio application with semantics",
   long_description = open('README.md').read(),
   author = "Luc Leger",

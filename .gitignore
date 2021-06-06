@@ -55,12 +55,12 @@ venv
 *.iml
 *.iws
 
-telemeta_mshs/settings/local.py
-telemeta_mshs/settings/production.py
+francoralite/settings/local.py
+francoralite/settings/production.py
 
 # collect static output directory
-telemeta_mshs/assets/
-telemeta_mshs/static/
+francoralite/assets/
+francoralite/static/
 
 .DS_Store
 
@@ -68,7 +68,7 @@ telemeta_mshs/static/
 node_modules/
 
 # bower packages
-telemeta_mshs/assets-src/vendor/
+francoralite/assets-src/vendor/
 .sass-cache/
 
 # Data

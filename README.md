@@ -1,4 +1,4 @@
-# Telemeta-mshs
+# Francoralite
 
 ## Installation
 
@@ -20,7 +20,7 @@ apt-get install python-tk python-gst-1.0 python-dev libmysqlclient-dev
 * Clone the repository
 
 ```
-git clone git@github.com:lluc/telemeta-integration.git
+git clone git@github.com:francoralite/francoralite.git
 ```
 
 * Manage sub modules

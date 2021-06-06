@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PYTHONPATH=$PWD/telemeta_mshs/apps:$PYTHONPATH
+export PYTHONPATH=$PWD/francoralite/apps:$PYTHONPATH
 
 django-admin migrate --noinput -v 3
 
@@ -21,7 +21,7 @@ if [ "${LOCAL_DEV}" = "True" ]; then
 else
     # Start Gunicorn processes
     echo Starting Gunicorn.
-    exec gunicorn telemeta_mshs.wsgi:application \
+    exec gunicorn francoralite.wsgi:application \
             --bind :8000 \
             --workers 3
 fi

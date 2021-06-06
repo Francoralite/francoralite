@@ -1,6 +1,6 @@
 ---
 
-# Docker compose to build Telemeta meta project
+# Docker compose to build Francoralite meta project
 
 version: '2.1'
 

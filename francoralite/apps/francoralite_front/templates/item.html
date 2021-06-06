@@ -1,0 +1,80 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="{{ STATIC_URL }}SoundManager2/script/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}francoralite_front/js/locale.js" type="text/javascript"></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+{% trans "Items" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+{% if items|length > 0 %}
+  <!-- Table to display the items --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for item in items %}
+  <tr>
+      <td class="highlight">
+          <a href="/item/{{item.id }}">
+            {{ item.code|upper }}</a>
+      </td>
+      <!--  FIXIT : affichage des champs -->
+      <td>{{ item.title|safe }}</td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "item-edit" id=item.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{item.title}}"
+            data-url="{% url "item-delete" id=item.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+    <p>{% trans "Il n'y a pas d'items" %}</p>
+{% endif %}
+</div>
+{% endblock %}

@@ -10,7 +10,7 @@ services:
 
 # Install Francoralite
 install:
-  - git clone https://github.com/lluc/telemeta-integration.git
+  - git clone https://github.com/francoralite/francoralite.git
   - git submodule update --recursive --init
   - docker-compose pull
   - docker-compose build
