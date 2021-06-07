@@ -12,21 +12,7 @@ networks:
       name: 'services'
 
 services:
-  adminer:
-    image: "${ADMINER_IMAGE}:${ADMINER_VERSION}"
-    logging: &logging
-      driver: 'json-file'
-      options:
-        max-size: "${LOGGING_MAX_SIZE}"
-        max-file: "${LOGGING_MAX_FILE}"
-    restart: 'unless-stopped'
-    networks:
-      - 'services'
-      - 'francoralite'
-
   app:
-    build:
-      context: .
     restart: 'unless-stopped'
     depends_on:
       db:
@@ -39,13 +25,15 @@ services:
       interval: '10s'
       timeout: '2s'
       retries: 20
-    logging:
-      <<: *logging
+    logging: &logging
+      driver: 'json-file'
+      options:
+        max-size: "${LOGGING_MAX_SIZE}"
+        max-file: "${LOGGING_MAX_FILE}"
     networks:
       - 'services'
       - 'francoralite'
     volumes:
-      - './:/srv/app'
       - './etc/keycloak/auth.json:/tmp/authorization_config.json'
       - 'francoralite_app_media:/srv/media'
       - 'francoralite_app_static:/srv/static'
