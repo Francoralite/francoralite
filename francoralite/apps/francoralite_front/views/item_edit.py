@@ -44,17 +44,10 @@ class ItemEdit(FormView):
         form = ItemForm(initial=item)
         form.fields['file'].required = False
 
-        # Obtain gaphers of the record
-        graphers = []
-        response = tools.request_api(
-            '/api/timeside/' + str(id) + '/visualize')
-        # if response.status_code == status.HTTP_200_OK:
-        graphers.append(response)
 
         return render(request,
                       '../templates/item-add.html',
                       {'form': form, 'id': id, 'item': item,
-                       'graphers': graphers,
                        'url_external': settings.FRONT_HOST_URL_EXTERNAL})
 
     def post(self, request, *args, **kwargs):

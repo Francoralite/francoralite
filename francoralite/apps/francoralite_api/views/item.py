@@ -7,7 +7,8 @@
 import os
 import mimetypes
 import datetime
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, StreamingHttpResponse
+from django.conf import settings
 import json
 
 
@@ -243,3 +244,53 @@ class ItemViewSet(viewsets.ModelViewSet):
             data["performances"].append(data_performance)
 
         return Response(data)
+
+
+    def stream_from_file(self, file):
+        chunk_size = 0x100000
+        f = open(file, 'r')
+        while True:
+            chunk = f.read(chunk_size)
+            if not len(chunk):
+                f.close()
+                break
+            yield chunk
+
+    def serve_media(self, filename, content_type="", buffering=True):
+        if not settings.DEBUG:
+            return self.nginx_media_accel(filename, content_type=content_type,
+                                    buffering=buffering)
+        else:
+            response = StreamingHttpResponse(self.stream_from_file(filename), content_type=content_type)
+            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+            return response
+
+    def nginx_media_accel(self, media_path, content_type="", buffering=True):
+        """Send a protected media file through nginx with X-Accel-Redirect"""
+
+        response = HttpResponse()
+        url = settings.MEDIA_URL + os.path.relpath(media_path, settings.MEDIA_ROOT)
+        filename = os.path.basename(media_path)
+        response['Content-Disposition'] = "attachment; filename=%s" % (filename)
+        response['Content-Type'] = content_type
+        response['X-Accel-Redirect'] = url
+
+        if not buffering:
+            response['X-Accel-Buffering'] = 'no'
+            #response['X-Accel-Limit-Rate'] = 524288
+
+        return response
+
+    @action(
+        detail=True,
+        methods=['get'],
+        url_path='download/(?P<file_name>[a-zA-Z0-9_.]+)', # noqa
+        url_name='sound_download')
+    def download(self, request, pk=None, file_name=""):
+        item = ItemModel.objects.get(id=pk)
+        #media = self.item_transcode(item=item, extension="mp3")
+        #response = serve_media(media[0], content_type=media[1])
+        file = item.public_id + '.mp3'
+        media = settings.MEDIA_ROOT + os.sep + file
+        response = self.serve_media(media, content_type="mp3")
+        return response

@@ -43,11 +43,6 @@ class ItemDetail(FrancoraliteTemplateView):
                 + '/performance')
             context['performances'] = performances
 
-            # Obtain gaphers of the record
-            context['graphers'] = []
-            context['graphers'].append(tools.request_api(
-                 '/api/timeside/' + context['id'] + '/visualize'))
-
         except Exception as err:
             context['item'] = {}
             context['locations'] = []
