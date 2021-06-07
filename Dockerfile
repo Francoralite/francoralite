@@ -35,3 +35,6 @@ EXPOSE 8000
 
 # Command
 CMD ["/srv/app/scripts/start_api.sh"]
+
+# Copy source code
+ADD . .
