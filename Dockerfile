@@ -1,6 +1,6 @@
 FROM python:3.7.10-slim-buster
 
-ENV DJANGO_SETTINGS_MODULE telemeta_mshs.settings.base
+ENV DJANGO_SETTINGS_MODULE francoralite.settings.base
 ENV KEYCLOAK_DEFAULT_ACCESS ALLOW
 ENV KEYCLOAK_REALM francoralite
 ENV KEYCLOAK_SERVER_URL http://keycloak.francoralite.localhost:50000/auth/

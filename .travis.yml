@@ -3,15 +3,11 @@ language: python
 python:
   - "3.7"
 
-sudo: required
-
 services:
   - docker
 
 # Install Francoralite
 install:
-  - git clone https://github.com/lluc/telemeta-integration.git
-  - git submodule update --recursive --init
   - docker-compose pull
   - docker-compose build
 
@@ -21,17 +17,7 @@ before_script:
 
 script:
   - docker-compose up --no-start
-  - sleep 30
-  - docker-compose stop keycloak
-  - docker-compose rm -f keycloak
-  - docker-compose stop keycloak_db
-  - docker-compose rm -f keycloak_db
-  - docker volume rm -f "$(basename $PWD)_keycloak_db"
-  - docker-compose up --no-start
-  - docker-compose start keycloak_db
-  - sleep 10
-  - docker-compose exec keycloak_db bash -c "PGPASSWORD=password psql -U keycloak -w keycloak < '/tmp/keycloak_data.sql'"
-  - docker-compose up -d
+  - bash -c ./scripts/load_keycloak_data.sh
   - docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
   - docker-compose exec app bash -c 'py.test'
 

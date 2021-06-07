@@ -2163,8 +2163,9 @@ d5447076-ea4f-4493-b0f9-dbea011ad108	39965e67-dd49-4054-874a-5ce643fe1149
 
 COPY public.credential (id, device, hash_iterations, salt, type, value, user_id, created_date, counter, digits, period, algorithm) FROM stdin;
 67d3b1d2-23a6-4f56-9347-5e098d7f0f5b	\N	27500	\\xf3abe529a0b76f3bda1d0ce04797707f	password	wd+QiB/M30ue7Dctr+QS1VmUdT6oLcHSXsG8YEO3hPtFdw/RQdVnWqjm8KguVXTe/l2jrvwJfWhELjuESK9+pg==	ddf2637a-e7d1-4396-93c2-514135e73261	\N	0	0	0	pbkdf2-sha256
-9f916b60-4f8d-4189-844f-352f0227c91f	\N	27500	\\xe7cfb8d370f422860aadbf2bf499c901	password	6w2nw06Tbw7M8Fa16+ZEzQYX7kNk+ka9hLmjTkf3E3e+YTpkQuGQnSIs+2V2YzaU8s+S2rEmVxCpQn/6ytll6A==	9ad0229f-029c-4941-b5ca-6f63c499b903	1567435501352	0	0	0	pbkdf2-sha256
-0ebc8486-0e79-41d5-96fb-872c4b9891c0	\N	27500	\\x5ecf12a9a9de2948cf495c26e32a3d43	password	d5GiBI2jC78GXKRdT2IeSZBS1V6/kUEM9iXiM6gtQwp1mICpn/Xj6TytRV0n8ZuYIHEqEG4F4GQ3RLkunxKAfQ==	741b7983-9033-47ad-b7f9-72097e50920b	1615993171169	0	0	0	pbkdf2-sha256
+1f6aa710-ff65-461e-bef0-6dd6583aa688	\N	27500	\\x5c1fae7e63a86666b1832ad19eadf75b	password	MCD/jIaWIKp+O4J4d8jhKQYGPzjuCYtVi98Jex5Rg2k9R1uKcgrFtW0ul1wSOQRKw83zI+wkHzy+SB3CVJThVA==	25d39c71-cebd-4828-b750-3b8daad7778e	1622987810503	0	0	0	pbkdf2-sha256
+ccca885a-ce26-401b-bed8-f22f5e7b3423	\N	27500	\\x658b0aee0f6c25213a63402f70f475e4	password	VImB+MNGkvA24XuBmp2ZTWF8nnokju5OzLz6pPHe0FznpS3lpreFbKRtqGpJGKrj7YEq/lmHj++W4cdv/OBn/A==	0914bbc4-0b4f-4768-93a3-a69d14d13114	1622987871234	0	0	0	pbkdf2-sha256
+a083bfe0-8b65-4de4-b4cd-184a5445b75e	\N	27500	\\xd8be9e21e63dd2ce3e83c415830f18bc	password	auFIP6r7vd4AVLfIoLsFATaU0KW9h8ksJSrVm1hZquG7yFqy4YOd4IUhmkAC5fjVWle2ZDbgwhyUcw8SkzldyA==	fae07fa4-0bf4-4d14-a5b0-ef2e7a68d955	1622987933940	0	0	0	pbkdf2-sha256
 \.
 
 
@@ -2924,8 +2925,8 @@ be0239db-94bc-498c-ba3f-7a15e27cf0ba	false	userinfo.token.claim
 --
 
 COPY public.realm (id, access_code_lifespan, user_action_lifespan, access_token_lifespan, account_theme, admin_theme, email_theme, enabled, events_enabled, events_expiration, login_theme, name, not_before, password_policy, registration_allowed, remember_me, reset_password_allowed, social, ssl_required, sso_idle_timeout, sso_max_lifespan, update_profile_on_soc_login, verify_email, master_admin_client, login_lifespan, internationalization_enabled, default_locale, reg_email_as_username, admin_events_enabled, admin_events_details_enabled, edit_username_allowed, otp_policy_counter, otp_policy_window, otp_policy_period, otp_policy_digits, otp_policy_alg, otp_policy_type, browser_flow, registration_flow, direct_grant_flow, reset_credentials_flow, client_auth_flow, offline_session_idle_timeout, revoke_refresh_token, access_token_life_implicit, login_with_email_allowed, duplicate_emails_allowed, docker_auth_flow, refresh_token_max_reuse, allow_user_managed_access, sso_max_lifespan_remember_me, sso_idle_timeout_remember_me) FROM stdin;
-francoralite	60	300	300	keycloak	keycloak	keycloak	t	f	0	keycloak	francoralite	1567435122	\N	f	f	f	f	NONE	1800	36000	f	f	ac6a2e53-830b-44ee-8fc0-775bb105330d	1800	t	fr	f	f	f	f	0	1	30	6	HmacSHA1	totp	c0214dcb-09b7-49b6-87a8-cb8e8ab1f12d	fb9a5a93-0804-4b67-9805-37e9630c3adc	88edf78f-b77c-4538-a2da-50fb89041319	3440df01-ffe2-4734-bd0a-0718162bbb80	88d730bb-34e8-4e93-bf18-ac5a8673d7d9	2592000	f	900	t	f	025ef783-6113-46c0-b997-534b69a01a87	0	f	0	0
 master	60	300	60	\N	\N	\N	t	f	0	\N	master	1567415903	\N	f	f	f	f	EXTERNAL	1800	36000	f	f	9b3d814d-33ff-45fd-9f13-a489b550ae9e	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	c7352f60-b9e1-47a6-a59b-80fec7a47336	89b8d90b-255a-41b0-80d8-134a3f122410	a3a5cfd1-1916-425e-9506-43346acc24d7	952496b8-a35d-4607-9bb8-773b06d5ddf1	92ecb810-75b3-4d42-b661-8b3c30dbed58	2592000	f	900	t	f	c6bda705-d01b-4202-804c-e1ee5508f2b7	0	f	0	0
+francoralite	60	300	300	keycloak	keycloak	keycloak	t	f	0	keycloak	francoralite	1622987001	\N	f	f	f	f	NONE	1800	36000	f	f	ac6a2e53-830b-44ee-8fc0-775bb105330d	1800	t	fr	f	f	f	f	0	1	30	6	HmacSHA1	totp	c0214dcb-09b7-49b6-87a8-cb8e8ab1f12d	fb9a5a93-0804-4b67-9805-37e9630c3adc	88edf78f-b77c-4538-a2da-50fb89041319	3440df01-ffe2-4734-bd0a-0718162bbb80	88d730bb-34e8-4e93-bf18-ac5a8673d7d9	2592000	f	900	t	f	025ef783-6113-46c0-b997-534b69a01a87	0	f	0	0
 \.
 
 
@@ -4225,7 +4226,6 @@ e907d88c-7e7e-4b4e-9b33-6865f4a6b11a	a29acdd2-e748-4989-88ef-53d5280d664f
 --
 
 COPY public.user_attribute (name, value, user_id, id) FROM stdin;
-locale	fr	9ad0229f-029c-4941-b5ca-6f63c499b903	5c71ff26-a72a-4220-8892-6fa963a42331
 \.
 
 
@@ -4252,8 +4252,9 @@ COPY public.user_consent_client_scope (user_consent_id, scope_id) FROM stdin;
 COPY public.user_entity (id, email, email_constraint, email_verified, enabled, federation_link, first_name, last_name, realm_id, username, created_timestamp, service_account_client_link, not_before) FROM stdin;
 ddf2637a-e7d1-4396-93c2-514135e73261	\N	8004afb0-a72b-4959-8db9-a82cb713d371	f	t	\N	\N	\N	master	admin	1565685875145	\N	0
 78181ea0-a785-4fd2-8273-e66901be11a1	service-account-francoralite@placeholder.org	service-account-francoralite@placeholder.org	f	t	\N	\N	\N	francoralite	service-account-francoralite	1567415962237	6ca8b749-cba1-4453-8a20-0c189d9b9447	0
-9ad0229f-029c-4941-b5ca-6f63c499b903	toto1@toto.com	toto1@toto.com	t	t	\N	Toto1	Nom de toto	francoralite	toto1	1567435441623	\N	0
-741b7983-9033-47ad-b7f9-72097e50920b	\N	4dfefa02-fced-464c-ae00-b99a1517dc06	t	t	\N	\N	\N	francoralite	contributeur	1615993158748	\N	0
+0914bbc4-0b4f-4768-93a3-a69d14d13114	contributeur@francoralite.org	contributeur@francoralite.org	t	t	\N	Contributeur	Francoralite	francoralite	contributeur	1622987852505	\N	0
+fae07fa4-0bf4-4d14-a5b0-ef2e7a68d955	utilisateur@francoralite.org	utilisateur@francoralite.org	t	t	\N	Utilisateur	Francoralite	francoralite	utilisateur	1622987922129	\N	0
+25d39c71-cebd-4828-b750-3b8daad7778e	administrateur@francoralite.org	administrateur@francoralite.org	t	t	\N	Administrateur	Francoralite	francoralite	administrateur	1622987776553	\N	0
 \.
 
 
@@ -4320,14 +4321,18 @@ b684e64f-9250-42e0-a055-2a18ffa4df88	78181ea0-a785-4fd2-8273-e66901be11a1
 818c584b-976b-40ee-a442-403c98bb668c	78181ea0-a785-4fd2-8273-e66901be11a1
 850b0803-fc35-445d-a23e-d6479241bb60	78181ea0-a785-4fd2-8273-e66901be11a1
 3d8b9944-d052-4e94-aba8-36358a0b5638	78181ea0-a785-4fd2-8273-e66901be11a1
-5531c621-ad97-4da9-8896-bed73d09c285	9ad0229f-029c-4941-b5ca-6f63c499b903
-b684e64f-9250-42e0-a055-2a18ffa4df88	9ad0229f-029c-4941-b5ca-6f63c499b903
-818c584b-976b-40ee-a442-403c98bb668c	9ad0229f-029c-4941-b5ca-6f63c499b903
-850b0803-fc35-445d-a23e-d6479241bb60	9ad0229f-029c-4941-b5ca-6f63c499b903
-5531c621-ad97-4da9-8896-bed73d09c285	741b7983-9033-47ad-b7f9-72097e50920b
-b684e64f-9250-42e0-a055-2a18ffa4df88	741b7983-9033-47ad-b7f9-72097e50920b
-818c584b-976b-40ee-a442-403c98bb668c	741b7983-9033-47ad-b7f9-72097e50920b
-850b0803-fc35-445d-a23e-d6479241bb60	741b7983-9033-47ad-b7f9-72097e50920b
+5531c621-ad97-4da9-8896-bed73d09c285	25d39c71-cebd-4828-b750-3b8daad7778e
+b684e64f-9250-42e0-a055-2a18ffa4df88	25d39c71-cebd-4828-b750-3b8daad7778e
+818c584b-976b-40ee-a442-403c98bb668c	25d39c71-cebd-4828-b750-3b8daad7778e
+850b0803-fc35-445d-a23e-d6479241bb60	25d39c71-cebd-4828-b750-3b8daad7778e
+5531c621-ad97-4da9-8896-bed73d09c285	0914bbc4-0b4f-4768-93a3-a69d14d13114
+b684e64f-9250-42e0-a055-2a18ffa4df88	0914bbc4-0b4f-4768-93a3-a69d14d13114
+818c584b-976b-40ee-a442-403c98bb668c	0914bbc4-0b4f-4768-93a3-a69d14d13114
+850b0803-fc35-445d-a23e-d6479241bb60	0914bbc4-0b4f-4768-93a3-a69d14d13114
+5531c621-ad97-4da9-8896-bed73d09c285	fae07fa4-0bf4-4d14-a5b0-ef2e7a68d955
+b684e64f-9250-42e0-a055-2a18ffa4df88	fae07fa4-0bf4-4d14-a5b0-ef2e7a68d955
+818c584b-976b-40ee-a442-403c98bb668c	fae07fa4-0bf4-4d14-a5b0-ef2e7a68d955
+850b0803-fc35-445d-a23e-d6479241bb60	fae07fa4-0bf4-4d14-a5b0-ef2e7a68d955
 \.
 
 
