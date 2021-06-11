@@ -32,19 +32,20 @@ from .item_coirault import ItemCoiraultFactory
 
 
 from ..fake_data.fake_sound import create_tmp_sound
+from django.conf import settings
+
 
 
 class ItemFactory(factory.django.DjangoModelFactory):
     """
     Item factory
     """
-    code = factory.Sequence(lambda n: 'code{0}'.format(n))
-
+    
     class Meta:
         model = Item
 
-    # FIXIT------------------
-    # General -----------
+      # General -----------
+    code = factory.Sequence(lambda n: 'code{0}'.format(n))
     collection = factory.SubFactory('francoralite.apps.francoralite_api.tests.factories.collection.CollectionFactory')
     title = factory.Faker('word')
     alt_title = factory.Faker('word')
@@ -56,7 +57,9 @@ class ItemFactory(factory.django.DjangoModelFactory):
     date_edit = factory.LazyFunction(datetime.datetime.now)
     media_type = factory.SubFactory(MediaTypeFactory)
     approx_duration = factory.Faker('time_delta')
-    file = create_tmp_sound()  # factory.Faker('file_name', extension="mp3")
+    file = factory.LazyAttribute(
+        lambda obj: create_tmp_sound( settings.MEDIA_ROOT + "items/" + obj.code )
+    )
 
     # Description -----------------------
     timbre = factory.Faker('word')

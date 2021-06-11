@@ -8,7 +8,7 @@ from base64 import b64decode
 from django.core.files.base import ContentFile
 
 
-def create_tmp_sound():
+def create_tmp_sound(code):
     # Create a fake sound from a base64 encoded string.
     # N.B : the sound is a A 440 Hz, duration 2 seconds
 
@@ -202,6 +202,6 @@ qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqo=
 """)
 
-    sound_file = ContentFile(data, 'test.mp3')
+    sound_file = ContentFile(data, code + ".mp3")
 
     return sound_file

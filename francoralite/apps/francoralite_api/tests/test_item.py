@@ -10,8 +10,6 @@ Item tests
 
 import factory
 import pytest
-import sys
-import os
 
 from django.core.management import call_command
 from django.urls import reverse
@@ -174,7 +172,8 @@ class TestItemList(APITestCase):
         data['coupe'] = coupe.id
 
         # Create a fake file.
-        data['file'] = create_tmp_sound()
+        data['file'] = create_tmp_sound(data['code'])
+      
 
         url = reverse('item-list')
         response = self.client.post(url, data, format='multipart')
@@ -247,7 +246,7 @@ class TestItemList(APITestCase):
         data['media_type'] = data['media_type']['id']
         data['coupe'] = data['coupe']['id']
         # Create a fake file.
-        data['file'] = create_tmp_sound()
+        data['file'] = create_tmp_sound(data['code'])
 
         data['approx_duration'] = '00:20'
 
@@ -285,6 +284,19 @@ class TestItemList(APITestCase):
             sorted(response.data.keys()),
             ITEM_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
+    
+    def test_download_a_file(self, depends=['test_create_an_item'] ):
+        """
+        Ensure we can download a file of an item
+        """
+        item = Item.objects.first()
+
+        url = reverse(
+            'item-sound_download',
+            kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_an_item(self):
         """

@@ -54,7 +54,7 @@ class Item(models.Model):
         blank=True, null=True, on_delete=models.SET_NULL)
     approx_duration = models.DurationField(
         _(u'durée estimée'),  null=True, blank=True)
-    file = models.FileField(_('fichier son'), upload_to='items/%Y/%m/%d',
+    file = models.FileField(_('fichier son'), upload_to='items',
                             db_column="filename", max_length=1024)
 
     # Description -----------------------
