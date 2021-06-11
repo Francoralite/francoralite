@@ -16,7 +16,7 @@ class LocationGisFactory(factory.django.DjangoModelFactory):
         model = Location
         django_get_or_create = ('name',)
 
-    code = factory.Faker('word')
+    code = factory.Sequence(lambda n: 'location%d' % n)
     name = factory.Faker('word')
     notes = factory.Faker('paragraph', nb_sentences=1)
     latitude = factory.Faker('latitude')
