@@ -316,7 +316,7 @@ class KeycloakMiddleware(object):
         # DEFAULT scope not found and DEFAULT_ACCESS is DENY
         if not required_scope and self.default_access == 'DENY':
             return JsonResponse(
-                {"detail": unicode(PermissionDenied.default_detail)},
+                {"detail":PermissionDenied.default_detail},
                 status=PermissionDenied.status_code)
 
         # Get Token
@@ -326,7 +326,7 @@ class KeycloakMiddleware(object):
                 access_token = request.META["HTTP_AUTHORIZATION"].split(' ')[1]
             except Exception:
                 return JsonResponse(
-                    {"detail": unicode(PermissionDenied.default_detail)},
+                    {"detail": PermissionDenied.default_detail},
                     status=PermissionDenied.status_code)
 
         self.keycloak.load_authorization_config(
