@@ -121,7 +121,7 @@
 
     </section>
 
-    <!-- Tab Description --------------------------------------->
+    <!-- Tab Description ------------------------------------- -->
     <section class="tab-pane" id="tab_desc">
       <h2>Description</h2>
       {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
@@ -191,7 +191,7 @@
     </section>
 
 
-    <!-- Tab Vox/Instruments ----------------------------------->
+    <!-- Tab Vox/Instruments ---------------------------------- -->
     <section class="tab-pane" id="tab_vox">
       <h2>{% trans "Voix/Instruments" %}</h2>
       {% related_list libelle='Organisation musicale' items=item.musical_organizations url_detail="musical_organization-detail" field="name"  empty=False %}

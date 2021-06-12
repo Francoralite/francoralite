@@ -7,6 +7,7 @@
 from django import template
 from django.utils.translation import gettext_lazy as _
 from francoralite_front.errors import APPLICATION_ERRORS
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -32,7 +33,7 @@ def field_data(label, data, empty=True):
         code = code + str_label + "</dt> <dd class=\"donnee\" >"
         code = code + str_data + "</dd> </dl>"
 
-    return code
+    return mark_safe(code)
 
 
 @register.simple_tag
@@ -45,7 +46,7 @@ def field_data_bool(label, data):
     code = code + icon + "donnee\" >"
     code = code + "</dd> </dl>"
 
-    return code
+    return mark_safe(code)
 
 
 @register.simple_tag
@@ -67,7 +68,7 @@ def display_error(error="0"):
         if isinstance(code, template.__class__):
             html += code.render()
         return html
-    return code
+    return mark_safe(code)
 
 
 @register.inclusion_tag('inc/modal-delete.html')
