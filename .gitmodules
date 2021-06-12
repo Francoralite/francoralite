@@ -1,0 +1,3 @@
+[submodule "coirault_skos"]
+	path = coirault_skos
+	url = https://github.com/lluc/coirault_skos.git

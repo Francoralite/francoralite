@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Langue" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if user.is_authenticated %}
+  <a href="{% url "language-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une langue" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+	{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+{% if languages|length > 0 %}
+  <!-- Table to display the languages --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Identificateur" %}</th>
+      <th>{% trans "Nom" %}</th>
+  </tr>
+  {% for language in languages %}
+  <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+      <td class="highlight">
+          <a href="/language/{{language.id }}">
+            {{ language.identifier|upper }}</a>
+      </td>
+      <td>{{ language.name|safe }}</td>
+      <td>
+        {% buttons %}
+        <a href="{% url "language-edit" id=language.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{language.title}}"
+            data-url="{% url "language-delete" id=language.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endbuttons %}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% modal_delete %}
+
+{% else %}
+    <p>{% trans "Il n'y a pas de langues" %}</p>
+{% endif %}
+</div>
+{% endblock %}

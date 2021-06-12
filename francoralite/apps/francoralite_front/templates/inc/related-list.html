@@ -1,0 +1,24 @@
+{% load i18n %}
+{% load data_display %}
+
+{% if empty == False and not items  %}
+{% else %}
+<dl class="container_data">
+  <dt class="libelle"> {% trans libelle %}</dt>
+  {% for item in items %}
+  <dd class="donnee">
+
+      {% if url_detail %}
+      <a href="{% url url_detail id=item.id %}"
+      onclick="window.open(this.href); return false;">
+      {% endif %}
+        {{ item|get_obj_attr:field }}
+        {% if field2 %}
+          {{ item|get_obj_attr:field2 }}
+        {% endif %}
+      {% if url_detail %}</a>{% endif %}
+  </dd>
+  {% endfor %}
+</dl>
+
+{% endif %}

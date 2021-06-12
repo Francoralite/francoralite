@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+{% load leaflet_tags %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+<style>
+  #mapid {
+    height: 500px;
+    width: 100%;
+   }
+   .leaflet-container {
+     justify-content: center;
+   }
+</style>
+{% leaflet_css %}
+{% endblock %}
+
+{% block title_name %}
+{{ block.super }}
+  {% if location %}
+   Lieu : {{ location.name }}
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% if location %}
+
+  {% block title_buttons %}
+    {% if user.is_authenticated %}
+      <a href="{% url "location_gis-edit" id=id %}" class="btn_add btn btn-default">
+        <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+      </a>
+      <button type="button" class="btn_add btn btn-default"
+        data-toggle="modal" data-target="#modalDelete"
+        data-name="{{location.code}} | {{location.name}}"
+        data-url="{% url "location_gis-delete" id=location.id %}">
+        <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+      </button>
+    {% endif %}
+  {% endblock %}
+
+
+  {% if user.is_authenticated %}
+    {% modal_delete %}
+  {% endif %}
+
+  {% block title %}
+  {{ block.super }}
+  {% endblock %}
+
+  <div class="container_line center">
+  {% field_data form.code.label|safe  location.code|safe %}
+  {% if location.notes %}
+    {% field_data form.notes.label|safe  location.notes|markdown|safe %}
+  {% endif %}
+  {% field_data form.latitude.label|safe  location.latitude %}
+  {% field_data form.longitude.label|safe location.longitude %}
+  </div>
+
+  <script type="text/javascript">
+  function map_init_basic (map, options) {
+        L.marker([{{location.latitude|virgule}},
+          {{location.longitude|virgule}} ]).addTo(map);
+        map.setView([{{location.latitude|virgule}},
+          {{location.longitude|virgule}}], 15);
+    };
+  </script>
+  {% leaflet_map "mapid" callback="window.map_init_basic"%}
+
+  {% leaflet_js %}
+
+  <div class="block-grey">
+  <h2>{% trans "Enquêtes" %}</h2>
+
+  {% if collections|length > 0 %}
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+      <th>{% trans "Description" %}</th>
+      <th>{% trans "Mission" %}</th>
+  </tr>
+  {% for collection in collections %}
+  <tr>
+      <td class="highlight">
+          <a href="/collection/{{collection.id }}">
+          {{ collection.code|upper }}</a>
+      </td>
+      <td>{{ collection.title|safe }}</td>
+      <td>{{ collection.description|truncatechars:50|markdown|safe}}          </td>
+      <td>{{ collection.mission.title|safe }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  </div>
+
+  <div class="block-grey">
+  <h2>{% trans "Items" %}</h2>
+  {% if items|length > 0 %}
+    <table class="listing">
+    <tr>
+        <th class="highlight">{% trans "cote" %}</th>
+        <th>{% trans "Nom" %}</th>
+        <th>{% trans "Description" %}</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td class="highlight">
+            <a href="/item/{{item.id }}/">
+            {{ item.code|upper }}</a>
+        </td>
+        <td>{{ item.title|safe }}</td>
+        <td>{{ item.description|truncatechars:50|markdown|safe}}          </td>
+      </tr>
+    {% endfor %}
+    </table>
+  {% endif %}
+  </div>
+  </div>
+
+{% else %}
+  <p>{% trans "Ce lieu n'existe pas." %}</p>
+{% endif %}
+{% endblock %}

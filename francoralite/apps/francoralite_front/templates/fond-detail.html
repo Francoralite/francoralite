@@ -1,0 +1,190 @@
+{% extends "fond.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+{{ block.super }}
+  {% if fond %}
+   : {{ fond.title }}
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if user.is_authenticated %}
+    <a href="{% url "mission-add" id_institution=fond.institution.id id_fond=id %}" class="btn_add btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        {% trans "Créer une mission" %}
+    </a>
+    <a href="{% url "fond-edit" id=id %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+    </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  {% if fond %}
+  <ul class="nav nav-tabs" role="tablist">
+     <li class="active">
+       <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
+     </li>
+     <li>
+       <a href="#tab_mission" role="tab" data-toggle="tab">{% trans "Missions" %}</a>
+     </li>
+  </ul>
+
+  <div class="tab-content">
+
+    <section class="tab-pane fade in active" id="tab_general">
+      <div class="container_line">
+        <dl class="container_data">
+          <dt class="libelle"> {{form.institution.label|safe}}</dt>
+          <dd class="donnee">
+            <a href="{% url "institution-detail" id=fond.institution.id %}">
+              {{fond.institution.name|safe}}
+            </a>
+          </dd>
+        </dl>
+        {% field_data form.code_partner.label|safe fond.code_partner|safe  empty=False %}
+        {% field_data form.code.label|safe fond.code|upper|safe %}
+        {% field_data form.title.label|safe fond.title|safe %}
+      </div>
+
+      <div class="container_line">
+        {% field_data form.description.label|safe fond.description|markdown|safe %}
+      </div>
+
+      {% display_documents %}
+
+      <div class="block-grey">
+        <h2>{% trans "Période" %}</h2>
+        <h3>{% trans "Années d'enregistrement" %}</h3>
+        <div class="container_line">
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Depuis' %}</dt>
+            <dd class="donnee">{{dates.0}}</dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
+            <dd class="donnee">{{dates.1}}</dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Personnes" %}</h2>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dd class="donnee">
+            <ul>
+              {% for collector in collectors %}
+              <li>
+                <a href="{% url "personne-detail" id=collector.id %}"
+                target="_blank">
+                {{collector.first_name}} {{collector.last_name}}
+              </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </dd>
+        </dl>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+          <dd class="donnee">
+            <ul>
+              {% for informer in informers %}
+              <li>
+                <a href="{% url "personne-detail" id=informer.id %}"
+                target="_blank">
+                {{informer.first_name}} {{informer.last_name}}
+              </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </dd>
+        </dl>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Archivage" %}</h2>
+        {% field_data form.acquisition_mode.label|safe fond.acquisition_mode.name|safe empty=False %}
+        {% field_data form.conservation_site.label|safe fond.conservation_site|safe %}
+      </div>
+      {% field_data form.comment.label|safe fond.comment|markdown|safe empty=False %}
+    </section>
+
+    <section class="tab-pane" id="tab_mission">
+      {% if missions|length > 0 %}
+        <!-- Table to display the missions -->
+        <table class="listing">
+        <thead>
+            <th class="highlight">{% trans "Cote" %}</th>
+            <th>{% trans "Nom" %}</th>
+            <th>{% trans "Description" %}</th>
+            <th></th>
+        </thead>
+        {% for mission in missions %}
+        <tr>
+            <td class="highlight">
+                <a href="/mission/{{mission.id }}">
+                  {{ mission.code|upper }}</a>
+            </td>
+            <td>{{ mission.title|safe }}</td>
+            <td>{{ mission.descriptions|truncatechars:50|markdown|safe}}</td>
+            <td>
+              <a href="{% url "mission-edit" id=mission.id %}">
+                    <button type="button" class="btn btn-default">
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                    </button>
+              </a>
+              <button type="button" class="btn btn-default"
+                  data-toggle="modal" data-target="#modalDelete"
+                  data-name="{{mission.title}}"
+                  data-url="{% url "mission-delete" id=mission.id %}">
+                    <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% if user.is_authenticated %}
+        	{% modal_delete %}
+        {% endif %}
+      {% else %}
+        <div class="block-grey">
+        {% trans "Ce fonds ne possède pas de mission."%}
+        </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+
+  {% else %}
+    <p>{% trans "Ce fond n'existe pas." %}</p>
+  {% endif %}
+{% else %}
+    {% display_error error %}
+{% endif %}
+{% endblock %}

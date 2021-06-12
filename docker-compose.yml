@@ -1,0 +1,120 @@
+---
+
+# Docker compose to build Francoralite meta project
+
+version: '2.1'
+
+networks:
+  keycloak: {}
+  francoralite: {}
+  services:
+    external:
+      name: 'services'
+
+services:
+  adminer:
+    image: "${ADMINER_IMAGE}:${ADMINER_VERSION}"
+    logging: &logging
+      driver: 'json-file'
+      options:
+        max-size: "${LOGGING_MAX_SIZE}"
+        max-file: "${LOGGING_MAX_FILE}"
+    restart: 'unless-stopped'
+    networks:
+      - 'services'
+      - 'francoralite'
+
+  app:
+    build:
+      context: .
+    restart: 'unless-stopped'
+    depends_on:
+      db:
+        condition: 'service_healthy'
+    env_file:
+      - './env/app.env'
+      - './env/francoralite_db.env'
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
+      interval: '10s'
+      timeout: '2s'
+      retries: 20
+    logging:
+      <<: *logging
+    networks:
+      - 'services'
+      - 'francoralite'
+    volumes:
+      - './:/srv/app'
+      - './etc/keycloak/auth.json:/tmp/authorization_config.json'
+      - 'francoralite_app_media:/srv/media'
+      - 'francoralite_app_static:/srv/static'
+
+  db:
+    image: "${MYSQL_IMAGE}:${MYSQL_VERSION}"
+    restart: 'unless-stopped'
+    env_file:
+      - './env/francoralite_db.env'
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SHOW DATABASES;'"]
+      interval: '30s'
+      timeout: '2s'
+      retries: 3
+    logging:
+      <<: *logging
+    networks:
+      - 'francoralite'
+    volumes:
+      - 'francoralite_db:/var/lib/mysql'
+
+  keycloak:
+    image: "${KEYCLOAK_IMAGE}:${KEYCLOAK_VERSION}"
+    restart: 'unless-stopped'
+    depends_on:
+      - 'keycloak_db'
+    env_file:
+      - './env/keycloak.env'
+    logging:
+      <<: *logging
+    networks:
+      keycloak:
+        aliases:
+          - 'keycloak'
+      services:
+        aliases:
+          - 'keycloak'
+          - 'keycloak.francoralite.localhost'
+
+  keycloak_db:
+    image: "${POSTGRES_IMAGE}:${POSTGRES_VERSION}"
+    restart: 'unless-stopped'
+    env_file:
+      - './env/keycloak_database.env'
+    logging:
+      <<: *logging
+    networks:
+      - 'keycloak'
+    volumes:
+      - 'keycloak_db:/var/lib/postgresql/data'
+
+  nginx:
+    image: "${NGINX_IMAGE}:${NGINX_VERSION}"
+    restart: 'unless-stopped'
+    depends_on:
+      - 'app'
+      - 'keycloak'
+      - 'adminer'
+    logging:
+      <<: *logging
+    networks:
+      - 'services'
+    volumes:
+      - './etc/nginx.conf:/etc/nginx/conf.d/default.conf'
+      - 'francoralite_app_media:/srv/media'
+      - 'francoralite_app_static:/srv/static'
+
+volumes:
+  francoralite_app_media: {}
+  francoralite_app_static: {}
+  francoralite_db: {}
+  keycloak_db: {}

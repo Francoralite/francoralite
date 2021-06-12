@@ -1,0 +1,46 @@
+---
+
+version: '2.1'
+
+services:
+  db:
+    labels:
+      - 'traefik.frontend.rule=Host:db.francoralite.localhost'
+
+  app:
+    environment:
+      COVERALLS_REPO_TOKEN: "${COVERALLS_REPO_TOKEN}"
+    labels:
+      - 'traefik.frontend.rule=Host:app.francoralite.localhost'
+      - 'traefik.docker.network=services'
+
+  nginx:
+    labels:
+      - 'traefik.frontend.rule=Host:nginx.francoralite.localhost'
+      - 'traefik.docker.network=services'
+
+  adminer:
+    labels:
+      - 'traefik.frontend.rule=Host:adminer.francoralite.localhost'
+      - 'traefik.docker.network=services'
+
+  keycloak:
+    labels:
+      - 'traefik.frontend.rule=Host:keycloak.francoralite.localhost'
+      - 'traefik.docker.network=services'
+
+  keycloak_db:
+    labels:
+      - 'traefik.frontend.rule=Host:keycloak-db.francoralite.localhost'
+
+  reverse_proxy:
+    image: 'traefik:1.7.11'
+    command: '--api --docker --docker.domain=francoralite.localhost'
+    networks:
+      - 'keycloak'
+      - 'services'
+    ports:
+      - '8080:80'
+      - '58080:8080'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'

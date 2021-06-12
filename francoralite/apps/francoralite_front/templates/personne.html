@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+{% trans "Personnes" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if user.is_authenticated %}
+    <a href="{% url "personne-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
+    </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+
+<div class="fullpage">
+{% if personnes|length > 0 %}
+  <!-- Table to display the institutions --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom / Prénom" %}</th>
+      <th>{% trans "Alias" %}</th>
+      <th>{% trans "Rôles" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for personne in personnes %}
+  <tr>
+      <td class="highlight">
+          <a href="{% url "personne-detail"  personne.id %}">
+            {{ personne.last_name }} {{personne.first_name}}</a>
+      </td>
+      <td>{{ personne.alias}}</td>
+      <td>
+        {% if personne.is_collector %}
+          {{form.is_collector.label}}
+        {% endif %}
+        {% if personne.is_informer %}
+          {{form.is_informer.label}}
+        {% endif %}
+        {% if personne.is_author %}
+          {{form.is_author.label}}
+        {% endif %}
+        {% if personne.is_composer %}
+          {{form.is_composer.label}}
+        {% endif %}
+        {% if personne.is_editor %}
+          {{form.is_editor.label}}
+        {% endif %}
+      </td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "personne-edit" id=personne.id %}" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{personne.last_name}} {{personne.first_name}}"
+            data-url="{% url "personne-delete" id=personne.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+    <p>{% trans "Il n'y a pas de personnes" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

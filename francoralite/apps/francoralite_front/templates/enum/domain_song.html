@@ -1,0 +1,90 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Genre de chanson" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if user.is_authenticated %}
+  <a href="{% url "domain_song-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un genre de chanson" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+	{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some domain song (number of elements > 0 ) -->
+{% if domain_songs|length > 0 %}
+  <!-- Table to display the domain_songs --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for domain_song in domain_songs %}
+  <tr>
+      <td class="highlight">
+          <a href="/domain_song/{{domain_song.id }}">
+            {{ domain_song.name|upper }}</a>
+      </td>
+      <td>
+        {% if domain_song.notes %}
+          {{ domain_song.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "domain_song-edit" id=domain_song.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{domain_song.title}}"
+            data-url="{% url "domain_song-delete" id=domain_song.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de genre de chanson" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

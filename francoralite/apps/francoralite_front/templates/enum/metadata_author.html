@@ -1,0 +1,89 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+{% trans "Méta donnée auteur" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if user.is_authenticated %}
+  <a href="{% url "metadata_author-add" %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-plus"></span>
+    {% trans "Créer des méta donnée auteur" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some metadata_author (number of elements > 0 ) -->
+{% if metadata_author|length > 0 %}
+  <!-- Table to display the metadata_author --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for metadata_author in metadata_author %}
+  <tr>
+      <td class="highlight">
+          <a href="/metadata_author/{{metadata_author.id }}">
+            {{ metadata_author.name|upper }}</a>
+      </td>
+      <td>
+        {% if metadata_author.notes %}
+          {{ metadata_author.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "metadata_author-edit" id=metadata_author.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{metadata_author.title}}"
+            data-url="{% url "metadata_author-delete" id=metadata_author.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de méta donnée auteur" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

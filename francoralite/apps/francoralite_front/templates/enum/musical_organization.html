@@ -1,0 +1,91 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Organisation Musicale" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if user.is_authenticated %}
+  <a href="{% url "musical_organization-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une organisation musicale" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+
+<div class="fullpage">
+  <!-- If there is some musical_organizations (number of elements > 0 ) -->
+{% if musical_organizations|length > 0 %}
+  <!-- Table to display the musical_organizations --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for musical_organization in musical_organizations %}
+  <tr>
+      <td class="highlight">
+          <a href="/musical_organization/{{musical_organization.id }}">
+            {{ musical_organization.name|upper }}</a>
+      </td>
+      <td>
+        {% if musical_organization.notes %}
+          {{ musical_organization.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "musical_organization-edit" id=musical_organization.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+              </button>
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{musical_organization.title}}"
+            data-url="{% url "musical_organization-delete" id=musical_organization.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+{% else %}
+    <p>{% trans "Il n'y a pas d'organisations musicales" %}</p>
+{% endif %}
+{% endif %}
+</div>
+{% endblock %}

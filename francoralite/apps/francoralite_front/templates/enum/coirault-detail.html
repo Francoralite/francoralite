@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Classification Coirault" %}
+  {{ block.super }}
+    {% if coirault %}
+     :&nbsp;<i>{{ coirault.name }}</i>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if coirault %}
+
+  {% field_data form.name.label|safe coirault.name|safe %}
+  {% field_data form.number.label|safe coirault.number|safe %}
+  {% field_data form.uri.label|safe coirault.uri|safe %}
+  {% field_data form.abstract.label|safe coiraultabstract|markdown|safe %}
+  {% field_data "Rubrique" coirault.collection.name|add:" - "|add:coirault.collection.number|safe %}
+  {% field_data "Chapitre" coirault.collection.collection.name|add:" - "|add:coirault.collection.collection.number|safe %}
+
+{% else %}
+  <p>{% trans "Cette chanson-type n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

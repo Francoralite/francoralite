@@ -1,0 +1,36 @@
+{% load bootstrap3 %}
+{%if component.field.required %}
+<div class="form-group has-warning">
+{% else %}
+<div class="form-group">
+{% endif %}
+  <label class="control-label" for="{{component.auto_id}}">
+    {{component.label}}
+  </label>
+  <textarea class="form-control" cols="40"
+    id="{{component.auto_id}}"
+    name="{{component.name}}"
+    {%if component.field.required %}
+    required="required"
+    {% endif %}
+    rows="10" title="" style="display:none;">
+  </textarea>
+</div>
+
+<div id="editor_{{component.auto_id}}"></div>
+
+
+<script>
+  var instance_{{component.auto_id}} = new tui.Editor({
+    el: document.querySelector('#editor_{{component.auto_id}}'),
+    initialEditType: 'markdown',
+    previewStyle: 'vertical',
+    height: '300px',
+    events: {
+           change: () => {
+             $("#{{component.auto_id}}").val(this.instance_{{component.auto_id}}.getValue());
+           },
+         },
+  });
+  instance_{{component.auto_id}}.setValue("{{ component.value|default_if_none:''|escapejs }}");
+</script>

@@ -1,0 +1,80 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title_name %}
+{% trans "Missions" %}
+{% endblock %}
+
+{% block content %}
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+
+<div class="fullpage">
+{% if missions|length > 0 %}
+  <!-- Table to display the missions --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for mission in missions %}
+  <tr>
+      <td class="highlight">
+          <a href="/mission/{{mission.id}}">
+            {{ mission.code|upper }}</a>
+      </td>
+      <td>{{ mission.title|safe }}</td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "mission-edit" id=mission.id %}"  class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{mission.title}}"
+            data-url="{% url "mission-delete" id=mission.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+    <p>{% trans "Il n'y a pas de missions" %}</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

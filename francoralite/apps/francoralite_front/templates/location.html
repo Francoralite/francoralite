@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+{% load leaflet_tags %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+  <style>
+    #mapid {
+      height: 500px;
+      width: 100%;
+     }
+     .leaflet-container {
+       justify-content: center;
+     }
+  </style>
+  {% leaflet_css %}
+{% endblock %}
+
+
+{% block title_name %}
+{% trans "Lieux" %}
+{% endblock %}
+
+
+{% block content %}
+
+{% block title_buttons %}
+{% if user.is_authenticated %}
+    <a href="{% url "location_gis-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
+    </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+
+
+  {% leaflet_map "mapid" callback="window.map_init_basic"%}
+
+
+  {% leaflet_js %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+  <script type="text/javascript">
+   function map_init_basic (map, options) {
+     bounds = L.bounds(
+            L.point( 50, -85 ),
+            L.point( 30, 0 )
+        );
+        map.setMaxZoom(18);
+        map.setMaxBounds( bounds );
+        map.fitBounds( [ [50, -85], [30, 0] ] );
+        // Add a search control on the map
+        // Type of geocoder to use
+        geocoder = L.Control.Geocoder.nominatim({
+            geocodingQueryParams:{limit:10,},
+            });
+        // Create a search control
+        control = L.Control.geocoder({
+            collapsed:false,
+            placeholder:"Rechercher une localité ...",
+            showResultIcons:true,
+            geocoder: geocoder,
+        })
+        .addTo(map);
+
+        var markers = L.markerClusterGroup( {
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true,
+            removeOutsideVisibleBounds: true
+          } );
+
+        request_location(map, markers);
+      }
+    </script>
+
+  {% block request_location %}
+    <script type="text/javascript">
+     function request_location(map, markers) {
+       axios.get(
+         `/api/locationgis?ordering=code`
+       ).then(
+         res => {
+           locs = res.data;
+           for( let loc of locs ) {
+             var marker = L.marker([loc.latitude,loc.longitude]).bindPopup(
+               'Lieu : <a href="/location_gis/'+
+               loc.id+'"><b>'+loc.code+
+               '</b></a><p>'+loc.name+'</p><hr/><i>'+
+               loc.notes+'</i>' );
+               markers.addLayer(marker);
+             }
+             map.addLayer(markers);
+           });
+       }
+    </script>
+  {% endblock request_location %}
+
+
+</div>
+{% endblock %}

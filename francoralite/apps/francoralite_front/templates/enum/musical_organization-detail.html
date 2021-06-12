@@ -1,0 +1,52 @@
+
+{% extends "enum/musical_organization.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title_name %}
+  {{ block.super }}
+    {% if musical_organization %}
+     : {{ musical_organization.name }}
+    {% endif %}
+{% endblock %}
+
+{% block title_buttons %}
+{% if user.is_authenticated %}
+  <a href="{% url "musical_organization-edit" id=id %}" class="btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% if not error|length %}
+  {% if musical_organization %}
+
+  {% field_data form.name.label|safe musical_organization.name|safe %}
+  {% field_data form.notes.label|safe musical_organization.notes|markdown|safe %}
+
+
+  {% else %}
+    <p>{% trans "Cette organisation musicale n'existe pas." %}</p>
+     {% display_error error %}
+  {% endif %}
+{% endif %}
+{% endblock %}

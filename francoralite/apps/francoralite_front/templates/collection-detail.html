@@ -1,0 +1,274 @@
+
+{% extends "collection.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+  {% trans "Enquête" %}
+  {% if collection %}
+  : {{  collection.title}}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% block title_buttons %}
+ {% if user.is_authenticated and collection %}
+  <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un item" %}
+  </a>
+  <a href="{% url "collection-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  {% if collection %}
+
+  <ul class="nav nav-tabs" role="tablist">
+     <li class="active">
+       <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
+     </li>
+     <li>
+       <a href="#tab_item" role="tab" data-toggle="tab">{% trans "Items" %}</a>
+     </li>
+  </ul>
+
+  <!-- Onglet Fiche en cours -->
+  <div class="tab-content">
+    <section class="tab-pane fade in active" id="tab_general">
+      <div class="container_line">
+        <dl class="container_data">
+          <dt class="libelle"> {{form.mission.label|safe}}</dt>
+          <dd class="donnee">
+            <a href="{% url "mission-detail" id=collection.mission.id %}">
+              {{collection.mission.title|safe}}
+            </a>
+          </dd>
+        </dl>
+        {% field_data form.code_partner.label|safe collection.code_partner|safe  empty=False %}
+        {% field_data form.code.label|safe collection.code|upper|safe %}
+        {% field_data form.title.label|safe collection.title|safe %}
+        {% field_data form.alt_title.label|safe collection.alt_title|safe empty=False %}
+      </div>
+
+      <div class="container_line">
+        {% field_data form.description.label|safe collection.description|markdown|safe %}
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Période" %}</h2>
+        <h3>{% trans "Années d'enregistrement" %}</h3>
+        <div class="container_line">
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Depuis' %}</dt>
+            <dd class="donnee">{{collection.recorded_from_year}}</dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
+            <dd class="donnee">{{collection.recorded_to_year}}</dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+            <dd class="donnee"></dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Personnes" %}</h2>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dd class="donnee">
+            {% for collector in collection.collectors %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "personne-detail" id=collector.id %}"
+              onclick="window.open(this.href); return false;">
+                {{collector.first_name}} {{collector.last_name}}
+              </a>
+            {% endfor %}
+          </dd>
+        </dl>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+          <dd class="donnee">
+            {% for informer in collection.informers %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "personne-detail" id=informer.id %}"
+              onclick="window.open(this.href); return false;">
+                {{informer.first_name}} {{informer.last_name}}
+              </a>
+            {% endfor %}
+          </dd>
+        </dl>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Localisation" %}</h2>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Lieux' %}</dt>
+          <dd class="donnee">
+            {% for location in collection.locations %}
+              {% if not forloop.first %} | {% endif %}
+              <a href="{% url "location_gis-detail" id=location.id %}"
+              onclick="window.open(this.href); return false;">
+                {{location.code}}
+              </a>
+            {% endfor %}
+          </dd>
+        </dl>
+        {% field_data form.location_details.label|safe collection.location_details|markdown|safe empty=False %}
+        {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
+      </div>
+
+      {% if collection.languages %}
+      <dl class="container_data">
+        <dt class="libelle"> {% trans 'Langues' %}</dt>
+        <dd class="donnee">
+          {% for language in collection.languages %}
+            {% if not forloop.first %} | {% endif %}
+              {{language.name}}
+          {% endfor %}
+        </dd>
+      </dl>
+      {% endif %}
+
+      {% if collection.publishers %}
+      <dl class="container_data">
+        <dt class="libelle"> {% trans 'Editeurs' %}</dt>
+        <dd class="donnee">
+          {% for publisher in collection.publishers %}
+            {% if not forloop.first %} | {% endif %}
+              <a href="{% url "publisher-detail" id=publisher.id %}"
+                  target="_blank">
+                {{publisher.name|safe}}
+              </a>
+          {% endfor %}
+        </dd>
+      </dl>
+      {% endif %}
+
+
+      <div class="block-grey">
+        <h2>{% trans "Voix/Instruments" %}</h2>
+        <div class="container_data voix-instrument">
+          {% for performance in collection.performances %}
+          <div class="container_line">
+              {% if performance.number %}
+              <dl class="container_data number">
+                <dt class="libelle">{% trans 'Nombre' %}</dt>
+                <dd class="donnee">{{performance.number}}</dd>
+              </dl>
+              {% endif %}
+
+              {% if performance.instrument %}
+              <dl class="container_data instrument">
+                <dt class="libelle">{% trans 'Instrument' %}</dt>
+                <dd class="donnee">{{performance.instrument.name}}</dd>
+              </dl>
+              <dl class="container_data thb">
+                <dt class="libelle">{% trans 'Typologie Horn-Bostel' %}</dt>
+                <dd class="donnee">{{performance.instrument.typology.number}} :
+                {{performance.instrument.typology.name}}</dd>
+              </dl>
+              {% endif %}
+
+              {% if performance.emit %}
+              <dl class="container_data">
+                <dt class="libelle">{% trans "Nature de l'émission vocale" %}</dt>
+                <dd class="donnee">{{performance.emit.name}}</dd>
+              </dl>
+              {% endif %}
+
+              {% if performance.musicians %}
+              <dl class="container_data">
+                <dt class="libelle">{% trans 'Musiciens' %}</dt>
+                <dd class="donnee">
+                  {% for musician in performance.musicians %}
+                    {% if not forloop.first %} | {% endif %}
+                    {{musician.first_name}}  {{musician.last_name}}
+                  {% endfor %}
+                </dd>
+              </dl>
+              {% endif %}
+
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% display_documents %}
+
+    </section>
+
+
+    <!-- Onglet des items -->
+    <section class="tab-pane fade in" id="tab_item">
+      {% if items|length > 0 %}
+        <!-- Table to display the collections --->
+        <table class="listing">
+        <thead>
+            <th class="highlight">{% trans "Cote" %}</th>
+            <th>{% trans "Nom" %}</th>
+            <th>{% trans "Description" %}</th>
+            <th></th>
+        </thead>
+        {% for item in items %}
+        <tr>
+            <td class="highlight">
+                <a href="/item/{{item.id }}">
+                {{ item.code|upper }}</a>
+            </td>
+            <td>{{ item.title|safe }}</td>
+            <td>{{ item.description|truncatechars:50|markdown|safe}}</td>
+            <td>
+              <a href="{% url "item-edit" id=item.id %}">
+                    <button type="button" class="btn btn-default">
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                    </button>
+              </a>
+              <button type="button" class="btn btn-default"
+                  data-toggle="modal" data-target="#modalDelete"
+                  data-name="{{item.title}}"
+                  data-url="{% url "item-delete" id=item.id %}">
+                    <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% if user.is_authenticated %}
+        	{% modal_delete %}
+        {% endif %}
+      {% else %}
+        <div class="block-grey">
+        {% trans "Cette enquête ne possède pas d'item."%}
+        </div>
+      {% endif %}
+      </div>
+    </div>
+  </section>
+
+  {% else %}
+    <p>{% trans "Cette enquête n'existe pas." %}</p>
+  {% endif %}
+{% else %}
+  {% display_error error %}
+{% endif %}
+{% endblock %}

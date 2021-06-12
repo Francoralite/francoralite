@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Fonds" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+{% if fonds|length > 0 %}
+  <!-- Table to display the institutions -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for fond in fonds %}
+  <tr class="alterne">
+      <td class="highlight">
+          <a href="/fond/{{ fond.id }}">
+            {{ fond.code|upper }}</a>
+      </td>
+      <td>{{ fond.title|safe }}</td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "fond-edit" id=fond.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{fond.title}}"
+            data-url="{% url "fond-delete" id=fond.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+    <p>{% trans "Il n'y a pas de fonds" %}</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "nature des emissions vocales" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if user.is_authenticated %}
+  <a href="{% url "emit_vox-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une nature des emissions vocales" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+	{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some emit vox (number of elements > 0 ) -->
+{% if emit_voxs|length > 0 %}
+  <!-- Table to display the emit_voxs --->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if user.is_authenticated %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for emit_vox in emit_voxs %}
+  <tr>
+      <td class="highlight">
+          <a href="/emit_vox/{{emit_vox.id }}">
+            {{ emit_vox.name|upper }}</a>
+      </td>
+      <td>
+        {% if emit_vox.notes %}
+          {{ emit_vox.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if user.is_authenticated %}
+      <td>
+        <a href="{% url "emit_vox-edit" id=emit_vox.id %}" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+        </a>
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{emit_vox.title}}"
+            data-url="{% url "emit_vox-delete" id=emit_vox.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+	{% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de nature des emissions vocales" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

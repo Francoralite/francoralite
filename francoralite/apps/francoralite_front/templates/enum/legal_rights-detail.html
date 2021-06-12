@@ -1,0 +1,49 @@
+
+{% extends "enum/legal_rights.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {{ block.super }}
+    {% if legal_rights %}
+     : {{ legal_rights.value }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if user.is_authenticated %}
+  <a href="{% url "legal_rights-edit" id=id %}"  class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if legal_rights %}
+
+  {% field_data form.name.label|safe legal_rights.name|safe %}
+  {% field_data form.notes.label|safe legal_rights.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Ces droits légaux n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}
