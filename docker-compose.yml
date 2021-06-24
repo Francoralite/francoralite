@@ -91,7 +91,6 @@ services:
     depends_on:
       - 'app'
       - 'keycloak'
-      - 'adminer'
     logging:
       <<: *logging
     networks:
