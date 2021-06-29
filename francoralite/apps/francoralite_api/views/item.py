@@ -253,8 +253,13 @@ class ItemViewSet(viewsets.ModelViewSet):
         url_name='sound_download')
     def download(self, request, pk=None):
         instance = self.get_object()
-        media = instance.code + '.mp3'
-        document = open( settings.MEDIA_ROOT + "items/" + media, 'rb')
+        media = str(instance.file)
+        filename = ""
+        if media.find(settings.MEDIA_ROOT) == 0 :
+            filename = media
+        else:
+            filename = settings.MEDIA_ROOT + media
+        document = open( filename, 'rb')
         response = HttpResponse(FileWrapper(document), content_type="audio/mpeg")
         response['Content-Disposition'] = f'attachement; filename="{media}"'
         return response
