@@ -6,7 +6,7 @@ authority factory to execute tests
 import factory
 from ...models.authority import Authority
 from .location_gis import LocationGisFactory
-
+from .item_informer import ItemInformerFactory
 
 class AuthorityFactory(factory.django.DjangoModelFactory):
     """
@@ -31,3 +31,13 @@ class AuthorityFactory(factory.django.DjangoModelFactory):
     death_location = factory.SubFactory(LocationGisFactory)
     biography = factory.Faker('paragraph', nb_sentences=5)
     uri = factory.Faker('uri')
+
+class AuthorityContribsFactory(AuthorityFactory):
+    """
+    Authority factory with contibutions
+    """
+    @factory.post_generation
+    def contribs( self, create, extracted, **kwargs):
+        if not create: return
+
+        ItemInformerFactory.create_batch(6, informer = self)

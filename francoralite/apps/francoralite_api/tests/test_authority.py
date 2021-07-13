@@ -12,7 +12,7 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories.authority import AuthorityFactory
+from .factories.authority import AuthorityFactory, AuthorityContribsFactory
 from ..models.authority import Authority
 from ..models.location import Location
 
@@ -56,7 +56,7 @@ class TestAuthorityList(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
-        AuthorityFactory.create_batch(6)
+        AuthorityContribsFactory.create_batch(6)
 
     def test_can_get_authority_list(self):
         """
@@ -139,6 +139,16 @@ class TestAuthorityList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
+
+    def test_contribs(self):
+        item = Authority.objects.first()
+        url = reverse('authority-contribs', kwargs={'pk': item.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data["informers"]), 1)
+
 
     def test_update_an_authority(self):
         """

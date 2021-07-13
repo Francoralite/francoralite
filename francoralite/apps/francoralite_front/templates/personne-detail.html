@@ -76,6 +76,31 @@
   </div>
   {% field_data form.biography.label personne.biography|markdown|safe %}
   {% field_data form.uri.label personne.uri %}
+  
+  <div class="block-grey">
+    <h2>{% trans "Contributions" %}</h2>
+    {% if contribs.informers|length > 0 %} 
+      <!-- Table to display the items -->
+      <caption><h3>{% trans "Informateur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for informer  in  contribs.informers %}
+          <tr>
+            <td>{{ informer.title }}</td>
+            <td>{{ informer.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+  
   {% else %}
     <p>{% trans "Cette personne n'existe pas." %}</p>
   {% endif %}
