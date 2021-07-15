@@ -19,7 +19,7 @@ class PersonneCollectorView(FrancoraliteTemplateView):
             context = super(PersonneCollectorView, self).get_context_data(
                 **kwargs)
             context['personnes'] = tools.request_api(
-                '/api/authority?is_collector=true')
+                '/api/authority?is_collector=true&ordering=last_name,first_name')
             context['form'] = PersonneForm
         except Exception as err:
             context['personnes'] = []

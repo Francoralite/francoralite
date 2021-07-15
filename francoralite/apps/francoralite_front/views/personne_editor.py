@@ -19,7 +19,7 @@ class PersonneEditorView(FrancoraliteTemplateView):
             context = super(PersonneEditorView, self).get_context_data(
                 **kwargs)
             context['personnes'] = tools.request_api(
-                '/api/authority?is_editor=true')
+                '/api/authority?is_editor=true&ordering=last_name,first_name')
             context['form'] = PersonneForm
         except Exception as err:
             context['personnes'] = []
