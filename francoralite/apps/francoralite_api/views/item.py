@@ -155,7 +155,7 @@ class ItemViewSet(viewsets.ModelViewSet):
                        filters.OrderingFilter, filters.SearchFilter)
 
     filterset_fields = ('collection', 'media_type',)
-    ordering = ('title', 'code',)
+    ordering = ('code', 'title',)
     search_fields = ('title', 'code', 'collection', 'media_type')
 
     keycloak_scopes = {
