@@ -12,7 +12,7 @@ from django.utils.translation import gettext_lazy as _
 class PersonneForm(forms.Form):
     last_name = forms.CharField(label=_(u'Nom'), max_length=255, required=True)
     first_name = forms.CharField(label=_(u'Prénom'),
-                                 max_length=255, required=False)
+                                 max_length=255, required=True)
     civility = forms.CharField(
         label=_(u'Civilité'), max_length=16, required=False)
     alias = forms.CharField(label=_(u'Alias'), max_length=16, required=False)
