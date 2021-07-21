@@ -38,7 +38,7 @@ class AuthorityViewSet(viewsets.ModelViewSet):
 
         # Retrieve the item informers
         data["informers"] = []
-        item_informers = ItemInformer.objects.filter(item=instance.id)
+        item_informers = ItemInformer.objects.filter(informer=instance.id)
         for item_informer in item_informers :
             serializer_informer = ItemInformerSerializer(item_informer)
             data["informers"].append( serializer_informer.data["item"])
