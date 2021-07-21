@@ -92,7 +92,7 @@
         <tbody>
           {% for informer  in  contribs.informers %}
           <tr>
-            <td>{{ informer.title }}</td>
+            <td> <a href="/item/{{informer.id }}">{{ informer.title }}</a></td>
             <td>{{ informer.description }}</td>
           </tr>
           {% endfor %}
