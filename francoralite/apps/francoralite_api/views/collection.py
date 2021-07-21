@@ -17,6 +17,7 @@ from ..models.collection_publisher import CollectionPublisher
 from ..models.performance_collection import PerformanceCollection
 from ..models.performance_collection_musician import (
     PerformanceCollectionMusician)
+from ..models.item import Item
 from ..serializers.collection import CollectionSerializer
 from ..serializers.collection_informer import CollectionInformerSerializer
 from ..serializers.collectioncollectors import CollectionCollectorsSerializer
@@ -26,6 +27,8 @@ from ..serializers.collection_publisher import CollectionPublisherSerializer
 from ..serializers.performance_collection import PerformanceCollectionSerializer  # noqa
 from ..serializers.performance_collection_musician import (
     PerformanceCollectionMusicianSerializer)
+from django.db.models import Sum
+import datetime
 
 
 entities = [
@@ -90,7 +93,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
             collection=id_main)
         data[entity["names"]] = []
         for item in items:
-            serializer_item = entity["serializer"](item)
+            serializer_item = entity["serializer"](item)          
             data[entity["names"]].append(serializer_item.data[entity["name"]])
 
     @action(detail=True)
@@ -98,10 +101,15 @@ class CollectionViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         data = serializer.data
+
         # Retrieve most of the entities
         for entity in entities:
             self.collect(instance.id, data, entity)
 
+        # Compute global duration
+        global_duration = Item.objects.filter(collection=instance.id).aggregate(Sum('approx_duration'))
+        data["duration"] = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )
+    
         # Retrieve the performances
         performances = PerformanceCollection.objects.filter(
             collection=instance.id)

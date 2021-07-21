@@ -108,6 +108,11 @@
         {% field_data form.code.label|safe item.code|upper|safe %}
         {% field_data form.code_partner.label|safe item.code_partner|safe empty=False %}
       </div>
+      
+      <div class="block-grey">
+        <h2>{% trans "Données techniques" %}</h2>
+        {% field_data form.approx_duration.label|safe item.approx_duration|safe empty=False %}
+      </div>
 
       <div class="block-grey">
         <h2>{% trans "Indications géographiques et culturelles" %}</h2>
