@@ -48,6 +48,9 @@ class ItemForm(forms.Form):
         widget=forms.FileInput(),
         required=True
     )
+    approx_duration = forms.DurationField(
+        label=_(u"Durée estimée"),
+        required=False)
 
     # Description -----------------------------------------------
     timbre = forms.CharField(

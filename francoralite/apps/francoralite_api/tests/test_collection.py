@@ -19,7 +19,10 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-from .factories.collection import CollectionFactory, CollectionCompleteFactory
+from .factories.collection import (
+    CollectionFactory,
+    CollectionCompleteFactory
+) 
 from ..models.collection import Collection
 from ..models.mission import Mission
 from ..models.mediatype import MediaType

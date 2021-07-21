@@ -82,6 +82,7 @@ class CollectionCompleteFactory(CollectionFactory):
         for perf in perfs:
             PerformanceCollectionMusicianFactory.create_batch(
                 2, performance_collection = perf)
+        ItemFactory.create_batch(3, collection = self)
             
 class CollectionItemsFactory(CollectionFactory):
     """
