@@ -6,7 +6,7 @@ from rest_framework import status
 from django.urls import reverse
 
 @pytest.mark.django_db
-class TestThematicList(APITestCase):
+class TestVersions(APITestCase):
     """
     This class tests versions
     """
@@ -18,5 +18,5 @@ class TestThematicList(APITestCase):
          self.assertEqual(response.status_code, status.HTTP_200_OK)
          self.assertEqual(len(response.data), 3)
          self.assertEqual(len(response.data["git_commit"]), 40)
-         self.assertEqual(response.data["python"], "3.7.10 (default, May 12 2021, 16:15:12) \n[GCC 8.3.0]")
+         self.assertEqual(response.data["python"][0:6], "3.7.10")
          self.assertEqual(response.data["django"], (3,0,13,"final",0) )
