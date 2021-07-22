@@ -56,6 +56,7 @@ from .views import (
     domain_vocal,
     domain_song,
     usefulness,
+    versions,
     global_search,
     advanced_search,
     skos_collection,
@@ -63,6 +64,7 @@ from .views import (
     )
 
 urlpatterns = [
+    url(r'^versions/$',versions.VersionsView.as_view(), name="versions" ),
     url(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
         name="search"),
     url(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
