@@ -15,41 +15,38 @@ services:
       - 'services'
       - 'francoralite'
     labels:
-      - 'traefik.frontend.rule=Host:adminer.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:adminer.${SERVER_IP}.nip.io'
       - 'traefik.docker.network=services'
 
   app:
-    build:
-      context: .
+    image: "${FRANCORALITE_IMAGE}:${FRANCORALITE_VERSION}"
     environment:
       COVERALLS_REPO_TOKEN: "${COVERALLS_REPO_TOKEN}"
     labels:
-      - 'traefik.frontend.rule=Host:app.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:app.${SERVER_IP}.nip.io'
       - 'traefik.docker.network=services'
-    volumes:
-      - './:/srv/app'
 
   db:
     labels:
-      - 'traefik.frontend.rule=Host:db.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:db.${SERVER_IP}.nip.io'
 
   nginx:
     labels:
-      - 'traefik.frontend.rule=Host:nginx.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:nginx.${SERVER_IP}.nip.io'
       - 'traefik.docker.network=services'
 
   keycloak:
     labels:
-      - 'traefik.frontend.rule=Host:keycloak.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:keycloak.${SERVER_IP}.nip.io'
       - 'traefik.docker.network=services'
 
   keycloak_db:
     labels:
-      - 'traefik.frontend.rule=Host:keycloak-db.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:keycloak-db.${SERVER_IP}.nip.io'
 
   reverse_proxy:
     image: 'traefik:1.7.11'
-    command: '--api --docker --docker.domain=francoralite.localhost'
+    command: '--api --docker --docker.domain=${SERVER_IP}.nip.io'
     networks:
       - 'keycloak'
       - 'services'

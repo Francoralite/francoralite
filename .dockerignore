@@ -1,2 +1,13 @@
 data
 
+# Unecessary files
+ansible
+backups
+CONTRIBUTORS.txt
+docker-compose.*
+Dockerfile
+documentation
+env
+htmlcov
+keycloak_usage.md
+LICENSE.rst
