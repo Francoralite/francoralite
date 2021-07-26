@@ -108,7 +108,10 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
         # Compute global duration
         global_duration = Item.objects.filter(collection=instance.id).aggregate(Sum('approx_duration'))
-        data["duration"] = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )
+        if global_duration["approx_duration__sum"] is not None :
+            data["duration"] = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )
+        else:
+            data["duration"] = ""
     
         # Retrieve the performances
         performances = PerformanceCollection.objects.filter(
