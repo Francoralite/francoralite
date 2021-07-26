@@ -83,6 +83,15 @@ class ItemFactory(factory.django.DjangoModelFactory):
     coupe = factory.SubFactory(CoupeFactory)
 
 
+class ItemCollectionFactory(ItemFactory):
+    @factory.post_generation
+    def duration_void( obj, create, extracted, **kwargs):
+        """
+        ALL items of a collection have their approx_duration to None
+        """
+        if obj.collection.id == 1 :
+            obj.approx_duration = None
+
 
 class ItemCompleteFactory(ItemFactory):
     """
