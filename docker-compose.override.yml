@@ -32,6 +32,8 @@ services:
   db:
     labels:
       - 'traefik.frontend.rule=Host:db.francoralite.localhost'
+    command:
+      - --default-authentication-plugin=mysql_native_password
 
   nginx:
     labels:
