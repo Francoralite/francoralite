@@ -9,8 +9,6 @@ item_author factory to execute tests
 
 import factory
 from ...models.item_author import ItemAuthor
-# import nested/related factories
-from .authority import AuthorityFactory
 
 
 class ItemAuthorFactory(factory.django.DjangoModelFactory):
@@ -26,4 +24,4 @@ class ItemAuthorFactory(factory.django.DjangoModelFactory):
 
     # Nested/related factories
     item = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.item.ItemFactory")
-    author = factory.SubFactory(AuthorityFactory)
+    author = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.authority.AuthorityFactory")

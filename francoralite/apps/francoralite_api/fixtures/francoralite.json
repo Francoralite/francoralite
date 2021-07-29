@@ -166,6 +166,27 @@
   },
   {
     "fields": {
+      "first_name": "Fernand",
+      "last_name": "Nathan",
+      "is_collector": false,
+      "birth_location": null,
+      "is_editor": true,
+      "is_composer": false,
+      "civility": "Sr",
+      "uri": "",
+      "is_informer": false,
+      "alias": "Nathan",
+      "death_location": null,
+      "birth_date": null,
+      "is_author": false,
+      "biography": "",
+      "death_date": null
+    },
+    "model": "francoralite_api.authority",
+    "pk": 4
+  },
+  {
+    "fields": {
       "notes": "",
       "name": "Université de Poitiers"
     },

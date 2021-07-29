@@ -9,8 +9,6 @@ item_compositor factory to execute tests
 
 import factory
 from ...models.item_compositor import ItemCompositor
-# import nested/related factories
-from .authority import AuthorityFactory
 
 
 class ItemCompositorFactory(factory.django.DjangoModelFactory):
@@ -26,4 +24,4 @@ class ItemCompositorFactory(factory.django.DjangoModelFactory):
 
     # Nested/related factories
     item = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.item.ItemFactory")
-    compositor = factory.SubFactory(AuthorityFactory)
+    compositor = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.authority.AuthorityFactory")

@@ -148,6 +148,9 @@ class TestAuthorityList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
         self.assertEqual(len(response.data["informers"]), 6)
+        self.assertEqual(len(response.data["collectors"]), 6)
+        self.assertEqual(len(response.data["authors"]), 6)
+        self.assertEqual(len(response.data["compositors"]), 6)
 
     def test_update_an_authority(self):
         """
