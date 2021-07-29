@@ -7,6 +7,10 @@ import factory
 from ...models.authority import Authority
 from .location_gis import LocationGisFactory
 from .item_informer import ItemInformerFactory
+from .item_collector import ItemCollectorFactory
+from .item_author import ItemAuthorFactory
+from .item_compositor import ItemCompositorFactory
+
 
 class AuthorityFactory(factory.django.DjangoModelFactory):
     """
@@ -41,3 +45,6 @@ class AuthorityContribsFactory(AuthorityFactory):
         if not create: return
 
         ItemInformerFactory.create_batch(6, informer = self)
+        ItemCollectorFactory.create_batch(6, collector = self)
+        ItemAuthorFactory.create_batch(6, author = self)
+        ItemCompositorFactory.create_batch(6, compositor = self)

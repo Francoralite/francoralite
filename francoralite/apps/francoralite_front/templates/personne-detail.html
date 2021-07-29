@@ -98,6 +98,57 @@
           {% endfor %}
         </tbody>
       </table>
+      <caption><h3>{% trans "Enquêteur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for collector  in  contribs.collectors %}
+          <tr>
+            <td> <a href="/item/{{collector.id }}">{{ collector.title }}</a></td>
+            <td>{{ collector.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <caption><h3>{% trans "Auteur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for author  in  contribs.authors %}
+          <tr>
+            <td> <a href="/item/{{author.id }}">{{ author.title }}</a></td>
+            <td>{{ author.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <caption><h3>{% trans "Compositeur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for compositor  in  contribs.compositors %}
+          <tr>
+            <td> <a href="/item/{{compositor.id }}">{{ compositor.title }}</a></td>
+            <td>{{ compositor.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% endif %}
   </div>
   
