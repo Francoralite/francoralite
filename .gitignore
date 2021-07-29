@@ -86,3 +86,6 @@ htmlcov/
 
 # Ansible
 *.retry
+
+# VS-code
+.vscode/
