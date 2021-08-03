@@ -21,16 +21,16 @@
 
 
 <script>
-  var instance_{{component.auto_id}} = new tui.Editor({
+  var instance_{{component.auto_id}} = new toastui.Editor({
     el: document.querySelector('#editor_{{component.auto_id}}'),
     initialEditType: 'markdown',
     previewStyle: 'vertical',
     height: '300px',
     events: {
            change: () => {
-             $("#{{component.auto_id}}").val(this.instance_{{component.auto_id}}.getValue());
+             $("#{{component.auto_id}}").val(this.instance_{{component.auto_id}}.getMarkdown());
            },
          },
   });
-  instance_{{component.auto_id}}.setValue("{{ component.value|default_if_none:''|escapejs }}");
+  instance_{{component.auto_id}}.setMarkdown("{{ component.value|default_if_none:''|escapejs }}");
 </script>
