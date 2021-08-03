@@ -57,7 +57,7 @@ def display_error(error="0"):
         'KEY_ERROR': 'inc/key_error.html',
     }
     code = error
-    for key, value in url_error.iteritems():
+    for key, value in url_error.items():
         if error == APPLICATION_ERRORS[key]:
             code = template.loader.get_template(value)
 
@@ -141,7 +141,6 @@ def domains(self):
 
 @register.filter
 def get_obj_attr(obj, attr):
-    # return getattr(obj, attr)
     return obj[attr]
 
 
