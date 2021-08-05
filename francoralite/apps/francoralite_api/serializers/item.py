@@ -4,6 +4,9 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+import string
+import unicodedata
+
 from rest_framework import serializers
 
 from ..models.item import Item as ItemModel
@@ -18,7 +21,6 @@ class ItemSerializer(serializers.ModelSerializer):
     Common serializer for all Item actions
     """
 
-    # FIXIT ----
     # General -----------
     collection = AsymetricRelatedField.from_serializer(
         CollectionSerializer, kwargs={'required': True})
@@ -82,3 +84,12 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemModel
         fields = '__all__'
+
+    def to_internal_value(self, value):
+        # Convert the file name to a correct format.
+        if "file" in value :
+            correct_name = ''.join(c for c in unicodedata.normalize('NFKD', value["file"]._name) if c in string.printable)
+            value["file"]._name = correct_name
+        
+        return super().to_internal_value(value)
+
