@@ -172,7 +172,7 @@ class TestItemList(APITestCase):
         data['coupe'] = coupe.id
 
         # Create a fake file.
-        data['file'] = create_tmp_sound(data['code'])
+        data['file'] = create_tmp_sound("c'est déjà l'été")
       
 
         url = reverse('item-list')
@@ -193,6 +193,8 @@ class TestItemList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
+        data = response_get.data
+        assert "cest_deja_lete" in  data['file']
 
     def test_complete(self):
         item = Item.objects.first()
