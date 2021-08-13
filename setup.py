@@ -85,6 +85,7 @@ setup(
       'pytest-env==0.6.2',
       'pytest-pythonpath==0.7.3',
       'coveralls==3.0.1',
+      'selenium==3.141.0',
     ],
   },
   platforms = ['OS Independent'],

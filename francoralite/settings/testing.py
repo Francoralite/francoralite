@@ -15,6 +15,7 @@ INSTALLED_APPS = (
     'drf_yasg',
     'francoralite.apps.francoralite_api',
     'rdflib',
+    'selenium',
 )
 
 DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
