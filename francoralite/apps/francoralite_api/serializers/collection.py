@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from ..models.collection import Collection as CollectionModel
 from .mission import MissionSerializer
@@ -34,7 +35,10 @@ class CollectionSerializer(serializers.ModelSerializer):
     # publisher_collection = serializers.CharField(required=False)
     booklet_author = serializers.CharField(allow_blank=True)
     metadata_author = serializers.CharField(allow_blank=True)
-    code = serializers.CharField(required=True)
+    code = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=CollectionModel.objects.all())]
+        )
     code_partner = serializers.CharField(allow_blank=True)
     booklet_description = serializers.CharField(allow_blank=True)
     comment = serializers.CharField(allow_blank=True)

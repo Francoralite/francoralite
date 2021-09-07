@@ -257,6 +257,25 @@ class TestCollectionList(APITestCase):
             COLLECTION_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
 
+    def test_uniq_code_collection(self):
+        """
+        Ensure we don't validate a non-uniq collection code
+        """
+
+        item = Collection.objects.first()
+        code_1 = item.code
+        item = Collection.objects.last()
+
+        data = {'code': code_1}
+        url = reverse(
+            'collection-detail',
+            kwargs={'pk': item.id})
+        response = self.client.patch(url, data, format='json')
+
+        # Ensure code 400 returned
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+
     def test_delete_a_collection(self):
         """
         Ensure we can delete a collection object
