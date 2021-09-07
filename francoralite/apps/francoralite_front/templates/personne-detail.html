@@ -98,6 +98,8 @@
           {% endfor %}
         </tbody>
       </table>
+    {% endif %}
+    {% if contribs.collectors|length > 0 %}
       <caption><h3>{% trans "Enquêteur" %}</h3></caption>
       <table class="listing">
         <thead>
@@ -115,6 +117,8 @@
           {% endfor %}
         </tbody>
       </table>
+    {% endif %}
+    {% if contribs.authors|length > 0 %}
       <caption><h3>{% trans "Auteur" %}</h3></caption>
       <table class="listing">
         <thead>
@@ -132,6 +136,8 @@
           {% endfor %}
         </tbody>
       </table>
+    {% endif %}
+    {% if contribs.compositors|length > 0 %}
       <caption><h3>{% trans "Compositeur" %}</h3></caption>
       <table class="listing">
         <thead>
