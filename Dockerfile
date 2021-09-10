@@ -30,14 +30,6 @@ ADD README.md requirements.txt setup.py /srv/app/
 RUN pip install simple-yaml \
   && pip install --no-cache-dir -r /srv/app/requirements.txt
 
-# Install Gecko driver
-RUN apt install wget
-CMD ["/srv/app/scripts/deps_selenium.sh"]
-
-# Install web browser Firefox
-RUN apt update \
-  && apt install -y firefox-esr
-
 # Expose port
 EXPOSE 8000
 

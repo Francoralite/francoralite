@@ -56,7 +56,7 @@ We need to install tests dependencies inside container before run tests
 
 ```
 docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
-docker-compose exec app bash -c './scripts/deps_selenium.sh
+docker-compose exec app bash -c './scripts/deps_selenium.sh'
 ```
 
 Now, we can launch tests
