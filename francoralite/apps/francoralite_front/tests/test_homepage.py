@@ -1,22 +1,13 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
+from .core_test import CoreTest
 
-
-URL = "http://127.0.0.1:8000/"
-
-def setup():
-    options = webdriver.FirefoxOptions()
-    options.headless = True
-    options.firefox_path = "/usr/bin/firefox-esr"
-    driver = webdriver.Firefox(options=options)
-
-    return driver
+ct = CoreTest()
+browser = ct.driver
 
 def test_homepage():
-    browser = setup()
     
     # Test title
-    browser.get(URL)
+    ct.homepage()
     assert "Francoralité" in browser.title
 
     # Test menu
