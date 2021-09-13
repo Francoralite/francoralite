@@ -61,7 +61,7 @@ setup(
     'pyyaml==5.4.1',
     'Werkzeug==1.0.1',
     'django-dirtyfields==1.5.0',
-    'sqlparse==0.4.1',
+    'sqlparse==0.4.2',
     'django-markdownx==3.0.1',
     'django_select2==7.6.2',
     'lxml==4.6.3',
