@@ -51,7 +51,7 @@ setup(
     'django-registration-redux==2.9',
     'django-extensions==3.1.1',
     'django-timezones', # Always useful ?
-    'django-debug-toolbar==3.2',
+    'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
     'django-breadcrumbs==1.1.3', # Always useful ?
     'django-bootstrap3==14.2.0',
