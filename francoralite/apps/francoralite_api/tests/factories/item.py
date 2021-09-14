@@ -58,7 +58,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
     media_type = factory.SubFactory(MediaTypeFactory)
     approx_duration = factory.Faker('time_delta')
     file = factory.LazyAttribute(
-        lambda obj: create_tmp_sound( settings.MEDIA_ROOT + "items/" + obj.code )
+        lambda obj: create_tmp_sound( obj.code )
     )
 
     # Description -----------------------
