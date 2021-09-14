@@ -47,7 +47,7 @@ docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
 
 Now, we can launch tests
 ```
-docker-compose exec app bash -c 'py.test'
+docker-compose exec app bash -c 'py.test -Werror -x'
 ```
 
 ## URLs
