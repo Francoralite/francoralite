@@ -68,10 +68,10 @@ setup(
     'django-leaflet==0.27.1',
     'django-geojson==3.1.0',
     'django-cors-headers==3.7.0',
-    'python-keycloak==0.24.0',
+    'python-keycloak==0.26.1',
     'rsa==4.7.2',
     'python-jose==3.3.0',
-    'mozilla-django-oidc==1.2.4',
+    'mozilla-django-oidc==2.0.0',
     'rdflib==5.0.0',
   ],
   extras_require={

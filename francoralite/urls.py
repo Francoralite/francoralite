@@ -1,7 +1,7 @@
 import os
 
 from django.conf import settings
-from django.conf.urls import url, include
+from django.conf.urls import re_path, include
 #from django.contrib import admin
 from django.http import HttpResponse
 #from django.views.i18n import javascript_catalog
@@ -41,24 +41,24 @@ robots_rules = open(PROJECT_ROOT + os.sep + 'robots.txt', 'r').read()
 
 urlpatterns = [
     # New frontend endpoints
-    url(r'', include(francoralite_front_urls)),
+    re_path(r'', include(francoralite_front_urls)),
 
-#    url(r'^admin/django/', include(admin.site.urls)),
-    url(r'^', include(francoralite_api_urls)),
-    url(r'^api/', include(francoralite_api_urls.router.urls)),
-    url(r'^api/', include(francoralite_api_urls.Fond_router.urls)),
-    url(r'^api/', include(francoralite_api_urls.Mission_router.urls)),
-    url(r'^api/', include(francoralite_api_urls.Collection_router.urls)),
-    url(r'^api/', include(francoralite_api_urls.Performance_router.urls)),
-    url(r'^api/', include(francoralite_api_urls.Item_router.urls)),
-    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    url(r'^oidc/', include(mozilla_django_oidc.urls)),
+#    re_path(r'^admin/django/', include(admin.site.urls)),
+    re_path(r'^', include(francoralite_api_urls)),
+    re_path(r'^api/', include(francoralite_api_urls.router.urls)),
+    re_path(r'^api/', include(francoralite_api_urls.Fond_router.urls)),
+    re_path(r'^api/', include(francoralite_api_urls.Mission_router.urls)),
+    re_path(r'^api/', include(francoralite_api_urls.Collection_router.urls)),
+    re_path(r'^api/', include(francoralite_api_urls.Performance_router.urls)),
+    re_path(r'^api/', include(francoralite_api_urls.Item_router.urls)),
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    re_path(r'^oidc/', include(mozilla_django_oidc.urls)),
 
     # Languages
-#    url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^robots\.txt$', lambda r: HttpResponse(
+#    re_path(r'^i18n/', include('django.conf.urls.i18n')),
+    re_path(r'^robots\.txt$', lambda r: HttpResponse(
         robots_rules, content_type="text/plain")),
 ]
 
@@ -66,5 +66,5 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        re_path(r'^__debug__/', include(debug_toolbar.urls)),
     ]
