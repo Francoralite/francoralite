@@ -321,3 +321,19 @@ class TestItemList(APITestCase):
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_api_get_by_code(self):
+        """
+        Ensure we can obtain an item with its code (via the API call)
+        refer issue #203
+        """
+        
+        item = Item.objects.first()
+        code = item.code
+        description = item.description
+
+        response = self.client.get("http://nginx.francoralite.localhost:8080/api/item?code=" + code)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+
+        self.assertEqual(response.data[0]['description'], description)
