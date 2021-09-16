@@ -179,7 +179,7 @@ KEYCLOAK_CONFIG = {
 #
 CORS_ORIGIN_WHITELIST = (
     'http://1.2.3.4',
-    'http://nginx.francoralite.localhost',
+    'http://nginx.francoralite.localhost:8080',
 )
 
 AUTHENTICATION_BACKENDS = (
