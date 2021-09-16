@@ -286,6 +286,24 @@ class TestItemList(APITestCase):
             sorted(response.data.keys()),
             ITEM_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
+
+    def test_uniq_code_item(self):
+        """
+        Ensure we don't validate a non-uniq item code
+        """
+
+        item = Item.objects.first()
+        code_1 = item.code
+        item = Item.objects.last()
+
+        data = {'code': code_1}
+        url = reverse(
+            'item-detail',
+            kwargs={'pk': item.id})
+        response = self.client.patch(url, data, format='multipart')
+
+        # Ensure code 400 returned
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
     def test_download_a_file(self, depends=['test_create_an_item'] ):
         """

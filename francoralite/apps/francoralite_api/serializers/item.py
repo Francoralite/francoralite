@@ -8,6 +8,7 @@ import string
 import unicodedata
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from ..models.item import Item as ItemModel
 from .collection import CollectionSerializer
@@ -31,7 +32,10 @@ class ItemSerializer(serializers.ModelSerializer):
         allow_null=True, allow_blank=True, required=False)
     description = serializers.CharField(
         allow_null=True, allow_blank=True, required=False)
-    code = serializers.CharField(required=True)
+    code = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=ItemModel.objects.all())]
+        )
     code_partner = serializers.CharField(
         allow_null=True, allow_blank=True, required=False)
     auto_period_access = serializers.BooleanField(required=False)
