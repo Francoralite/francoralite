@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from ..models.fond import Fond as FondModel
 from .acquisition_mode import AcquisitionModeSerializer
@@ -19,7 +20,10 @@ class FondSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(required=True)
     description = serializers.CharField(required=True)
-    code = serializers.CharField(required=True)
+    code = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=FondModel.objects.all())]
+        )
     institution = AsymetricRelatedField.from_serializer(
          InstitutionSerializer, kwargs={'required': True})
     code_partner = serializers.CharField(allow_blank=True)
