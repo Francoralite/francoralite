@@ -21,4 +21,3 @@ class PerformanceCollection(Performance):
         db_table = 'performance_collection'
         verbose_name_plural = _('interpretes')
         ordering = []
-        unique_together = (('performance', 'collection'), )
