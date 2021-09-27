@@ -26,3 +26,4 @@ class CollectionLanguage(models.Model):
         db_table = 'api_collection_language'
         verbose_name_plural = _('collection_languages')
         ordering = []
+        unique_together = (('collection', 'language'), )

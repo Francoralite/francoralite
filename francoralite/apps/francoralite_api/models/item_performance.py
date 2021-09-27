@@ -24,3 +24,4 @@ class ItemPerformance(models.Model):
         db_table = 'item_performance'
         verbose_name_plural = _('item_performance')
         ordering = []
+        unique_together = (('item', 'performance'), )
