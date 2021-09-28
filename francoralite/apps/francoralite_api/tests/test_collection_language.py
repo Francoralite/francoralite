@@ -53,7 +53,7 @@ class TestCollectionLanguageList(APITestCase):
 
 
         # Create a set of sample data
-        CollectionLanguageFactory.create_batch(1)
+        CollectionLanguageFactory.create_batch(6)
 
     def test_can_get_collection_language_list(self):
         """
@@ -64,7 +64,7 @@ class TestCollectionLanguageList(APITestCase):
 
         # ORM side
         collection_languages = CollectionLanguage.objects.all()
-        self.assertEqual(len(collection_languages), 1)
+        self.assertEqual(len(collection_languages), 6)
 
         # API side
         response = self.client.get(url)
@@ -127,11 +127,11 @@ class TestCollectionLanguageList(APITestCase):
 
         # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['language'] = Language.objects.first().id
+        data['language'] = Language.objects.last().id
         data['collection'] = Collection.objects.first().id
 
         url = reverse('collectionlanguage-list', kwargs={
-            'collection_pk': 1})
+            'collection_pk': data['collection']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -144,7 +144,7 @@ class TestCollectionLanguageList(APITestCase):
         url = reverse(
             'collectionlanguage-detail',
             kwargs={'collection_pk': response.data['collection']['id'],
-                    'pk': response.data['language']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

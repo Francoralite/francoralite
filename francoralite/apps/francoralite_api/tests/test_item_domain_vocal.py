@@ -53,7 +53,7 @@ class TestItemDomainVocalList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         # Create a set of sample data
-        ItemDomainVocalFactory.create_batch(1)
+        ItemDomainVocalFactory.create_batch(6)
 
     def test_can_get_item_domain_vocal_list(self):
         """
@@ -65,7 +65,7 @@ class TestItemDomainVocalList(APITestCase):
 
         # ORM side
         item_domain_vocals = ItemDomainVocal.objects.all()
-        self.assertEqual(len(item_domain_vocals), 1)
+        self.assertEqual(len(item_domain_vocals), 6)
 
         # API side
         response = self.client.get(url)
@@ -129,11 +129,11 @@ class TestItemDomainVocalList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
+        data['item'] = Item.objects.last().id
         data['domain_vocal'] = DomainVocal.objects.first().id
 
         url = reverse('itemdomainvocal-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -147,7 +147,7 @@ class TestItemDomainVocalList(APITestCase):
         url = reverse(
             'itemdomainvocal-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['domain_vocal']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

@@ -45,7 +45,7 @@ class TestCollectionCollectorsList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
 
-        CollectionCollectorsFactory.create_batch(1)
+        CollectionCollectorsFactory.create_batch(6)
 
     def test_can_get_collectioncollectors_list(self):
         """
@@ -56,7 +56,7 @@ class TestCollectionCollectorsList(APITestCase):
 
         # ORM side
         collectionscollectors = CollectionCollectors.objects.all()
-        self.assertEqual(len(collectionscollectors), 1)
+        self.assertEqual(len(collectionscollectors), 6)
 
         # API side
         response = self.client.get(url)
@@ -114,11 +114,11 @@ class TestCollectionCollectorsList(APITestCase):
         #  Then they will be easily converted in JSON format.
         data = factory.build(dict, FACTORY_CLASS=CollectionCollectorsFactory)
 
-        data['collector'] = Authority.objects.first().id
+        data['collector'] = Authority.objects.last().id
         data['collection'] = Collection.objects.first().id
 
         url = reverse('collectioncollectors-list', kwargs={
-            'collection_pk': 1})
+            'collection_pk': data['collection']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -129,7 +129,7 @@ class TestCollectionCollectorsList(APITestCase):
         url = reverse(
             'collectioncollectors-detail',
             kwargs={'collection_pk': response.data['collection']['id'],
-                    'pk': response.data['collector']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

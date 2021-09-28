@@ -53,7 +53,7 @@ class TestItemInformerList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         # Create a set of sample data
-        ItemInformerFactory.create_batch(1)
+        ItemInformerFactory.create_batch(6)
 
     def test_can_get_item_informer_list(self):
         """
@@ -65,7 +65,7 @@ class TestItemInformerList(APITestCase):
 
         # ORM side
         item_informers = ItemInformer.objects.all()
-        self.assertEqual(len(item_informers), 1)
+        self.assertEqual(len(item_informers), 6)
 
         # API side
         response = self.client.get(url)
@@ -125,11 +125,11 @@ class TestItemInformerList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
+        data['item'] = Item.objects.last().id
         data['informer'] = Authority.objects.first().id
 
         url = reverse('iteminformer-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -142,7 +142,7 @@ class TestItemInformerList(APITestCase):
         url = reverse(
             'iteminformer-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['informer']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

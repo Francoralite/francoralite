@@ -124,7 +124,7 @@ class TestItemPerformanceList(APITestCase):
         data['emit'] = emit.id """
         performance= PerformanceCollection.objects.first()
         data['performance'] = performance.id
-        data['item'] = 1
+        data['item'] = Item.objects.last().id
         
         response = self.client.post(self.url, data, format='json')
 
