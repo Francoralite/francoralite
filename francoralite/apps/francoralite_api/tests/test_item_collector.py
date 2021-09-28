@@ -127,8 +127,8 @@ class TestItemCollectorList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.last().id
-        data['collector'] = Authority.objects.first().id
+        data['item'] = 1
+        data['collector'] = 2
 
         url = reverse('itemcollector-list', kwargs={
             'item_pk': data['item']})

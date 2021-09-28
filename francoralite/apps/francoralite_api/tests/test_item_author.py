@@ -124,10 +124,10 @@ class TestItemAuthorList(APITestCase):
             dict,
             FACTORY_CLASS=ItemAuthorFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.last().id
-        data['author'] = Authority.objects.first().id
+        data['item'] = 1
+        data['author'] = 2
 
         url = reverse('itemauthor-list', kwargs={
             'item_pk': data['item']})

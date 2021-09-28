@@ -127,11 +127,11 @@ class TestItemMusicalGroupList(APITestCase):
             dict,
             FACTORY_CLASS=ItemMusicalGroupFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.last().id
-        data['musical_group'] = MusicalGroup.objects.first().id
-
+        data['item'] = 1
+        data['musical_group'] = 2
+        
         url = reverse('itemmusicalgroup-list', kwargs={
             'item_pk': data['item']})
         response = self.client.post(url, data, format='json')

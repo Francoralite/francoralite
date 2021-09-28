@@ -126,10 +126,10 @@ class TestCollectionLocationList(APITestCase):
             dict,
             FACTORY_CLASS=CollectionLocationFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['location'] = Location.objects.last().id
-        data['collection'] = Collection.objects.first().id
+        data['location'] = 2
+        data['collection'] = 1
 
         url = reverse('collectionlocation-list', kwargs={
             'collection_pk': data['collection']})

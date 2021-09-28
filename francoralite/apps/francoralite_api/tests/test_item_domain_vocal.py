@@ -127,10 +127,10 @@ class TestItemDomainVocalList(APITestCase):
             dict,
             FACTORY_CLASS=ItemDomainVocalFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.last().id
-        data['domain_vocal'] = DomainVocal.objects.first().id
+        data['item'] = 1
+        data['domain_vocal'] = 2
 
         url = reverse('itemdomainvocal-list', kwargs={
             'item_pk': data['item']})

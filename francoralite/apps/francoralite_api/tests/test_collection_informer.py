@@ -125,10 +125,10 @@ class TestCollectionInformerList(APITestCase):
             dict,
             FACTORY_CLASS=CollectionInformerFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.-
-        data['informer'] = Authority.objects.last().id
-        data['collection'] = Collection.objects.first().id
+        data['informer'] = 2
+        data['collection'] = 1
 
         url = reverse('collectioninformer-list', kwargs={
             'collection_pk': data['collection']})

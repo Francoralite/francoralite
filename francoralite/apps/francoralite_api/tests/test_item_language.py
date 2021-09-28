@@ -125,10 +125,10 @@ class TestItemLanguageList(APITestCase):
             dict,
             FACTORY_CLASS=ItemLanguageFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.last().id
-        data['language'] = Language.objects.first().id
+        data['item'] = 1
+        data['language'] = 2
 
         url = reverse('itemlanguage-list', kwargs={
             'item_pk': data['item']})

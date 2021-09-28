@@ -125,10 +125,10 @@ class TestItemDanceList(APITestCase):
             dict,
             FACTORY_CLASS=ItemDanceFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.last().id
-        data['dance'] = Dance.objects.first().id
+        data['item'] = 1
+        data['dance'] = 2
 
         url = reverse('itemdance-list', kwargs={
             'item_pk': 1})

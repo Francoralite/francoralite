@@ -110,12 +110,12 @@ class TestCollectionCollectorsList(APITestCase):
         Ensure we can create a CollectionCollectors object
         """
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
         data = factory.build(dict, FACTORY_CLASS=CollectionCollectorsFactory)
 
-        data['collector'] = Authority.objects.last().id
-        data['collection'] = Collection.objects.first().id
+        data['collector'] = 2
+        data['collection'] = 1
 
         url = reverse('collectioncollectors-list', kwargs={
             'collection_pk': data['collection']})

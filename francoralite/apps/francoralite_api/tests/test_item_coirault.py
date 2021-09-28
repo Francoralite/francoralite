@@ -125,10 +125,10 @@ class TestItemCoiraultList(APITestCase):
             dict,
             FACTORY_CLASS=ItemCoiraultFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.last().id
-        data['coirault'] = SkosConcept.objects.first().id
+        data['item'] = 1
+        data['coirault'] = 2
 
         url = reverse('itemcoirault-list', kwargs={
             'item_pk': data['item']})

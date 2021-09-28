@@ -127,8 +127,8 @@ class TestCollectionLanguageList(APITestCase):
 
         # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['language'] = Language.objects.last().id
-        data['collection'] = Collection.objects.first().id
+        data['language'] = 2
+        data['collection'] = 1
 
         url = reverse('collectionlanguage-list', kwargs={
             'collection_pk': data['collection']})
