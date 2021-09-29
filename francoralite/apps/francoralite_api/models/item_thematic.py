@@ -28,3 +28,4 @@ class ItemThematic(models.Model):
         db_table = 'api_item_thematic'
         verbose_name_plural = _('item_thematics')
         ordering = []
+        unique_together = (('item', 'thematic'), )

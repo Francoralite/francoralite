@@ -29,3 +29,4 @@ class ItemMusicalOrganization(models.Model):
         db_table = 'api_item_musical_organization'
         verbose_name_plural = _('item_musical_organizations')
         ordering = []
+        unique_together = (('item', 'musical_organization'), )

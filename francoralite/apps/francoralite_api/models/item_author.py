@@ -27,3 +27,4 @@ class ItemAuthor(models.Model):
         db_table = 'api_item_author'
         verbose_name_plural = _('item_authors')
         ordering = []
+        unique_together = (('item', 'author'), )

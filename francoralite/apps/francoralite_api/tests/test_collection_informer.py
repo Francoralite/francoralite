@@ -53,7 +53,7 @@ class TestCollectionInformerList(APITestCase):
 
 
         # Create a set of sample data
-        CollectionInformerFactory.create_batch(1)
+        CollectionInformerFactory.create_batch(6)
 
     def test_can_get_collection_informer_list(self):
         """
@@ -65,7 +65,7 @@ class TestCollectionInformerList(APITestCase):
 
         # ORM side
         collection_informers = CollectionInformer.objects.all()
-        self.assertEqual(len(collection_informers), 1)
+        self.assertEqual(len(collection_informers), 6)
 
         # API side
         response = self.client.get(url)
@@ -125,13 +125,13 @@ class TestCollectionInformerList(APITestCase):
             dict,
             FACTORY_CLASS=CollectionInformerFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.-
-        data['informer'] = Authority.objects.first().id
-        data['collection'] = Collection.objects.first().id
+        data['informer'] = 2
+        data['collection'] = 1
 
         url = reverse('collectioninformer-list', kwargs={
-            'collection_pk': 1})
+            'collection_pk': data['collection']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -144,7 +144,7 @@ class TestCollectionInformerList(APITestCase):
         url = reverse(
             'collectioninformer-detail',
             kwargs={'collection_pk': response.data['collection']['id'],
-                    'pk': response.data['informer']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

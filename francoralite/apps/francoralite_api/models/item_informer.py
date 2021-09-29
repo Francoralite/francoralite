@@ -28,3 +28,4 @@ class ItemInformer(models.Model):
         db_table = 'api_item_informer'
         verbose_name_plural = _('item_informers')
         ordering = []
+        unique_together = (('item', 'informer'), )

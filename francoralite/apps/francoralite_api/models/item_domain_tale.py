@@ -28,3 +28,4 @@ class ItemDomainTale(models.Model):
         db_table = 'api_item_domain_tale'
         verbose_name_plural = _('item_domain_tales')
         ordering = []
+        unique_together = (('item', 'domain_tale'), )

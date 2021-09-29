@@ -53,7 +53,7 @@ class TestItemUsefulnessList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         # Create a set of sample data
-        ItemUsefulnessFactory.create_batch(1)
+        ItemUsefulnessFactory.create_batch(6)
 
     def test_can_get_item_usefulness_list(self):
         """
@@ -65,7 +65,7 @@ class TestItemUsefulnessList(APITestCase):
 
         # ORM side
         item_usefulnesss = ItemUsefulness.objects.all()
-        self.assertEqual(len(item_usefulnesss), 1)
+        self.assertEqual(len(item_usefulnesss), 6)
 
         # API side
         response = self.client.get(url)
@@ -126,13 +126,13 @@ class TestItemUsefulnessList(APITestCase):
             dict,
             FACTORY_CLASS=ItemUsefulnessFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.-
-        data['item'] = Item.objects.first().id
-        data['usefulness'] = Usefulness.objects.first().id
+        data['item'] = 1
+        data['usefulness'] = 2
 
         url = reverse('itemusefulness-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -146,7 +146,7 @@ class TestItemUsefulnessList(APITestCase):
         url = reverse(
             'itemusefulness-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['usefulness']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

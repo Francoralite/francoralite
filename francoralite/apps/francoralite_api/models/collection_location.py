@@ -26,3 +26,4 @@ class CollectionLocation(models.Model):
         db_table = 'collection_location'
         verbose_name_plural = _('collection_locations')
         ordering = []
+        unique_together = (('collection', 'location'), )
