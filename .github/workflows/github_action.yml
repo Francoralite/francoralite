@@ -1,0 +1,13 @@
+name: CI Workflow
+on: push
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout on branch develop
+        uses: actions/checkout@v2
+        with:
+          ref: develop
+          token: ${{ secrets.GITHUB_TOKEN }}
