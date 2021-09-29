@@ -7,11 +7,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      
       - name : Create services network
         run: docker network create services
+      
       - name: Retrieve docker images
         run: docker-compose pull
+      
       - name: Build docker image
         run: docker-compose build
+      
       - name: Start docker-compose
         run: docker-compose up --no-start
+        
+      - name: Keycloak parameters
+        run: bash -c ./scripts/load_keycloak_data.sh
+       
+      - name: Install tests dependencies
+        run: docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
+        
+      - name: Run backends tests
+        run: docker-compose exec app bash -c 'py.test'
