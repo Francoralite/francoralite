@@ -11,3 +11,5 @@ jobs:
         run: docker-compose pull
       - name: Build docker image
         run: docker-compose build
+      - name: Start docker-compose
+        run: docker-compose up --no-start
