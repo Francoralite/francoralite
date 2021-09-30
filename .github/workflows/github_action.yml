@@ -12,29 +12,48 @@ jobs:
         run: docker network create services
       
       - name: Retrieve docker images
+        if: ${{ success() }}
         run: docker-compose pull
       
       - name: Build docker image
+        if: ${{ success() }}
         run: docker-compose build
       
       - name: Start docker-compose
+        if: ${{ success() }}
         run: docker-compose up --no-start
         
       - name: Keycloak parameters
+        if: ${{ success() }}
         run: script -e -c "./scripts/load_keycloak_data.sh"
        
       - name: Install tests dependencies
+        if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'"
         
       - name: Run backends tests
+        if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'py.test'"
         
       - name: Coveralls token
+        if: ${{ success() }}
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
         
       - name: Coveralls
+        if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'coveralls'"
         
+      - name: Logs docker-compose
+        if: ${{ failure() }}
+        run: docker-compose logs
+
+      - name: Stop docker-compose
+        if: ${{ always() }}
+        run: docker-compose stop
+
+      - name: Down docker-compose
+        if: ${{ always() }}
+        run: docker-compose down
