@@ -21,7 +21,7 @@ jobs:
         run: docker-compose up --no-start
         
       - name: Keycloak parameters
-        run: bash -c ./scripts/load_keycloak_data.sh
+        run: ./scripts/load_keycloak_data.sh
        
       - name: Install tests dependencies
         run: docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
