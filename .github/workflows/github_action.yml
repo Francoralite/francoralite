@@ -24,7 +24,7 @@ jobs:
         run: script -e -c "./scripts/load_keycloak_data.sh"
        
       - name: Install tests dependencies
-        run: docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
+        run: script -e -c ".docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'"
         
       - name: Run backends tests
-        run: docker-compose exec app bash -c 'py.test'
+        run: script -e -c ".docker-compose exec app bash -c 'py.test'"
