@@ -8,6 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: Setup Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+          architecture: 'x64'
+      
       - name : Create services network
         run: docker network create services
       
@@ -34,10 +40,6 @@ jobs:
       - name: Run backends tests
         if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'py.test'"
-        
-      - name: Coveralls
-        if: ${{ success() }}
-        run: script -e -c "docker-compose exec app bash -c 'coveralls'"
         
       - name: Coveralls token
         if: ${{ success() }}
