@@ -41,17 +41,18 @@ jobs:
         if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'py.test'"
         
-      - name: Coveralls
-        run: script -e -c "docker-compose exec app bash -c 'coveralls --service=github'"
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- name: Coveralls
+      #  if: ${{ success() }}
+      #  run: script -e -c "docker-compose exec app bash -c 'coveralls --service=github'"
+      #  env:
+      #    COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
-      - name: Coveralls token
-        if: ${{ success() }}
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
+      #- name: Coveralls token
+      #  if: ${{ success() }}
+      #  uses: coverallsapp/github-action@master
+      #  with:
+      #    github-token: ${{ secrets.GITHUB_TOKEN }}
+      #    path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
         
       - name: Logs docker-compose
         if: ${{ failure() }}
