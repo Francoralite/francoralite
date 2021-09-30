@@ -29,9 +29,11 @@ jobs:
       - name: Run backends tests
         run: script -e -c "docker-compose exec app bash -c 'py.test'"
         
-      - name: Coveralls
+      - name: Coveralls token
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Coveralls
         run: script -e -c "docker-compose exec app bash -c 'coveralls'"
         
