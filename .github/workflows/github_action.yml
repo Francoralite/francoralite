@@ -51,6 +51,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: lcov.info
+      
+      - name : coveralls-python
+        if: ${{ success() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: script -e -c "docker-compose exec app bash -c 'coveralls --service=github'"
         
       - name: Logs docker-compose
         if: ${{ failure() }}
