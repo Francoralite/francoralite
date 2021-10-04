@@ -39,7 +39,7 @@ jobs:
         
       - name: Run backends tests
         if: ${{ success() }}
-        run: script -e -c "docker-compose exec app bash -c 'py.test --cov-report term-missing'"
+        run: script -e -c "docker-compose exec app bash -c 'py.test --cov coveralls --cov-report term-missing'"
 
       - name: Covert to lcov
         if: ${{ success() }}
