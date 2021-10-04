@@ -54,9 +54,9 @@ jobs:
       
       - name : coveralls-python
         if: ${{ success() }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: script -e -c "docker-compose exec app bash -c 'coveralls --service=github'"
+        run: |
+          script -e -c "docker-compose exec app bash -c 'export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}'"
+          script -e -c "docker-compose exec app bash -c 'coveralls --service=github'"
         
       - name: Logs docker-compose
         if: ${{ failure() }}
