@@ -44,13 +44,6 @@ jobs:
       - name: Covert to lcov
         if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'coveragepy-lcov'"
-
-        
-      - name: Coveralls
-        if: ${{ success() }}
-        run: script -e -c "docker-compose exec app bash -c 'coveralls --service=github'"
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Coveralls token
         if: ${{ success() }}
