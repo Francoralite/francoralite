@@ -39,20 +39,10 @@ jobs:
         
       - name: Run backends tests
         if: ${{ success() }}
-        run: script -e -c "docker-compose exec app bash -c 'py.test --cov coveralls --cov-report term-missing'"
+        run: script -e -c "docker-compose exec app bash -c 'py.test --cov --cov-report=xml'"
 
-      - name: Covert to lcov
-        if: ${{ success() }}
-        run: | 
-          script -e -c "docker-compose exec app bash -c 'coveragepy-lcov'"
-          ls -ails
-        
-      - name: Coveralls token
-        if: ${{ success() }}
-        uses: coverallsapp/github-action@1.1.3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: lcov.info
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
         
       - name: Logs docker-compose
         if: ${{ failure() }}
