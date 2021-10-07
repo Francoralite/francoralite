@@ -155,7 +155,8 @@ class TestMissionList(APITestCase):
     
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, str)
-        self.assertEqual(response.data, "0:20:00")
+        self.assertNotEqual(response.data, "0:00:00")
+        self.assertNotEqual(response.data, "")
 
 
     @parameterized.expand(MISSION_STRUCTURE)
