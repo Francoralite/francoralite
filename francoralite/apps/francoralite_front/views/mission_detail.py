@@ -37,6 +37,9 @@ class MissionDetail(FrancoraliteTemplateView):
             # Obtain values of the start and en dates of related collections
             context['dates'] = tools.request_api(
                 '/api/mission/' + context['id'] + '/dates')
+            # Obtain value of the items total duration
+            context['duration'] = tools.request_api(
+                '/api/mission/' + context['id'] + '/duration')
             context['form'] = MissionForm()
         except Exception as err:
             context['mission'] = {}
@@ -46,5 +49,6 @@ class MissionDetail(FrancoraliteTemplateView):
             context['locations'] = []
             context['documents'] = []
             context['dates'] = ['', '']
-            context['error'] = err.message
+            context['duration'] = ''
+            context['error'] = err
         return context
