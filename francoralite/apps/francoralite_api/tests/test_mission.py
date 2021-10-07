@@ -145,6 +145,19 @@ class TestMissionList(APITestCase):
         self.assertIsInstance(response.data, list)
 
 
+    def test_mission_duration(self):
+        """
+        Total duration of a mission : sum of collection/items durations of this mission
+        """
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/duration"
+        response = self.client.get(url)
+    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, str)
+        self.assertEqual(response.data, "0:20:00")
+
+
     @parameterized.expand(MISSION_STRUCTURE)
     def test_has_valid_mission_values(self, attribute, attribute_type):
         """
