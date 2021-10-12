@@ -85,7 +85,7 @@
           </dl>
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
-            <dd class="donnee"></dd>
+            <dd class="donnee">{{duration}}</dd>
           </dl>
         </div>
       </div>
@@ -151,8 +151,8 @@
 
     <section class="tab-pane fade in" id="tab_collection">
       {% if collections|length > 0 %}
-        <!-- Table to display the collections --->
-        <table class="listing">
+        <!-- Table to display the collections -->
+        <table class="listing" aria-describedby="Collections">
         <thead>
             <th class="highlight">{% trans "cote" %}</th>
             <th>{% trans "Nom" %}</th>

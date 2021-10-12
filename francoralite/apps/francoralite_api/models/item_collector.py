@@ -27,3 +27,4 @@ class ItemCollector(models.Model):
         db_table = 'api_item_collector'
         verbose_name_plural = _('item_collectors')
         ordering = []
+        unique_together = (('item', 'collector'), )

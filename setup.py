@@ -31,7 +31,7 @@ setup(
   author_email = "leger.luc@gmail.com",
   version = '1.7.0',
   install_requires = [
-    'django==3.0.13',
+    'django==3.1.12',
     'django-appconf==1.0.4',
     'django-environ==0.4.5',
     'django-filter==2.4.0',
@@ -51,7 +51,7 @@ setup(
     'django-registration-redux==2.9',
     'django-extensions==3.1.1',
     'django-timezones', # Always useful ?
-    'django-debug-toolbar==3.2',
+    'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
     'django-breadcrumbs==1.1.3', # Always useful ?
     'django-bootstrap3==14.2.0',
@@ -61,17 +61,17 @@ setup(
     'pyyaml==5.4.1',
     'Werkzeug==1.0.1',
     'django-dirtyfields==1.5.0',
-    'sqlparse==0.4.1',
+    'sqlparse==0.4.2',
     'django-markdownx==3.0.1',
     'django_select2==7.6.2',
-    'lxml==4.6.2',
+    'lxml==4.6.3',
     'django-leaflet==0.27.1',
     'django-geojson==3.1.0',
     'django-cors-headers==3.7.0',
-    'python-keycloak==0.24.0',
+    'python-keycloak==0.26.1',
     'rsa==4.7.2',
     'python-jose==3.3.0',
-    'mozilla-django-oidc==1.2.4',
+    'mozilla-django-oidc==2.0.0',
     'rdflib==5.0.0',
   ],
   extras_require={
@@ -86,6 +86,8 @@ setup(
       'pytest-pythonpath==0.7.3',
       'coveralls==3.0.1',
       'selenium==3.141.0',
+      'coverage==5.5',
+      'coveragepy-lcov==0.1.1'
     ],
   },
   platforms = ['OS Independent'],

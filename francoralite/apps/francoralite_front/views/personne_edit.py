@@ -38,18 +38,18 @@ class PersonneEdit(FormView):
 
     def get(self, request, *args, **kwargs):
 
-        id = kwargs.get('id')
+        id_auth = kwargs.get('id')
 
         # Obtain values of the record
         personne = requests.get(
-            settings.FRONT_HOST_URL + '/api/authority/' + str(id))
+            settings.FRONT_HOST_URL + '/api/authority/' + str(id_auth))
         data = personne.json()
         form = PersonneForm(initial=data)
-        # authority = personne.json()
+        authority = personne.json()
 
         return render(request,
                       '../templates/personne-add.html',
-                      {'form': form, 'id': id})
+                      {'form': form, 'id': id_auth, 'personne': authority})
 
     def post(self, request, *args, **kwargs):
         return tools.patch('authority', PersonneForm, request, *args, **kwargs)

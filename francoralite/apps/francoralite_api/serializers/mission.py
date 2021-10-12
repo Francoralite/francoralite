@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from ..models.mission import Mission as MissionModel
 from .fond import FondSerializer
@@ -18,7 +19,10 @@ class MissionSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(required=True)
     description = serializers.CharField(required=True)
-    code = serializers.CharField(required=True)
+    code = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=MissionModel.objects.all())]
+        )
     public_access = serializers.CharField(required=True)
     fonds = AsymetricRelatedField.from_serializer(
          FondSerializer, kwargs={'required': True})

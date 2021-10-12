@@ -153,10 +153,10 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-
-    filterset_fields = ('collection', 'media_type',)
+    
+    filterset_fields = ('collection', 'media_type', 'code', 'media_type',)
     ordering = ('code', 'title',)
-    search_fields = ('title', 'code', 'collection', 'media_type')
+    search_fields = ('title',)
 
     keycloak_scopes = {
         'GET': 'item:view',

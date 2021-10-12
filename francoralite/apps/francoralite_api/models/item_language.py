@@ -26,3 +26,4 @@ class ItemLanguage(models.Model):
         app_label = 'francoralite_api'
         db_table = 'api_item_language'
         verbose_name_plural = _('item_languages')
+        unique_together = (('item', 'language'), )

@@ -1,4 +1,4 @@
-FROM python:3.7.10-slim-buster
+FROM python:3.8.12-slim-buster
 
 ENV DJANGO_SETTINGS_MODULE francoralite.settings.base
 ENV KEYCLOAK_DEFAULT_ACCESS ALLOW

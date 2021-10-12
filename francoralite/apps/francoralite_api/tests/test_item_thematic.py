@@ -53,7 +53,7 @@ class TestItemThematicList(APITestCase):
             HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
 
         # Create a set of sample data
-        ItemThematicFactory.create_batch(1)
+        ItemThematicFactory.create_batch(6)
 
     def test_can_get_item_thematic_list(self):
         """
@@ -65,7 +65,7 @@ class TestItemThematicList(APITestCase):
 
         # ORM side
         item_thematics = ItemThematic.objects.all()
-        self.assertEqual(len(item_thematics), 1)
+        self.assertEqual(len(item_thematics), 6)
 
         # API side
         response = self.client.get(url)
@@ -125,13 +125,13 @@ class TestItemThematicList(APITestCase):
             dict,
             FACTORY_CLASS=ItemThematicFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['thematic'] = Thematic.objects.first().id
+        data['item'] = 1
+        data['thematic'] = 2
 
         url = reverse('itemthematic-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -145,7 +145,7 @@ class TestItemThematicList(APITestCase):
         url = reverse(
             'itemthematic-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['thematic']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 
