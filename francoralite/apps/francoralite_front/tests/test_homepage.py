@@ -1,9 +1,8 @@
 from selenium.webdriver.common.by import By
-from .conftest import SeleniumContext
 
 
-def test_homepage():
-    browser = SeleniumContext().homepage()
+def test_homepage(francoralite_selenium_context):
+    browser = francoralite_selenium_context.homepage()
 
     # Test title
     assert "Francoralité" in browser.title
@@ -47,5 +46,3 @@ def test_homepage():
         link_institution.click()
         label = browser.find_element(By.XPATH, "//main/h1")
         assert label.text == target
-
-    browser.quit()
