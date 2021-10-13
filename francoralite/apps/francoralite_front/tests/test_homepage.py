@@ -1,13 +1,11 @@
 from selenium.webdriver.common.by import By
-from .core_test import CoreTest
+from .conftest import SeleniumContext
 
-ct = CoreTest()
-browser = ct.driver
 
 def test_homepage():
-    
+    browser = SeleniumContext().homepage()
+
     # Test title
-    ct.homepage()
     assert "Francoralité" in browser.title
 
     # Test menu
@@ -20,14 +18,14 @@ def test_homepage():
     }
     for k,v in control.items():
         assert menu_list[k].text == v
-    
+
     # Click on each menu item
     data = [
         "Institutions",
         "Fonds", "Missions", "Enquêtes", "Items",
         "Personnes", "Enquêteurs", "Informateurs", "Auteurs", "Compositeurs", "Editeurs",
         "Coupe", "Voix/Instruments", "Organisation musicale",
-        ["Formation (musicale)", "Formation"],["Hornbostel-Sachs","classification Hornbostel-Sachs"], 
+        ["Formation (musicale)", "Formation"],["Hornbostel-Sachs","classification Hornbostel-Sachs"],
         "Genre de chanson", "Genre de conte", "Genre de musique", "Genre vocal",
         "Contexte d'enregistrement",
         "Droits légaux", "Éditeur", "Meta donnée auteur", "Type de média",
@@ -37,7 +35,7 @@ def test_homepage():
         "Fonction",
         "Lieux", ["Par enquêtes", "Lieux, par enquêtes"]
         ]
-    
+
     for item in data :
         link = item
         target = item
@@ -51,4 +49,3 @@ def test_homepage():
         assert label.text == target
 
     browser.quit()
-

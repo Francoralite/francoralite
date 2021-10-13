@@ -1,12 +1,8 @@
 from selenium.webdriver.common.by import By
-from .core_test import CoreTest
-
-ct = CoreTest()
-browser = ct.driver
 
 
-def test_authority_details():
-    browser.get(ct.URL + "authority/1")
+def test_authority_details(francoralite_selenium_context):
+    browser = francoralite_selenium_context.get_url("/authority/1")
 
     # Verify data
     label = browser.find_element(By.XPATH, "//main/h1")
