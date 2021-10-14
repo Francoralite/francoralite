@@ -11,6 +11,7 @@ INSTALLED_APPS = (
 #    'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
+    'leaflet',
     'rest_framework',
     'drf_yasg',
     'francoralite.apps.francoralite_api',
