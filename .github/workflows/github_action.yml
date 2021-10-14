@@ -36,6 +36,10 @@ jobs:
       - name: Install tests dependencies
         if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'"
+
+      - name: Install Selenium drivers
+        if: ${{ success() }}
+        run: script -e -c "docker-compose exec app bash -c './scripts/deps_selenium.sh'"
         
       - name: Run backends tests
         if: ${{ success() }}
