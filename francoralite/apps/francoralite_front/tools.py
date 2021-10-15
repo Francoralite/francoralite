@@ -8,7 +8,7 @@ from rest_framework import status
 from django.conf import settings
 import requests
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from requests.exceptions import RequestException
 
 from francoralite.apps.francoralite_front.errors import APPLICATION_ERRORS
@@ -50,6 +50,9 @@ def request_api(endpoint):
         if response.status_code == status.HTTP_200_OK:
             return response.json()
 
+        if response.status_code == status.HTTP_404_NOT_FOUND:
+            raise Http404()
+        
         raise Exception(HTTP_ERRORS[response.status_code])
     except Exception:
         raise

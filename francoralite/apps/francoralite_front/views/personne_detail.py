@@ -7,6 +7,7 @@
 from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
 import francoralite.apps.francoralite_front.tools as tools
 from francoralite.apps.francoralite_front.forms.personne import PersonneForm
+from django.http import Http404
 
 
 class PersonneDetail(FrancoraliteTemplateView):
@@ -21,8 +22,10 @@ class PersonneDetail(FrancoraliteTemplateView):
             context['contribs'] = tools.request_api(
                 '/api/authority/' + context['id'] + '/contribs')
             context['form'] = PersonneForm
+        except Http404:
+            raise Http404("Cette personne n'existe pas.")
         except Exception as err:
             context['personne'] = {}
             context['contribs'] = {}
-            context['error'] = err.message
+            context['error'] = str(err)
         return context
