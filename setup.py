@@ -65,7 +65,7 @@ setup(
     'django-markdownx==3.0.1',
     'django_select2==7.6.2',
     'lxml==4.6.3',
-    'django-leaflet==0.27.1',
+    'django-leaflet==0.28.1',
     'django-geojson==3.1.0',
     'django-cors-headers==3.7.0',
     'python-keycloak==0.26.1',
