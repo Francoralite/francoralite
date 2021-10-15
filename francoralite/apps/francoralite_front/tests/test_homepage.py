@@ -17,7 +17,7 @@ def test_homepage(francoralite_selenium_context):
         "Institutions" : 1,
         "Archives" : 2,
         "Personnes" : 3,
-        "Enumérations" : 4,
+        "Énumérations" : 4,
         "Lieux" : 5,
         "Recherche avancée" : 6,
     }
@@ -30,7 +30,7 @@ def test_homepage(francoralite_selenium_context):
     data = [
         ["Institutions"],
         ["Archives",["Fonds", "Missions", "Enquêtes", "Items"] ],
-        ["Personnes", ["Enquêteurs", "Informateurs", "Auteurs", "Compositeurs", "Editeurs"] ],
+        ["Personnes", ["Enquêteurs", "Informateurs", "Auteurs", "Compositeurs", "Éditeurs"] ],
         ["Lieux", [["Par enquêtes", "Lieux, par enquêtes"]] ]
         ]
     
