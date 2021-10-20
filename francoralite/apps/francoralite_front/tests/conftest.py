@@ -8,6 +8,7 @@ def francoralite_selenium_context(live_server, settings, django_db_blocker):
 
     settings.FRONT_HOST_URL = live_server.url
     settings.FRONT_HOST_URL_EXTERNAL = live_server.url
+    settings.LOGIN_REDIRECT_URL = live_server.url
 
     with django_db_blocker.unblock():
         call_command('loaddata', 'francoralite.json')
