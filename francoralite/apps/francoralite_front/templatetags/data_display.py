@@ -30,7 +30,7 @@ def field_data(label, data, empty=True):
         code = ""
     else:
         code = "<dl class=\"container_data\"><dt class=\"libelle\">"
-        code = code + str_label + "</dt> <dd id=\"id_"+ str_label.lower().strip() +"\" class=\"donnee\" >"
+        code = code + str_label + "</dt> <dd class=\"donnee\" >"
         code = code + str_data + "</dd> </dl>"
 
     return mark_safe(code)
