@@ -3054,6 +3054,7 @@ f896f42d-66e6-498f-bdc0-a90216659041	/auth/realms/francoralite/account/*
 5def7547-cfd3-4473-946c-35f796c52df4	/auth/admin/francoralite/console/*
 6ca8b749-cba1-4453-8a20-0c189d9b9447	http://nginx.francoralite.localhost:8080/**/*
 6ca8b749-cba1-4453-8a20-0c189d9b9447	http://nginx.francoralite.localhost:8080/*
+6ca8b749-cba1-4453-8a20-0c189d9b9447	*
 \.
 
 
