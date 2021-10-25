@@ -190,6 +190,7 @@ _OIDC_BASE_URL = "{}realms/{}/protocol/openid-connect".format(os.getenv('KEYCLOA
 OIDC_RP_SIGN_ALGO = "RS256"
 OIDC_RP_CLIENT_ID = os.getenv('KEYCLOAK_CLIENT_ID')
 OIDC_RP_CLIENT_SECRET = os.getenv('KEYCLOAK_CLIENT_SECRET_KEY')
+OIDC_RP_SCOPES = "openid email groups"
 OIDC_CREATE_USER = True
 OIDC_STORE_ACCESS_TOKEN = True
 OIDC_STORE_ID_TOKEN = True
