@@ -19,11 +19,11 @@ class CollectionCollectorsViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionCollectorsSerializer
 
     keycloak_scopes = {
-        'GET': 'collection_collectors:view',
-        'POST': 'collection_collectors:add',
-        'PATCH': 'collection_collectors:update',
-        'PUT': 'collection_collectors:update',
-        'DELETE': 'collection_collectors:delete'
+        'GET': 'collectioncollectors:view',
+        'POST': 'collectioncollectors:add',
+        'PATCH': 'collectioncollectors:update',
+        'PUT': 'collectioncollectors:update',
+        'DELETE': 'collectioncollectors:delete'
     }
 
     def get_queryset(self):

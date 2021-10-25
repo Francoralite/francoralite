@@ -41,9 +41,6 @@ class TestCollectionCollectorsList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
 
         CollectionCollectorsFactory.create_batch(1)
 
@@ -60,7 +57,6 @@ class TestCollectionCollectorsList(APITestCase):
 
         # API side
         response = self.client.get(url)
-
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)

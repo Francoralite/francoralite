@@ -51,9 +51,7 @@ class TestMissionList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
         MissionCollectionFactory.create_batch(6, collections__nb_collections=4)
 

@@ -56,9 +56,7 @@ class TestDocumentCollectionList(APITestCase):
         self.url_detail =  self.url + "/1"
 
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
         DocumentCollectionFactory.create_batch(1)
 
@@ -153,6 +151,5 @@ class TestDocumentCollectionList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         # Ensure DocumentCollection removed
-        # FIXIT  kwargs for the related tables
         response_get = self.client.get(self.url_detail)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)

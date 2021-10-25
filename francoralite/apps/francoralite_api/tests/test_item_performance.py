@@ -54,9 +54,7 @@ class TestItemPerformanceList(APITestCase):
 
         
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        
+                
         # Create a set of sample data
         ItemPerformanceFactory.create_batch(6)
 
