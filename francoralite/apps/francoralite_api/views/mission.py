@@ -18,6 +18,9 @@ from ..models.collectioncollectors import (
     CollectionCollectors as CollectionCollectorModel)
 from ..models.collection_location import (
     CollectionLocation as CollectionLocationModel)
+from ..models.item import Item as ItemModel
+from django.db.models import Sum
+import datetime
 from ..models.authority import Authority as AuthorityModel
 from ..models.location import Location as LocationModel
 from ..serializers.mission import MissionSerializer
@@ -104,6 +107,26 @@ class MissionViewSet(viewsets.ModelViewSet):
             date_end = max(to_years)
 
         return Response((date_start, date_end))
+    
+    @action(detail=True)
+    def duration(self, request, pk=None):
+        """
+        Determine the total duration of collections/items
+        """
+        instance = self.get_object()
+        collections = self.list_collections(id_mission=instance.id)
+
+        # Items in this mission
+        items = ItemModel.objects.filter(collection__in=collections)
+        # Sum of items durations
+        global_duration = ItemModel.objects.filter(collection__in=collections).aggregate(Sum('approx_duration'))
+        # Format response
+        if global_duration["approx_duration__sum"] is not None :
+            duration = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )
+        else:
+            duration = ""
+        
+        return Response(duration)
 
     @action(detail=True)
     def informers(self, request, pk=None):

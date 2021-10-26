@@ -19,7 +19,10 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-from .factories.collection import CollectionFactory, CollectionCompleteFactory
+from .factories.collection import (
+    CollectionFactory,
+    CollectionCompleteFactory
+) 
 from ..models.collection import Collection
 from ..models.mission import Mission
 from ..models.mediatype import MediaType
@@ -70,9 +73,6 @@ class TestCollectionList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
 
         CollectionCompleteFactory.create_batch(6)
 
@@ -138,21 +138,23 @@ class TestCollectionList(APITestCase):
         related to a collection
         """
 
-        item = Collection.objects.first()
-        url = reverse('collection-complete',
-                      kwargs={'pk': item.id})
-        response = self.client.get(url)
+        items = Collection.objects.all()
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.data, dict)
-        self.assertEqual(len(response.data["collectors"]), 2)
-        self.assertEqual(len(response.data["informers"]), 2)
-        self.assertEqual(len(response.data["locations"]), 2)
-        self.assertEqual(len(response.data["languages"]), 2)
-        self.assertEqual(len(response.data["publishers"]), 2)
-        self.assertEqual(len(response.data["performances"]), 2)
-        self.assertEqual(len(response.data["performances"][0]["musicians"]), 2)
+        for item in items:
+            url = reverse('collection-complete',
+                        kwargs={'pk': item.id})
+            response = self.client.get(url)
 
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertIsInstance(response.data, dict)
+            self.assertEqual(len(response.data["collectors"]), 2)
+            self.assertEqual(len(response.data["informers"]), 2)
+            self.assertEqual(len(response.data["locations"]), 2)
+            self.assertEqual(len(response.data["languages"]), 2)
+            self.assertEqual(len(response.data["publishers"]), 2)
+            self.assertEqual(len(response.data["performances"]), 2)
+            self.assertEqual(len(response.data["performances"][0]["musicians"]), 2)
+            self.assertIsInstance(response.data["duration"], str)
 
     def test_create_a_collection(self):
         """
@@ -251,6 +253,25 @@ class TestCollectionList(APITestCase):
             sorted(response.data.keys()),
             COLLECTION_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
+
+    def test_uniq_code_collection(self):
+        """
+        Ensure we don't validate a non-uniq collection code
+        """
+
+        item = Collection.objects.first()
+        code_1 = item.code
+        item = Collection.objects.last()
+
+        data = {'code': code_1}
+        url = reverse(
+            'collection-detail',
+            kwargs={'pk': item.id})
+        response = self.client.patch(url, data, format='json')
+
+        # Ensure code 400 returned
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
 
     def test_delete_a_collection(self):
         """

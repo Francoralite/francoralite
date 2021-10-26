@@ -14,7 +14,6 @@ class LocationGisFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Location
-        django_get_or_create = ('name',)
 
     code = factory.Sequence(lambda n: 'location%d' % n)
     name = factory.Faker('word')

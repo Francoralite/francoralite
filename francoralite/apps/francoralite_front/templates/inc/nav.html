@@ -23,35 +23,28 @@
       </li>
 
       <li class="has-children green">
-        <a href="{% url "personne" %}">
-          {% trans "Personnes" %}</a>
+        <a href="{% url "personne" %}">{% trans "Personnes" %}</a>
           <ul class="sous-menu">
             <li>
-              <a href="{% url "personne-collector" %}">
-                {% trans "Enquêteurs" %}</a>
+              <a href="{% url "personne-collector" %}">{% trans "Enquêteurs" %}</a>
             </li>
             <li>
-              <a href="{% url "personne-informer" %}">
-                {% trans "Informateurs" %}</a>
+              <a href="{% url "personne-informer" %}">{% trans "Informateurs" %}</a>
             </li>
             <li>
-              <a href="{% url "personne-author" %}">
-                {% trans "Auteurs" %}</a>
+              <a href="{% url "personne-author" %}">{% trans "Auteurs" %}</a>
             </li>
             <li>
-              <a href="{% url "personne-composer" %}">
-                {% trans "Compositeurs" %}</a>
+              <a href="{% url "personne-composer" %}">{% trans "Compositeurs" %}</a>
             </li>
             <li>
-              <a href="{% url "personne-editor" %}">
-                {% trans "Editeurs" %}</a>
+              <a href="{% url "personne-editor" %}">{% trans "Éditeurs" %}</a>
             </li>
           </ul>
       </li>
 
       <li class="has-children yellow">
-        <a href="#enums">
-          {% trans "Enumérations" %}</a>
+        <a href="#enums">{% trans "Énumérations" %}</a>
           <ul class="sous-menu">
             <li class="has-children"><a href="#musique">Musique</a>
               <ul class="sous-menu">
@@ -62,13 +55,13 @@
                   <a href="{% url "musical_group" %}">{% trans "Formation (musicale)" %}</a>
                 </li>
                 <li>
-                  <a href="{% url "hornbostelsachs" %}">{% trans "Hornbostel–Sachs" %}</a>
+                  <a href="{% url "hornbostelsachs" %}">{% trans "Hornbostel-Sachs" %}</a>
                 </li>
                 <li>
                   <a href="{% url "musical_organization" %}">{% trans "Organisation musicale" %}</a>
                 </li>
                 <li>
-                <a href="{% url "instrument" %}">{% trans "Voix/Intruments" %}</a>
+                <a href="{% url "instrument" %}">{% trans "Voix/Instruments" %}</a>
                 </li>
               </ul>
             </li>
@@ -131,7 +124,7 @@
         <a href="{% url "location_gis" %}">{% trans "Lieux" %}</a>
           <ul class="sous-menu">
             <li>
-              <a href="{% url "location_gis-collection" %}">{% trans "Enquêtes" %}</a>
+              <a href="{% url "location_gis-collection" %}">{% trans "Par enquêtes" %}</a>
             </li>
           </ul>
       </li>

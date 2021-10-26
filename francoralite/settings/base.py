@@ -138,6 +138,7 @@ FRONT_HOST_URL_EXTERNAL = 'http://nginx.francoralite.localhost:8080'
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 USE_X_FORWARDED_PROTO = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
@@ -178,7 +179,7 @@ KEYCLOAK_CONFIG = {
 #
 CORS_ORIGIN_WHITELIST = (
     'http://1.2.3.4',
-    'http://nginx.francoralite.localhost',
+    'http://nginx.francoralite.localhost:8080',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -199,8 +200,9 @@ OIDC_OP_USER_ENDPOINT = "{}/userinfo".format(_OIDC_BASE_URL)
 OIDC_OP_JWKS_ENDPOINT = "{}/certs".format(_OIDC_BASE_URL)
 
 LOGIN_REDIRECT_URL = os.getenv('APP_BASE_URL')
-LOGOUT_REDIRECT_URL = "{}/logout".format(_OIDC_BASE_URL)
+LOGOUT_REDIRECT_URL = "{}/logout?redirect_uri={}".format(_OIDC_BASE_URL, FRONT_HOST_URL_EXTERNAL)
 
+ALLOW_LOGOUT_GET_METHOD = True
 
 #
 # DEBUG MANAGEMENT

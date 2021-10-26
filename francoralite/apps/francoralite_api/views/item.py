@@ -153,10 +153,10 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-
-    filterset_fields = ('collection', 'media_type',)
-    ordering = ('title', 'code',)
-    search_fields = ('title', 'code', 'collection', 'media_type')
+    
+    filterset_fields = ('collection', 'media_type', 'code', 'media_type',)
+    ordering = ('code', 'title',)
+    search_fields = ('title',)
 
     keycloak_scopes = {
         'GET': 'item:view',
@@ -253,8 +253,13 @@ class ItemViewSet(viewsets.ModelViewSet):
         url_name='sound_download')
     def download(self, request, pk=None):
         instance = self.get_object()
-        media = instance.code + '.mp3'
-        document = open( settings.MEDIA_ROOT + "items/" + media, 'rb')
+        media = str(instance.file)
+        filename = ""
+        if media.find(settings.MEDIA_ROOT) == 0 :
+            filename = media
+        else:
+            filename = settings.MEDIA_ROOT + media
+        document = open( filename, 'rb')
         response = HttpResponse(FileWrapper(document), content_type="audio/mpeg")
         response['Content-Disposition'] = f'attachement; filename="{media}"'
         return response

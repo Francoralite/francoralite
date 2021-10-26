@@ -9,8 +9,6 @@ item_informer factory to execute tests
 
 import factory
 from ...models.item_informer import ItemInformer
-# Import nested/related factories
-from .authority import AuthorityFactory
 
 
 class ItemInformerFactory(factory.django.DjangoModelFactory):
@@ -26,4 +24,5 @@ class ItemInformerFactory(factory.django.DjangoModelFactory):
 
     # Nested/related factories
     item = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.item.ItemFactory")
-    informer = factory.SubFactory(AuthorityFactory)
+    informer = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.authority.AuthorityFactory")
+

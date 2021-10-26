@@ -55,9 +55,7 @@ class TestFondList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
         FondFactoryMission.create_batch(6, missions__nb_missions=4)
 
@@ -261,6 +259,24 @@ class TestFondList(APITestCase):
             sorted(response.data.keys()),
             FOND_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
+        
+    def test_uniq_code_fond(self):
+        """
+        Ensure we don't validate a non-uniq fond code
+        """
+
+        item = Fond.objects.first()
+        code_1 = item.code
+        item = Fond.objects.last()
+
+        data = {'code': code_1}
+        url = reverse(
+            'fond-detail',
+            kwargs={'pk': item.id})
+        response = self.client.patch(url, data, format='json')
+
+        # Ensure code 400 returned
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_a_fond(self):
         """

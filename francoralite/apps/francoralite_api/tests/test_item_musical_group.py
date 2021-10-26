@@ -49,11 +49,9 @@ class TestItemMusicalGroupList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
-        ItemMusicalGroupFactory.create_batch(1)
+        ItemMusicalGroupFactory.create_batch(6)
 
     def test_can_get_item_musical_group_list(self):
         """
@@ -65,7 +63,7 @@ class TestItemMusicalGroupList(APITestCase):
 
         # ORM side
         item_musical_groups = ItemMusicalGroup.objects.all()
-        self.assertEqual(len(item_musical_groups), 1)
+        self.assertEqual(len(item_musical_groups), 6)
 
         # API side
         response = self.client.get(url)
@@ -127,13 +125,13 @@ class TestItemMusicalGroupList(APITestCase):
             dict,
             FACTORY_CLASS=ItemMusicalGroupFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['musical_group'] = MusicalGroup.objects.first().id
-
+        data['item'] = 1
+        data['musical_group'] = 2
+        
         url = reverse('itemmusicalgroup-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -147,7 +145,7 @@ class TestItemMusicalGroupList(APITestCase):
         url = reverse(
             'itemmusicalgroup-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['musical_group']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

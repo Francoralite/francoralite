@@ -29,7 +29,6 @@ from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
-
 def get_permissions(self, token, method_token_info='introspect', **kwargs):
     """
     Get permission by user token
@@ -76,9 +75,7 @@ class KeycloakMiddleware(object):
     set_session_state_cookie = True
 
     def __init__(self, get_response):
-        """
-        :param get_response:
-        """
+
 
         self.config = settings.KEYCLOAK_CONFIG
 
@@ -198,13 +195,6 @@ class KeycloakMiddleware(object):
     def method_validate_token(self, value):
         self._method_validate_token = value
 
-    # def __call__(self, request):
-    #    """
-    #    :param request:
-    #    :return:
-    #    """
-    #    return self.get_response(request)
-
     def process_view(self, request, view_func, view_args, view_kwargs):
         """
         Validate only the token introspect.
@@ -212,7 +202,7 @@ class KeycloakMiddleware(object):
         :param view_func:
         :param view_args: view args
         :param view_kwargs: view kwargs
-        :return:
+        :return: JSON response or None
         """
 
         path = request.path_info.lstrip('/')
@@ -250,7 +240,7 @@ class KeycloakMiddleware(object):
             return None
         # Related entities of a mission
         expr = re.compile(
-            "^api/mission/[0-9]*/(informers|collectors|locations|document|dates)$") # noqa
+            "^api/mission/[0-9]*/(informers|collectors|locations|document|dates|duration)$") # noqa
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
@@ -264,6 +254,12 @@ class KeycloakMiddleware(object):
         # Related entities of an item
         expr = re.compile(
             "^api/item/[0-9]*/(document|performance|performances)$")
+        if expr.match(path) and request.method == 'GET':
+            logger.debug('** exclude path : display template')
+            return None
+        # Related entities of an authority
+        expr = re.compile(
+            "^api/authority/[0-9]*/(contribs)$")
         if expr.match(path) and request.method == 'GET':
             logger.debug('** exclude path : display template')
             return None
@@ -300,19 +296,17 @@ class KeycloakMiddleware(object):
             logger.debug('** exclude path : list template')
             return None
 
-        # FIXME : temporary "open bar"
-        ###### return None
-
         try:
             view_scopes = view_func.cls.keycloak_scopes
-        except AttributeError:
-            logger.debug('Allowing free acesss, since no authorization configuration (keycloak_scopes) found for this request route :%s', request) # noqa
+        except AttributeError as exp:
+            logger.debug('Allowing free access, since no authorization configuration (keycloak_scopes) found for this request route :%s', request) # noqa
             return None
 
         # Get default if method is not defined.
         required_scope = view_scopes.get(request.method, None) \
             if view_scopes.get(request.method, None) else view_scopes.get(
                 'DEFAULT', None)
+
         # DEFAULT scope not found and DEFAULT_ACCESS is DENY
         if not required_scope and self.default_access == 'DENY':
             return JsonResponse(
@@ -329,34 +323,16 @@ class KeycloakMiddleware(object):
                     {"detail": PermissionDenied.default_detail},
                     status=PermissionDenied.status_code)
 
-        self.keycloak.load_authorization_config(
-            "/srv/app/etc/keycloak/auth.json")
+        permissions = self.keycloak.get_permissions(access_token)
+        
+        for perm in permissions:
+            if required_scope in perm.scopes:
+                return None
 
-        return None  # Voir les permissions ensuite
+        return JsonResponse(
+                {"detail":PermissionDenied.default_detail},
+                status=PermissionDenied.status_code)
 
-        # Get permissions
-        # --------------------------------------------------
-        # permissions = self.keycloak.get_permissions(
-        #     access_token,
-        #     method_token_info='decode',
-        #     key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
-        #
-        # for perm in permissions:
-        #     print '-------- perm ----------'
-        #     print perm
-        #     print '------------------'
-        #     sys.stdout.flush()
-        #     if required_scope in perm.scopes:
-        #         return None
-        # print '-------- denied ----------'
-        # print 'DENIED !'
-        # print '------------------'
-        # sys.stdout.flush()
-        # # User Permission Denied
-        # return JsonResponse(
-        #     {"detail": unicode(PermissionDenied.default_detail)},
-        #     status=PermissionDenied.status_code)
-        # --------------------------------------------------
 
     def process_request(self, request):
 
@@ -392,9 +368,6 @@ class KeycloakMiddleware(object):
         if expr.match(path):
             logger.debug('** exclude path : authenticate')
             return None
-
-        # FIXME : temporary "open bar"
-        ## return None
 
         if not request.user.is_authenticated():
             response = HttpResponseRedirect(

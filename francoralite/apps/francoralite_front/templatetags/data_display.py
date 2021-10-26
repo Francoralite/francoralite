@@ -35,6 +35,29 @@ def field_data(label, data, empty=True):
 
     return mark_safe(code)
 
+@register.simple_tag
+def field_data_id(field, data, empty=True):
+    try:
+        str_label = str(field.label)
+    except Exception:
+        str_label = field.label
+
+    try:
+        str_data = str(data)
+        if str_data == "None":
+            str_data = ""
+    except Exception:
+        str_data = data
+
+    if empty is False and str_data == "":
+        code = ""
+    else:
+        code = "<dl class=\"container_data\"><dt class=\"libelle\">"
+        code = code + str_label + "</dt> <dd id=\"" + field.id_for_label + "\" class=\"donnee\" >"
+        code = code + str_data + "</dd> </dl>"
+
+    return mark_safe(code)
+
 
 @register.simple_tag
 def field_data_bool(label, data):
@@ -57,7 +80,7 @@ def display_error(error="0"):
         'KEY_ERROR': 'inc/key_error.html',
     }
     code = error
-    for key, value in url_error.iteritems():
+    for key, value in url_error.items():
         if error == APPLICATION_ERRORS[key]:
             code = template.loader.get_template(value)
 
@@ -141,7 +164,6 @@ def domains(self):
 
 @register.filter
 def get_obj_attr(obj, attr):
-    # return getattr(obj, attr)
     return obj[attr]
 
 

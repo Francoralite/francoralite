@@ -1,5 +1,13 @@
 # Processus de migration vers Python3 / Django3
 
+## Actions post migrations
+
+* Renommer la table `telemeta_api_location`
+
+    ```
+    RENAME TABLE telemeta_api_location TO francoralite_api_location;
+    ```
+
 ## Référencement des applications à supprimer
 
 'telemeta',

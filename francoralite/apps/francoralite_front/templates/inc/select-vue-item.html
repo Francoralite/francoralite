@@ -257,7 +257,7 @@ new Vue({
       loading(true);
        searchRelated(
        loading, search, this,
-        `/api/authority?is_compositor=true&ordering=first_name+last_name&search=${escape(search)}`,
+        `/api/authority?is_composer=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsCompositors',
         'authority'
        );

@@ -49,10 +49,10 @@
 {% if not error|length %}
   {% if item %}
   <figure>
-    <figcaption>{{item.code}}.mp3</figcaption>
+    <figcaption>{{item.file}}</figcaption>
     <audio
         controls
-        src="{{url_external}}/api/item/{{item.id}}/download">
+        src="/api/item/{{item.id}}/download">
             Votre navigateur Internet ne prend pas en charge cet élément audio
     </audio>.
  </figure>
@@ -108,6 +108,11 @@
         {% field_data form.code.label|safe item.code|upper|safe %}
         {% field_data form.code_partner.label|safe item.code_partner|safe empty=False %}
       </div>
+      
+      <div class="block-grey">
+        <h2>{% trans "Données techniques" %}</h2>
+        {% field_data form.approx_duration.label|safe item.approx_duration|safe empty=False %}
+      </div>
 
       <div class="block-grey">
         <h2>{% trans "Indications géographiques et culturelles" %}</h2>
@@ -124,8 +129,6 @@
     <!-- Tab Description ------------------------------------- -->
     <section class="tab-pane" id="tab_desc">
       <h2>Description</h2>
-      {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
-      {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
       {% related_list libelle='Auteurs' items=item.authors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
       {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
       {% field_data form.timbre.label|safe item.timbre|safe empty=False %}
@@ -160,6 +163,8 @@
         {% related_list libelle="Genre(s) de l'expression vocale" items=item.domain_vocals url_detail="domain_vocal-detail" field="name" empty=False %}
         {% related_list libelle="Genre(s) de l'expression instrumentale" items=item.domain_musics url_detail="domain_music-detail" field="name" empty=False %}
         {% related_list libelle='Genre(s) du conte' items=item.domain_tales url_detail="domain_tale-detail" field="name" empty=False %}
+        {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
+        {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
       </div>
 
       {% if item.deposit_digest or item.thematics or item_deposit_names or item.deposit_places or item.deposit_periods %}

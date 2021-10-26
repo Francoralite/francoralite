@@ -51,9 +51,7 @@ class TestMissionList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
         MissionCollectionFactory.create_batch(6, collections__nb_collections=4)
 
@@ -143,6 +141,20 @@ class TestMissionList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
+
+
+    def test_mission_duration(self):
+        """
+        Total duration of a mission : sum of collection/items durations of this mission
+        """
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/duration"
+        response = self.client.get(url)
+    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, str)
+        self.assertNotEqual(response.data, "0:00:00")
+        self.assertNotEqual(response.data, "")
 
 
     @parameterized.expand(MISSION_STRUCTURE)
@@ -264,6 +276,24 @@ class TestMissionList(APITestCase):
             sorted(response.data.keys()),
             MISSION_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
+
+    def test_uniq_code_mission(self):
+        """
+        Ensure we don't validate a non-uniq mission code
+        """
+
+        item = Mission.objects.first()
+        code_1 = item.code
+        item = Mission.objects.last()
+
+        data = {'code': code_1}
+        url = reverse(
+            'mission-detail',
+            kwargs={'pk': item.id})
+        response = self.client.patch(url, data, format='json')
+
+        # Ensure code 400 returned
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_an_mission(self):
         """

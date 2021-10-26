@@ -27,3 +27,4 @@ class ItemCoirault(models.Model):
         db_table = 'api_item_coirault'
         verbose_name_plural = _('item_coiraults')
         ordering = []
+        unique_together = (('item', 'coirault'), )

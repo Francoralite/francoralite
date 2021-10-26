@@ -45,10 +45,8 @@ class TestDanceList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-        get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        get_token(self, username='administrateur')
+       
         # Create a set of sample data
         DanceFactory.create_batch(6)
 
@@ -63,7 +61,7 @@ class TestDanceList(APITestCase):
         self.assertEqual(len(dances), 6)
 
         # API side
-        response = self.client.get(url, **self.auth_headers)
+        response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -110,7 +108,7 @@ class TestDanceList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
 
-    def test_create_an_dance(self):
+    def test_create_a_dance(self):
         """
         Ensure we can create an Dance object
         """
@@ -136,6 +134,25 @@ class TestDanceList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
+
+    def test_create_a_dance_failure(self):
+        """
+        Ensure we can not create an Dance object
+        """
+        
+        # Obtains token for a read-only user
+        get_token(self, username="utilisateur")
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=DanceFactory)
+        url = reverse('dance-list')
+        response = self.client.post(url, data, format='json')
+
+        # Check only expected attributes returned
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    
 
     def test_update_an_dance(self):
         """

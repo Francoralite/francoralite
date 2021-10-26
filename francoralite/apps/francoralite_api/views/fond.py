@@ -35,7 +35,7 @@ class FondViewSet(viewsets.ModelViewSet):
     # filter_fields = ('institution',)
     # ordering = ('institution', 'code',)
     # search_fields = ('institution__name', 'code', 'title')
-    filterset_fields = ('code', 'title')
+    filterset_fields = ('code', 'title', 'institution')
 
     keycloak_scopes = {
         'GET': 'fond:view',

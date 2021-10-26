@@ -45,10 +45,8 @@ class TestDomainVocalList(APITestCase):
         """
         Run needed commands to have a fully working project
         """
-        get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        get_token(self, username="administrateur")
+        
         # Create a set of sample data
         DomainVocalFactory.create_batch(6)
 
@@ -63,7 +61,7 @@ class TestDomainVocalList(APITestCase):
         self.assertEqual(len(domain_vocals), 6)
 
         # API side
-        response = self.client.get(url, **self.auth_headers)
+        response = self.client.get(url)
 
         self.assertIsInstance(response.data, list)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

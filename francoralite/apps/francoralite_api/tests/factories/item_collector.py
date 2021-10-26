@@ -9,8 +9,6 @@ item_collector factory to execute tests
 
 import factory
 from ...models.item_collector import ItemCollector
-# Import nested/related factories
-from .authority import AuthorityFactory
 
 
 class ItemCollectorFactory(factory.django.DjangoModelFactory):
@@ -26,4 +24,4 @@ class ItemCollectorFactory(factory.django.DjangoModelFactory):
 
     # Nested/related factories
     item = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.item.ItemFactory")
-    collector = factory.SubFactory(AuthorityFactory)
+    collector = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.authority.AuthorityFactory")

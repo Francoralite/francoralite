@@ -18,8 +18,11 @@ class PersonneDetail(FrancoraliteTemplateView):
             # Obtain values of the record authority
             context['personne'] = tools.request_api(
                 '/api/authority/' + context['id'])
+            context['contribs'] = tools.request_api(
+                '/api/authority/' + context['id'] + '/contribs')
             context['form'] = PersonneForm
         except Exception as err:
             context['personne'] = {}
+            context['contribs'] = {}
             context['error'] = err.message
         return context

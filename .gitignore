@@ -27,6 +27,7 @@ pip-log.txt
 .coverage
 .tox
 nosetests.xml
+lcov.info
 
 # Translations
 *.mo
@@ -86,3 +87,6 @@ htmlcov/
 
 # Ansible
 *.retry
+
+# VS-Code
+.vscode/

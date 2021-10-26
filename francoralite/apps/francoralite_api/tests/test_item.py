@@ -76,9 +76,7 @@ class TestItemList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
         ItemCompleteFactory.create_batch(6)
         PerformanceCollectionMusicianFactory.create_batch(3)
@@ -172,7 +170,7 @@ class TestItemList(APITestCase):
         data['coupe'] = coupe.id
 
         # Create a fake file.
-        data['file'] = create_tmp_sound(data['code'])
+        data['file'] = create_tmp_sound("c'est déjà l'été")
       
 
         url = reverse('item-list')
@@ -193,6 +191,8 @@ class TestItemList(APITestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response_get.data, dict)
+        data = response_get.data
+        assert "cest_deja_lete" in  data['file']
 
     def test_complete(self):
         item = Item.objects.first()
@@ -284,6 +284,24 @@ class TestItemList(APITestCase):
             sorted(response.data.keys()),
             ITEM_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
+
+    def test_uniq_code_item(self):
+        """
+        Ensure we don't validate a non-uniq item code
+        """
+
+        item = Item.objects.first()
+        code_1 = item.code
+        item = Item.objects.last()
+
+        data = {'code': code_1}
+        url = reverse(
+            'item-detail',
+            kwargs={'pk': item.id})
+        response = self.client.patch(url, data, format='multipart')
+
+        # Ensure code 400 returned
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
     def test_download_a_file(self, depends=['test_create_an_item'] ):
         """
@@ -319,3 +337,19 @@ class TestItemList(APITestCase):
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_api_get_by_code(self):
+        """
+        Ensure we can obtain an item with its code (via the API call)
+        refer issue #203
+        """
+        
+        item = Item.objects.first()
+        code = item.code
+        description = item.description
+
+        response = self.client.get("http://nginx.francoralite.localhost:8080/api/item?code=" + code)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+
+        self.assertEqual(response.data[0]['description'], description)

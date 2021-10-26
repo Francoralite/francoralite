@@ -56,9 +56,9 @@ class ItemFactory(factory.django.DjangoModelFactory):
     remarks = factory.Faker('paragraph', nb_sentences=5)
     date_edit = factory.LazyFunction(datetime.datetime.now)
     media_type = factory.SubFactory(MediaTypeFactory)
-    approx_duration = factory.Faker('time_delta')
+    approx_duration = datetime.timedelta(minutes = 1)
     file = factory.LazyAttribute(
-        lambda obj: create_tmp_sound( settings.MEDIA_ROOT + "items/" + obj.code )
+        lambda obj: create_tmp_sound( obj.code )
     )
 
     # Description -----------------------
@@ -82,6 +82,15 @@ class ItemFactory(factory.django.DjangoModelFactory):
     jingle = factory.Faker('paragraph', nb_sentences=5)
     coupe = factory.SubFactory(CoupeFactory)
 
+
+class ItemCollectionFactory(ItemFactory):
+    @factory.post_generation
+    def duration_void( obj, create, extracted, **kwargs):
+        """
+        ALL items of a collection have their approx_duration to None
+        """
+        if obj.collection.id == 1 :
+            obj.approx_duration = None
 
 
 class ItemCompleteFactory(ItemFactory):

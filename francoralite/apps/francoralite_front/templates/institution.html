@@ -35,7 +35,7 @@
 <div class="fullpage">
 <!-- If there is some institution (number of elements > 0 ) -->
 {% if institutions|length > 0 %}
-  <!-- Table to display the institutions --->
+  <!-- Table to display the institutions -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
@@ -47,8 +47,7 @@
   {% for institution in institutions %}
   <tr>
       <td class="highlight">
-          <a href="/institution/{{ institution.id }}">
-            {{ institution.name }}</a>
+          <a href="/institution/{{ institution.id }}">{{ institution.name }}</a>
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
       {% if user.is_authenticated %}

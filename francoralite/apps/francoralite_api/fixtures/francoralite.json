@@ -23,6 +23,17 @@
   },
   {
     "fields": {
+      "latitude": 45.9337851,
+      "notes": "",
+      "code": "La Biroire, Saint-Pierre-d'Oléron (Île d'Oléron, Saintonge)",
+      "name": "La Biroire, Saint-Pierre-d'Oléron, Rochefort, Charente-Maritime, Nouvelle-Aquitaine, France métropolitaine, 17310, France",
+      "longitude": -1.3528097
+    },
+    "model": "francoralite_api.location",
+    "pk": 3
+  },
+  {
+    "fields": {
       "notes": "cassette audio",
       "name": "cassette audio"
     },
@@ -36,6 +47,14 @@
     },
     "model": "francoralite_api.mediatype",
     "pk": 2
+  },
+  {
+    "fields": {
+      "notes": "Archive sonore",
+      "name": "Son uniquement"
+    },
+    "model": "francoralite_api.mediatype",
+    "pk": 3
   },
   {
     "fields": {
@@ -166,6 +185,90 @@
   },
   {
     "fields": {
+      "first_name": "Charles",
+      "last_name": "Aubrière",
+      "is_collector": false,
+      "birth_location": null,
+      "is_editor": false,
+      "is_composer": false,
+      "civility": "Monsieur",
+      "uri": "",
+      "is_informer": true,
+      "alias": "",
+      "death_location": null,
+      "birth_date": "1889-12-01",
+      "is_author": false,
+      "biography": "Monsieur Charles Aubrière est un violoneux né en 1889. Il était tonnelier à Marennes et son père était gendarme. \r\n\r\nMr Aubrière a appris le violon avec un professeur, M. Gabaret, dès l’âge de 10 ans. Il a eu son premier violon en 1903 - 20 f d’occasion.\r\nIl fait son premier bal à 15 ans (1905), gagna “cent sous”  et continua tous les dimanches à la Menounière.\r\n\r\nIl faisait venir sa musique de Nevers (chez Neveu 2 sous pièce) \r\nune commande sans préciser les titres = 10 polkas - 5 quadrilles - etc… et les communiquait aux collègues musiciens qui faisaient de même. D’où un répertoire assez étendu.\r\nIl a joué des quadrilles jusqu’en 1926 puis le répertoire a changé. Mr Aubrière n’a plus joué de musique de bal depuis 1946.\r\n\r\nSon cousin Jules Aubrière (décédé) était aussi un bon musicien de noces et de bals.\r\n\r\nIl est enquêté le 5 septembre 1969 à La Biroire, sur l'Ile d’Oléron.\r\nIl n'est pas enregistré ce jour-là (pas de violon) mais donne un bon nombre de renseignements et d’adresses.\r\nLe lendemain, M. Aubrière fait une trentaine de km à vélo (il a 80 ans) pour alerter des chanteuses, à la suite de la visite de la veille. Il a aussi couru dans les environs pour retrouver un violon, il a rapporté celui d’une jeune fille.",
+      "death_date": null
+    },
+    "model": "francoralite_api.authority",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "first_name": "Mme",
+      "last_name": "Aubrière",
+      "is_collector": false,
+      "birth_location": null,
+      "is_editor": false,
+      "is_composer": false,
+      "civility": "(Mme)",
+      "uri": "",
+      "is_informer": true,
+      "alias": "",
+      "death_location": null,
+      "birth_date": null,
+      "is_author": false,
+      "biography": "Mme est la femme de Charles Aubrière",
+      "death_date": null
+    },
+    "model": "francoralite_api.authority",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "first_name": "Jeanne-Marie",
+      "last_name": "Bourreau",
+      "is_collector": true,
+      "birth_location": null,
+      "is_editor": false,
+      "is_composer": false,
+      "civility": "",
+      "uri": "",
+      "is_informer": false,
+      "alias": "",
+      "death_location": null,
+      "birth_date": null,
+      "is_author": false,
+      "biography": "",
+      "death_date": null
+    },
+    "model": "francoralite_api.authority",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "first_name": "Fernand",
+      "last_name": "Nathan",
+      "is_collector": false,
+      "birth_location": null,
+      "is_editor": true,
+      "is_composer": false,
+      "civility": "Sr",
+      "uri": "",
+      "is_informer": false,
+      "alias": "Nathan",
+      "death_location": null,
+      "birth_date": null,
+      "is_author": false,
+      "biography": "",
+      "death_date": null
+    },
+    "model": "francoralite_api.authority",
+    "pk": 7
+  },
+  {
+    "fields": {
       "notes": "",
       "name": "Université de Poitiers"
     },
@@ -186,6 +289,18 @@
   },
   {
     "fields": {
+      "institution": 1,
+      "title": "Fonds du Musée National des Arts et Traditions Populaires (MNATP)",
+      "description": "En 1937, le musée d'ethnographie du Trocadéro (MET) disparaît pour donner naissance au Musée de l'Homme d'une part, et au Musée national des Arts et Traditions populaires dont le directeur est Georges Henri Rivière (1897-1985).  En 1937, C. Marcel-Dubois décide de suivre Rivière aux ATP. Deux ans après, elle effectue sa première mission dite \"de folklore musical\", en Basse-Bretagne. En raison de la guerre, elle va devoir attendre 1943 pour fonder la phonothèque sur la base des disques qu'elle a enregistrés sur ce premier terrain. [...] L'enregistrement de musique de tradition rurale ou populaire, qu'il soit commercial ou de terrain, constitue pour elle, qui est avant tout chercheur et non conservateur, une archive scientifique. Cela dit, seuls les enregistrements faits par les membres du musée pourront être utilisés à des fins également muséographiques.\r\n\r\nJusqu'à 1984, année du départ à la retraite de Maguy Pichonnet-Andral, assistante de Claudie Marcel-Dubois depuis 1946 et qui remplace cette dernière à la tête du département en 1980, le fonds du musée est estimé à 1.789 collections, éditées pour 44%, ou inédites, 56%, ce qui représente 84.032 items (ou, d'après une estimation, 5.000 heures d'enregistrement). Si bien que les 52 registres d'inventaires (de 1943 à 1984) comportent, mélangés, les inédits et les édités, selon leur année d'entrée dans la phonothèque.",
+      "code": "UPOI_ATP",
+      "acquisition_mode": 1,
+      "conservation_site": "Poitiers"
+    },
+    "model": "francoralite_api.fond",
+    "pk": 2
+  },
+  {
+    "fields": {
       "fonds": 1,
       "title": "Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]",
       "description": "Sélection de copies commandées par Joseph Le Floc'h en 1994 aux Archives de Folklore de l'Université Laval, pour ses cours sur la chanson de tradition orale franco-canadienne au Département de Musicologie de l'Université de Poitiers.\r\n\r\nLes Archives de folklore et d'ethnologie sont constituées des fonds et des collections, privés ou publics, concernant la culture des francophones en Amérique du Nord. Cette documentation reflète les manifestations tant esthétiques que pragmatiques de cette culture, soit les us et coutumes, les légendes, les contes, les chansons, les métiers, le costume, la religion, la musique, les histoires de vie, etc. Elle se base principalement sur des enquêtes sur le terrain mais aussi sur des dépouillements bibliographiques et des travaux de recherche.",
@@ -194,6 +309,28 @@
     },
     "model":"francoralite_api.mission",
     "pk":1
+  },
+  {
+    "fields": {
+      "fonds": 2,
+      "title": "Extraits de missions en Vendée du MNATP",
+      "description": "Enquêtes menées par Claudie Marcel-Dubois et Marie-Marguerite Pichonnet-Andral pour le Musée National des Arts et Traditions Populaires.",
+      "code": "UPOI_ATP_0000",
+      "code_partner": ""
+    },
+    "model":"francoralite_api.mission",
+    "pk":2
+  },
+  {
+    "fields": {
+      "fonds": 2,
+      "title": "Mission ATP Saintonge 1969",
+      "description": "Entre le 4 et le 14 septembre 1969, les enquêtrices sillonnent la Saintonge et vont enregistrer des chanteurs et chanteuses du territoire.",
+      "code": "UPOI_ATP_0001",
+      "code_partner": ""
+    },
+    "model":"francoralite_api.mission",
+    "pk":3
   },
   {
     "fields": {
@@ -234,6 +371,61 @@
     },
     "model":"francoralite_api.collectionlocation",
     "pk":1
+  },
+  {
+    "fields": {
+      "mission": 3,
+      "title": "Témoignage de M. Charles Aubrière - La Biroire, île d'Oléron, septembre 1969",
+      "description": "M. Charles Aubrière évoque sa vie de violoneux : son apprentissage du violon, ses premiers bals et le déroulement des noces qu'il a pu faire. Il cite plusieurs musiciens qu'il connait et avec lesquels il a pu jouer.",
+      "code": "UPOI_ATP_0001_0001",
+      "code_partner": "MUS1969.33.1 à MUS1969.33.6",
+      "recording_context": "1",
+      "recorded_from_year": "1969-09-04",
+      "recorded_to_year": "1969-09-04",
+      "year_published": null,
+      "location_details": "La Biroire est un lieu-dit situé à Saint-Pierre-d'Oléron, sur l'Île d'Oléron.",
+      "cultural_area": "Saintonge, Poitou",
+      "language": "",
+      "booklet_author": "",
+      "metadata_author": "Alexandre Seli, Marion Labau",
+      "booklet_description": "- Carnets d'enquête : Claudie Marcel-Dubois et Marie-Marguerite Pichonnet-Andral.\r\n\r\n- Photos n°1 et 2 : Informateur et sa maison.\r\n\r\n- Film d'après carnet JMB 1969",
+      "media_type": 2,
+      "legal_rights": 1
+    },
+      "model":"francoralite_api.collection",
+      "pk":2
+  },
+  {
+    "fields":{
+      "collection":2,
+      "location":3
+    },
+    "model":"francoralite_api.collectionlocation",
+    "pk":1
+  },
+  {
+    "fields":{
+      "collection":2,
+      "collector":6
+    },
+    "model":"francoralite_api.collectioncollectors",
+    "pk":1
+  },
+  {
+    "fields":{
+      "collection":2,
+      "informer":4
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":1
+  },
+  {
+    "fields":{
+      "collection":2,
+      "informer":5
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":2
   },
   {
     "fields": {

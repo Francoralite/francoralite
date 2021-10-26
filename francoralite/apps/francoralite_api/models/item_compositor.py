@@ -27,3 +27,4 @@ class ItemCompositor(models.Model):
         db_table = 'api_item_compositor'
         verbose_name_plural = _('item_compositors')
         ordering = []
+        unique_together = (('item', 'compositor'), )

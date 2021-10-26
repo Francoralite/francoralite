@@ -1,5 +1,5 @@
 from rest_framework_nested import routers
-from django.conf.urls import url
+from django.conf.urls import re_path
 from .views import (
     authority,
     coupe,
@@ -56,6 +56,7 @@ from .views import (
     domain_vocal,
     domain_song,
     usefulness,
+    versions,
     global_search,
     advanced_search,
     skos_collection,
@@ -63,11 +64,12 @@ from .views import (
     )
 
 urlpatterns = [
-    url(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
+    re_path(r'^versions/$',versions.VersionsView.as_view(), name="versions" ),
+    re_path(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
         name="search"),
-    url(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
+    re_path(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
         name="search_advanced"),
-    url(r'^api/locationgiscollection/$',
+    re_path(r'^api/locationgiscollection/$',
         location_gis_collection.LocationGisCollectionList.as_view(),
         name="location_gis_collection"),
 ]

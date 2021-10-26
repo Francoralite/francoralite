@@ -17,42 +17,42 @@
     <h2>{{ topics|get_obj_attr:result.grouper }}</h2>
     <ul class="list-group search">
       {% for item in result.list %}
-        {% if result.grouper = "Authority" %}
+        {% if result.grouper == "Authority" %}
           <li  class="list-group-item">
             <a href="{% url "personne-detail"  item.id %}">
              {{item.first_name}} {{item.last_name}}
             </a>
           </li>
         {% endif %}
-        {% if result.grouper = "Location" %}
+        {% if result.grouper == "Location" %}
           <li class="list-group-item">
             <a href="/location_gis/{{item.id}}">
              {{item.code}} : {{item.name}}
             </a>
           </li>
         {% endif %}
-        {% if result.grouper = "Fond" %}
+        {% if result.grouper == "Fond" %}
           <li class="list-group-item">
             <a href="/fond/{{item.id}}">
               {{item.code}} - {{item.title}}
             </a>
           </li>
         {% endif %}
-        {% if result.grouper = "Mission" %}
+        {% if result.grouper == "Mission" %}
           <li class="list-group-item">
             <a href="/mission/{{item.id}}">
               {{item.code}} - {{item.title}}
             </a>
           </li>
        {% endif %}
-       {% if result.grouper = "Collection" %}
+       {% if result.grouper == "Collection" %}
           <li  class="list-group-item">
             <a href="/collection/{{item.id}}">
               {{item.code}} - {{item.title}}
             </a>
           </li>
       {% endif %}
-      {% if result.grouper = "Item" %}
+      {% if result.grouper == "Item" %}
           <li class="list-group-item">
             <a href="/item/{{item.id}}">
               {{item.code}} - {{item.title}}

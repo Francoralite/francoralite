@@ -24,3 +24,4 @@ class CollectionCollectors(models.Model):
         db_table = 'collection_collector'
         verbose_name_plural = _('collection_collectors')
         ordering = []
+        unique_together = (('collection', 'collector'), )
