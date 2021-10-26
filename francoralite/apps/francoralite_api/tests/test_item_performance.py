@@ -116,12 +116,8 @@ class TestItemPerformanceList(APITestCase):
         data = factory.build(
             dict,
             FACTORY_CLASS=ItemPerformanceFactory)
-        """  instrument = Instrument.objects.first()
-        data['instrument'] = instrument.id
-        emit = EmitVox.objects.first()
-        data['emit'] = emit.id """
-        performance= PerformanceCollection.objects.first()
-        data['performance'] = performance.id
+        
+        data['performance'] = 2
         data['item'] = 1
         
         response = self.client.post(self.url, data, format='json')

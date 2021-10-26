@@ -31,7 +31,7 @@ setup(
   author_email = "leger.luc@gmail.com",
   version = '1.7.0',
   install_requires = [
-    'django==3.1.12',
+    'django==3.1.13',
     'django-appconf==1.0.4',
     'django-environ==0.4.5',
     'django-filter==2.4.0',
@@ -65,7 +65,7 @@ setup(
     'django-markdownx==3.0.1',
     'django_select2==7.6.2',
     'lxml==4.6.3',
-    'django-leaflet==0.27.1',
+    'django-leaflet==0.28.1',
     'django-geojson==3.1.0',
     'django-cors-headers==3.7.0',
     'python-keycloak==0.26.1',
@@ -85,6 +85,9 @@ setup(
       'pytest-env==0.6.2',
       'pytest-pythonpath==0.7.3',
       'coveralls==3.0.1',
+      'selenium==3.141.0',
+      'coverage==5.5',
+      'coveragepy-lcov==0.1.1'
     ],
   },
   platforms = ['OS Independent'],

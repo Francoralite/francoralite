@@ -50,7 +50,7 @@ class TestItemCollectorList(APITestCase):
         get_token(self)
         
         # Create a set of sample data
-        ItemCollectorFactory.create_batch(1)
+        ItemCollectorFactory.create_batch(6)
 
     def test_can_get_item_collector_list(self):
         """
@@ -62,7 +62,7 @@ class TestItemCollectorList(APITestCase):
 
         # ORM side
         item_collectors = ItemCollector.objects.all()
-        self.assertEqual(len(item_collectors), 1)
+        self.assertEqual(len(item_collectors), 6)
 
         # API side
         response = self.client.get(url)
@@ -125,11 +125,11 @@ class TestItemCollectorList(APITestCase):
 
         # Convert the related entity in dictionnaryself.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['collector'] = Authority.objects.first().id
+        data['item'] = 1
+        data['collector'] = 2
 
         url = reverse('itemcollector-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -142,7 +142,7 @@ class TestItemCollectorList(APITestCase):
         url = reverse(
             'itemcollector-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['collector']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

@@ -52,7 +52,7 @@ class TestItemCompositorList(APITestCase):
         get_token(self)
         
         # Create a set of sample data
-        ItemCompositorFactory.create_batch(1)
+        ItemCompositorFactory.create_batch(6)
 
     def test_can_get_item_compositor_list(self):
         """
@@ -64,7 +64,7 @@ class TestItemCompositorList(APITestCase):
 
         # ORM side
         item_compositors = ItemCompositor.objects.all()
-        self.assertEqual(len(item_compositors), 1)
+        self.assertEqual(len(item_compositors), 6)
 
         # API side
         response = self.client.get(url)
@@ -125,13 +125,13 @@ class TestItemCompositorList(APITestCase):
             dict,
             FACTORY_CLASS=ItemCompositorFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['compositor'] = Authority.objects.first().id
+        data['item'] = 1
+        data['compositor'] = 2
 
         url = reverse('itemcompositor-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -144,7 +144,7 @@ class TestItemCompositorList(APITestCase):
         url = reverse(
             'itemcompositor-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['compositor']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

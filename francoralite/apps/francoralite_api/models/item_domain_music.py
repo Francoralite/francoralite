@@ -27,3 +27,4 @@ class ItemDomainMusic(models.Model):
         db_table = 'api_item_domain_music'
         verbose_name_plural = _('item_domain_musics')
         ordering = []
+        unique_together = (('item', 'domain_music'), )

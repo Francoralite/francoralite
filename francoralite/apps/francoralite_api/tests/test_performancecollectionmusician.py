@@ -113,10 +113,8 @@ class TestPerformanceCollectionMusicianList(APITestCase):
         data = factory.build(
             dict,
             FACTORY_CLASS=PerformanceCollectionMusicianFactory)
-        performance = PerformanceCollection.objects.first()
-        data['performance_collection'] = performance.id
-        musician = Authority.objects.first()
-        data['musician'] = musician.id
+        data['performance_collection'] = 1
+        data['musician'] = 2
 
         response = self.client.post(self.url, data, format='json')
 

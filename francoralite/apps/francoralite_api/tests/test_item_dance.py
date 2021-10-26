@@ -51,7 +51,7 @@ class TestItemDanceList(APITestCase):
         get_token(self)
         
         # Create a set of sample data
-        ItemDanceFactory.create_batch(1)
+        ItemDanceFactory.create_batch(6)
 
     def test_can_get_item_dance_list(self):
         """
@@ -63,7 +63,7 @@ class TestItemDanceList(APITestCase):
 
         # ORM side
         item_dances = ItemDance.objects.all()
-        self.assertEqual(len(item_dances), 1)
+        self.assertEqual(len(item_dances), 6)
 
         # API side
         response = self.client.get(url)
@@ -123,10 +123,10 @@ class TestItemDanceList(APITestCase):
             dict,
             FACTORY_CLASS=ItemDanceFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['dance'] = Dance.objects.first().id
+        data['item'] = 1
+        data['dance'] = 2
 
         url = reverse('itemdance-list', kwargs={
             'item_pk': 1})
@@ -143,7 +143,7 @@ class TestItemDanceList(APITestCase):
         url = reverse(
             'itemdance-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['dance']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

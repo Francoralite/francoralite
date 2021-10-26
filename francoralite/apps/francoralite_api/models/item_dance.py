@@ -28,3 +28,4 @@ class ItemDance(models.Model):
         db_table = 'api_item_dance'
         verbose_name_plural = _('item_dances')
         ordering = []
+        unique_together = (('item', 'dance'), )

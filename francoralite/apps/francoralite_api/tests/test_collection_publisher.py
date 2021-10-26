@@ -50,7 +50,7 @@ class TestCollectionPublisherList(APITestCase):
         get_token(self)
 
         # Create a set of sample data
-        CollectionPublisherFactory.create_batch(1)
+        CollectionPublisherFactory.create_batch(6)
 
     def test_can_get_collection_publisher_list(self):
         """
@@ -62,7 +62,7 @@ class TestCollectionPublisherList(APITestCase):
 
         # ORM side
         collection_publishers = CollectionPublisher.objects.all()
-        self.assertEqual(len(collection_publishers), 1)
+        self.assertEqual(len(collection_publishers), 6)
 
         # API side
         response = self.client.get(url)
@@ -122,13 +122,13 @@ class TestCollectionPublisherList(APITestCase):
             dict,
             FACTORY_CLASS=CollectionPublisherFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['publisher'] = Publisher.objects.first().id
-        data['collection'] = Collection.objects.first().id
+        data['publisher'] = 2
+        data['collection'] = 1
 
         url = reverse('collectionpublisher-list', kwargs={
-            'collection_pk': 1})
+            'collection_pk': data['collection']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -141,7 +141,7 @@ class TestCollectionPublisherList(APITestCase):
         url = reverse(
             'collectionpublisher-detail',
             kwargs={'collection_pk': response.data['collection']['id'],
-                    'pk': response.data['publisher']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

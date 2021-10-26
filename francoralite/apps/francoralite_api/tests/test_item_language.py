@@ -51,7 +51,7 @@ class TestItemLanguageList(APITestCase):
         get_token(self)
 
         # Create a set of sample data
-        ItemLanguageFactory.create_batch(1)
+        ItemLanguageFactory.create_batch(6)
 
     def test_can_get_item_language_list(self):
         """
@@ -63,7 +63,7 @@ class TestItemLanguageList(APITestCase):
 
         # ORM side
         item_languages = ItemLanguage.objects.all()
-        self.assertEqual(len(item_languages), 1)
+        self.assertEqual(len(item_languages), 6)
 
         # API side
         response = self.client.get(url)
@@ -123,13 +123,13 @@ class TestItemLanguageList(APITestCase):
             dict,
             FACTORY_CLASS=ItemLanguageFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['language'] = Language.objects.first().id
+        data['item'] = 1
+        data['language'] = 2
 
         url = reverse('itemlanguage-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -143,7 +143,7 @@ class TestItemLanguageList(APITestCase):
         url = reverse(
             'itemlanguage-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['language']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

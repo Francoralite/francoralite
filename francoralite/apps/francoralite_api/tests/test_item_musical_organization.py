@@ -51,7 +51,7 @@ class TestItemMusicalOrganizationList(APITestCase):
         get_token(self)
         
         # Create a set of sample data
-        ItemMusicalOrganizationFactory.create_batch(1)
+        ItemMusicalOrganizationFactory.create_batch(6)
 
     def test_can_get_item_musical_organization_list(self):
         """
@@ -63,7 +63,7 @@ class TestItemMusicalOrganizationList(APITestCase):
 
         # ORM side
         item_musical_organizations = ItemMusicalOrganization.objects.all()
-        self.assertEqual(len(item_musical_organizations), 1)
+        self.assertEqual(len(item_musical_organizations), 6)
 
         # API side
         response = self.client.get(url)
@@ -128,13 +128,13 @@ class TestItemMusicalOrganizationList(APITestCase):
             dict,
             FACTORY_CLASS=ItemMusicalOrganizationFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['musical_organization'] = MusicalOrganization.objects.first().id
+        data['item'] = 1
+        data['musical_organization'] = 2
 
         url = reverse('itemmusicalorganization-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -148,7 +148,7 @@ class TestItemMusicalOrganizationList(APITestCase):
         url = reverse(
             'itemmusicalorganization-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['musical_organization']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

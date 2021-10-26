@@ -50,7 +50,7 @@ class TestItemDomainSongList(APITestCase):
         get_token(self)
         
         # Create a set of sample data
-        ItemDomainSongFactory.create_batch(1)
+        ItemDomainSongFactory.create_batch(6)
 
     def test_can_get_item_domain_song_list(self):
         """
@@ -62,7 +62,7 @@ class TestItemDomainSongList(APITestCase):
 
         # ORM side
         item_domain_songs = ItemDomainSong.objects.all()
-        self.assertEqual(len(item_domain_songs), 1)
+        self.assertEqual(len(item_domain_songs), 6)
 
         # API side
         response = self.client.get(url)
@@ -123,13 +123,13 @@ class TestItemDomainSongList(APITestCase):
             dict,
             FACTORY_CLASS=ItemDomainSongFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['domain_song'] = DomainSong.objects.first().id
+        data['item'] = 1
+        data['domain_song'] = 2
 
         url = reverse('itemdomainsong-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -142,7 +142,7 @@ class TestItemDomainSongList(APITestCase):
         url = reverse(
             'itemdomainsong-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['domain_song']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 
