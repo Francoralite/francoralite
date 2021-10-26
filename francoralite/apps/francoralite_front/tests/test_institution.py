@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 
 def test_institution_add(francoralite_selenium_context):
     # Go to the home page
-    browser = francoralite_selenium_context.homepage(auth=True)
+    browser = francoralite_selenium_context.homepage(auth=True, username='administrateur')
 
     # Click on the institution menu
     link_page = browser.find_element(By.XPATH, '//a[text()="' + _("Institutions") + '"]')
