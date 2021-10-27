@@ -200,7 +200,7 @@ OIDC_OP_USER_ENDPOINT = "{}/userinfo".format(_OIDC_BASE_URL)
 OIDC_OP_JWKS_ENDPOINT = "{}/certs".format(_OIDC_BASE_URL)
 
 LOGIN_REDIRECT_URL = os.getenv('APP_BASE_URL')
-LOGOUT_REDIRECT_URL = "{}/logout?redirect_uri={}".format(_OIDC_BASE_URL, FRONT_HOST_URL_EXTERNAL)
+LOGOUT_REDIRECT_URL = "{}/logout?redirect_uri={}".format(_OIDC_BASE_URL, LOGIN_REDIRECT_URL)
 
 ALLOW_LOGOUT_GET_METHOD = True
 
