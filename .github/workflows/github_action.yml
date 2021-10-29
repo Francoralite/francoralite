@@ -41,7 +41,7 @@ jobs:
         if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c './scripts/deps_selenium.sh'"
         
-      - name: Run backends tests
+      - name: Run tests (back and front)
         if: ${{ success() }}
         run: script -e -c "docker-compose exec app bash -c 'py.test --cov-report=xml'"
 
