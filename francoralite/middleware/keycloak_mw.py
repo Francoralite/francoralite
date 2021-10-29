@@ -138,6 +138,13 @@ class KeycloakMiddleware(object):
                 'authority:view',
                 'fond:view',
                 'institution:view',
+                'mission:view',
+                'collection:view',
+                'item.view',
+                'location_gis:view',
+                'location_gis_collection:view',
+                'acquisition_mode:view',
+                'document_fonds:view',
             }
 
         # Build Django permissions
