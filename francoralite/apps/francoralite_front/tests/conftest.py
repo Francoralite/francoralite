@@ -5,6 +5,14 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 import pytest
 
+@pytest.fixture(scope='function')
+def all_profiles():
+    profiles = {
+        'anonymous': [False,''],
+        'utilisateur': [True, 'utilisateur'],
+        'contributeur': [True, 'contributeur'],
+    }
+    return profiles.values()
 
 @pytest.fixture(scope='function')
 def francoralite_selenium_context(live_server, settings, django_db_blocker):
@@ -70,3 +78,18 @@ class SeleniumContext():
             button.click()
 
         return browser
+
+    def logout(self, browser, username):
+
+        # Test username link text
+        link_user = browser.find_element(By.XPATH, "//a[contains(@class, 'login')]")
+        assert link_user.text == username
+
+        # Test logout link text
+        link_logout = browser.find_element(By.XPATH, "//a[contains(@class, 'logout')]")
+        assert link_logout.text == _("Déconnexion")
+
+        link_logout.click()
+
+        link_page = browser.find_element(By.XPATH, '//a[text()="' + _("Se connecter") + '"]')
+        assert link_page.text == _("Se connecter")
