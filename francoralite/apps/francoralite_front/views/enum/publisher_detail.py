@@ -22,6 +22,6 @@ class PublisherDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['publisher'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = PublisherForm()
         return context

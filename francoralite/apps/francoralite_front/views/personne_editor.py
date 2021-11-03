@@ -23,5 +23,5 @@ class PersonneEditorView(FrancoraliteTemplateView):
             context['form'] = PersonneForm
         except Exception as err:
             context['personnes'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

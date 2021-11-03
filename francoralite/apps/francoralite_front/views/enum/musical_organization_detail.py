@@ -24,5 +24,5 @@ class MusicalOrganizationDetail(FrancoraliteTemplateView):
         except Exception as err:
             context['musical_organization'] = {}
             context['form'] = MusicalOrganizationForm()
-            context['error'] = err.message
+            context['error'] = err
         return context

@@ -30,5 +30,5 @@ class CollectionDetail(FrancoraliteTemplateView):
             context['collection'] = {}
             context['items'] = []
             context['documents'] = []
-            context['error'] = str(err.message) + ":" + str(type(err).__name__)
+            context['error'] = str(err) + ":" + str(type(err).__name__)
         return context

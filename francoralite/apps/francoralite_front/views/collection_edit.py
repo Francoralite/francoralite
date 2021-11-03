@@ -32,7 +32,7 @@ class CollectionEdit(FormView):
                 '/api/collection/' + str(id) + '/complete')
         except Exception as err:
             context['collection'] = {}
-            context['error'] = err.message
+            context['error'] = err
         return context
 
     def get(self, request, *args, **kwargs):
