@@ -24,5 +24,5 @@ class PersonneDetail(FrancoraliteTemplateView):
         except Exception as err:
             context['personne'] = {}
             context['contribs'] = {}
-            context['error'] = err.message
+            context['error'] = err
         return context

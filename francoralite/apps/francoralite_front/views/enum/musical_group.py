@@ -22,6 +22,6 @@ class MusicalGroupView(FrancoraliteTemplateView):
                 '/api/musical_group')
         except Exception as err:
             context['musical_group'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

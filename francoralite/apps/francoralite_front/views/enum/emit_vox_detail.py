@@ -22,6 +22,6 @@ class EmitVoxDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['emit_vox'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = EmitVoxForm()
         return context

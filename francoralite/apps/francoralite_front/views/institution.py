@@ -20,6 +20,6 @@ class InstitutionView(FrancoraliteTemplateView):
             context['institutions'] = tools.request_api('/api/institution')
         except Exception as err:
             context['institutions'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

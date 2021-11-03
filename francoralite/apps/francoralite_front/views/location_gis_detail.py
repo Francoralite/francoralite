@@ -30,5 +30,5 @@ class LocationDetail(FrancoraliteTemplateView):
             context['location'] = {}
             context['collections'] = []
             context['items'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context
