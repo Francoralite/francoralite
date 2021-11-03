@@ -17,5 +17,5 @@ class LocationView(FrancoraliteTemplateView):
             context['locations'] = tools.request_api('/api/locationgis')
         except Exception as err:
             context['locations'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

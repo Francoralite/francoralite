@@ -20,6 +20,6 @@ class DomainSongView(FrancoraliteTemplateView):
             context['domain_songs'] = tools.request_api('/api/domain_song')
         except Exception as err:
             context['domain_songs'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

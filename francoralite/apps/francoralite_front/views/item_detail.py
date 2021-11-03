@@ -47,7 +47,7 @@ class ItemDetail(FrancoraliteTemplateView):
             context['item'] = {}
             context['locations'] = []
             context['documents'] = []
-            context['error'] = err.message
+            context['error'] = err
             response = requests.get(
                 settings.FRONT_HOST_URL + '/api/item/' + context['id'])
 

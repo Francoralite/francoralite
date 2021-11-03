@@ -18,5 +18,5 @@ class SearchAdvancedView(FrancoraliteTemplateView):
 
         except Exception as err:
             context["collections"] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

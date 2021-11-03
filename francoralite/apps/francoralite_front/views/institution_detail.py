@@ -23,5 +23,5 @@ class InstitutionDetail(FrancoraliteTemplateView):
         except Exception as err:
             context['institution'] = {}
             context['fonds'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

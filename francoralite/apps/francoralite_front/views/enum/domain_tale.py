@@ -20,6 +20,6 @@ class DomainTaleView(FrancoraliteTemplateView):
             context['domain_tales'] = tools.request_api('/api/domain_tale')
         except Exception as err:
             context['domain_tales'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

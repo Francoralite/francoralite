@@ -27,7 +27,7 @@ class InstitutionEdit(FormView):
                 '/api/institution/' + str(id))
         except Exception as err:
             context['institution'] = {}
-            context['error'] = err.message
+            context['error'] = err
         return context
 
     def get(self, request, *args, **kwargs):

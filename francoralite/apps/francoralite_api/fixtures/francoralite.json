@@ -436,6 +436,8 @@
     "pk": 1
   },
 
+  {"fields": {"notes": "Polka", "name": "polka"}, "model": "francoralite_api.dance", "pk": 1},
+
    {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "francoralite_api.emitvox", "pk": 1},
    {"fields": {"number": "321.322", "name": "Violon"}, "model": "francoralite_api.hornbostelsachs", "pk": 1},
    {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "francoralite_api.instrument", "pk": 1}

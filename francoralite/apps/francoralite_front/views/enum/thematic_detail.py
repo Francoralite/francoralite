@@ -22,6 +22,6 @@ class ThematicDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['thematic'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = ThematicForm()
         return context

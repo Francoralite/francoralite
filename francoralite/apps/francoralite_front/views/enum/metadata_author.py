@@ -22,6 +22,6 @@ class MetadataAuthorView(FrancoraliteTemplateView):
                 '/api/metadata_author')
         except Exception as err:
             context['metadata_author'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context
