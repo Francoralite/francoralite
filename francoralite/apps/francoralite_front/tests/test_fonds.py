@@ -15,7 +15,7 @@ def verify_data(browser, data):
     label = browser.find_element(By.XPATH, "//*[@id='id_description']")
     assert label.text == data["description"]
 
-def test_fonds_details(francoralite_selenium_context):
+def test_fonds_details(francoralite_selenium_context, all_profiles):
     # Open the homepage for each profile 
     for profile in all_profiles:
         francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])

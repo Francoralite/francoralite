@@ -30,7 +30,7 @@
         {% trans "Créer une mission" %}
     </a>
   {% endif %}
-  {% if perms.keycloak.mission_update %}
+  {% if perms.keycloak.fond_update %}
     <a href="{% url "fond-edit" id=id %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
     </a>
