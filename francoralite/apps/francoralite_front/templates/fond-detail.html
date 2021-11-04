@@ -24,11 +24,13 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.mission_add %}
     <a href="{% url "mission-add" id_institution=fond.institution.id id_fond=id %}" class="btn_add btn btn-default">
         <span class="glyphicon glyphicon-plus"></span>
         {% trans "Créer une mission" %}
     </a>
+  {% endif %}
+  {% if perms.keycloak.mission_update %}
     <a href="{% url "fond-edit" id=id %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
     </a>
@@ -153,22 +155,26 @@
             <td>{{ mission.title|safe }}</td>
             <td>{{ mission.descriptions|truncatechars:50|markdown|safe}}</td>
             <td>
+              {% if perms.keycloak.mission_update %}
               <a href="{% url "mission-edit" id=mission.id %}">
                     <button type="button" class="btn btn-default">
                       <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
                     </button>
               </a>
+              {% endif %}
+              {% if perms.keycloak.mission_delete %}
               <button type="button" class="btn btn-default"
                   data-toggle="modal" data-target="#modalDelete"
                   data-name="{{mission.title}}"
                   data-url="{% url "mission-delete" id=mission.id %}">
                     <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
               </button>
+              {% endif %}
             </td>
           </tr>
           {% endfor %}
         </table>
-        {% if user.is_authenticated %}
+        {% if perms.keycloak.mission_delete %}
         	{% modal_delete %}
         {% endif %}
       {% else %}

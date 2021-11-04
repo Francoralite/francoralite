@@ -16,17 +16,25 @@ def verify_data(browser, data):
     assert label.text == data["description"]
 
 def test_fonds_details(francoralite_selenium_context):
-    browser = francoralite_selenium_context.get_url("/fond/1")
-    # Verify data
-    data = {
-        "code" : "UPOI_AFE",
-        "title" : "Fonds issus des Archives de Folklore et d'Ethnologie [Exemple]",
-        "description" : "Les Archives de Folklore et d'Ethnologie sont constituées des fonds et des collections, privés ou publics, concernant la culture des francophones en Amérique du Nord. Cette documentation reflète les manifestations tant esthétiques que pragmatiques de cette culture, soit les us et coutumes, les légendes, les contes, les chansons, les métiers, le costume, la religion, la musique, les histoires de vie, etc. Elle se base principalement sur des enquêtes sur le terrain mais aussi sur des dépouillements bibliographiques et des travaux de recherche.",
-        "conservation_site" : "Poitiers",
-        "comment" : "",
-    }
-    
-    verify_data(browser,data)
+    # Open the homepage for each profile 
+    for profile in all_profiles:
+        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
+        browser = francoralite_selenium_context.get_url("/fond/1")
+
+        # Verify data
+        data = {
+            "code" : "UPOI_AFE",
+            "title" : "Fonds issus des Archives de Folklore et d'Ethnologie [Exemple]",
+            "description" : "Les Archives de Folklore et d'Ethnologie sont constituées des fonds et des collections, privés ou publics, concernant la culture des francophones en Amérique du Nord. Cette documentation reflète les manifestations tant esthétiques que pragmatiques de cette culture, soit les us et coutumes, les légendes, les contes, les chansons, les métiers, le costume, la religion, la musique, les histoires de vie, etc. Elle se base principalement sur des enquêtes sur le terrain mais aussi sur des dépouillements bibliographiques et des travaux de recherche.",
+            "conservation_site" : "Poitiers",
+            "comment" : "",
+        }
+        
+        verify_data(browser,data)
+
+        # And, then logout (if authenticated user)
+        if profile[0] :
+            francoralite_selenium_context.logout(browser, profile[1])
 
 def test_fonds_add(francoralite_selenium_context):
     # Go to the home page
