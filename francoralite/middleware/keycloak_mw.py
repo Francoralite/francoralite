@@ -26,44 +26,8 @@ from rest_framework.exceptions import PermissionDenied
 
 logger = logging.getLogger(__name__)
 
-def get_permissions(self, token, method_token_info='introspect', **kwargs):
-    """
-    Get permission by user token
 
-    :param token: user token
-    :param method_token_info: Decode token method
-    :param kwargs: parameters for decode
-    :return: permissions list
-    """
-
-    if not self.authorization.policies:
-        raise Exception(
-            "Keycloak settings not found. Load Authorization Keycloak settings." # noqa
-        )
-
-    token_info = self._token_info(token, method_token_info, **kwargs)
-
-    if method_token_info == 'introspect' and not token_info['active']:
-        raise KeycloakInvalidTokenError(
-            "Token expired or invalid."
-        )
-
-    user_resources = token_info['resource_access'].get(self.client_id)
-    if not user_resources:
-        return None
-
-    permissions = []
-
-    for policy_name, policy in self.authorization.policies.items():
-        for role in user_resources['roles']:
-            policy_roles = [item.name for item in policy.roles]
-            if role in policy_roles:
-                permissions += policy.permissions
-
-    return list(set(permissions))
-
-
-KeycloakOpenID.get_permissions = get_permissions
+KeycloakOpenID._build_name_role = lambda self, role: role
 
 
 class KeycloakMiddleware(object):
