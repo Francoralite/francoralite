@@ -24,7 +24,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if perms.keycloak.mission_add %}
+  {% if perms.keycloak.collection_add %}
     <a href="{% url "collection-add" id_institution=mission.fonds.institution.id id_fond=mission.fonds.id id_mission=id %}" class="btn_add btn btn-default">
         <span class="glyphicon glyphicon-plus"></span>
         {% trans "Créer une enquête" %}

@@ -73,14 +73,11 @@ def test_mission_add(francoralite_selenium_context):
     browser.find_element(By.XPATH, "//div[contains(@class, 'ProseMirror')]").send_keys(description)
     content["description"] = description
 
-    #browser.save_screenshot('./page.png')
-
     # Validation
     button_valid = browser.find_element(By.XPATH, "//*[@id='save']")
     button_valid.click()
 
     # Go to the new fonds
     browser = francoralite_selenium_context.get_url('/mission/4')
-    browser.save_screenshot('./page.png')
-
+ 
     verify_data(browser, content)
