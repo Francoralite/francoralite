@@ -19,5 +19,5 @@ class InstrumentView(FrancoraliteTemplateView):
             context['instruments'] = tools.request_api('/api/instrument')
         except Exception as err:
             context['instruments'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

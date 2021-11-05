@@ -35,25 +35,34 @@ def verify_data(browser, data):
     label = browser.find_element(By.XPATH, "//*[@id='id_uri']")
     assert label.text == data["uri"]
 
-def test_authority_details(francoralite_selenium_context):
-    browser = francoralite_selenium_context.get_url("/authority/1")
-
-    # Verify data
-    data = {
-        "title" : "Personne : Le Gaulois Astérix",
-        "last_name" : "Le Gaulois",
-        "first_name" : "Astérix",
-        "civility" : "",
-        "alias" : "",
-        "birth_date" : "",
-        "birth_location" : "",
-        "death_date" : "",
-        "death_location" : "",
-        "biography" : "",
-        "uri" : "",
-    }
+def test_authority_details(francoralite_selenium_context, all_profiles):
     
-    verify_data(browser,data)
+    # Open the homepage for each profile 
+    for profile in all_profiles:
+        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
+        browser = francoralite_selenium_context.get_url("/authority/1")
+
+        # Verify data
+        data = {
+            "title" : "Personne : Le Gaulois Astérix",
+            "last_name" : "Le Gaulois",
+            "first_name" : "Astérix",
+            "civility" : "",
+            "alias" : "",
+            "birth_date" : "",
+            "birth_location" : "",
+            "death_date" : "",
+            "death_location" : "",
+            "biography" : "",
+            "uri" : "",
+        }
+        
+        verify_data(browser,data)
+
+        # And, then logout (if authenticated user)
+        if profile[0] :
+            francoralite_selenium_context.logout(browser, profile[1])
+        
 
 def test_authority_add(francoralite_selenium_context):
     # Go to the home page

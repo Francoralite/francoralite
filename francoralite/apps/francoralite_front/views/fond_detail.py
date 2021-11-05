@@ -42,5 +42,5 @@ class FondDetail(FrancoraliteTemplateView):
             context['collectors'] = []
             context['documents'] = []
             context['dates'] = ['', '']
-            context['error'] = err.message
+            context['error'] = err
         return context

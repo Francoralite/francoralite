@@ -20,6 +20,6 @@ class LegalRightsView(FrancoraliteTemplateView):
             context['legal_rights'] = tools.request_api('/api/legalrights')
         except Exception as err:
             context['legal_rights'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

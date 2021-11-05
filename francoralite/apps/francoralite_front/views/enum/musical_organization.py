@@ -23,6 +23,6 @@ class MusicalOrganizationView(FrancoraliteTemplateView):
                 '/api/musical_organization')
         except Exception as err:
             context['musical_organizations'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

@@ -20,6 +20,6 @@ class MediaTypeView(FrancoraliteTemplateView):
             context['mediatypes'] = tools.request_api('/api/mediatype')
         except Exception as err:
             context['mediatypes'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

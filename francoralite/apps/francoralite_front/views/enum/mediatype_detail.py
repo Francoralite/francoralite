@@ -22,6 +22,6 @@ class MediaTypeDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['mediatype'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = MediaTypeForm()
         return context

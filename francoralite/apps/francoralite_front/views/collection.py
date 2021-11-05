@@ -22,5 +22,5 @@ class CollectionView(FrancoraliteTemplateView):
             context['form'] = CollectionForm
         except Exception as err:
             context['collections'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

@@ -22,6 +22,6 @@ class DomainSongDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['domain_song'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = DomainSongForm()
         return context

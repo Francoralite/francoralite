@@ -32,7 +32,7 @@ class FondEdit(FormView):
                 '/api/fond/' + str(id))
         except Exception as err:
             context['fond'] = {}
-            context['error'] = err.message
+            context['error'] = err
         return context
 
     def get(self, request, *args, **kwargs):

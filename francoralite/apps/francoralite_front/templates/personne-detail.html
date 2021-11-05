@@ -23,7 +23,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.authority_update %}
   <a href="{% url "personne-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
   </a>

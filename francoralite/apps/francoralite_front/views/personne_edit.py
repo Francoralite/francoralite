@@ -33,7 +33,7 @@ class PersonneEdit(FormView):
                 '/api/authority/' + str(id))
         except Exception as err:
             context['personne'] = {}
-            context['error'] = err.message
+            context['error'] = err
         return context
 
     def get(self, request, *args, **kwargs):
