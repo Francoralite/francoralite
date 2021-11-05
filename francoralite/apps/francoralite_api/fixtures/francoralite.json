@@ -34,6 +34,30 @@
   },
   {
     "fields": {
+      "notes": "collectage",
+      "name": "collectage"
+    },
+    "model": "francoralite_api.recordingcontext",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "notes": "bal",
+      "name": "bal"
+    },
+    "model": "francoralite_api.recordingcontext",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "notes": "enquête",
+      "name": "enquête"
+    },
+    "model": "francoralite_api.recordingcontext",
+    "pk": 3
+  },
+  {
+    "fields": {
       "notes": "cassette audio",
       "name": "cassette audio"
     },
@@ -338,7 +362,7 @@
       "title": "Répertoire chanté de Sœur Cécilia McGraw au Nouveau-Brunswick [Extrait d'enquête]",
       "description": "Extrait d'enquête de Sœur Jeanne d'Arc Lortie le 15 mars 1963 auprès de Sœur Cécilia McGraw (53 ans).",
       "code": "UPOI_AFE_0000_0001",
-      "recording_context": "3",
+      "recording_context": 3,
       "recorded_from_year": "1963-01-01",
       "recorded_to_year": "1963-01-02",
       "year_published": null,
@@ -379,7 +403,7 @@
       "description": "M. Charles Aubrière évoque sa vie de violoneux : son apprentissage du violon, ses premiers bals et le déroulement des noces qu'il a pu faire. Il cite plusieurs musiciens qu'il connait et avec lesquels il a pu jouer.",
       "code": "UPOI_ATP_0001_0001",
       "code_partner": "MUS1969.33.1 à MUS1969.33.6",
-      "recording_context": "1",
+      "recording_context": 1,
       "recorded_from_year": "1969-09-04",
       "recorded_to_year": "1969-09-04",
       "year_published": null,
