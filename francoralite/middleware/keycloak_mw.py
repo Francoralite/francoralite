@@ -203,18 +203,12 @@ class KeycloakMiddleware(object):
         }
 
         # Extract required Keycloak permissions from view
-        try:
-            view_scopes = view_func.cls.keycloak_scopes
-            default_403_error_message = getattr(view_func.cls,
-                                                'default_403_error_message')
-        except AttributeError:
-            try:
-                view_scopes = view_func.view_class.keycloak_scopes
-                default_403_error_message = getattr(view_func.view_class,
-                                                    'default_403_error_message')
-            except AttributeError:
-                logger.debug('Allowing free access, since no authorization configuration (keycloak_scopes) found for this request route :%s', request) # noqa
-                return None
+        view_class = getattr(view_func, 'cls', None) \
+            or getattr(view_func, 'view_class', None)
+        view_scopes = getattr(view_class, 'keycloak_scopes', None)
+        if view_scopes is None:
+            logger.debug('Allowing free access, since no authorization configuration (keycloak_scopes) found for this request route :%s', request) # noqa
+            return None
 
         # Get DEFAULT required permission if method is not defined
         required_permission = view_scopes.get(request.method, None) \
@@ -222,9 +216,12 @@ class KeycloakMiddleware(object):
 
         # DEFAULT scope not found and DEFAULT_ACCESS is DENY
         if not required_permission and self.default_access == 'DENY':
+            default_403_error_message = getattr(
+                view_class, 'default_403_error_message', None)
             if default_403_error_message is not None:
                 return render(request, 'error.html', {
-                    'exception': default_403_error_message or _('Accès interdit.'),
+                    'exception': default_403_error_message \
+                        or _('Accès interdit.'),
                 }, status=403)
             return JsonResponse(
                 {'detail': PermissionDenied.default_detail},
@@ -233,9 +230,12 @@ class KeycloakMiddleware(object):
 
         # Check required permission from user Keycloak permissions
         if required_permission not in keycloak_permissions:
+            default_403_error_message = getattr(
+                view_class, 'default_403_error_message', None)
             if default_403_error_message is not None:
                 return render(request, 'error.html', {
-                    'exception': default_403_error_message or _('Accès interdit.'),
+                    'exception': default_403_error_message \
+                        or _('Accès interdit.'),
                 }, status=403)
             return JsonResponse(
                 {'detail': PermissionDenied.default_detail},
