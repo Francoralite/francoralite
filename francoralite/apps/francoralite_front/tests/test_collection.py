@@ -8,6 +8,28 @@ def verify_data(browser, data):
     for key, value in data.items():
         label = browser.find_element(By.XPATH,  "//*[@id='id_" + key + "']")
         assert label.text == value
+        
+def test_collection_list(francoralite_selenium_context, all_profiles):
+    for profile in all_profiles:
+        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
+        browser = francoralite_selenium_context.get_url("/collection")
+        
+         # Verify the label of the collection page
+        label = browser.find_element(By.XPATH, "//main/h1")
+        assert label.text == _("Enquêtes")
+        
+        # links to the collections
+        link_view_1 = browser.find_element(By.XPATH, '//a[@href="/collection/1"]')
+        assert link_view_1.text == "UPOI_AFE_0000_0001"
+        
+        link_view_2 = browser.find_element(By.XPATH, '//a[@href="/collection/2"]')
+        assert link_view_2.text == "UPOI_ATP_0001_0001"
+        
+        if(profile[0]=="contributeur"):
+            assert browser.find_element(By.XPATH, '//a[@href="/collection/edit/1"]')
+            assert browser.find_element(By.XPATH, '//a[@href="/collection/edit/2"]')
+            assert browser.find_element(By.XPATH, '//button[@data-url="/collection/delete/1"]')
+            assert browser.find_element(By.XPATH, '//button[@data-url="/collection/delete/2"]')
 
 def test_collection_details(francoralite_selenium_context, all_profiles):
     # Open the homepage for each profile
