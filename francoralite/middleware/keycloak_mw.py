@@ -16,58 +16,19 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import re
 import logging
 from django.conf import settings
 from django.http.response import JsonResponse
+from django.shortcuts import render
 from keycloak import KeycloakOpenID
 from keycloak.exceptions import KeycloakInvalidTokenError
 from rest_framework.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 
 logger = logging.getLogger(__name__)
 
 
-def get_permissions(self, token, method_token_info='introspect', **kwargs):
-    """
-    Get permission by user token
-
-    :param token: user token
-    :param method_token_info: Decode token method
-    :param kwargs: parameters for decode
-    :return: permissions list
-    """
-
-    if not self.authorization.policies:
-        raise Exception(
-            "Keycloak settings not found. Load Authorization Keycloak settings." # noqa
-        )
-
-    token_info = self._token_info(token, method_token_info, **kwargs)
-
-    if method_token_info == 'introspect' and not token_info['active']:
-        raise KeycloakInvalidTokenError(
-            "Token expired or invalid."
-        )
-
-    user_resources = token_info['resource_access'].get(self.client_id)
-    if not user_resources:
-        return None
-
-    permissions = []
-
-    for policy_name, policy in self.authorization.policies.items():
-        for role in user_resources['roles']:
-            policy_roles = [item.name for item in policy.roles]
-            if role in policy_roles:
-                permissions += policy.permissions
-
-    return list(set(permissions))
-
-
-KeycloakOpenID.get_permissions = get_permissions
+KeycloakOpenID._build_name_role = lambda self, role: role
 
 
 class KeycloakMiddleware(object):
@@ -76,9 +37,6 @@ class KeycloakMiddleware(object):
     set_session_state_cookie = True
 
     def __init__(self, get_response):
-        """
-        :param get_response:
-        """
 
         self.config = settings.KEYCLOAK_CONFIG
 
@@ -88,24 +46,27 @@ class KeycloakMiddleware(object):
             self.client_id = self.config['KEYCLOAK_CLIENT_ID']
             self.realm = self.config['KEYCLOAK_REALM']
         except KeyError:
-            raise Exception("KEYCLOAK_SERVER_URL, KEYCLOAK_CLIENT_ID or KEYCLOAK_REALM not found.") # noqa
+            raise Exception('KEYCLOAK_SERVER_URL, KEYCLOAK_CLIENT_ID or '
+                            'KEYCLOAK_REALM not found.')
 
         self.client_secret_key = self.config.get(
             'KEYCLOAK_CLIENT_SECRET_KEY', None)
         self.client_public_key = self.config.get(
             'KEYCLOAK_CLIENT_PUBLIC_KEY', None)
         self.default_access = self.config.get(
-            'KEYCLOAK_DEFAULT_ACCESS', "DENY")
+            'KEYCLOAK_DEFAULT_ACCESS', 'DENY')
         self.method_validate_token = self.config.get(
-            'KEYCLOAK_METHOD_VALIDATE_TOKEN', "INTROSPECT")
+            'KEYCLOAK_METHOD_VALIDATE_TOKEN', 'INTROSPECT')
         self.keycloak_authorization_config = self.config.get(
             'KEYCLOAK_AUTHORIZATION_CONFIG', None)
 
         # Create Keycloak instance
-        self.keycloak = KeycloakOpenID(server_url=self.server_url,
-                                       client_id=self.client_id,
-                                       realm_name=self.realm,
-                                       client_secret_key=self.client_secret_key) # noqa
+        self.keycloak = KeycloakOpenID(
+            server_url=self.server_url,
+            client_id=self.client_id,
+            realm_name=self.realm,
+            client_secret_key=self.client_secret_key,
+        )
 
         # Read policies
         if self.keycloak_authorization_config:
@@ -126,283 +87,156 @@ class KeycloakMiddleware(object):
 
         return response
 
-    @property
-    def keycloak(self):
-        return self._keycloak
-
-    @keycloak.setter
-    def keycloak(self, value):
-        self._keycloak = value
-
-    @property
-    def config(self):
-        return self._config
-
-    @config.setter
-    def config(self, value):
-        self._config = value
-
-    @property
-    def server_url(self):
-        return self._server_url
-
-    @server_url.setter
-    def server_url(self, value):
-        self._server_url = value
-
-    @property
-    def client_id(self):
-        return self._client_id
-
-    @client_id.setter
-    def client_id(self, value):
-        self._client_id = value
-
-    @property
-    def client_secret_key(self):
-        return self._client_secret_key
-
-    @client_secret_key.setter
-    def client_secret_key(self, value):
-        self._client_secret_key = value
-
-    @property
-    def client_public_key(self):
-        return self._client_public_key
-
-    @client_public_key.setter
-    def client_public_key(self, value):
-        self._client_public_key = value
-
-    @property
-    def realm(self):
-        return self._realm
-
-    @realm.setter
-    def realm(self, value):
-        self._realm = value
-
-    @property
-    def keycloak_authorization_config(self):
-        return self._keycloak_authorization_config
-
-    @keycloak_authorization_config.setter
-    def keycloak_authorization_config(self, value):
-        self._keycloak_authorization_config = value
-
-    @property
-    def method_validate_token(self):
-        return self._method_validate_token
-
-    @method_validate_token.setter
-    def method_validate_token(self, value):
-        self._method_validate_token = value
-
-    # def __call__(self, request):
-    #    """
-    #    :param request:
-    #    :return:
-    #    """
-    #    return self.get_response(request)
-
     def process_view(self, request, view_func, view_args, view_kwargs):
         """
         Validate only the token introspect.
         :param request: django request
-        :param view_func:
+        :param view_func: view function
         :param view_args: view args
         :param view_kwargs: view kwargs
-        :return:
+        :return: JSON response, HTML response or None
         """
 
-        path = request.path_info.lstrip('/')
+        # Load permissions from Keycloak
+        keycloak_permissions = self.get_keycloak_permissions(request)
 
-        # Is there some exempts paths ?
-        if hasattr(settings, 'KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS'):
+        # Set permissions for anonymous user
+        if keycloak_permissions is None:
+            keycloak_permissions = {
+                'acquisition_mode:view',
+                'authority:view',
+                'acquisition_mode:view',
+                'collection_language:view',
+                'collection_location:view',
+                'collection_publisher:view',
+                'collection:view',
+                'collectioncollectors:view',
+                'coupe:view',
+                'dance:view',
+                'document_fonds:view',
+                'document_institution:view',
+                'document_mission:view',
+                'document_collection:view',
+                'document_item:view',
+                'domain_music:view',
+                'domain_song:view',
+                'domain_tale:view',
+                'domain_vocal:view',
+                'emit_vox:view',
+                'fond:view',
+                'hornbostelsachs:view',
+                'institution:view',
+                'instrument:view',
+                'item_author:view',
+                'item_coirault:view',
+                'item_collector:view',
+                'item_compositor:view',
+                'item_dance:view',
+                'item_domain_music:view',
+                'item_domain_song:view',
+                'item_domain_tale:view',
+                'item_domain_vocal:view',
+                'item_informer:view',
+                'item_language:view',
+                'item_musical_group:view',
+                'item_musical_organization:view',
+                'item_performance:view',
+                'item_thematic:view',
+                'item_usefulness:view',
+                'item:view',
+                'language:view',
+                'legal_rights:view',
+                'location_gis:view',
+                'location_gis_collection:view',
+                'mediatype:view',
+                'metadata_author:view',
+                'mission:view',
+                'musical_group:view',
+                'musical_organization:view',
+                'performance_collection_musician:view',
+                'performance_collection:view',
+                'publisher:view',
+                'recording_context:view',
+                'skos_collection:view',
+                'skos_concept:view',
+                'thematic:view',
+                'usefulness:view'
+            }
 
-            # Search every KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS in path
-            if any(re.match(m, path) for m in
-                   settings.KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS):
-                logger.debug('** exclude path found, skipping')
-                return None
-        expr = re.compile("^api/[a-z0-9_]*/[0-9]*$")
-        if expr.match(path)and request.method == 'GET':
-            logger.debug('** exclude path : detail template')
-            return
-        # Exclude every URL pointing to the API service,
-        #   for a list queryset.
-        expr = re.compile("^api/[a-z0-9_]*$")
-        if expr.match(path) and request.method == 'GET':
-            logger.debug('** exclude path : display template')
-            return None
+        # Build Django permissions
+        request.user._perm_cache = {
+            'keycloak.%s' % perm.replace(':', '_')
+            for perm in keycloak_permissions
+        }
 
-        # Exclude every URL pointing to the API service,
-        #   for a detail queryset.
-        expr = re.compile("^api/[a-z0-9_]*/[0-9]*/(complete|analyze|)$")
-        if expr.match(path) and request.method == 'GET':
-            logger.debug('** exclude path : display template')
-            return None
-        # Related entities of a fond
-        expr = re.compile(
-            "^api/fond/[0-9]*/(informers|collectors|document|dates)$") # noqa
-        if expr.match(path) and request.method == 'GET':
-            logger.debug('** exclude path : display template')
-            return None
-        # Related entities of a mission
-        expr = re.compile(
-            "^api/mission/[0-9]*/(informers|collectors|locations|document|dates|duration)$") # noqa
-        if expr.match(path) and request.method == 'GET':
-            logger.debug('** exclude path : display template')
-            return None
-        # Related entities of a collection
-        expr = re.compile(
-            "^api/collection/[0-9]*/(document|performance|location|document)$")
-        if expr.match(path) and \
-                (request.method == 'GET' or request.method == 'HEAD'):
-            logger.debug('** exclude path : display template')
-            return None
-        # Related entities of an item
-        expr = re.compile(
-            "^api/item/[0-9]*/(document|performance|performances)$")
-        if expr.match(path) and request.method == 'GET':
-            logger.debug('** exclude path : display template')
-            return None
-        # Related entities of an authority
-        expr = re.compile(
-            "^api/authority/[0-9]*/(contribs)$")
-        if expr.match(path) and request.method == 'GET':
-            logger.debug('** exclude path : display template')
-            return None
-        # Related entities of a location
-        expr = re.compile(
-            "^api/locationgis/[0-9]*/(collections|items)$")
-        if expr.match(path) and request.method == 'GET':
-            logger.debug('** exclude path : display template')
-            return None
-        expr = re.compile("^api/item/[0-9]*/download$")
-        if expr.match(path):
-            logger.debug('** exclude path : download MP3 streaming')
-            return None
-        expr = re.compile(
-            "^api/timeside/[0-9]*/visualize$")
-        if expr.match(path):
-            logger.debug('** exclude path : visualize sound image')
-            return None
-        expr = re.compile(
-            "^api/item/[0-9]*/download/[a-zA-Z0-9_.]*/isAvailable$")
-        if expr.match(path):
-            logger.debug('** exclude path : MP3 is available')
-            return None
-        expr = re.compile(
-            "^api/timeside/[0-9]*/soundimage/[a-z_]*/[0-9]*x[0-9]*$")
-        if expr.match(path):
-            logger.debug('** exclude path : visualize sound image')
+        # Extract required Keycloak permissions from view
+        view_class = getattr(view_func, 'cls', None) \
+            or getattr(view_func, 'view_class', None)
+        view_scopes = getattr(view_class, 'keycloak_scopes', None)
+        if view_scopes is None:
+            logger.debug('Allowing free access, since no authorization '
+                         'configuration (keycloak_scopes) found for this '
+                         'request route: %s', request)
             return None
 
-        # Exclude every URL pointing to a list.
-        # e.g: institution/  --> list of the institutions
-        expr = re.compile("^[a-z0-9_]*$")
-        if expr.match(path):
-            logger.debug('** exclude path : list template')
-            return None
+        # Get DEFAULT required permission if method is not defined
+        required_permission = view_scopes.get(request.method, None) \
+            or view_scopes.get('DEFAULT', None)
 
-        # FIXME : temporary "open bar"
-        ###### return None
-
-        try:
-            view_scopes = view_func.cls.keycloak_scopes
-        except AttributeError:
-            logger.debug('Allowing free acesss, since no authorization configuration (keycloak_scopes) found for this request route :%s', request) # noqa
-            return None
-
-        # Get default if method is not defined.
-        required_scope = view_scopes.get(request.method, None) \
-            if view_scopes.get(request.method, None) else view_scopes.get(
-                'DEFAULT', None)
         # DEFAULT scope not found and DEFAULT_ACCESS is DENY
-        if not required_scope and self.default_access == 'DENY':
-            return JsonResponse(
-                {"detail":PermissionDenied.default_detail},
-                status=PermissionDenied.status_code)
+        if not required_permission and self.default_access == 'DENY':
+            return self.create_permission_denied_response(request, view_class)
 
-        # Get Token
+        # Check required permission from user Keycloak permissions
+        if required_permission not in keycloak_permissions:
+            return self.create_permission_denied_response(request, view_class)
+
+    def create_permission_denied_response(self, request, view_class):
+        """
+        Create permission denied response.
+        :param request: django request
+        :param view_class: class of view function
+        :return: JSON response or HTML response
+        """
+
+        # Create HTML response (Front request)
+        default_403_error_message = getattr(
+            view_class, 'default_403_error_message', None)
+        if default_403_error_message is not None:
+            return render(request, 'error.html', {
+                'exception': default_403_error_message or _('Accès interdit.'),
+            }, status=403)
+
+        # Create JSON response (Back request)
+        return JsonResponse(
+            {'detail': PermissionDenied.default_detail},
+            status=PermissionDenied.status_code,
+        )
+
+    def get_keycloak_permissions(self, request):
+        """
+        Extract permissions from Keycloak for current user.
+        :param request: django request
+        :return: set of permissions (as string) or None for anonymous user
+        """
+
+        # Get session token
         access_token = request.session.get('oidc_access_token', '')
-        if access_token == "":
+        if not access_token:
             try:
-                access_token = request.META["HTTP_AUTHORIZATION"].split(' ')[1]
-            except Exception:
-                return JsonResponse(
-                    {"detail": PermissionDenied.default_detail},
-                    status=PermissionDenied.status_code)
+                access_token = request.META['HTTP_AUTHORIZATION'].split(' ')[1]
+            except:
+                return None
 
-        self.keycloak.load_authorization_config(
-            "/srv/app/etc/keycloak/auth.json")
-
-        return None  # Voir les permissions ensuite
-
-        # Get permissions
-        # --------------------------------------------------
-        # permissions = self.keycloak.get_permissions(
-        #     access_token,
-        #     method_token_info='decode',
-        #     key=import_from_settings('KEYCLOAK_RSA_PUBLIC_KEY'))
-        #
-        # for perm in permissions:
-        #     print '-------- perm ----------'
-        #     print perm
-        #     print '------------------'
-        #     sys.stdout.flush()
-        #     if required_scope in perm.scopes:
-        #         return None
-        # print '-------- denied ----------'
-        # print 'DENIED !'
-        # print '------------------'
-        # sys.stdout.flush()
-        # # User Permission Denied
-        # return JsonResponse(
-        #     {"detail": unicode(PermissionDenied.default_detail)},
-        #     status=PermissionDenied.status_code)
-        # --------------------------------------------------
-
-    def process_request(self, request):
-
-        path = request.path_info.lstrip('/')
-
-        # Exclude every URL pointing to the API service
-        expr = re.compile("^api/.*$")
-        if expr.match(path):
-            logger.debug('** exclude path : API, not template')
-            return
-
-        # Home page
-        if path == "":
-            return
-
-        # Exclude every URL pointing to a list.
-        # e.g: institution/  --> list of the institutions
-        expr = re.compile("^[a-z0-9_]*$")
-        if expr.match(path):
-            logger.debug('** exclude path : list template')
-            return
-
-        # Exclude every URL pointing to a detail.
-        # e.g: institution/1/  --> detail of an institution
-        expr = re.compile("^[a-z0-9_]*/[0-9]*$")
-        if expr.match(path):
-            logger.debug('** exclude path : detail template')
-            return
-
-        # Exclude every URL pointing to the API service,
-        #   for authenticate
-        expr = re.compile("^oidc/(authenticate|callback)/$")
-        if expr.match(path):
-            logger.debug('** exclude path : authenticate')
+        # No token is anonymous user: unknown permissions
+        if not access_token:
             return None
 
-        # FIXME : temporary "open bar"
-        ## return None
+        # Get permissions from Keycloak
+        try:
+            permissions = self.keycloak.get_permissions(access_token)
+        except KeycloakInvalidTokenError:
+            return None
 
-        if not request.user.is_authenticated():
-            response = HttpResponseRedirect(
-                reverse('oidc_authentication_init'))
-            return response
+        # Extract permissions from scopes
+        return {p for perm in permissions for p in perm.scopes}

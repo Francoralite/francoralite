@@ -22,6 +22,6 @@ class DomainTaleDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['domain_tale'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = DomainTaleForm()
         return context

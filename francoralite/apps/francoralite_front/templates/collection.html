@@ -37,7 +37,7 @@
   <tr>
       <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.collection_update %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -48,24 +48,26 @@
             {{ collection.code|upper }}</a>
       </td>
       <td>{{ collection.title|safe }}</td>
-      {% if user.is_authenticated %}
       <td>
+      {% if perms.keycloak.collection_update %} 
         <a href="{% url "collection-edit" id=collection.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+      {% endif %}
+      {% if perms.keycloak.collection_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{collection.title}}"
             data-url="{% url "collection-delete" id=collection.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-      </td>
       {% endif %}
+      </td>
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.collection_delete %}
 	{% modal_delete %}
 {% endif %}
 

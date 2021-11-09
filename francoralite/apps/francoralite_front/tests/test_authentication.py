@@ -14,3 +14,12 @@ def test_login(francoralite_selenium_context):
     assert link_logout.text == _("Déconnexion")
 
     #browser.save_screenshot('./login.png')
+
+def test_logout(francoralite_selenium_context, all_profiles):
+    # Open the homepage for each profile 
+    for profile in all_profiles:
+        browser = francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
+        
+        # And, then logout (if authenticated user)
+        if profile[0] :
+            francoralite_selenium_context.logout(browser, profile[1])

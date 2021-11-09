@@ -21,6 +21,6 @@ class InstrumentDetail(FrancoraliteTemplateView):
             context['form'] = InstrumentForm()
         except Exception as err:
             context['instrument'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = InstrumentForm()
         return context

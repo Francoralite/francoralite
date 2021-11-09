@@ -1,5 +1,10 @@
-from selenium.webdriver.common.by import By
 from django.utils.translation import gettext as _
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 
 def verify_data(browser, data):
@@ -35,25 +40,34 @@ def verify_data(browser, data):
     label = browser.find_element(By.XPATH, "//*[@id='id_uri']")
     assert label.text == data["uri"]
 
-def test_authority_details(francoralite_selenium_context):
-    browser = francoralite_selenium_context.get_url("/authority/1")
-
-    # Verify data
-    data = {
-        "title" : "Personne : Le Gaulois Astérix",
-        "last_name" : "Le Gaulois",
-        "first_name" : "Astérix",
-        "civility" : "",
-        "alias" : "",
-        "birth_date" : "",
-        "birth_location" : "",
-        "death_date" : "",
-        "death_location" : "",
-        "biography" : "",
-        "uri" : "",
-    }
+def test_authority_details(francoralite_selenium_context, all_profiles):
     
-    verify_data(browser,data)
+    # Open the homepage for each profile 
+    for profile in all_profiles:
+        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
+        browser = francoralite_selenium_context.get_url("/authority/1")
+
+        # Verify data
+        data = {
+            "title" : "Personne : Le Gaulois Astérix",
+            "last_name" : "Le Gaulois",
+            "first_name" : "Astérix",
+            "civility" : "",
+            "alias" : "",
+            "birth_date" : "",
+            "birth_location" : "",
+            "death_date" : "",
+            "death_location" : "",
+            "biography" : "",
+            "uri" : "",
+        }
+        
+        verify_data(browser,data)
+
+        # And, then logout (if authenticated user)
+        if profile[0] :
+            francoralite_selenium_context.logout(browser, profile[1])
+        
 
 def test_authority_add(francoralite_selenium_context):
     # Go to the home page
@@ -101,3 +115,44 @@ def test_authority_add(francoralite_selenium_context):
         
     verify_data(browser, content)
    
+   
+def test_authority_birth_location(francoralite_selenium_context):
+    _test_location_name(francoralite_selenium_context, field_name="id_birth_location")
+    
+def test_authority_death_location(francoralite_selenium_context):
+    _test_location_name(francoralite_selenium_context, field_name="id_death_location")
+    
+def _test_location_name(francoralite_selenium_context, field_name):
+    
+    # Go to the home page
+    francoralite_selenium_context.homepage(auth=True)
+    browser = francoralite_selenium_context.get_url("/authority/edit/1")
+    
+    # Write content
+    browser.find_element(By.ID, field_name + "_name").send_keys("poi")
+    # Move the mouse to the location
+    location = WebDriverWait(browser, timeout=1).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "#%s_name ~ div .tt-dataset" % field_name)))
+    ActionChains(browser).move_to_element(location).click(location).perform()
+
+    # Validation
+    browser.find_element(By.XPATH, "//*[@id='save']").click()
+    
+    # The location is visible on the detail page
+    francoralite_selenium_context.get_url("/authority/1")
+    label = browser.find_element(By.XPATH, "//*[@id='%s']" % field_name)
+    assert label.text == "Poitiers, Vienne, Nouvelle-Aquitaine, France métropolitaine, 86000, France"
+    
+    # Return to the edit page
+    francoralite_selenium_context.get_url("/authority/edit/1")
+    browser.find_element(By.ID, field_name + "_name").send_keys(Keys.CONTROL + 'a')
+    browser.find_element(By.ID, field_name + "_name").send_keys(Keys.BACKSPACE)
+
+    # Validation
+    browser.find_element(By.XPATH, "//*[@id='save']").click()
+    
+    # Verify that the location is empty on the detail page
+    francoralite_selenium_context.get_url("/authority/1")
+    label = browser.find_element(By.XPATH, "//*[@id='%s']" % field_name)
+    assert label.text == ""
+    

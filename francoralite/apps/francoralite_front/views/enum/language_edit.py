@@ -33,7 +33,7 @@ class LanguageEdit(FormView):
                 '/api/language/' + str(id))
         except Exception as err:
             context['language'] = {}
-            context['error'] = err.message
+            context['error'] = err
         return context
 
     def get(self, request, *args, **kwargs):

@@ -21,7 +21,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.authority_add %}
     <a href="{% url "personne-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
     </a>
@@ -41,7 +41,7 @@
       <th class="highlight">{% trans "Nom / Prénom" %}</th>
       <th>{% trans "Alias" %}</th>
       <th>{% trans "Rôles" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.authority_update or perms.keycloak.authority_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -69,26 +69,29 @@
           {{form.is_editor.label}}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.authority_update or perms.keycloak.authority_delete %}
       <td>
+        {% if perms.keycloak.authority_update %}
         <a href="{% url "personne-edit" id=personne.id %}" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.authority_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{personne.last_name}} {{personne.first_name}}"
             data-url="{% url "personne-delete" id=personne.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-
+        {% endif %}
       </td>
       {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
-	{% modal_delete %}
+{% if perms.keycloak.authority_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

@@ -20,6 +20,6 @@ class DanceView(FrancoraliteTemplateView):
             context['dances'] = tools.request_api('/api/dance')
         except Exception as err:
             context['dances'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

@@ -49,9 +49,7 @@ class TestItemMusicalOrganizationList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
         ItemMusicalOrganizationFactory.create_batch(6)
 
