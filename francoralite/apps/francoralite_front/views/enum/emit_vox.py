@@ -20,6 +20,6 @@ class EmitVoxView(FrancoraliteTemplateView):
             context['emit_voxs'] = tools.request_api('/api/emit_vox')
         except Exception as err:
             context['emit_voxs'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

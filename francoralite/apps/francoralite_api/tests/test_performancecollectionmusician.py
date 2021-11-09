@@ -51,9 +51,7 @@ class TestPerformanceCollectionMusicianList(APITestCase):
         self.url_detail =  self.url + "/1"
         
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        
+                
         # Create a set of sample data
         PerformanceCollectionMusicianFactory.create_batch(6)
 

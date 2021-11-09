@@ -22,6 +22,6 @@ class CoiraultDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['coirault'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = CoiraultForm()
         return context

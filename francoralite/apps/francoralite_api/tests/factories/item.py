@@ -56,7 +56,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
     remarks = factory.Faker('paragraph', nb_sentences=5)
     date_edit = factory.LazyFunction(datetime.datetime.now)
     media_type = factory.SubFactory(MediaTypeFactory)
-    approx_duration = factory.Faker('time_delta')
+    approx_duration = datetime.timedelta(minutes = 1)
     file = factory.LazyAttribute(
         lambda obj: create_tmp_sound( obj.code )
     )

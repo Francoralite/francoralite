@@ -16,6 +16,8 @@ from drf_yasg import openapi
 # Apps urls
 from .apps.francoralite_api import urls as francoralite_api_urls
 from .apps.francoralite_front import urls as francoralite_front_urls
+from .apps.francoralite_front.views.errors import (
+    handler403, handler404, handler500)
 
 # AuthenticationFailed
 import mozilla_django_oidc.urls

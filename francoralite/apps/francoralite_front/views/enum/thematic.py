@@ -20,6 +20,6 @@ class ThematicView(FrancoraliteTemplateView):
             context['thematics'] = tools.request_api('/api/thematic')
         except Exception as err:
             context['thematics'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

@@ -20,6 +20,6 @@ class PublisherView(FrancoraliteTemplateView):
             context['publishers'] = tools.request_api('/api/publisher')
         except Exception as err:
             context['publishers'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

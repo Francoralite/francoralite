@@ -53,9 +53,7 @@ class TestAuthorityList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         AuthorityContribsFactory.create_batch(6)
 
     def test_can_get_authority_list(self):

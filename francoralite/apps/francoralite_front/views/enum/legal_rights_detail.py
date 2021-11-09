@@ -22,6 +22,6 @@ class LegalRightsDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['legal_rights'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = LegalRightsForm()
         return context

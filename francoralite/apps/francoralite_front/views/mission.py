@@ -22,5 +22,5 @@ class MissionView(FrancoraliteTemplateView):
             context['form'] = MissionForm
         except Exception as err:
             context['missions'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

@@ -19,11 +19,11 @@ class DocumentFondViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentFondSerializer
 
     keycloak_scopes = {
-        'GET': 'document_fond:view',
-        'POST': 'document_fond:add',
-        'PATCH': 'document_fond:update',
-        'PUT': 'document_fond:update',
-        'DELETE': 'document_fond:delete'
+        'GET': 'document_fonds:view',
+        'POST': 'document_fonds:add',
+        'PATCH': 'document_fonds:update',
+        'PUT': 'document_fonds:update',
+        'DELETE': 'document_fonds:delete'
     }
 
     def get_queryset(self):

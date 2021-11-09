@@ -23,6 +23,6 @@ class HornbostelsachsDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['hornbostelsachs'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = HornbostelsachsForm()
         return context

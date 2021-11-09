@@ -22,6 +22,6 @@ class RecordingContextView(FrancoraliteTemplateView):
                 '/api/recordingcontext')
         except Exception as err:
             context['recording_contexts'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

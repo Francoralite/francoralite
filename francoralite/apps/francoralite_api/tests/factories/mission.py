@@ -9,7 +9,7 @@ Mission factory to execute tests
 
 import factory
 from ...models.mission import Mission
-from .collection import CollectionFactory
+from .collection import CollectionItemsFactory
 
 
 class MissionFactory(factory.django.DjangoModelFactory):
@@ -39,4 +39,4 @@ class MissionCollectionFactory(MissionFactory):
         nb_collections = kwargs.get('nb_collections',1)
 
         for n in range(nb_collections):
-            CollectionFactory(mission = self)
+            CollectionItemsFactory(mission = self)
