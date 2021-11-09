@@ -21,6 +21,27 @@ def verify_data(browser, data):
     label = browser.find_element(By.XPATH, "//*[@id='id_description']")
     assert label.text == data["description"]
     
+def test_mission_list(francoralite_selenium_context, all_profiles):
+    for profile in all_profiles:
+        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
+        browser = francoralite_selenium_context.get_url("/mission")
+
+         # Verify the label of the mission page
+        label = browser.find_element(By.XPATH, "//main/h1")
+        assert label.text == _("Missions")
+
+        # links to the missions
+        link_view_1 = browser.find_element(By.XPATH, '//a[@href="/mission/1"]')
+        assert link_view_1.text == "UPOI_AFE_0000"
+
+        link_view_2 = browser.find_element(By.XPATH, '//a[@href="/mission/2"]')
+        assert link_view_2.text == "UPOI_ATP_0000"
+
+        if(profile[0]=="contributeur"):
+            assert browser.find_element(By.XPATH, '//a[@href="/mission/edit/1"]')
+            assert browser.find_element(By.XPATH, '//a[@href="/mission/edit/2"]')
+            assert browser.find_element(By.XPATH, '//button[@data-url="/mission/delete/1"]')
+            assert browser.find_element(By.XPATH, '//button[@data-url="/mission/delete/2"]')
 
 def test_fonds_details(francoralite_selenium_context, all_profiles):
     # Open the homepage for each profile 

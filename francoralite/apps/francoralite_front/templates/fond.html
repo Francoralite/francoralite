@@ -45,11 +45,12 @@
             {{ fond.code|upper }}</a>
       </td>
       <td>{{ fond.title|safe }}</td>
-      {% if perms.keycloak.fond_update %}
       <td>
+        {% if perms.keycloak.fond_update %}
         <a href="{% url "fond-edit" id=fond.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
         {% if perms.keycloak.fond_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
@@ -59,7 +60,6 @@
         </button>
         {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
