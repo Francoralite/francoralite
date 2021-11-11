@@ -4,8 +4,9 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from francoralite.apps.francoralite_front.forms.personne import PersonneForm
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteFormView  #noqa
+
+from ..forms.personne import PersonneForm
+from ..francoralite_template_view import FrancoraliteFormView
 
 
 class PersonneEdit(FrancoraliteFormView):

@@ -4,15 +4,17 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.personne import PersonneForm
-import francoralite.apps.francoralite_front.tools as tools
+
+from .. import tools
+from ..forms.personne import PersonneForm
+from ..francoralite_template_view import FrancoraliteTemplateView
 
 
 class PersonneView(FrancoraliteTemplateView):
-    template_name = "../templates/personne.html"
+    template_name = '../templates/personne.html'
     keycloak_scopes = {
-        'GET': 'authority:view'}
+        'GET': 'authority:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:

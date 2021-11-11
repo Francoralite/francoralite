@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+
 from ..forms.collection import CollectionForm
 from ..francoralite_template_view import FrancoraliteFormView
 
@@ -13,7 +14,7 @@ class CollectionEdit(FrancoraliteFormView):
     entity_name = 'collection'
 
     form_class = CollectionForm
-    template_name = "../templates/collection-add.html"
+    template_name = '../templates/collection-add.html'
     template_variable_name = 'collection'
 
     success_url = '/collection/'
