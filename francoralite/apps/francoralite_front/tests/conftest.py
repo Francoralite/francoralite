@@ -32,6 +32,7 @@ class FrancoraliteSeleniumContext():
         '',  # anonymous
         'utilisateur',
         'contributeur',
+        'administrateur',
     )
 
     def __init__(self, url_prefix=None):
