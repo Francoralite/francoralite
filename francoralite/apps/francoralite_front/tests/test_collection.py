@@ -1,105 +1,95 @@
-from selenium.webdriver.common.by import By
 from django.utils.translation import gettext as _
 
 
-def verify_data(browser, data):
-    # Verify data
+def test_collection_list(francoralite_context):
+    for username in francoralite_context.USERNAMES:
+        # Open the collections list page for each profile
+        francoralite_context.open_homepage(auth_username=username)
+        francoralite_context.open_url('/collection')
 
-    for key, value in data.items():
-        label = browser.find_element(By.XPATH,  "//*[@id='id_" + key + "']")
-        assert label.text == value
-        
-def test_collection_list(francoralite_selenium_context, all_profiles):
-    for profile in all_profiles:
-        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
-        browser = francoralite_selenium_context.get_url("/collection")
-        
-         # Verify the label of the collection page
-        label = browser.find_element(By.XPATH, "//main/h1")
-        assert label.text == _("Enquêtes")
-        
+        # Verify the label of the collection page
+        francoralite_context.verify_title(_('Enquêtes'))
+
         # links to the collections
-        link_view_1 = browser.find_element(By.XPATH, '//a[@href="/collection/1"]')
-        assert link_view_1.text == "UPOI_AFE_0000_0001"
-        
-        link_view_2 = browser.find_element(By.XPATH, '//a[@href="/collection/2"]')
-        assert link_view_2.text == "UPOI_ATP_0001_0001"
-        
-        if(profile[0]=="contributeur"):
-            assert browser.find_element(By.XPATH, '//a[@href="/collection/edit/1"]')
-            assert browser.find_element(By.XPATH, '//a[@href="/collection/edit/2"]')
-            assert browser.find_element(By.XPATH, '//button[@data-url="/collection/delete/1"]')
-            assert browser.find_element(By.XPATH, '//button[@data-url="/collection/delete/2"]')
+        link_view_1 = francoralite_context.find_element(by_link_url='/collection/1')
+        assert link_view_1.text == 'UPOI_AFE_0000_0001'
 
-def test_collection_details(francoralite_selenium_context, all_profiles):
-    # Open the homepage for each profile
-    for profile in all_profiles:
-        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
-        browser = francoralite_selenium_context.get_url("/collection/1")
+        link_view_2 = francoralite_context.find_element(by_link_url='/collection/2')
+        assert link_view_2.text == 'UPOI_ATP_0001_0001'
+
+        has_buttons = username in ('contributeur', 'administrateur')
+        assert has_buttons == francoralite_context.exists_element(by_link_url='/collection/edit/1')
+        assert has_buttons == francoralite_context.exists_element(by_link_url='/collection/edit/2')
+        assert has_buttons == francoralite_context.exists_element(by_button_url='/collection/delete/1')
+        assert has_buttons == francoralite_context.exists_element(by_button_url='/collection/delete/2')
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
+
+
+def test_collection_details(francoralite_context):
+    for username in francoralite_context.USERNAMES:
+        # Open the first collection page for each profile
+        francoralite_context.open_homepage(auth_username=username)
+        francoralite_context.open_url('/collection/1')
 
         # Verify data
         data = {
-            "title": "Répertoire chanté de Sœur Cécilia McGraw au Nouveau-Brunswick [Extrait d'enquête]",
-            "description": "Extrait d'enquête de Sœur Jeanne d'Arc Lortie le 15 mars 1963 auprès de Sœur Cécilia McGraw (53 ans).",
-            "code": "UPOI_AFE_0000_0001",
-            "recorded_from_year": "1963-01-01",
-            "recorded_to_year": "1963-01-02",
-            "year_published": "",
-            "legal_rights": "domaine public",
+            'id_title': "Répertoire chanté de Sœur Cécilia McGraw au Nouveau-Brunswick [Extrait d'enquête]",
+            'id_description': "Extrait d'enquête de Sœur Jeanne d'Arc Lortie le 15 mars 1963 auprès de Sœur Cécilia McGraw (53 ans).",
+            'id_code': 'UPOI_AFE_0000_0001',
+            'id_recorded_from_year': '1963-01-01',
+            'id_recorded_to_year': '1963-01-02',
+            'id_year_published': '',
+            'id_legal_rights': 'domaine public',
         }
-
-        verify_data(browser, data)
+        francoralite_context.verify_data(data)
 
         # And, then logout (if authenticated user)
-        if profile[0]:
-            francoralite_selenium_context.logout(browser, profile[1])
+        if username:
+            francoralite_context.logout(username)
 
-def test_collection_add(francoralite_selenium_context):
-    # Go to the collection page
-    francoralite_selenium_context.homepage(auth=True)
-    browser = francoralite_selenium_context.get_url("/mission/1")
+
+def test_collection_add(francoralite_context):
+    # Go to the first collection page
+    francoralite_context.open_homepage(auth_username='contributeur')
+    francoralite_context.open_url('/mission/1')
 
     # Verify the label of the collection page
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Mission : Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]")
+    francoralite_context.verify_title("Mission : Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]")
 
     # Click on the "add" link
-    link_add = browser.find_element(By.XPATH, '//a[@href="/institution/1/fond/1/mission/1/collection/add"]')
-    link_add.click()
+    francoralite_context.find_element(by_link_url='/institution/1/fond/1/mission/1/collection/add').click()
 
     # Write content
     content = {
-        "title": "Collection test",
-        "recorded_from_year": "1995-01-01",
-        "recorded_to_year": "2015-01-02",
-        "year_published": 2021,
-        "legal_rights": "domaine public",
+        'id_title': 'Collection test',
+        'id_recorded_from_year': '1995-01-01',
+        'id_recorded_to_year': '2015-01-02',
+        'id_year_published': 2021,
+        'id_legal_rights': 'domaine public',
     }
-
-    for key, value in content.items():
-        browser.find_element(By.ID, 'id_' + key).send_keys(value)
+    francoralite_context.fill_data(content)
 
     # Write special content
-    code = "upoi_afe_0000_0002"
-    browser.execute_script("document.getElementById('id_code').value='" + code + "'")
-    content["code"] = code.upper()
+    code = 'upoi_afe_0000_0002'
+    francoralite_context.set_element_value('id_code', code)
+    content['id_code'] = code.upper()
 
     description = 'Ceci est une collection de test.'
-    browser.find_element(By.XPATH, "//div[contains(@class, 'ProseMirror')]").send_keys(description)
-    content["description"] = description
+    francoralite_context.find_element(by_div_class='ProseMirror').send_keys(description)
+    content['id_description'] = description
 
     year_published = '2021'
-    browser.execute_script("document.getElementById('id_year_published').value='" + year_published + "'")
-    content["year_published"] = year_published
+    francoralite_context.set_element_value('id_year_published', year_published)
+    content['id_year_published'] = year_published
 
     # Validation
-    button_valid = browser.find_element(By.XPATH, "//*[@id='save']")
-    button_valid.click()
+    francoralite_context.find_element(by_id='save').click()
 
     # Go to the new collection
-    browser = francoralite_selenium_context.get_url('/collection/3')
+    francoralite_context.open_url('/collection/3')
 
-    # Take a screenshot for debug
-    # browser.save_screenshot('./page.png')
-
-    verify_data(browser, content)
+    # Verify content
+    francoralite_context.verify_data(content)

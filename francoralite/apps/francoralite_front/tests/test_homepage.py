@@ -1,69 +1,85 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
+from django.utils.translation import gettext as _
 
 
-def test_homepage(francoralite_selenium_context):
-    browser = francoralite_selenium_context.homepage()
+def test_homepage(francoralite_context):
+    francoralite_context.open_homepage()
 
     # Test title
-    assert "Francoralité" in browser.title
+    assert 'Francoralité' in francoralite_context.browser.title
 
-    # Test menu
-    menu = browser.find_element(By.CLASS_NAME, "menu")
-    menu_list = menu.find_elements(By.XPATH, '//li[not(ancestor::li/ul)]')
+    # Define the hierarchy of all menus
+    all_menus = [
+        [_('Accueil'), False, []],
+        [_('Institutions'), None, []],
+        [_('Archives'), False, [
+            [_('Fonds'), None, []],
+            [_('Missions'), None, []],
+            [_('Enquêtes'), None, []],
+            [_('Items'), None, []],
+        ]],
+        [_('Personnes'), None, [
+            [_('Enquêteurs'), None, []],
+            [_('Informateurs'), None, []],
+            [_('Auteurs'), None, []],
+            [_('Compositeurs'), None, []],
+            [_('Éditeurs'), None, []],
+        ]],
+        [_('Énumérations'), False, [
+            [_('Musique'), False, [
+                [_('Coupe'), None, []],
+                [_('Formation (musicale)'), _('Formation'), []],
+                [_('Hornbostel-Sachs'), _('classification Hornbostel-Sachs'), []],
+                [_('Organisation musicale'), None, []],
+                [_('Voix/Instruments'), None, []],
+            ]],
+            [_('Genre'), False, [
+                [_('Genre de chanson'), None, []],
+                [_('Genre de conte'), None, []],
+                [_('Genre de musique'), None, []],
+                [_('Genre vocal'), None, []],
+            ]],
+            [_('Contexte d\'enregistrement'), None, []],
+            [_('Édition'), False, [
+                [_('Droits légaux'), None, []],
+                [_('Éditeur'), None, []],
+                [_('Meta donnée auteur'), None, []],
+                [_('Type de média'), None, []],
+            ]],
+            [_('Danse'), _('Genre de danse'), []],
+            [_('Nature de l\'émission vocale'), _('nature des emissions vocales'), []],
+            [_('Langue'), None, []],
+            [_('Thématique'), None, []],
+            [_('Fonction'), None, []],
+        ]],
+        [_('Lieux'), None, [
+            [_('Par enquêtes'), _('Lieux, par enquêtes'), []],
+        ]],
+        [_('Recherche avancée'), None, []],
+    ]
 
-    control = {
-        "Accueil" : 0,
-        "Institutions" : 1,
-        "Archives" : 2,
-        "Personnes" : 3,
-        "Énumérations" : 4,
-        "Lieux" : 5,
-        "Recherche avancée" : 6,
-    }
-
-    for k,v in control.items():
-        assert menu_list[v].text == k
-
+    # Test top level menu labels
+    top_level_menu_labels = [menu[0] for menu in all_menus]
+    top_level_menus = francoralite_context.find_elements(by_css_selector='#menu nav > ul > li')
+    assert [element.text for element in top_level_menus] == top_level_menu_labels
 
     # Click on each menu item
-    data = [
-        ["Institutions"],
-        ["Archives",["Fonds", "Missions", "Enquêtes", "Items"] ],
-        ["Personnes", ["Enquêteurs", "Informateurs", "Auteurs", "Compositeurs", "Éditeurs"] ],
-        ["Lieux", [["Par enquêtes", "Lieux, par enquêtes"]] ]
-        ]
-    
-    for item in data :
-       
-        if len(item) == 1 :
-            goto_page(browser, item[0])   
-        else :
-            topic = item[0]
-            for element in item[1] :
-                a = ActionChains(browser)
-                topic_link = browser.find_element(By.XPATH, '//a[text()="' + topic + '"]')
-                
-                # Move the mouse to the topic link
-                a.move_to_element(topic_link).perform()
+    browse_menu(francoralite_context, all_menus)
 
-                goto_page(browser,element)
 
-def goto_page(browser,link):
-
-    # It's list (link different of target)
-    if isinstance(link,list):
-        target = link[1]
-        link = link[0]
-    else:
-        target = link
-
-    # Goto to the linked page
-    link_page = browser.find_element(By.XPATH, '//a[text()="' + link + '"]')
-    a = ActionChains(browser)
-    a.move_to_element(link_page).perform()
-    link_page.click()
-    label = browser.find_element(By.XPATH, "//main/h1")
-    
-    # Test the right label
-    assert label.text == target
+def browse_menu(francoralite_context, children, pointer_path=[]):
+    for link, target, subchildren in children:
+        if target is not False:
+            # Move pointer to the top-left logo
+            francoralite_context.move_to_element(by_css_selector='img')
+            # Move pointer to open the sub-menu
+            for label in pointer_path:
+                francoralite_context.move_to_element(by_link_text=label)
+            # Goto to the linked page
+            francoralite_context.move_to_element(by_link_text=link).click()
+            # Test the right label
+            francoralite_context.verify_title(target or link)
+        if subchildren:
+            # Build new pointer path: add current item and its first child
+            new_pointer_path = pointer_path + [link, subchildren[0][0]]
+            # Verify sub-menus
+            browse_menu(francoralite_context, subchildren, new_pointer_path)

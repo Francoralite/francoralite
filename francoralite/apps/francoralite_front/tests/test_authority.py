@@ -1,158 +1,118 @@
 from django.utils.translation import gettext as _
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
 
-
-def verify_data(browser, data):
-    # Verify data
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == data["title"]
-
-    label = browser.find_element(By.XPATH,  "//*[@id='id_first_name']")
-    assert label.text == data["first_name"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_last_name']")
-    assert label.text == data["last_name"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_civility']")
-    assert label.text == data["civility"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_alias']")
-    assert label.text == data["alias"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_birth_date']")
-    assert label.text == data["birth_date"]
-    label = browser.find_element(By.XPATH, "//*[@id='id_birth_location']")
-    assert label.text == data["birth_location"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_death_date']")
-    assert label.text == data["death_date"]
-    label = browser.find_element(By.XPATH, "//*[@id='id_death_location']")
-    assert label.text == data["death_location"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_biography']")
-    assert label.text == data["biography"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_uri']")
-    assert label.text == data["uri"]
-
-def test_authority_details(francoralite_selenium_context, all_profiles):
-    
-    # Open the homepage for each profile 
-    for profile in all_profiles:
-        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
-        browser = francoralite_selenium_context.get_url("/authority/1")
+def test_authority_details(francoralite_context):
+    for username in francoralite_context.USERNAMES:
+        # Open the authorities list page for each profile
+        francoralite_context.open_homepage(auth_username=username)
+        francoralite_context.open_url('/authority/1')
 
         # Verify data
         data = {
-            "title" : "Personne : Le Gaulois Astérix",
-            "last_name" : "Le Gaulois",
-            "first_name" : "Astérix",
-            "civility" : "",
-            "alias" : "",
-            "birth_date" : "",
-            "birth_location" : "",
-            "death_date" : "",
-            "death_location" : "",
-            "biography" : "",
-            "uri" : "",
+            'id_last_name': 'Le Gaulois',
+            'id_first_name': 'Astérix',
+            'id_civility': '',
+            'id_alias': '',
+            'id_birth_date': '',
+            'id_birth_location': '',
+            'id_death_date': '',
+            'id_death_location': '',
+            'id_biography': '',
+            'id_uri': '',
         }
-        
-        verify_data(browser,data)
+        francoralite_context.verify_title('Personne : Le Gaulois Astérix')
+        francoralite_context.verify_data(data)
 
         # And, then logout (if authenticated user)
-        if profile[0] :
-            francoralite_selenium_context.logout(browser, profile[1])
-        
+        if username:
+            francoralite_context.logout(username)
 
-def test_authority_add(francoralite_selenium_context):
+
+def test_authority_add(francoralite_context):
     # Go to the home page
-    browser = francoralite_selenium_context.homepage(auth=True)
+    francoralite_context.open_homepage(auth_username='contributeur')
 
     # Click on authority menu
-    browser.find_element(By.XPATH, '//a[text()="' + _("Personnes") + '"]').click()
+    francoralite_context.find_element(by_link_text=_('Personnes')).click()
 
     # On authority list
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Personnes")
+    francoralite_context.verify_title(_('Personnes'))
 
     # Click on the "add" link
-    browser.find_element(By.XPATH, '//a[contains(@href,"/authority/add")]').click()
+    francoralite_context.find_element(by_link_url='/authority/add').click()
 
     # Write content
     content = {
-        "last_name" : "verne",
-        "first_name" : "jules",
-        "alias" : "julot",
-        "civility" : "mr",
-        "birth_date" : "1828-02-08",
-        "death_date" : "1905-03-24",
-        "uri" : "https://fr.wikipedia.org/wiki/Jules_Verne",
+        'id_last_name' : 'verne',
+        'id_first_name' : 'jules',
+        'id_alias' : 'julot',
+        'id_civility' : 'mr',
+        'id_birth_date' : '1828-02-08',
+        'id_death_date' : '1905-03-24',
+        'id_uri' : 'https://fr.wikipedia.org/wiki/Jules_Verne',
     }
-    biography = "Jules Verne, né le 8 février 1828 à Nantes et mort le 24 mars 1905 à Amiens, est un écrivain français"
+    francoralite_context.fill_data(content)
 
-    for key, value in content.items():
-        browser.find_element(By.ID, 'id_'+ key).send_keys(value)
-
-    browser.find_element(By.XPATH, "//div[contains(@class, 'ProseMirror')]").send_keys(biography)
+    biography = 'Jules Verne, né le 8 février 1828 à Nantes et mort le 24 mars 1905 à Amiens, est un écrivain français'
+    francoralite_context.find_element(by_div_class='ProseMirror').send_keys(biography)
 
     # Validation
-    button_valid = browser.find_element(By.XPATH, "//*[@id='save']")
-    button_valid.click()
+    francoralite_context.find_element(by_id='save').click()
 
     # Go to the new authority
-    browser = francoralite_selenium_context.get_url('/authority/8')
+    francoralite_context.open_url('/authority/8')
 
     # Verify data
-    content["title"] = "Personne : verne jules"
-    content["biography"] = biography
-    content["birth_location"] = ""
-    content["death_location"] = ""
-        
-    verify_data(browser, content)
-   
-   
-def test_authority_birth_location(francoralite_selenium_context):
-    _test_location_name(francoralite_selenium_context, field_name="id_birth_location")
-    
-def test_authority_death_location(francoralite_selenium_context):
-    _test_location_name(francoralite_selenium_context, field_name="id_death_location")
-    
-def _test_location_name(francoralite_selenium_context, field_name):
-    
+    content['id_biography'] = biography
+    content['id_birth_location'] = ''
+    content['id_death_location'] = ''
+
+    francoralite_context.verify_title('Personne : verne jules')
+    francoralite_context.verify_data(content)
+
+
+def test_authority_birth_location(francoralite_context):
+    _test_location_update(francoralite_context, field_name='id_birth_location')
+
+
+def test_authority_death_location(francoralite_context):
+    _test_location_update(francoralite_context, field_name='id_death_location')
+
+
+def _test_location_update(francoralite_context, field_name):
     # Go to the home page
-    francoralite_selenium_context.homepage(auth=True)
-    browser = francoralite_selenium_context.get_url("/authority/edit/1")
-    
-    # Write content
-    browser.find_element(By.ID, field_name + "_name").send_keys("poi")
-    # Move the mouse to the location
-    location = WebDriverWait(browser, timeout=1).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "#%s_name ~ div .tt-dataset" % field_name)))
-    ActionChains(browser).move_to_element(location).click(location).perform()
+    francoralite_context.open_homepage(auth_username='contributeur')
+
+    # Go to the first authority edit page
+    francoralite_context.open_url('/authority/edit/1')
+
+    # Write first characters of the content
+    francoralite_context.find_element(by_id=field_name + '_name').send_keys('poi')
+
+    # Select first proposal
+    francoralite_context.move_to_element(
+        by_css_selector='#%s_name ~ div .tt-dataset' % field_name,
+        visibility_timeout=1,
+    ).click()
 
     # Validation
-    browser.find_element(By.XPATH, "//*[@id='save']").click()
-    
+    francoralite_context.find_element(by_id='save').click()
+
     # The location is visible on the detail page
-    francoralite_selenium_context.get_url("/authority/1")
-    label = browser.find_element(By.XPATH, "//*[@id='%s']" % field_name)
-    assert label.text == "Poitiers, Vienne, Nouvelle-Aquitaine, France métropolitaine, 86000, France"
-    
+    francoralite_context.open_url('/authority/1')
+    label = francoralite_context.find_element(by_id=field_name)
+    assert label.text == 'Poitiers, Vienne, Nouvelle-Aquitaine, France métropolitaine, 86000, France'
+
     # Return to the edit page
-    francoralite_selenium_context.get_url("/authority/edit/1")
-    browser.find_element(By.ID, field_name + "_name").send_keys(Keys.CONTROL + 'a')
-    browser.find_element(By.ID, field_name + "_name").send_keys(Keys.BACKSPACE)
+    francoralite_context.open_url('/authority/edit/1')
+
+    # Clear the field content
+    francoralite_context.clear_element(by_id=field_name + '_name')
 
     # Validation
-    browser.find_element(By.XPATH, "//*[@id='save']").click()
-    
+    francoralite_context.find_element(by_id='save').click()
+
     # Verify that the location is empty on the detail page
-    francoralite_selenium_context.get_url("/authority/1")
-    label = browser.find_element(By.XPATH, "//*[@id='%s']" % field_name)
-    assert label.text == ""
-    
+    francoralite_context.open_url('/authority/1')
+    label = francoralite_context.find_element(by_id=field_name)
+    assert label.text == ''

@@ -1,47 +1,36 @@
-from selenium.webdriver.common.by import By
 from django.utils.translation import gettext as _
 
-def test_institution_add(francoralite_selenium_context):
+
+def test_institution_add(francoralite_context):
     # Go to the home page
-    browser = francoralite_selenium_context.homepage(auth=True, username='administrateur')
+    francoralite_context.open_homepage(auth_username='administrateur')
 
     # Click on the institution menu
-    link_page = browser.find_element(By.XPATH, '//a[text()="' + _("Institutions") + '"]')
-    link_page.click()
+    francoralite_context.find_element(by_link_text=_('Institutions')).click()
 
     # Verify the label "Institutions"
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Institutions")
+    francoralite_context.verify_title(_('Institutions'))
 
     # Click on the "add" link
-    link_add = browser.find_element(By.XPATH, "//a[contains(@class, 'btn_add')]")
-    link_add.click()
+    francoralite_context.find_element(by_link_class='btn_add').click()
 
     # Verify the label "Institutions - Création"
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Institutions - Création")
+    francoralite_context.verify_title(_('Institutions - Création'))
 
     # Write content
-    id_name = browser.find_element(By.ID, 'id_name')
-    id_name.send_keys(_('Institution Test'))
-
-    editor = browser.find_element(By.XPATH, "//div[contains(@class, 'ProseMirror')]")
-    editor.send_keys('Ceci est une institution de **test**.')
+    francoralite_context.find_element(by_id='id_name').send_keys('Institution Test')
+    francoralite_context.find_element(by_div_class='ProseMirror').send_keys('Ceci est une institution de **test**.')
 
     # Validation
-    button_valid = browser.find_element(By.XPATH, "//*[@id='save']")
-    button_valid.click()
+    francoralite_context.find_element(by_id='save').click()
 
     # Goto to list of institution
     # Verify the label "Institutions"
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Institutions")
-    
+    francoralite_context.verify_title(_('Institutions'))
+
     # Click on the new institution created
-    new_institution = browser.find_element(By.XPATH, '//a[text()="' + _("Institution Test") + '"]')
-    new_institution.click()
+    francoralite_context.find_element(by_link_text='Institution Test').click()
 
     # Check values
     # Verify the label "Institution : Institution Test"
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Institution : Institution Test")
+    francoralite_context.verify_title('Institution : Institution Test')
