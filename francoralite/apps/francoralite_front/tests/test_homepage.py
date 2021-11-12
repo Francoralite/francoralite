@@ -28,7 +28,7 @@ def test_homepage(francoralite_context):
             [_('Musique'), False, [
                 [_('Coupe'), None, []],
                 [_('Formation (musicale)'), _('Formation'), []],
-                [_('Hornbostel-Sachs'), _('classification Hornbostel-Sachs'), []],
+                [_('Hornbostel-Sachs'), _('Classification Hornbostel-Sachs'), []],
                 [_('Organisation musicale'), None, []],
                 [_('Voix/Instruments'), None, []],
             ]],
@@ -38,7 +38,7 @@ def test_homepage(francoralite_context):
                 [_('Genre de musique'), None, []],
                 [_('Genre vocal'), None, []],
             ]],
-            [_('Contexte d\'enregistrement'), None, []],
+            [_('Contexte d’enregistrement'), None, []],
             [_('Édition'), False, [
                 [_('Droits légaux'), None, []],
                 [_('Éditeur'), None, []],
@@ -46,7 +46,7 @@ def test_homepage(francoralite_context):
                 [_('Type de média'), None, []],
             ]],
             [_('Danse'), _('Genre de danse'), []],
-            [_('Nature de l\'émission vocale'), _('nature des emissions vocales'), []],
+            [_('Nature des émissions vocales'), None, []],
             [_('Langue'), None, []],
             [_('Thématique'), None, []],
             [_('Fonction'), None, []],

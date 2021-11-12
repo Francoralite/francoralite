@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block title_name %}
-  {% trans "nature des emissions vocales" %}
+  {% trans "Nature des émissions vocales" %}
 {% endblock %}
 
 {% block content %}
@@ -26,7 +26,7 @@
 {% if user.is_authenticated %}
   <a href="{% url "emit_vox-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
-      {% trans "Créer une nature des emissions vocales" %}
+      {% trans "Créer une nature des émissions vocales" %}
   </a>
 {% endif %}
 {% endblock %}
@@ -83,7 +83,7 @@
   {% if error|length %}
       {% display_error error %}
     {% else %}
-      <p>{% trans "Il n'y a pas de nature des emissions vocales" %}</p>
+      <p>{% trans "Il n'y a pas de nature des émissions vocales" %}</p>
     {% endif %}
 {% endif %}
 </div>

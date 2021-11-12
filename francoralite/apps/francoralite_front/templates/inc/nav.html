@@ -5,15 +5,21 @@
 <nav role="navigation" aria-label="Menu principal" class="nav">
   <ul class="menu">
       {% if user.is_authenticated %}
-        <li><a href="{% url "home" %}" class="blue">{% trans "Bureau" %}</a></li>
+        <li>
+          <a href="{% url "home" %}" class="blue">{% trans "Bureau" %}</a>
+        </li>
       {% else %}
-        <li class="blue"><a href="{% url "home" %}">{% trans "Accueil" %}</a></li>
+        <li class="blue">
+          <a href="{% url "home" %}">{% trans "Accueil" %}</a>
+        </li>
       {% endif %}
 
-      <li  class="green"><a href="{% url "institution" %}">Institutions</a>
+      <li class="green">
+        <a href="{% url "institution" %}">Institutions</a>
       </li>
 
-      <li class="has-children green"><a href="#archives" >Archives</a>
+      <li class="has-children green">
+        <a href="#archives" >Archives</a>
           <ul class="sous-menu">
               <li><a href="{% url "fond" %}">Fonds</a></li>
               <li><a href="{% url "mission" %}">Missions</a></li>
@@ -61,11 +67,11 @@
                   <a href="{% url "musical_organization" %}">{% trans "Organisation musicale" %}</a>
                 </li>
                 <li>
-                <a href="{% url "instrument" %}">{% trans "Voix/Instruments" %}</a>
+                  <a href="{% url "instrument" %}">{% trans "Voix/Instruments" %}</a>
                 </li>
               </ul>
             </li>
-            <li  class="has-children"><a href="#genre">Genre</a>
+            <li class="has-children"><a href="#genre">Genre</a>
               <ul class="sous-menu">
                 <li>
                   <a href="{% url "domain_song" %}">{% trans "Genre de chanson" %}</a>
@@ -82,9 +88,8 @@
               </ul>
             </li>
             <li>
-              <a href="{% url "recording_context" %}">{% trans "Contexte d'enregistrement" %}</a>
+              <a href="{% url "recording_context" %}">{% trans "Contexte d’enregistrement" %}</a>
             </li>
-
             <li class="has-children">
               <a href="#editeur">{% trans "Édition" %}</a>
               <ul class="sous-menu">
@@ -106,7 +111,7 @@
               <a href="{% url "dance" %}">{% trans "Danse" %}</a>
             </li>
             <li>
-              <a href="{% url "emit_vox" %}">{% trans "Nature de l'émission vocale" %}</a>
+              <a href="{% url "emit_vox" %}">{% trans "Nature des émissions vocales" %}</a>
             </li>
             <li>
               <a href="{% url "language" %}">{% trans "Langue" %}</a>
@@ -128,7 +133,9 @@
             </li>
           </ul>
       </li>
-      <li class="orange"><a href="{% url "search-advanced" %}" >{% trans "Recherche avancée" %}</a>
+
+      <li class="orange">
+        <a href="{% url "search-advanced" %}" >{% trans "Recherche avancée" %}</a>
       </li>
   </ul>
 </nav>
