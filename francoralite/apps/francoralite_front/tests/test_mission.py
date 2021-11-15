@@ -85,3 +85,22 @@ def test_mission_add(francoralite_context):
 
     # Verify content
     francoralite_context.verify_data(content)
+
+
+def test_mission_update(francoralite_context):
+    # Go to the home page
+    francoralite_context.open_homepage(auth_username='contributeur')
+
+    # Go to the first mission edit page
+    francoralite_context.open_url('/mission/edit/1')
+
+    # Write a code partner
+    francoralite_context.set_element_value('id_code_partner', 'TEST_CODE')
+
+    # Validation
+    francoralite_context.find_element(by_id='save').click()
+
+    # The mission code partner updated on the detail page
+    francoralite_context.open_url('/mission/1')
+    label = francoralite_context.find_element(by_id="id_code_partner")
+    assert label.text == 'TEST_CODE'
