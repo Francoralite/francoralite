@@ -1,84 +1,98 @@
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from django.utils.translation import gettext as _
 
-def verify_data(browser, data):
-    # Verify data
- 
-    label = browser.find_element(By.XPATH,  "//*[@id='id_code']")
-    assert label.text == data["code"]
 
-    label = browser.find_element(By.XPATH, "//*[@id='id_title']")
-    assert label.text == data["title"]
+def test_fonds_list(francoralite_context):
+    for username in francoralite_context.USERNAMES:
+        # Open the fonds list page for each profile
+        francoralite_context.open_homepage(auth_username=username)
+        francoralite_context.open_url('/fond')
 
-    label = browser.find_element(By.XPATH, "//*[@id='id_description']")
-    assert label.text == data["description"]
+        # Verify the label of the fonds page
+        francoralite_context.verify_title(_('Fonds'))
 
-def test_fonds_details(francoralite_selenium_context):
-    browser = francoralite_selenium_context.get_url("/fond/1")
-    # Verify data
-    data = {
-        "code" : "UPOI_AFE",
-        "title" : "Fonds issus des Archives de Folklore et d'Ethnologie [Exemple]",
-        "description" : "Les Archives de Folklore et d'Ethnologie sont constituées des fonds et des collections, privés ou publics, concernant la culture des francophones en Amérique du Nord. Cette documentation reflète les manifestations tant esthétiques que pragmatiques de cette culture, soit les us et coutumes, les légendes, les contes, les chansons, les métiers, le costume, la religion, la musique, les histoires de vie, etc. Elle se base principalement sur des enquêtes sur le terrain mais aussi sur des dépouillements bibliographiques et des travaux de recherche.",
-        "conservation_site" : "Poitiers",
-        "comment" : "",
-    }
-    
-    verify_data(browser,data)
+        # links to the fonds
+        link_view_1 = francoralite_context.find_element(by_link_url='/fond/1')
+        assert link_view_1.text == 'UPOI_AFE'
 
-def test_fonds_add(francoralite_selenium_context):
+        link_view_2 = francoralite_context.find_element(by_link_url='/fond/2')
+        assert link_view_2.text == 'UPOI_ATP'
+
+        has_buttons = username in ('contributeur', 'administrateur')
+        assert has_buttons == francoralite_context.exists_element(by_link_url='/fond/edit/1')
+        assert has_buttons == francoralite_context.exists_element(by_link_url='/fond/edit/2')
+        assert has_buttons == francoralite_context.exists_element(by_button_url='/fond/delete/1')
+        assert has_buttons == francoralite_context.exists_element(by_button_url='/fond/delete/2')
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
+
+
+def test_fonds_details(francoralite_context):
+    for username in francoralite_context.USERNAMES:
+        # Open the first fond page for each profile
+        francoralite_context.open_homepage(auth_username=username)
+        francoralite_context.open_url('/fond/1')
+
+        # Verify data
+        data = {
+            'id_code': 'UPOI_AFE',
+            'id_title': "Fonds issus des Archives de Folklore et d'Ethnologie [Exemple]",
+            'id_description': "Les Archives de Folklore et d'Ethnologie sont constituées des fonds et des collections, privés ou publics, concernant la culture des francophones en Amérique du Nord. Cette documentation reflète les manifestations tant esthétiques que pragmatiques de cette culture, soit les us et coutumes, les légendes, les contes, les chansons, les métiers, le costume, la religion, la musique, les histoires de vie, etc. Elle se base principalement sur des enquêtes sur le terrain mais aussi sur des dépouillements bibliographiques et des travaux de recherche.",
+            'id_conservation_site': 'Poitiers',
+        }
+        francoralite_context.verify_data(data)
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
+
+
+def test_fonds_add(francoralite_context):
     # Go to the home page
-    browser = francoralite_selenium_context.homepage(auth=True)
+    francoralite_context.open_homepage(auth_username='contributeur')
 
     # Click on the institution menu
-    link_page = browser.find_element(By.XPATH, '//a[text()="' + _("Institutions") + '"]')
-    link_page.click()
+    francoralite_context.find_element(by_link_text=_('Institutions')).click()
 
     # Verify the label "Institutions"
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Institutions")
+    francoralite_context.verify_title(_('Institutions'))
 
     # Click on the fonds link
-    link_fonds = browser.find_element(By.XPATH, '//a[text()="Université de Poitiers"]')
-    link_fonds.click()
+    francoralite_context.find_element(by_link_text='Université de Poitiers').click()
 
     # Verify the label of the fonds page
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Institution : Université de Poitiers")
+    francoralite_context.verify_title(_('Institution : Université de Poitiers'))
 
     # Click on the "add" link
-    link_add = browser.find_element(By.XPATH, '//a[text()="' + _("Créer un fonds") + '"]')
-    link_add.click()
+    francoralite_context.find_element(by_link_text=_('Créer un fonds')).click()
 
     # Write content
     content = {
-        "code_partner" : "TEST 000",
-        "title" : "Fonds de test",
-        "conservation_site" : "Lieu test",
+        'id_code_partner': 'TEST 000',
+        'id_title': 'Fonds de test',
+        'id_conservation_site': 'Lieu test',
     }
+    francoralite_context.fill_data(content)
 
-    for key, value in content.items():
-        browser.find_element(By.ID, 'id_'+ key).send_keys(value)
+    # Write special content
+    code = 'upoi_tst'
+    francoralite_context.set_element_value('id_code', code)
+    content['id_code'] = code.upper()
 
-    code = "upoi_tst"
-    browser.execute_script("document.getElementById('id_code').value='" + code + "'")
     description = 'Ceci est un fonds de test.'
-    browser.find_element(By.XPATH, "//div[contains(@class, 'ProseMirror')]").send_keys(description)
-    
-    comment = "Un beau commentaire."
-    browser.execute_script("document.getElementById('id_comment').value='" + comment + "'")
-    
-    content["code"] = code.upper()
-    content["description"] = description
-    content["comment"] = comment
+    francoralite_context.find_element(by_div_class='ProseMirror').send_keys(description)
+    content['id_description'] = description
+
+    comment = 'Un beau commentaire.'
+    francoralite_context.set_element_value('id_comment', comment)
+    content['id_comment'] = comment
 
     # Validation
-    button_valid = browser.find_element(By.XPATH, "//*[@id='save']")
-    button_valid.click()
+    francoralite_context.find_element(by_id='save').click()
 
     # Go to the new fonds
-    browser = francoralite_selenium_context.get_url('/fond/3')
+    francoralite_context.open_url('/fond/3')
 
-    verify_data(browser, content)
+    # Verify content
+    francoralite_context.verify_data(content)

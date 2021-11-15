@@ -1,66 +1,46 @@
-from selenium.webdriver.common.by import By
 from django.utils.translation import gettext as _
 
 
-def verify_data(browser, data):
-    # Verify data
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == data["title"]
-
-    label = browser.find_element(By.XPATH,  "//*[@id='id_name']")
-    assert label.text == data["name"]
-
-    label = browser.find_element(By.XPATH, "//*[@id='id_notes']")
-    assert label.text == data["notes"]
-
-def test_dance_details(francoralite_selenium_context, all_profiles):
-    
-    # Open the homepage for each profile 
-    for profile in all_profiles:
-        francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
-        browser = francoralite_selenium_context.get_url("/dance/1")
+def test_dance_details(francoralite_context):
+    for username in francoralite_context.USERNAMES:
+        # Open the first dance page for each profile
+        francoralite_context.open_homepage(auth_username=username)
+        francoralite_context.open_url('/dance/1')
 
         # Verify data
         data = {
-            "title" : "Genre de danse : polka",
-            "name" : "polka",
-            "notes" : "Polka",
+            'id_name' : 'polka',
+            'id_notes' : 'Polka',
         }
-        
-        verify_data(browser,data)
+        francoralite_context.verify_title('Genre de danse : polka')
+        francoralite_context.verify_data(data)
 
         # And, then logout (if authenticated user)
-        if profile[0] :
-            francoralite_selenium_context.logout(browser, profile[1])
-        
+        if username:
+            francoralite_context.logout(username)
 
-def test_dance_add(francoralite_selenium_context):
+
+def test_dance_add(francoralite_context):
     # Go to the dance add page
-    francoralite_selenium_context.homepage(auth=True, username="administrateur")
-    browser = francoralite_selenium_context.get_url("/dance/add")
+    francoralite_context.open_homepage(auth_username='administrateur')
+    francoralite_context.open_url('/dance/add')
 
     # On page add
-    label = browser.find_element(By.XPATH, "//main/h1")
-    assert label.text == _("Genre de danse - Création")
+    francoralite_context.verify_title(_('Genre de danse - Création'))
 
     # Write content
     content = {
-        "name" : "bourree",
-        "notes" : "Bourrée",
+        'id_name': 'bourree',
+        'id_notes': 'Bourrée',
     }
-    
-    for key, value in content.items():
-        browser.find_element(By.ID, 'id_'+ key).send_keys(value)
+    francoralite_context.fill_data(content)
 
     # Validation
-    button_valid = browser.find_element(By.XPATH, "//*[@id='save']")
-    button_valid.click()
+    francoralite_context.find_element(by_id='save').click()
 
     # Go to the new dance
-    browser = francoralite_selenium_context.get_url('/dance/2')
+    francoralite_context.open_url('/dance/2')
 
     # Verify data
-    content["title"] = "Genre de danse : bourree"
-        
-    verify_data(browser, content)
-   
+    francoralite_context.verify_title('Genre de danse : bourree')
+    francoralite_context.verify_data(content)

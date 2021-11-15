@@ -24,11 +24,13 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.collection_add %}
     <a href="{% url "collection-add" id_institution=mission.fonds.institution.id id_fond=mission.fonds.id id_mission=id %}" class="btn_add btn btn-default">
         <span class="glyphicon glyphicon-plus"></span>
         {% trans "Créer une enquête" %}
     </a>
+  {% endif %}
+  {% if perms.keycloak.mission_update %}
     <a href="{% url "mission-edit" id=id %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
     </a>
@@ -61,14 +63,14 @@
             </a>
           </dd>
         </dl>
-        {% field_data form.code_partner.label|safe mission.code_partner|safe empty=False %}
-        {% field_data form.code.label mission.code|upper|safe %}
-        {% field_data form.title.label|safe mission.title|safe %}
-        {% field_data form.public_access.label|safe mission.public_access|public_access|safe %}
+        {% field_data_id form.code_partner mission.code_partner|safe empty=False %}
+        {% field_data_id form.code mission.code|upper|safe %}
+        {% field_data_id form.title mission.title|safe %}
+        {% field_data_id form.public_access mission.public_access|public_access|safe %}
       </div>
 
       <div class="container_line">
-        {% field_data form.description.label|safe mission.description|markdown|safe %}
+        {% field_data_id form.description mission.description|markdown|safe %}
       </div>
 
       <div class="block-grey">
@@ -168,22 +170,26 @@
             <td>{{ collection.title|safe }}</td>
             <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
             <td>
+              {% if perms.keycloak.collection_update %}
               <a href="{% url "collection-edit" id=collection.id %}">
                     <button type="button" class="btn btn-default">
                       <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
                     </button>
               </a>
+              {% endif %}
+              {% if perms.keycloak.collection_delete %}
               <button type="button" class="btn btn-default"
                   data-toggle="modal" data-target="#modalDelete"
                   data-name="{{collection.title}}"
                   data-url="{% url "collection-delete" id=collection.id %}">
                     <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
               </button>
+              {% endif %}
             </td>
         </tr>
         {% endfor %}
         </table>
-        {% if user.is_authenticated %}
+        {% if perms.keycloak.collection_delete %}
         	{% modal_delete %}
         {% endif %}
       {% else %}

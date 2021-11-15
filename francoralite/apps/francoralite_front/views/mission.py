@@ -5,15 +5,16 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
-from francoralite.apps.francoralite_front.forms.mission import MissionForm
+from .. import tools
+from ..forms.mission import MissionForm
+from ..francoralite_template_view import FrancoraliteTemplateView
 
 
 class MissionView(FrancoraliteTemplateView):
-    template_name = "../templates/mission.html"
+    template_name = '../templates/mission.html'
     keycloak_scopes = {
-        'GET': 'mission:view'}
+        'GET': 'mission:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:

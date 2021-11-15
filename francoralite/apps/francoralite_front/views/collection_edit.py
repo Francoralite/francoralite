@@ -5,55 +5,20 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.collection import CollectionForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ..forms.collection import CollectionForm
+from ..francoralite_template_view import FrancoraliteFormView
 
 
-class CollectionEdit(FormView):
-    template_name = "../templates/collection-add.html"
+class CollectionEdit(FrancoraliteFormView):
+    api_url_prefix = '/api/collection/'
+    entity_name = 'collection'
+
     form_class = CollectionForm
+    template_name = '../templates/collection-add.html'
+    template_variable_name = 'collection'
+
     success_url = '/collection/'
+
     keycloak_scopes = {
-            'GET': 'collection:view',
-            'POST': 'collection:add',
-            'PATCH': 'collection:update',
-            'PUT': 'collection:update'}
-
-    def get_context_data(self, **kwargs):
-        try:
-            context = super(CollectionEdit, self).get_context_data(**kwargs)
-            id = kwargs.get('id')
-            # Obtain values of the record
-            context['collection'] = tools.request_api(
-                '/api/collection/' + str(id) + '/complete')
-        except Exception as err:
-            context['collection'] = {}
-            context['error'] = err
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        data = tools.request_api(
-          '/api/collection/'+str(id)+'/complete')
-        data['mission'] = data['mission']['id']
-        if data['media_type']:
-            data['media_type'] = data['media_type']['id']
-        if data['legal_rights']:
-            data['legal_rights'] = data['legal_rights']['id']
-
-        form = CollectionForm(initial=data)
-
-        return render(request,
-                      '../templates/collection-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch(
-            'collection', CollectionForm, request, *args, **kwargs)
+        'DEFAULT': 'authority:update',
+    }

@@ -16,5 +16,5 @@ class EmitVox(models.Model):
     class Meta:
         app_label = 'francoralite_api'
         db_table = 'emit_vox'
-        verbose_name_plural = _(u'nature des emissions vocales')
+        verbose_name_plural = _(u'nature des émissions vocales')
         ordering = []

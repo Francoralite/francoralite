@@ -232,7 +232,7 @@ class Migration(migrations.Migration):
             options={
                 'ordering': [],
                 'db_table': 'emit_vox',
-                'verbose_name_plural': 'nature des emissions vocales',
+                'verbose_name_plural': 'nature des émissions vocales',
             },
         ),
         migrations.CreateModel(

@@ -151,7 +151,16 @@ $('#id_birth_location_name').on('typeahead:selected', function (event, result){
 $('#id_death_location_name').on('typeahead:selected', function (event, result){
   $('#id_death_location').val(result.id);
 });
-
+$('#id_birth_location_name').change(function() {
+    if ($('#id_birth_location_name').val() == '') {
+        $('#id_birth_location').val(null);
+    }
+});
+$('#id_death_location_name').change(function() {
+    if ($('#id_death_location_name').val() == '') {
+        $('#id_death_location').val(null);
+    }
+});
 </script>
 
 

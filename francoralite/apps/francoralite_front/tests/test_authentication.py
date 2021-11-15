@@ -1,25 +1,26 @@
-from selenium.webdriver.common.by import By
 from django.utils.translation import gettext as _
 
-def test_login(francoralite_selenium_context):
+
+def test_login(francoralite_context):
     # Go to the home page, with authentication
-    browser = francoralite_selenium_context.homepage(auth=True)
+    francoralite_context.open_homepage(auth_username='contributeur')
 
     # Test username link text
-    link_user = browser.find_element(By.XPATH, "//a[contains(@class, 'login')]")
-    assert link_user.text == "contributeur"
+    link_user = francoralite_context.find_element(by_link_class='login')
+    assert link_user.text == 'contributeur'
 
     # Test logout link text
-    link_logout = browser.find_element(By.XPATH, "//a[contains(@class, 'logout')]")
-    assert link_logout.text == _("Déconnexion")
+    link_logout = francoralite_context.find_element(by_link_class='logout')
+    assert link_logout.text == _('Déconnexion')
 
-    #browser.save_screenshot('./login.png')
+    #francoralite_context.save_screenshot('./login.png')
 
-def test_logout(francoralite_selenium_context, all_profiles):
-    # Open the homepage for each profile 
-    for profile in all_profiles:
-        browser = francoralite_selenium_context.homepage(auth=profile[0], username=profile[1])
-        
+
+def test_logout(francoralite_context):
+    for username in francoralite_context.USERNAMES:
+        # Open the homepage for each profile
+        francoralite_context.open_homepage(auth_username=username)
+
         # And, then logout (if authenticated user)
-        if profile[0] :
-            francoralite_selenium_context.logout(browser, profile[1])
+        if username:
+            francoralite_context.logout(username)

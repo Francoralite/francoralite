@@ -19,6 +19,7 @@
 import logging
 from django.conf import settings
 from django.http.response import JsonResponse
+from django.shortcuts import render
 from keycloak import KeycloakOpenID
 from keycloak.exceptions import KeycloakInvalidTokenError
 from rest_framework.exceptions import PermissionDenied
@@ -26,44 +27,8 @@ from rest_framework.exceptions import PermissionDenied
 
 logger = logging.getLogger(__name__)
 
-def get_permissions(self, token, method_token_info='introspect', **kwargs):
-    """
-    Get permission by user token
 
-    :param token: user token
-    :param method_token_info: Decode token method
-    :param kwargs: parameters for decode
-    :return: permissions list
-    """
-
-    if not self.authorization.policies:
-        raise Exception(
-            "Keycloak settings not found. Load Authorization Keycloak settings." # noqa
-        )
-
-    token_info = self._token_info(token, method_token_info, **kwargs)
-
-    if method_token_info == 'introspect' and not token_info['active']:
-        raise KeycloakInvalidTokenError(
-            "Token expired or invalid."
-        )
-
-    user_resources = token_info['resource_access'].get(self.client_id)
-    if not user_resources:
-        return None
-
-    permissions = []
-
-    for policy_name, policy in self.authorization.policies.items():
-        for role in user_resources['roles']:
-            policy_roles = [item.name for item in policy.roles]
-            if role in policy_roles:
-                permissions += policy.permissions
-
-    return list(set(permissions))
-
-
-KeycloakOpenID.get_permissions = get_permissions
+KeycloakOpenID._build_name_role = lambda self, role: role
 
 
 class KeycloakMiddleware(object):
@@ -81,24 +46,27 @@ class KeycloakMiddleware(object):
             self.client_id = self.config['KEYCLOAK_CLIENT_ID']
             self.realm = self.config['KEYCLOAK_REALM']
         except KeyError:
-            raise Exception("KEYCLOAK_SERVER_URL, KEYCLOAK_CLIENT_ID or KEYCLOAK_REALM not found.") # noqa
+            raise Exception('KEYCLOAK_SERVER_URL, KEYCLOAK_CLIENT_ID or '
+                            'KEYCLOAK_REALM not found.')
 
         self.client_secret_key = self.config.get(
             'KEYCLOAK_CLIENT_SECRET_KEY', None)
         self.client_public_key = self.config.get(
             'KEYCLOAK_CLIENT_PUBLIC_KEY', None)
         self.default_access = self.config.get(
-            'KEYCLOAK_DEFAULT_ACCESS', "DENY")
+            'KEYCLOAK_DEFAULT_ACCESS', 'DENY')
         self.method_validate_token = self.config.get(
-            'KEYCLOAK_METHOD_VALIDATE_TOKEN', "INTROSPECT")
+            'KEYCLOAK_METHOD_VALIDATE_TOKEN', 'INTROSPECT')
         self.keycloak_authorization_config = self.config.get(
             'KEYCLOAK_AUTHORIZATION_CONFIG', None)
 
         # Create Keycloak instance
-        self.keycloak = KeycloakOpenID(server_url=self.server_url,
-                                       client_id=self.client_id,
-                                       realm_name=self.realm,
-                                       client_secret_key=self.client_secret_key) # noqa
+        self.keycloak = KeycloakOpenID(
+            server_url=self.server_url,
+            client_id=self.client_id,
+            realm_name=self.realm,
+            client_secret_key=self.client_secret_key,
+        )
 
         # Read policies
         if self.keycloak_authorization_config:
@@ -126,7 +94,7 @@ class KeycloakMiddleware(object):
         :param view_func: view function
         :param view_args: view args
         :param view_kwargs: view kwargs
-        :return: JSON response or None
+        :return: JSON response, HTML response or None
         """
 
         # Load permissions from Keycloak
@@ -202,10 +170,13 @@ class KeycloakMiddleware(object):
         }
 
         # Extract required Keycloak permissions from view
-        try:
-            view_scopes = view_func.cls.keycloak_scopes
-        except AttributeError:
-            logger.debug('Allowing free access, since no authorization configuration (keycloak_scopes) found for this request route :%s', request) # noqa
+        view_class = getattr(view_func, 'cls', None) \
+            or getattr(view_func, 'view_class', None)
+        view_scopes = getattr(view_class, 'keycloak_scopes', None)
+        if view_scopes is None:
+            logger.debug('Allowing free access, since no authorization '
+                         'configuration (keycloak_scopes) found for this '
+                         'request route: %s', request)
             return None
 
         # Get DEFAULT required permission if method is not defined
@@ -214,17 +185,33 @@ class KeycloakMiddleware(object):
 
         # DEFAULT scope not found and DEFAULT_ACCESS is DENY
         if not required_permission and self.default_access == 'DENY':
-            return JsonResponse(
-                {'detail': PermissionDenied.default_detail},
-                status=PermissionDenied.status_code,
-            )
+            return self.create_permission_denied_response(request, view_class)
 
         # Check required permission from user Keycloak permissions
         if required_permission not in keycloak_permissions:
-            return JsonResponse(
-                {'detail': PermissionDenied.default_detail},
-                status=PermissionDenied.status_code,
-            )
+            return self.create_permission_denied_response(request, view_class)
+
+    def create_permission_denied_response(self, request, view_class):
+        """
+        Create permission denied response.
+        :param request: django request
+        :param view_class: class of view function
+        :return: JSON response or HTML response
+        """
+
+        # Create HTML response (Front request)
+        default_403_error_message = getattr(
+            view_class, 'default_403_error_message', None)
+        if default_403_error_message is not None:
+            return render(request, 'error.html', {
+                'exception': default_403_error_message or _('Accès interdit.'),
+            }, status=403)
+
+        # Create JSON response (Back request)
+        return JsonResponse(
+            {'detail': PermissionDenied.default_detail},
+            status=PermissionDenied.status_code,
+        )
 
     def get_keycloak_permissions(self, request):
         """
