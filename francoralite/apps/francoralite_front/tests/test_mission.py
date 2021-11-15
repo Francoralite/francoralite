@@ -28,7 +28,7 @@ def test_mission_list(francoralite_context):
             francoralite_context.logout(username)
 
 
-def _test_mission_details(francoralite_context):
+def test_mission_details(francoralite_context):
     for username in francoralite_context.USERNAMES:
         # Open the first mission page for each profile
         francoralite_context.open_homepage(auth_username=username)
@@ -48,7 +48,7 @@ def _test_mission_details(francoralite_context):
             francoralite_context.logout(username)
 
 
-def _test_mission_add(francoralite_context):
+def test_mission_add(francoralite_context):
     # Go to the fonds page
     francoralite_context.open_homepage(auth_username='contributeur')
     francoralite_context.open_url('/fond/1')
