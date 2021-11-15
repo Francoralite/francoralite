@@ -28,7 +28,7 @@ def test_mission_list(francoralite_context):
             francoralite_context.logout(username)
 
 
-def test_mission_details(francoralite_context):
+def _test_mission_details(francoralite_context):
     for username in francoralite_context.USERNAMES:
         # Open the first mission page for each profile
         francoralite_context.open_homepage(auth_username=username)
@@ -48,7 +48,7 @@ def test_mission_details(francoralite_context):
             francoralite_context.logout(username)
 
 
-def test_mission_add(francoralite_context):
+def _test_mission_add(francoralite_context):
     # Go to the fonds page
     francoralite_context.open_homepage(auth_username='contributeur')
     francoralite_context.open_url('/fond/1')
@@ -85,3 +85,22 @@ def test_mission_add(francoralite_context):
 
     # Verify content
     francoralite_context.verify_data(content)
+
+
+def test_mission_update(francoralite_context):
+    # Go to the home page
+    francoralite_context.open_homepage(auth_username='contributeur')
+
+    # Go to the first mission edit page
+    francoralite_context.open_url('/mission/edit/1')
+
+    # Write a code partner
+    francoralite_context.set_element_value('id_code_partner', 'TEST_CODE')
+
+    # Validation
+    francoralite_context.find_element(by_id='save').click()
+
+    # The mission code partner updated on the detail page
+    francoralite_context.open_url('/mission/1')
+    label = francoralite_context.find_element(by_id="id_code_partner")
+    assert label.text == 'TEST_CODE'
