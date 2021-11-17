@@ -139,7 +139,7 @@
                     <i>Fiche...</i></a>
                 </template>
                 <template slot="selected-option" slot-label="countryName" scope="option">
-                  <a :href="option.url" class="item_collector"
+                  <a :href="option.url" class="item_collector" 
                   onclick="window.open(this.href); return false;">
                   ${ option.first_name } ${ option.last_name }</a>
                 </template>
@@ -165,7 +165,7 @@
                     <i>Fiche...</i></a>
                 </template>
                 <template slot="selected-option" slot-scope="option">
-                  <a :href="option.url" class="item_informer"
+                  <a :href="option.url" class="item_informer" 
                   onclick="window.open(this.href); return false;">
                   ${ option.first_name } ${ option.last_name }</a>
                 </template>

@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+import sys
 import pytest
 
 
@@ -222,3 +223,12 @@ class FrancoraliteSeleniumContext():
 
     def save_screenshot(self, *args, **kwargs):
         return self.browser.save_screenshot(*args, **kwargs)
+    
+    def save_source(self):
+        return self.browser.page_source
+    
+    def save_source_debug(self):
+        sys.stdout.write('-------- source ----------')
+        sys.stdout.write(self.browser.page_source)
+        sys.stdout.write('------------------')
+        sys.stdout.flush()

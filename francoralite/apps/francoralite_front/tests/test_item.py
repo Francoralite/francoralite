@@ -35,7 +35,7 @@ def _test_item_details(francoralite_context):
             'id_code': 'UPOI_ATP_0001_0001_001',
             'id_code_partner': 'MUS1969.33.1',
             'id_recording_context': '1',
-            "id_location_details": "La Biroire est un lieu-dit situé à Saint-Pierre-d'Oléron, sur l'Île d'Oléron.",
+            'id_location_details': "La Biroire est un lieu-dit situé à Saint-Pierre-d'Oléron, sur l'Île d'Oléron.",
         }
         francoralite_context.verify_data(data)
 
