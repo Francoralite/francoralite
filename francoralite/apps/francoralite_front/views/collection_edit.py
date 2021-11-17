@@ -20,5 +20,5 @@ class CollectionEdit(FrancoraliteFormView):
     success_url = '/collection/'
 
     keycloak_scopes = {
-        'DEFAULT': 'authority:update',
+        'DEFAULT': 'collection:update',
     }
