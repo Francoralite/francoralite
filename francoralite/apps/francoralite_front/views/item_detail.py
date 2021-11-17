@@ -4,23 +4,25 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.http import Http404
+from django.utils.translation import gettext as _
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import requests
-
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.item import ItemForm
-from francoralite.apps.francoralite_front.forms.collection import CollectionForm
-import francoralite.apps.francoralite_front.tools as tools
+from ..francoralite_template_view import FrancoraliteTemplateView
+import francoralite_front.tools as tools
+from ..forms.item import ItemForm
+from ..forms.collection import CollectionForm
 
 
 class ItemDetail(FrancoraliteTemplateView):
     template_name = "../templates/item-detail.html"
+    
+    keycloak_scopes = {
+        'DEFAULT': 'item:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
             context = super(ItemDetail, self).get_context_data(**kwargs)
-            context["url_external"] = settings.FRONT_HOST_URL_EXTERNAL
             # Obtain values of the record item
             context["item"] = tools.request_api(
                 '/api/item/' + context['id'] + '/complete')
@@ -42,13 +44,11 @@ class ItemDetail(FrancoraliteTemplateView):
                 + context['id']
                 + '/performance')
             context['performances'] = performances
-
+        except Http404:
+            raise Http404(_('Cet item n’existe pas.'))
         except Exception as err:
             context['item'] = {}
             context['locations'] = []
             context['documents'] = []
-            context['error'] = err
-            response = requests.get(
-                settings.FRONT_HOST_URL + '/api/item/' + context['id'])
-
+            context['error'] = str(err) + ":" + str(type(err).__name__)
         return context

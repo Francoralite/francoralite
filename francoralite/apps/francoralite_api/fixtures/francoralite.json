@@ -293,6 +293,27 @@
   },
   {
     "fields": {
+      "first_name": "Claudie",
+      "last_name": "Marcel-Dubois",
+      "is_collector": true,
+      "birth_location": null,
+      "is_editor": true,
+      "is_composer": false,
+      "civility": "Mlle",
+      "uri": "",
+      "is_informer": false,
+      "alias": "",
+      "death_location": null,
+      "birth_date": "1913-01-19",
+      "is_author": false,
+      "biography": "",
+      "death_date": "1989-02-01"
+    },
+    "model": "francoralite_api.authority",
+    "pk": 8
+  },
+  {
+    "fields": {
       "notes": "",
       "name": "Université de Poitiers"
     },
@@ -462,9 +483,42 @@
 
   {"fields": {"notes": "Polka", "name": "polka"}, "model": "francoralite_api.dance", "pk": 1},
 
-   {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "francoralite_api.emitvox", "pk": 1},
-   {"fields": {"number": "321.322", "name": "Violon"}, "model": "francoralite_api.hornbostelsachs", "pk": 1},
-   {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "francoralite_api.instrument", "pk": 1}
+  {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "francoralite_api.emitvox", "pk": 1},
+  {"fields": {"number": "321.322", "name": "Violon"}, "model": "francoralite_api.hornbostelsachs", "pk": 1},
+  {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "francoralite_api.instrument", "pk": 1},
 
+  {
+    "fields": {
+      "collection": 2,
+      "title": "A propos du métier de violoneux (doc.)",
+      "description": "M. Aubrière raconte ses premiers bals.",
+      "code": "UPOI_ATP_0001_0001_001",
+      "code_partner": "MUS1969.33.1",
+      "file": "items/violonneux.mp3",
+      "media_type": 2,
+      "coupe": null,
+      "text_bool": false,
+      "approx_duration": null,
+      "date_edit": "2021-11-15T17:44:31.581708"
+    },
+      "model":"francoralite_api.item",
+      "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "collector":8
+    },
+    "model":"francoralite_api.itemcollector",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "informer":4
+    },
+    "model":"francoralite_api.iteminformer",
+    "pk":1
+  }
 
 ]

@@ -32,12 +32,12 @@
 
 <div class="fullpage">
 {% if items|length > 0 %}
-  <!-- Table to display the items --->
+  <!-- Table to display the items -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.item_update %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -47,28 +47,29 @@
           <a href="/item/{{item.id }}">
             {{ item.code|upper }}</a>
       </td>
-      <!--  FIXIT : affichage des champs -->
       <td>{{ item.title|safe }}</td>
-      {% if user.is_authenticated %}
       <td>
+      {% if perms.keycloak.item_update %}
         <a href="{% url "item-edit" id=item.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+      {% endif %}
+      {% if perms.keycloak.item_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{item.title}}"
             data-url="{% url "item-delete" id=item.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-      </td>
       {% endif %}
+      </td>
   </tr>
   {% endfor %}
 </table>
 
 
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.item_delete %}
 	{% modal_delete %}
 {% endif %}
 
