@@ -34,6 +34,11 @@ class FrancoraliteSeleniumContext():
         'contributeur',
         'administrateur',
     )
+    
+    WRITERS = (
+        'contributeur',
+        'administrateur',
+    )
 
     def __init__(self, url_prefix=None):
         self.URL_PREFIX = url_prefix or 'http://127.0.0.1:8000'
@@ -200,6 +205,16 @@ class FrancoraliteSeleniumContext():
     def verify_data(self, data):
         for element_id, element_value in data.items():
             element = self.find_element(by_id=element_id)
+            assert element.text == element_value
+            
+    def verify_data_form_id (self, data):
+        for element_id, element_value in data.items():
+            element = self.find_element(by_id=element_id)
+            assert element.get_attribute("value") == element_value
+    
+    def verify_data_form_related (self, data):
+        for element_id, element_value in data.items():
+            element = self.find_element(by_class_name=element_id)
             assert element.text == element_value
 
     def verify_title(self, value):
