@@ -27,3 +27,4 @@ class CollectionInformer(models.Model):
         db_table = 'collection_informer'
         verbose_name_plural = _('collection_informers')
         ordering = []
+        unique_together = (('collection', 'informer'), )

@@ -2,4 +2,7 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
-{% display_error error %}
+
+{% block content %}
+{{ exception }}
+{% endblock %}

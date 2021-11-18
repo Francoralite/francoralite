@@ -49,12 +49,9 @@ class TestCollectionLocationList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
-
+        
         # Create a set of sample data
-        CollectionLocationFactory.create_batch(1)
+        CollectionLocationFactory.create_batch(6)
 
     def test_can_get_collection_location_list(self):
         """
@@ -66,7 +63,7 @@ class TestCollectionLocationList(APITestCase):
 
         # ORM side
         collection_locations = CollectionLocation.objects.all()
-        self.assertEqual(len(collection_locations), 1)
+        self.assertEqual(len(collection_locations), 6)
 
         # API side
         response = self.client.get(url)
@@ -126,13 +123,13 @@ class TestCollectionLocationList(APITestCase):
             dict,
             FACTORY_CLASS=CollectionLocationFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['location'] = Location.objects.first().id
-        data['collection'] = Collection.objects.first().id
+        data['location'] = 2
+        data['collection'] = 1
 
         url = reverse('collectionlocation-list', kwargs={
-            'collection_pk': 1})
+            'collection_pk': data['collection']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -145,7 +142,7 @@ class TestCollectionLocationList(APITestCase):
         url = reverse(
             'collectionlocation-detail',
             kwargs={'collection_pk': response.data['collection']['id'],
-                    'pk': response.data['location']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

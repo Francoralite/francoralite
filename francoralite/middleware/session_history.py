@@ -25,6 +25,9 @@ class SessionHistoryMiddleware(object):
     def process_view(self, request, view_func, view_args, view_kwargs):
         session = request.session
         referer = request.META.get("HTTP_REFERER")
+        
+        if referer is None:
+            return
 
         if "referers" not in session:
             session["referers"] = [referer]

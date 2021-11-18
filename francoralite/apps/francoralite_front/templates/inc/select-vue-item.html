@@ -14,7 +14,7 @@ function searchRelated(loading, search, vm, url, options, entity){
 
 function getRelated (component, url, field, rel_entity, entity){
    // Get the data from a related table to display it in a field
-   axios.get("{{url_external}}" + url).then(
+   axios.get(url).then(
    res => {
      for(i = 0; i < res.data.length; i++) {
        res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
@@ -545,7 +545,7 @@ new Vue({
        );
     },
     getPerformances: function(){
-      axios.get("{{url_external}}" + '/api/item/{{id}}/performance').then(
+      axios.get('/api/item/{{id}}/performance').then(
       res => {
         var listRelated = [];
         for( var item in res.data) {
@@ -557,13 +557,13 @@ new Vue({
       });
     },
     getOptionsPerformances: function(){
-      axios.get("{{url_external}}" + '/api/collection/' + $('#id_collection').val() + '/complete').then(
+      axios.get('/api/collection/' + $('#id_collection').val() + '/complete').then(
       res => {
         this.optionsPerformances = res.data.performances;
       });
     },
     getInitialPerformances: function(){
-      axios.get("{{url_external}}"  + '/api/collection/' + $('#id_collection').val() + '/complete').then(
+      axios.get('/api/collection/' + $('#id_collection').val() + '/complete').then(
       res => {
         this.performances = res.data.performances;
       });

@@ -22,6 +22,6 @@ class CoupeDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['coupe'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = CoupeForm()
         return context

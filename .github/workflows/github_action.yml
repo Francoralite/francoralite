@@ -1,0 +1,62 @@
+name: CI Workflow
+on: push
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      
+      - name : Create services network
+        run: docker network create services
+      
+      - name: Retrieve docker images
+        if: ${{ success() }}
+        run: docker-compose pull
+      
+      - name: Build docker image
+        if: ${{ success() }}
+        run: docker-compose build
+      
+      - name: Start docker-compose
+        if: ${{ success() }}
+        run: docker-compose up --no-start
+        
+      - name: Keycloak parameters
+        if: ${{ success() }}
+        run: script -e -c "./scripts/load_keycloak_data.sh"
+       
+      - name: Install tests dependencies
+        if: ${{ success() }}
+        run: script -e -c "docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'"
+
+      - name: Install Selenium drivers
+        if: ${{ success() }}
+        run: script -e -c "docker-compose exec app bash -c './scripts/deps_selenium.sh'"
+        
+      - name: Run tests (back and front)
+        if: ${{ success() }}
+        run: script -e -c "docker-compose exec app bash -c 'py.test --cov-report=xml'"
+
+      - name: Upload coverage to Codecov
+        if: ${{ success() }}
+        uses: codecov/codecov-action@v2
+        
+      - name: Logs docker-compose
+        if: ${{ failure() }}
+        run: docker-compose logs
+
+      - name: Stop docker-compose
+        if: ${{ always() }}
+        run: docker-compose stop
+
+      - name: Down docker-compose
+        if: ${{ always() }}
+        run: docker-compose down

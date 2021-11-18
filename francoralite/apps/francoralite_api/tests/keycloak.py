@@ -5,22 +5,17 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 import requests
-from requests.auth import HTTPBasicAuth
 
 
-def get_token(test):
+def get_token(test, username='contributeur'):
     r = requests.post(
-        "http://keycloak.francoralite.localhost:8080/auth/realms/francoralite/protocol/openid-connect/token", # noqa
+        'http://keycloak.francoralite.localhost:8080/auth/realms/francoralite/protocol/openid-connect/token', # noqa
         data={
             'client_id': 'admin-cli',
-            'username': 'contributeur',
-            'password': "password",
-            'grant_type': "password"
+            'username': username,
+            'password': 'password',
+            'grant_type': 'password',
         })
     token = r.json()['access_token']
 
-    test.auth_headers = {
-        'HTTP_AUTHORIZATION': 'Bearer ' + token,
-    }
-
-    test.client.auth = HTTPBasicAuth('contributeur', 'password')
+    test.client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)

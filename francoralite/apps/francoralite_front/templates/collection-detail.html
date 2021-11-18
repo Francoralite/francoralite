@@ -23,11 +23,13 @@
 
 {% block content %}
 {% block title_buttons %}
- {% if user.is_authenticated and collection %}
+  {% if perms.keycloak.item_add and collection %}
   <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un item" %}
   </a>
+  {% endif %}
+  {% if perms.keycloak.collection_update and collection %}
   <a href="{% url "collection-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -62,31 +64,33 @@
             </a>
           </dd>
         </dl>
-        {% field_data form.code_partner.label|safe collection.code_partner|safe  empty=False %}
-        {% field_data form.code.label|safe collection.code|upper|safe %}
-        {% field_data form.title.label|safe collection.title|safe %}
-        {% field_data form.alt_title.label|safe collection.alt_title|safe empty=False %}
+        {% field_data_id form.code_partner collection.code_partner|safe  empty=False %}
+        {% field_data_id form.code collection.code|upper|safe %}
+        {% field_data_id form.title collection.title|safe %}
+        {% field_data_id form.alt_title collection.alt_title|safe empty=False %}
+        {% field_data_id form.legal_rights collection.legal_rights.name|safe %}
       </div>
 
       <div class="container_line">
-        {% field_data form.description.label|safe collection.description|markdown|safe %}
+        {% field_data_id form.description collection.description|markdown|safe %}
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Période" %}</h2>
+        {% field_data_id form.year_published collection.year_published|safe %}
         <h3>{% trans "Années d'enregistrement" %}</h3>
         <div class="container_line">
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Depuis' %}</dt>
-            <dd class="donnee">{{collection.recorded_from_year}}</dd>
+            <dd class="donnee" id="id_recorded_from_year">{{collection.recorded_from_year}}</dd>
           </dl>
           <dl class="container_data">
             <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
-            <dd class="donnee">{{collection.recorded_to_year}}</dd>
+            <dd class="donnee" id="id_recorded_to_year">{{collection.recorded_to_year}}</dd>
           </dl>
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
-            <dd class="donnee">{{collection.duration}}</dd>
+            <dd class="donnee" id="id_duration">{{collection.duration}}</dd>
           </dl>
         </div>
       </div>
@@ -221,7 +225,7 @@
     <!-- Onglet des items -->
     <section class="tab-pane fade in" id="tab_item">
       {% if items|length > 0 %}
-        <!-- Table to display the collections --->
+        <!-- Table to display the collections -->
         <table class="listing">
         <thead>
             <th class="highlight">{% trans "Cote" %}</th>
@@ -238,22 +242,26 @@
             <td>{{ item.title|safe }}</td>
             <td>{{ item.description|truncatechars:50|markdown|safe}}</td>
             <td>
+             {% if perms.keycloak.item_update %}
               <a href="{% url "item-edit" id=item.id %}">
                     <button type="button" class="btn btn-default">
                       <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
                     </button>
               </a>
+              {% endif %}
+              {% if perms.keycloak.item_delete %}
               <button type="button" class="btn btn-default"
                   data-toggle="modal" data-target="#modalDelete"
                   data-name="{{item.title}}"
                   data-url="{% url "item-delete" id=item.id %}">
                     <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
               </button>
+              {% endif %}
             </td>
           </tr>
           {% endfor %}
         </table>
-        {% if user.is_authenticated %}
+        {% if perms.keycloak.collection_delete %}
         	{% modal_delete %}
         {% endif %}
       {% else %}

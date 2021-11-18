@@ -28,3 +28,4 @@ class ItemUsefulness(models.Model):
         db_table = 'api_item_usefulness'
         verbose_name_plural = _('item_usefulnesses')
         ordering = []
+        unique_together = (('item', 'usefulness'), )

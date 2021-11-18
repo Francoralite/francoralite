@@ -51,9 +51,7 @@ class TestMissionList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
         MissionCollectionFactory.create_batch(6, collections__nb_collections=4)
 
@@ -143,6 +141,20 @@ class TestMissionList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
+
+
+    def test_mission_duration(self):
+        """
+        Total duration of a mission : sum of collection/items durations of this mission
+        """
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/duration"
+        response = self.client.get(url)
+    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, str)
+        self.assertNotEqual(response.data, "0:00:00")
+        self.assertNotEqual(response.data, "")
 
 
     @parameterized.expand(MISSION_STRUCTURE)

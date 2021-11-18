@@ -6,7 +6,7 @@
     - name: 'KEYCLOAK | Manage Francoralite clients'
       become: False
       keycloak_client: "{{ _keycloak_client_base | combine(item) }}"
-      delegate_to: '127.0.0.1'
+      delegate_to: 'keycloak.francoralite.localhost'
       loop: "{{ _keycloak_clients }}"
   vars_files:
     - './vars/keycloak_data.yml'

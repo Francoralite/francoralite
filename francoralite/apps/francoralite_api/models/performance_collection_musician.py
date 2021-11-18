@@ -27,3 +27,4 @@ class PerformanceCollectionMusician(models.Model):
         db_table = 'performance_collection_musician'
         verbose_name_plural = _('musicians')
         ordering = []
+        unique_together = (('performance_collection', 'musician'), )

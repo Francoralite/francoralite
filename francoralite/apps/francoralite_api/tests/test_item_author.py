@@ -48,11 +48,9 @@ class TestItemAuthorList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        
         # Create a set of sample data
-        ItemAuthorFactory.create_batch(1)
+        ItemAuthorFactory.create_batch(6)
 
     def test_can_get_item_author_list(self):
         """
@@ -64,7 +62,7 @@ class TestItemAuthorList(APITestCase):
 
         # ORM side
         item_authors = ItemAuthor.objects.all()
-        self.assertEqual(len(item_authors), 1)
+        self.assertEqual(len(item_authors), 6)
 
         # API side
         response = self.client.get(url)
@@ -124,13 +122,13 @@ class TestItemAuthorList(APITestCase):
             dict,
             FACTORY_CLASS=ItemAuthorFactory)
 
-        # Convert the related entity in dictionnaryself.
+        # Convert the related entity in dictionnary.
         #  Then they will be easily converted in JSON format.
-        data['item'] = Item.objects.first().id
-        data['author'] = Authority.objects.first().id
+        data['item'] = 1
+        data['author'] = 2
 
         url = reverse('itemauthor-list', kwargs={
-            'item_pk': 1})
+            'item_pk': data['item']})
         response = self.client.post(url, data, format='json')
 
         # Check only expected attributes returned
@@ -143,7 +141,7 @@ class TestItemAuthorList(APITestCase):
         url = reverse(
             'itemauthor-detail',
             kwargs={'item_pk': response.data['item']['id'],
-                    'pk': response.data['author']['id']}
+                    'pk': response.data['id']}
         )
         response_get = self.client.get(url)
 

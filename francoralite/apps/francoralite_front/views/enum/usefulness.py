@@ -20,6 +20,6 @@ class UsefulnessView(FrancoraliteTemplateView):
             context['usefulnesss'] = tools.request_api('/api/usefulness')
         except Exception as err:
             context['usefulnesss'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

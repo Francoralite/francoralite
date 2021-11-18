@@ -19,5 +19,5 @@ class LanguageView(FrancoraliteTemplateView):
             context['languages'] = tools.request_api('/api/language')
         except Exception as err:
             context['languages'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

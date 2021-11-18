@@ -22,6 +22,6 @@ class UsefulnessDetail(FrancoraliteTemplateView):
 
         except Exception as err:
             context['usefulness'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = UsefulnessForm()
         return context

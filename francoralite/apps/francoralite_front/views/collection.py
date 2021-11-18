@@ -5,15 +5,16 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
-from francoralite.apps.francoralite_front.forms.collection import CollectionForm
+from .. import tools
+from ..forms.collection import CollectionForm
+from ..francoralite_template_view import FrancoraliteTemplateView
 
 
 class CollectionView(FrancoraliteTemplateView):
-    template_name = "../templates/collection.html"
+    template_name = '../templates/collection.html'
     keycloak_scopes = {
-        'GET': 'collection:view'}
+        'GET': 'collection:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -22,5 +23,5 @@ class CollectionView(FrancoraliteTemplateView):
             context['form'] = CollectionForm
         except Exception as err:
             context['collections'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

@@ -23,7 +23,7 @@
 
 {% block title_buttons %}
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.dance_add %}
   <a href="{% url "dance-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un genre de danse" %}
@@ -38,12 +38,12 @@
 <div class="fullpage">
   <!-- If there is some domain dance (number of elements > 0 ) -->
 {% if dances|length > 0 %}
-  <!-- Table to display the dances --->
+  <!-- Table to display the dances -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.dance_update or perms.keycloak.dance_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,24 +58,26 @@
           {{ dance.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.dance_update %}
       <td>
         <a href="{% url "dance-edit" id=dance.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% if perms.keycloak.dance_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{dance.title}}"
             data-url="{% url "dance-delete" id=dance.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
       {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.authority_delete %}
 	{% modal_delete %}
 {% endif %}
 

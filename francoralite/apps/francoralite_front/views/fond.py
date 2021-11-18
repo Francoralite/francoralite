@@ -19,5 +19,5 @@ class FondView(FrancoraliteTemplateView):
             context['fonds'] = tools.request_api('/api/fond')
         except Exception as err:
             context['fonds'] = []
-            context['error'] = err.message
+            context['error'] = err
         return context

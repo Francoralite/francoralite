@@ -4,14 +4,20 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.http import Http404
+from django.utils.translation import gettext as _
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
-from francoralite.apps.francoralite_front.forms.mission import MissionForm
+from ..francoralite_template_view import FrancoraliteTemplateView
+import francoralite_front.tools as tools
+from ..forms.mission import MissionForm
 
 
 class MissionDetail(FrancoraliteTemplateView):
     template_name = "../templates/mission-detail.html"
+    
+    keycloak_scopes = {
+        'DEFAULT': 'collection:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -37,7 +43,12 @@ class MissionDetail(FrancoraliteTemplateView):
             # Obtain values of the start and en dates of related collections
             context['dates'] = tools.request_api(
                 '/api/mission/' + context['id'] + '/dates')
+            # Obtain value of the items total duration
+            context['duration'] = tools.request_api(
+                '/api/mission/' + context['id'] + '/duration')
             context['form'] = MissionForm()
+        except Http404:
+            raise Http404(_('Cette mission n’existe pas.'))
         except Exception as err:
             context['mission'] = {}
             context['collections'] = []
@@ -46,5 +57,6 @@ class MissionDetail(FrancoraliteTemplateView):
             context['locations'] = []
             context['documents'] = []
             context['dates'] = ['', '']
-            context['error'] = err.message
+            context['duration'] = ''
+            context['error'] = err
         return context

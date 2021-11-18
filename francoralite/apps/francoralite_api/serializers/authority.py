@@ -15,10 +15,10 @@ class AuthoritySerializer(serializers.ModelSerializer):
     civility = serializers.CharField(allow_blank=True, required=False)
     birth_date = serializers.DateField(required=False)
     birth_location = AsymetricRelatedField.from_serializer(
-        LocationGisSerializer, kwargs={'required': False})
+        LocationGisSerializer, kwargs={'required': False, 'allow_null': True})
     death_date = serializers.DateField(required=False)
     death_location = AsymetricRelatedField.from_serializer(
-        LocationGisSerializer, kwargs={'required': False})
+        LocationGisSerializer, kwargs={'required': False, 'allow_null': True})
     biography = serializers.CharField(allow_null=True,
                                       allow_blank=True, required=False)
 

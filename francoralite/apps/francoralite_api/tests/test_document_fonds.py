@@ -55,10 +55,8 @@ class TestDocumentFondsList(APITestCase):
         self.url = "/api/fond/1/document"
         self.url_detail =  self.url + "/1"
 
-        get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-
+        get_token(self, username="administrateur")
+        
         # Create a set of sample data
         DocumentFondsFactory.create_batch(1)
 

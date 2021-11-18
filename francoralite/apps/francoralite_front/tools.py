@@ -4,12 +4,14 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from rest_framework import status
-from django.conf import settings
 import requests
 
-from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect, Http404
+from django.utils.translation import gettext as _
 from requests.exceptions import RequestException
+from rest_framework import status
 
 from francoralite.apps.francoralite_front.errors import APPLICATION_ERRORS
 from .views.related import (
@@ -18,6 +20,7 @@ from .views.related import (
     write_collection_related,
     write_item_related)
 
+
 HTTP_ERRORS = {
     status.HTTP_400_BAD_REQUEST: APPLICATION_ERRORS['HTTP_API_400'],
     status.HTTP_401_UNAUTHORIZED: APPLICATION_ERRORS['HTTP_API_401'],
@@ -25,37 +28,57 @@ HTTP_ERRORS = {
     status.HTTP_404_NOT_FOUND: APPLICATION_ERRORS['HTTP_API_404'],
 }
 
+
 PROBLEM_NAMES = [
     "legal_rights",
     "recording_context",
-    "location_gis"
-    ]
+    "location_gis",
+]
 
 
 def get_token_header(request):
-    auth_token = request.session['oidc_access_token']
-    head = {'Authorization': 'Bearer ' + auth_token}
-    return head
+    """
+    TODO: À renseigner
+    """
+
+    auth_token = request.session.get('oidc_access_token')
+    if auth_token:
+        return {'Authorization': 'Bearer ' + auth_token}
+    else:
+        return {}
+
+
+def check_status_code(status_code, allowed_codes=(status.HTTP_200_OK,)):
+    """
+    TODO: À renseigner
+    """
+
+    if status_code == status.HTTP_403_FORBIDDEN:
+        raise PermissionDenied(_('Accès interdit.'))
+
+    if status_code == status.HTTP_404_NOT_FOUND:
+        raise Http404(_('Cette fiche n’existe pas.'))
+
+    if status_code not in allowed_codes:
+        raise Exception(HTTP_ERRORS[status_code])
 
 
 def request_api(endpoint):
     """
-    TODO: A renseigner
+    TODO: À renseigner
     """
 
-    try:
-        response = requests.get(
-            settings.FRONT_HOST_URL + endpoint)
+    response = requests.get(settings.FRONT_HOST_URL + endpoint)
 
-        if response.status_code == status.HTTP_200_OK:
-            return response.json()
+    check_status_code(response.status_code)
 
-        raise Exception(HTTP_ERRORS[response.status_code])
-    except Exception:
-        raise
+    return response.json()
 
 
 def post(entity, form_entity, request, *args, **kwargs):
+    """
+    TODO: À renseigner
+    """
 
     form = form_entity(request.POST, request.FILES)
     entity_api = entity
@@ -122,35 +145,37 @@ def post(entity, form_entity, request, *args, **kwargs):
 
 def post_api(endpoint, data, request, entity):
     """
-    TODO: A renseigner
+    TODO: À renseigner
     """
 
-    try:
-        headers = get_token_header(request=request)
-        response = requests.post(
-            endpoint,
-            data=data,
-            files=request.FILES,
-            headers=headers)
-        if response.status_code == status.HTTP_201_CREATED or \
-                response.status_code == status.HTTP_200_OK:
-            entity_json = response.json()
-            if entity == "fond":
-                write_fond_related(entity_json, request, headers)
-            if entity == "mission":
-                write_mission_related(entity_json, request, headers)
-            if entity == "collection":
-                write_collection_related(entity_json, request, headers)
-            if entity == "item":
-                write_item_related(entity_json, request, headers)
-            return entity_json
+    headers = get_token_header(request=request)
+    response = requests.post(
+        endpoint,
+        data=data,
+        files=request.FILES,
+        headers=headers,
+    )
 
-        raise Exception(HTTP_ERRORS[response.status_code])
-    except Exception:
-        raise
+    check_status_code(response.status_code,
+        allowed_codes=(status.HTTP_200_OK, status.HTTP_201_CREATED))
+
+    entity_json = response.json()
+    if entity == "fond":
+        write_fond_related(entity_json, request, headers)
+    if entity == "mission":
+        write_mission_related(entity_json, request, headers)
+    if entity == "collection":
+        write_collection_related(entity_json, request, headers)
+    if entity == "item":
+        write_item_related(entity_json, request, headers)
+    return entity_json
 
 
 def patch(entity, form_entity, request, *args, **kwargs):
+    """
+    TODO: À renseigner
+    """
+
     form = form_entity(request.POST)
     if entity == 'item':
         form.fields['file'].required = False
@@ -195,41 +220,52 @@ def patch(entity, form_entity, request, *args, **kwargs):
 
 
 def patch_api(endpoint, data, request, entity):
-    try:
-        response = requests.patch(
-            endpoint,
-            data=data,
-            headers=get_token_header(request=request)
-        )
-        if response.status_code == status.HTTP_200_OK:
-            entity_json = response.json()
-            if entity == "fond":
-                write_fond_related(
-                    entity_json,
-                    request,
-                    headers=get_token_header(request=request))
-            if entity == "mission":
-                write_mission_related(
-                    entity_json,
-                    request,
-                    headers=get_token_header(request=request))
-            if entity == "collection":
-                write_collection_related(
-                    entity_json,
-                    request,
-                    headers=get_token_header(request=request))
-            if entity == "item":
-                write_item_related(
-                    entity_json,
-                    request,
-                    headers=get_token_header(request=request))
-        return response
+    """
+    TODO: À renseigner
+    """
 
-    except Exception:
-        raise
+    response = requests.patch(
+        endpoint,
+        data=data,
+        headers=get_token_header(request=request),
+    )
+
+    check_status_code(response.status_code)
+
+    entity_json = response.json()
+    if entity == "fond":
+        write_fond_related(
+            entity_json,
+            request,
+            headers=get_token_header(request=request),
+        )
+    if entity == "mission":
+        write_mission_related(
+            entity_json,
+            request,
+            headers=get_token_header(request=request),
+        )
+    if entity == "collection":
+        write_collection_related(
+            entity_json,
+            request,
+            headers=get_token_header(request=request),
+        )
+    if entity == "item":
+        write_item_related(
+            entity_json,
+            request,
+            headers=get_token_header(request=request),
+        )
+
+    return response
 
 
 def delete(entity, request, *args, **kwargs):
+    """
+    TODO: À renseigner
+    """
+
     id = kwargs.get('id')
     entity_api = entity
 
@@ -238,8 +274,8 @@ def delete(entity, request, *args, **kwargs):
     try:
         delete_api(
             settings.FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
-            request=request
-            )
+            request=request,
+        )
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     except RequestException:
@@ -248,12 +284,14 @@ def delete(entity, request, *args, **kwargs):
 
 def delete_api(endpoint, request):
     """
-    TODO: A renseigner
+    TODO: À renseigner
     """
-    try:
-        requests.delete(
-            endpoint,
-            headers=get_token_header(request=request)
-            )
-    except Exception:
-        raise
+
+    response = requests.delete(
+        endpoint,
+        headers=get_token_header(request=request),
+    )
+
+    check_status_code(response.status_code)
+
+    return response

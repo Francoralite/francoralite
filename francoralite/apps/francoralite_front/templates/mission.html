@@ -32,12 +32,12 @@
 
 <div class="fullpage">
 {% if missions|length > 0 %}
-  <!-- Table to display the missions --->
+  <!-- Table to display the missions -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "cote" %}</th>
       <th>{% trans "Nom" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.mission_update %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -48,24 +48,26 @@
             {{ mission.code|upper }}</a>
       </td>
       <td>{{ mission.title|safe }}</td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.mission_update %}
         <a href="{% url "mission-edit" id=mission.id %}"  class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.mission_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{mission.title}}"
             data-url="{% url "mission-delete" id=mission.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.mission_delete %}
 	{% modal_delete %}
 {% endif %}
 

@@ -21,6 +21,6 @@ class LanguageDetail(FrancoraliteTemplateView):
             context['form'] = LanguageForm()
         except Exception as err:
             context['language'] = {}
-            context['error'] = err.message
+            context['error'] = err
             context['form'] = LanguageForm()
         return context

@@ -51,9 +51,7 @@ class TestPerformanceCollectionMusicianList(APITestCase):
         self.url_detail =  self.url + "/1"
         
         get_token(self)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=self.auth_headers["HTTP_AUTHORIZATION"])
-        
+                
         # Create a set of sample data
         PerformanceCollectionMusicianFactory.create_batch(6)
 
@@ -115,10 +113,8 @@ class TestPerformanceCollectionMusicianList(APITestCase):
         data = factory.build(
             dict,
             FACTORY_CLASS=PerformanceCollectionMusicianFactory)
-        performance = PerformanceCollection.objects.first()
-        data['performance_collection'] = performance.id
-        musician = Authority.objects.first()
-        data['musician'] = musician.id
+        data['performance_collection'] = 1
+        data['musician'] = 2
 
         response = self.client.post(self.url, data, format='json')
 

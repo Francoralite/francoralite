@@ -22,6 +22,6 @@ class HornbostelsachsView(FrancoraliteTemplateView):
                 '/api/hornbostelsachs')
         except Exception as err:
             context['hornbostelsachss'] = []
-            context['error'] = err.message
+            context['error'] = err
 
         return context

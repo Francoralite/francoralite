@@ -25,3 +25,4 @@ class CollectionPublisher(models.Model):
         db_table = 'collection_publisher'
         verbose_name_plural = _('collection_publishers')
         ordering = []
+        unique_together = (('collection', 'publisher'), )

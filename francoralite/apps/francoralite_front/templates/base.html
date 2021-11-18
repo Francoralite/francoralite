@@ -72,7 +72,7 @@
         </div>
         <div id="auth_info" style="right : 1.1em;">
         {% if user.is_authenticated %}
-          <!--{% trans "Bienvenue" %}, --><a href="" class="login">{{user}}</a> | <a href="/logout/" class="logout">{% trans "Déconnexion" %}</a>
+          <!--{% trans "Bienvenue" %}, --><a href="" class="login">{{user}}</a> | <a href="/oidc/logout/" class="logout">{% trans "Déconnexion" %}</a>
         {% else %}
           <a href="{% url 'oidc_authentication_init' %}">{% trans "Se connecter" %}</a>
         {% endif %}
