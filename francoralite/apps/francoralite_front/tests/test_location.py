@@ -1,13 +1,11 @@
 from django.utils.translation import gettext as _
 
 
-def _test_location_list(francoralite_context):
+def test_location_list(francoralite_context):
     for username in francoralite_context.USERNAMES:
         # Open the locations list page for each profile
         francoralite_context.open_homepage(auth_username=username)
         francoralite_context.open_url('/location_gis/')
-        
-        francoralite_context.save_screenshot('page_'+username+".png")
         
          # Verify the label of the location page
         francoralite_context.verify_title(_('Lieux'))
