@@ -26,8 +26,10 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.fond_add %}
     <a href="{% url "fond-add" id_institution=institution.id %}" class="btn_add btn btn-default"><span class="glyphicon glyphicon-plus"></span>{% trans "Créer un fonds" %}</a>
+  {% endif %}
+  {% if perms.keycloak.institution_update %}
     <a href="{% url "institution-edit" id=id %}" class="btn_add btn btn-default">
         <span class="glyphicon glyphicon-edit"></span>{% trans "Modifier" %}
     </a>
@@ -40,7 +42,7 @@
 
 {% if not error|length %}
   {% if institution %}
-  <p>{{institution.notes|markdown|safe}}</p>
+  <p id="id_notes">{{institution.notes|markdown|safe}}</p>
 
     {% if fonds|length > 0 %}
     <div class="with-rightcol">
@@ -49,7 +51,7 @@
           <th class="highlight">{% trans "Cote" %}</th>
           <th>{% trans "Nom" %}</th>
           <th>{% trans "Description" %}</th>
-          {% if user.is_authenticated %}
+          {% if perms.keycloak.fond_update %}
           <th>{% trans "Modifier" %}</th>
           {% endif %}
       </thead>
@@ -64,28 +66,30 @@
               {% if fond.description %}
               {{ fond.description|markdown|safe }}</td>
               {% endif %}
-              {% if user.is_authenticated %}
             <td>
+              {% if perms.keycloak.fond_update %}
                 <a href="{% url "fond-edit" id=fond.id %}">
                       <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
                       </button>
                 </a>
+              {% endif %}
+              {% if perms.keycloak.fond_delete %}
                 <button type="button" class="btn btn-default"
                     data-toggle="modal" data-target="#modalDelete"
                     data-name="{{fond.title}}"
                     data-url="{% url "fond-delete" id=fond.id %}">
                       <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
                 </button>
+              {% endif %}
 
             </td>
-            {% endif %}
           </tr>
         {% endfor %}
       </table>
       </div>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.fond_delete %}
 	{% modal_delete %}
 {% endif %}
     {% else %}

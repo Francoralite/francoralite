@@ -21,7 +21,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.institution_add %}
     <a href="{% url "institution-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
     </a>
@@ -40,7 +40,7 @@
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.institution_update %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -50,25 +50,27 @@
           <a href="/institution/{{ institution.id }}">{{ institution.name }}</a>
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
-      {% if user.is_authenticated %}
       <td>
-        <a href="{% url "institution-edit" id=institution.id %}"  class="btn btn-default">
-              <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
-        </a>
+        {% if perms.keycloak.institution_update %}
+          <a href="{% url "institution-edit" id=institution.id %}"  class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+          </a>
+        {% endif %}
+        {% if perms.keycloak.institution_delete %}
             <button type="button" class="btn btn-default"
               data-toggle="modal" data-target="#modalDelete"
               data-name="{{institution.name}}"
               data-url="{% url "institution-delete" id=institution.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
             </button>
-
+        {% endif %}
       </td>
-      {% endif %}
+      
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.institution_delete %}
 	{% modal_delete %}
 {% endif %}
 

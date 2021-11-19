@@ -33,7 +33,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.location_gis_add %}
     <a href="{% url "location_gis-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
     </a>
