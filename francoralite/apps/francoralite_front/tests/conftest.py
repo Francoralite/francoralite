@@ -40,6 +40,10 @@ class FrancoraliteSeleniumContext():
         'contributeur',
         'administrateur',
     )
+    
+    ADMINS = (
+        'administrateur',
+    )
 
     def __init__(self, url_prefix=None):
         self.URL_PREFIX = url_prefix or 'http://127.0.0.1:8000'

@@ -7,7 +7,7 @@ def test_location_list(francoralite_context):
         francoralite_context.open_homepage(auth_username=username)
         francoralite_context.open_url('/location_gis/')
         
-         # Verify the label of the location page
+        # Verify the label of the location page
         francoralite_context.verify_title(_('Lieux'))
         
         # Verify buttons
