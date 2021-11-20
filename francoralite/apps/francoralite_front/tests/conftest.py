@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+import sys
 import pytest
 
 
@@ -32,6 +33,15 @@ class FrancoraliteSeleniumContext():
         '',  # anonymous
         'utilisateur',
         'contributeur',
+        'administrateur',
+    )
+    
+    WRITERS = (
+        'contributeur',
+        'administrateur',
+    )
+    
+    ADMINS = (
         'administrateur',
     )
 
@@ -201,9 +211,28 @@ class FrancoraliteSeleniumContext():
         for element_id, element_value in data.items():
             element = self.find_element(by_id=element_id)
             assert element.text == element_value
+            
+    def verify_data_form_id (self, data):
+        for element_id, element_value in data.items():
+            element = self.find_element(by_id=element_id)
+            assert element.get_attribute("value") == element_value
+    
+    def verify_data_form_related (self, data):
+        for element_id, element_value in data.items():
+            element = self.find_element(by_class_name=element_id)
+            assert element.text == element_value
 
     def verify_title(self, value):
         assert self.find_element(by_xpath='//main/h1').text == value
 
     def save_screenshot(self, *args, **kwargs):
         return self.browser.save_screenshot(*args, **kwargs)
+    
+    def save_source(self):
+        return self.browser.page_source
+    
+    def save_source_debug(self):
+        sys.stdout.write('-------- source ----------')
+        sys.stdout.write(self.browser.page_source)
+        sys.stdout.write('------------------')
+        sys.stdout.flush()

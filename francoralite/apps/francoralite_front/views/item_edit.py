@@ -4,52 +4,21 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.item import ItemForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+
+from ..forms.item import ItemForm
+from ..francoralite_template_view import FrancoraliteFormView
 
 
-class ItemEdit(FormView):
-    template_name = "../templates/item-add.html"
+class ItemEdit(FrancoraliteFormView):
+    api_url_prefix = '/api/item/'
+    entity_name = 'item'
+
     form_class = ItemForm
+    template_name = '../templates/item-add.html'
+    template_variable_name = 'item'
+
     success_url = '/item/'
 
-    def get_context_data(self, **kwargs):
-        context = super(ItemEdit, self).get_context_data(**kwargs)
-        context["url_external"] = settings.FRONT_HOST_URL_EXTERNAL
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = tools.request_api('/api/item/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['item'] = response
-
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        item = tools.request_api('/api/item/' + str(id))
-        item['collection'] = item['collection']['id']
-        if item['coupe']:
-            item['coupe'] = item['coupe']['id']
-        if item['media_type']:
-            item['media_type'] = item['media_type']['id']
-
-        form = ItemForm(initial=item)
-        form.fields['file'].required = False
-
-
-        return render(request,
-                      '../templates/item-add.html',
-                      {'form': form, 'id': id, 'item': item,
-                       'url_external': settings.FRONT_HOST_URL_EXTERNAL})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch(
-            'item', ItemForm, request, *args, **kwargs)
+    keycloak_scopes = {
+        'DEFAULT': 'item:update',
+    }

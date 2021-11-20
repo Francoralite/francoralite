@@ -37,10 +37,12 @@
 {% if location %}
 
   {% block title_buttons %}
-    {% if user.is_authenticated %}
+    {% if perms.keycloak.location_gis_update %}
       <a href="{% url "location_gis-edit" id=id %}" class="btn_add btn btn-default">
         <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
       </a>
+    {% endif %}
+    {% if perms.keycloak.location_gis_delete %}
       <button type="button" class="btn_add btn btn-default"
         data-toggle="modal" data-target="#modalDelete"
         data-name="{{location.code}} | {{location.name}}"
@@ -51,7 +53,7 @@
   {% endblock %}
 
 
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.location_gis_delete %}
     {% modal_delete %}
   {% endif %}
 
@@ -60,12 +62,12 @@
   {% endblock %}
 
   <div class="container_line center">
-  {% field_data form.code.label|safe  location.code|safe %}
+  {% field_data_id form.code location.code|safe %}
   {% if location.notes %}
-    {% field_data form.notes.label|safe  location.notes|markdown|safe %}
+    {% field_data_id form.notes location.notes|markdown|safe %}
   {% endif %}
-  {% field_data form.latitude.label|safe  location.latitude %}
-  {% field_data form.longitude.label|safe location.longitude %}
+  {% field_data_id form.latitude location.latitude %}
+  {% field_data_id form.longitude location.longitude %}
   </div>
 
   <script type="text/javascript">
