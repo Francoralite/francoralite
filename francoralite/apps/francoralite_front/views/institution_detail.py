@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ..forms.institution import InstitutionForm
 from ..francoralite_template_view import FrancoraliteTemplateView
-import francoralite_front.tools as tools
+from .. import tools as tools
 
 
 class InstitutionDetail(FrancoraliteTemplateView):

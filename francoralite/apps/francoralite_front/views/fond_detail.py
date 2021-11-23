@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ..forms.fond import FondForm
 from ..francoralite_template_view import FrancoraliteTemplateView
-import francoralite_front.tools as tools
+from .. import tools as tools
 
 
 class FondDetail(FrancoraliteTemplateView):
