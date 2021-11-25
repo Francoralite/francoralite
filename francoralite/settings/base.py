@@ -143,6 +143,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.LimitOffsetPagination',
+    'EXCEPTION_HANDLER':
+        'francoralite.apps.francoralite_api.views.custom_exception_handler',
 }
 
 ROOT_URLCONF = 'francoralite.urls'

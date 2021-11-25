@@ -292,8 +292,8 @@ class TestMissionList(APITestCase):
             kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='json')
 
-        # Ensure code 400 returned
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # Ensure code 409 returned
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
     def test_delete_an_mission(self):
         """
