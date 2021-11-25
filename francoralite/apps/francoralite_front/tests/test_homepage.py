@@ -59,11 +59,26 @@ def test_homepage(francoralite_context):
 
     # Test top level menu labels
     top_level_menu_labels = [menu[0] for menu in all_menus]
-    top_level_menus = francoralite_context.find_elements(by_css_selector='#menu nav > ul > li')
+    top_level_menus = francoralite_context.find_elements(
+        by_css_selector='#menu nav > ul > li')
     assert [element.text for element in top_level_menus] == top_level_menu_labels
 
     # Click on each menu item
     browse_menu(francoralite_context, all_menus)
+
+
+def test_homepage_partners(francoralite_context):
+    francoralite_context.open_homepage()
+
+    # Test title
+    assert 'Francoralité' in francoralite_context.browser.title
+
+    url_partners = (
+        "https://www.collexpersee.eu/",
+    )
+
+    for partner in url_partners:
+        assert francoralite_context.scroll_to_element(by_link_url=partner)
 
 
 def browse_menu(francoralite_context, children, pointer_path=[]):
