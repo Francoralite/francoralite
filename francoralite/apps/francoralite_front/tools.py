@@ -7,6 +7,7 @@
 import requests
 
 from django.conf import settings
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, Http404
 from django.utils.translation import gettext as _
@@ -26,6 +27,7 @@ HTTP_ERRORS = {
     status.HTTP_401_UNAUTHORIZED: APPLICATION_ERRORS['HTTP_API_401'],
     status.HTTP_403_FORBIDDEN: APPLICATION_ERRORS['HTTP_API_403'],
     status.HTTP_404_NOT_FOUND: APPLICATION_ERRORS['HTTP_API_404'],
+    status.HTTP_409_CONFLICT: APPLICATION_ERRORS['HTTP_API_409'],
 }
 
 
@@ -52,12 +54,15 @@ def check_status_code(status_code, allowed_codes=(status.HTTP_200_OK,)):
     """
     TODO: À renseigner
     """
-
+   
     if status_code == status.HTTP_403_FORBIDDEN:
         raise PermissionDenied(_('Accès interdit.'))
 
     if status_code == status.HTTP_404_NOT_FOUND:
         raise Http404(_('Cette fiche n’existe pas.'))
+
+    if status_code == status.HTTP_409_CONFLICT:
+        raise RequestException(_('Une fiche avec ce code existe déjà.'))
 
     if status_code not in allowed_codes:
         raise Exception(HTTP_ERRORS[status_code])
@@ -157,7 +162,7 @@ def post_api(endpoint, data, request, entity):
     )
 
     check_status_code(response.status_code,
-        allowed_codes=(status.HTTP_200_OK, status.HTTP_201_CREATED))
+                      allowed_codes=(status.HTTP_200_OK, status.HTTP_201_CREATED))
 
     entity_json = response.json()
     if entity == "fond":
@@ -213,7 +218,8 @@ def patch(entity, form_entity, request, *args, **kwargs):
                         return HttpResponseRedirect(referer)
             return HttpResponseRedirect('/' + entity)
 
-        except RequestException:
+        except RequestException as e:
+            messages.add_message(request, messages.ERROR, e)
             return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
     return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
