@@ -1,7 +1,7 @@
 from django.utils.translation import gettext as _
 
 
-def _test_item_list(francoralite_context):
+def test_item_list(francoralite_context):
     for username in francoralite_context.USERNAMES:
         # Open the items list page for each profile
         francoralite_context.open_homepage(auth_username=username)
@@ -22,7 +22,7 @@ def _test_item_list(francoralite_context):
         if username:
             francoralite_context.logout(username)
             
-def _test_item_details(francoralite_context):
+def test_item_details(francoralite_context):
     for username in francoralite_context.USERNAMES:
         # Open the first item page for each profile
         francoralite_context.open_homepage(auth_username=username)
@@ -63,6 +63,29 @@ def test_item_update(francoralite_context):
             'item_informer': "Charles Aubrière"            
         }
         francoralite_context.verify_data_form_related(data)
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
+            
+
+def test_item_409_err(francoralite_context):
+    for username in francoralite_context.WRITERS:
+        # Go to the home page
+        francoralite_context.open_homepage(auth_username=username)
+
+        # Go to the first item edit page
+        francoralite_context.open_url('/item/edit/2')
+
+        # Write a code
+        francoralite_context.set_element_value('id_code', 'UPOI_ATP_0001_0001_001')
+
+        # Validation
+        francoralite_context.find_element(by_id='save').click()
+
+        # Message for error HTTP 409
+        message = francoralite_context.find_element(by_id="id_message")
+        assert message.text == _('Une fiche avec ce code existe déjà.')
 
         # And, then logout (if authenticated user)
         if username:
