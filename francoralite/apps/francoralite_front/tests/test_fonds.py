@@ -18,10 +18,14 @@ def test_fonds_list(francoralite_context):
         assert link_view_2.text == 'UPOI_ATP'
 
         has_buttons = username in ('contributeur', 'administrateur')
-        assert has_buttons == francoralite_context.exists_element(by_link_url='/fond/edit/1')
-        assert has_buttons == francoralite_context.exists_element(by_link_url='/fond/edit/2')
-        assert has_buttons == francoralite_context.exists_element(by_button_url='/fond/delete/1')
-        assert has_buttons == francoralite_context.exists_element(by_button_url='/fond/delete/2')
+        assert has_buttons == francoralite_context.exists_element(
+            by_link_url='/fond/edit/1')
+        assert has_buttons == francoralite_context.exists_element(
+            by_link_url='/fond/edit/2')
+        assert has_buttons == francoralite_context.exists_element(
+            by_button_url='/fond/delete/1')
+        assert has_buttons == francoralite_context.exists_element(
+            by_button_url='/fond/delete/2')
 
         # And, then logout (if authenticated user)
         if username:
@@ -59,10 +63,12 @@ def test_fonds_add(francoralite_context):
     francoralite_context.verify_title(_('Institutions'))
 
     # Click on the fonds link
-    francoralite_context.find_element(by_link_text='Université de Poitiers').click()
+    francoralite_context.find_element(
+        by_link_text='Université de Poitiers').click()
 
     # Verify the label of the fonds page
-    francoralite_context.verify_title(_('Institution : Université de Poitiers'))
+    francoralite_context.verify_title(
+        _('Institution : Université de Poitiers'))
 
     # Click on the "add" link
     francoralite_context.find_element(by_link_text=_('Créer un fonds')).click()
@@ -81,7 +87,8 @@ def test_fonds_add(francoralite_context):
     content['id_code'] = code.upper()
 
     description = 'Ceci est un fonds de test.'
-    francoralite_context.find_element(by_div_class='ProseMirror').send_keys(description)
+    francoralite_context.find_element(
+        by_div_class='ProseMirror').send_keys(description)
     content['id_description'] = description
 
     comment = 'Un beau commentaire.'
@@ -96,3 +103,50 @@ def test_fonds_add(francoralite_context):
 
     # Verify content
     francoralite_context.verify_data(content)
+
+
+def test_fonds_update(francoralite_context):
+    for username in francoralite_context.WRITERS:
+        # Go to the home page
+        francoralite_context.open_homepage(auth_username=username)
+
+        # Go to the first fonds edit page
+        francoralite_context.open_url('/fond/edit/1')
+
+        # Write a code partner
+        francoralite_context.set_element_value('id_code_partner', 'TEST_CODE')
+
+        # Validation
+        francoralite_context.find_element(by_id='save').click()
+
+        # The mission code partner updated on the detail page
+        francoralite_context.open_url('/fond/1')
+        label = francoralite_context.find_element(by_id="id_code_partner")
+        assert label.text == 'TEST_CODE'
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
+
+
+def test_fonds_409_err(francoralite_context):
+    for username in francoralite_context.WRITERS:
+        # Go to the home page
+        francoralite_context.open_homepage(auth_username=username)
+
+        # Go to the first fonds edit page
+        francoralite_context.open_url('/fond/edit/1')
+
+        # Write a code
+        francoralite_context.set_element_value('id_code', 'UPOI_ATP')
+
+        # Validation
+        francoralite_context.find_element(by_id='save').click()
+
+        # Message for error HTTP 409
+        message = francoralite_context.find_element(by_id="id_message")
+        assert message.text == _('Une fiche avec ce code existe déjà.')
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
