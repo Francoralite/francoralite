@@ -100,7 +100,20 @@ services:
       - 'francoralite_app_media:/srv/media'
       - 'francoralite_app_static:/srv/static'
 
+  elasticsearch:
+    image: "${ELASTICSEARCH_IMAGE}:${ELASTICSEARCH_VERSION}"
+    restart: 'unless-stopped'
+    env_file:
+      - './env/elasticsearch.env'
+    logging:
+      <<: *logging
+    networks:
+      - 'francoralite'
+    volumes:
+      - 'elasticsearch_data:/usr/share/elasticsearch/data'
+
 volumes:
+  elasticsearch_data: {}
   francoralite_app_media: {}
   francoralite_app_static: {}
   francoralite_db: {}
