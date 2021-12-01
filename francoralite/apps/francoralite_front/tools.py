@@ -38,6 +38,9 @@ PROBLEM_NAMES = [
 ]
 
 
+class UserMessageError(RequestException): pass
+
+
 def get_token_header(request):
     """
     TODO: À renseigner
@@ -54,7 +57,7 @@ def check_status_code(status_code, allowed_codes=(status.HTTP_200_OK,)):
     """
     TODO: À renseigner
     """
-   
+
     if status_code == status.HTTP_403_FORBIDDEN:
         raise PermissionDenied(_('Accès interdit.'))
 
@@ -62,10 +65,26 @@ def check_status_code(status_code, allowed_codes=(status.HTTP_200_OK,)):
         raise Http404(_('Cette fiche n’existe pas.'))
 
     if status_code == status.HTTP_409_CONFLICT:
-        raise RequestException(_('Une fiche avec ce code existe déjà.'))
+        raise UserMessageError(_('Une fiche avec ce code existe déjà.'))
+
+    if status.HTTP_400_BAD_REQUEST <= status_code < status.HTTP_500_INTERNAL_SERVER_ERROR:
+        raise RequestException()
 
     if status_code not in allowed_codes:
         raise Exception(HTTP_ERRORS[status_code])
+
+
+def handle_message_from_exception(request, exception):
+    """
+    TODO: À renseigner
+    """
+
+    if isinstance(exception, UserMessageError):
+        messages.add_message(request, messages.ERROR, exception)
+
+    elif exception is not None:
+        messages.add_message(request, messages.ERROR,
+                             _('Une erreur indéterminée est survenue.'))
 
 
 def request_api(endpoint):
@@ -142,7 +161,8 @@ def post(entity, form_entity, request, *args, **kwargs):
                     return HttpResponseRedirect('/' + entity)
             return HttpResponseRedirect('/' + entity)
 
-        except RequestException:
+        except RequestException as e:
+            handle_message_from_exception(request, e)
             return HttpResponseRedirect('/' + entity_url + '/add')
 
     return HttpResponseRedirect('/' + entity_url + '/add')
@@ -219,7 +239,7 @@ def patch(entity, form_entity, request, *args, **kwargs):
             return HttpResponseRedirect('/' + entity)
 
         except RequestException as e:
-            messages.add_message(request, messages.ERROR, e)
+            handle_message_from_exception(request, e)
             return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
     return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
@@ -284,7 +304,8 @@ def delete(entity, request, *args, **kwargs):
         )
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    except RequestException:
+    except RequestException as e:
+        handle_message_from_exception(request, e)
         return HttpResponseRedirect('/' + entity)
 
 
