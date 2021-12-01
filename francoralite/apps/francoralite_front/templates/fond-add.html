@@ -49,13 +49,6 @@
 
 {% if not error|length %}
 {{ form.media }}
-{% if messages %}
-  <ul class="messages">
-      {% for message in messages %}
-      <li id="id_message" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
 <div class="container">
   {% if id %}
   <form action="{%url "fond-edit" id %}" method="POST">
