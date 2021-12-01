@@ -95,20 +95,48 @@ def test_collection_add(francoralite_context):
     francoralite_context.verify_data(content)
 
 def test_collection_update(francoralite_context):
-    # Go to the home page
-    francoralite_context.open_homepage(auth_username='contributeur')
+    for username in francoralite_context.WRITERS:
+        # Go to the home page
+        francoralite_context.open_homepage(auth_username=username)
 
-    # Go to the first collection edit page
-    francoralite_context.open_url('/collection/edit/1')
+        # Go to the first collection edit page
+        francoralite_context.open_url('/collection/edit/1')
 
-    test_alt_tile = "Test titre original"
-    # Write an alt title
-    francoralite_context.set_element_value('id_alt_title', test_alt_tile)
+        test_alt_tile = "Test titre original"
+        # Write an alt title
+        francoralite_context.set_element_value('id_alt_title', test_alt_tile)
 
-    # Validation
-    francoralite_context.find_element(by_id='save').click()
+        # Validation
+        francoralite_context.find_element(by_id='save').click()
 
-    # The collection alt title updated on the detail page
-    francoralite_context.open_url('/collection/1')
-    label = francoralite_context.find_element(by_id="id_alt_title")
-    assert label.text == test_alt_tile
+        # The collection alt title updated on the detail page
+        francoralite_context.open_url('/collection/1')
+        label = francoralite_context.find_element(by_id="id_alt_title")
+        assert label.text == test_alt_tile
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
+            
+
+def test_collection_409_err(francoralite_context):
+    for username in francoralite_context.WRITERS:
+        # Go to the home page
+        francoralite_context.open_homepage(auth_username=username)
+
+        # Go to the first collection edit page
+        francoralite_context.open_url('/collection/edit/2')
+
+        # Write a code
+        francoralite_context.set_element_value('id_code', 'UPOI_AFE_0000_0001')
+
+        # Validation
+        francoralite_context.find_element(by_id='save').click()
+
+        # Message for error HTTP 409
+        message = francoralite_context.find_element(by_id="id_message")
+        assert message.text == _('Une fiche avec ce code existe déjà.')
+
+        # And, then logout (if authenticated user)
+        if username:
+            francoralite_context.logout(username)
