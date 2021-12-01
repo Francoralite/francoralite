@@ -21,12 +21,13 @@ def test_item_list(francoralite_context):
         # And, then logout (if authenticated user)
         if username:
             francoralite_context.logout(username)
-            
+
+
 def test_item_details(francoralite_context):
     for username in francoralite_context.USERNAMES:
         # Open the first item page for each profile
         francoralite_context.open_homepage(auth_username=username)
-        francoralite_context.open_url('/item/1')     
+        francoralite_context.open_url('/item/1')
 
         # Verify data
         data = {
@@ -42,32 +43,30 @@ def test_item_details(francoralite_context):
         # And, then logout (if authenticated user)
         if username:
             francoralite_context.logout(username)
-            
+
+
 def test_item_update(francoralite_context):
 
     for username in francoralite_context.WRITERS:
         # Open the first item page for each profile
         francoralite_context.open_homepage(auth_username=username)
         francoralite_context.open_url('/item/edit/1')
- 
-        # Verify data
-        data = {
-            'id_title': "A propos du métier de violoneux (doc.)",
-            'id_description': "M. Aubrière raconte ses premiers bals.",
-            'id_code': 'UPOI_ATP_0001_0001_001',
-            'id_code_partner': 'MUS1969.33.1'
-        }
-        francoralite_context.verify_data_form_id(data)
-        data = {
-            'item_collector': "Claudie Marcel-Dubois",
-            'item_informer': "Charles Aubrière"            
-        }
-        francoralite_context.verify_data_form_related(data)
+
+        # Write a code partner
+        francoralite_context.set_element_value('id_code_partner', 'TEST_CODE')
+
+        # Validation
+        francoralite_context.find_element(by_id='save').click()
+
+        # The mission code partner updated on the detail page
+        francoralite_context.open_url('/item/1')
+        label = francoralite_context.find_element(by_id="id_code_partner")
+        assert label.text == 'TEST_CODE'
 
         # And, then logout (if authenticated user)
         if username:
             francoralite_context.logout(username)
-            
+
 
 def test_item_409_err(francoralite_context):
     for username in francoralite_context.WRITERS:
