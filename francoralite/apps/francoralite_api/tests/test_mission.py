@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.mission import MissionFactory, MissionCollectionFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.mission import Mission
 from ..models.fond import Fond
 from ..models.collection import Collection
@@ -41,7 +42,7 @@ MISSION_FIELDS = sorted([item[0] for item in MISSION_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestMissionList(APITestCase):
+class TestMissionList(CleanMediaMixin, APITestCase):
     """
     This class manage all Mission tests
     """

@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_language import ItemLanguageFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_language import ItemLanguage
 # Models related
 from ..models.language import Language
@@ -39,7 +40,7 @@ ITEMLANGUAGE_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemLanguageList(APITestCase):
+class TestItemLanguageList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemLanguage tests
     """

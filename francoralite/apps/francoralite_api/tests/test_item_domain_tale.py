@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_domain_tale import ItemDomainTaleFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_domain_tale import ItemDomainTale
 # Models related
 from ..models.domain_tale import DomainTale
@@ -39,7 +40,7 @@ ITEMDOMAINTALE_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemDomainTaleList(APITestCase):
+class TestItemDomainTaleList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemDomainTale tests
     """

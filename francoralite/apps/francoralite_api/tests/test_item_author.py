@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_author import ItemAuthorFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_author import ItemAuthor
 from ..models.authority import Authority
 from ..models.item import Item
@@ -38,7 +39,7 @@ ITEMAUTHOR_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemAuthorList(APITestCase):
+class TestItemAuthorList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemAuthor tests
     """
