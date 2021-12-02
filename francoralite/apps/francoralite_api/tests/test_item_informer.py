@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_informer import ItemInformerFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_informer import ItemInformer
 from ..models.authority import Authority
 from ..models.item import Item
@@ -39,7 +40,7 @@ ITEMINFORMER_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemInformerList(APITestCase):
+class TestItemInformerList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemInformer tests
     """

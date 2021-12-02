@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_musical_group import ItemMusicalGroupFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_musical_group import ItemMusicalGroup
 # Models related
 from ..models.musical_group import MusicalGroup
@@ -39,7 +40,7 @@ ITEMMUSICALGROUP_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemMusicalGroupList(APITestCase):
+class TestItemMusicalGroupList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemMusicalGroup tests
     """

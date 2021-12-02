@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_dance import ItemDanceFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_dance import ItemDance
 # Models related
 from ..models.dance import Dance
@@ -39,7 +40,7 @@ ITEMDANCE_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemDanceList(APITestCase):
+class TestItemDanceList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemDance tests
     """

@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_usefulness import ItemUsefulnessFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_usefulness import ItemUsefulness
 # Models related
 from ..models.usefulness import Usefulness
@@ -39,7 +40,7 @@ ITEMUSEFULNESS_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemUsefulnessList(APITestCase):
+class TestItemUsefulnessList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemUsefulness tests
     """
