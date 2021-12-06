@@ -48,6 +48,13 @@ def test_mission_details(francoralite_context):
         }
 
         francoralite_context.verify_data(data)
+        
+         # Verify duration
+        francoralite_context.open_url('/mission/3')
+        data = {
+            'id_duration' : '0:03:50',
+        }
+        francoralite_context.verify_data(data)
 
         # And, then logout (if authenticated user)
         if username:

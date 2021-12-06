@@ -5,6 +5,8 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+import datetime
+from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
@@ -18,6 +20,7 @@ from ..models.collection_informer import (
 from ..models.collectioncollectors import (
     CollectionCollectors as CollectionCollectorModel)
 from ..models.authority import Authority as AuthorityModel
+from ..models.item import Item as ItemModel
 
 from ..serializers.fond import FondSerializer
 from ..serializers.authority import AuthoritySerializer
@@ -115,6 +118,30 @@ class FondViewSet(viewsets.ModelViewSet):
             date_end = max(to_years)
 
         return Response((date_start, date_end))
+    
+    @action(detail=True)
+    def duration(self, request, pk=None):
+        """
+        Determine the total duration of missions/collections/items
+        """
+        instance = self.get_object()
+        
+        # Missions for this fond
+        missions = MissionModel.objects.filter(fonds_id=instance.id)
+        
+        # Collections in these missions
+        collections = CollectionModel.objects.filter(mission__in=missions)
+        
+        # Sum of items durations
+        global_duration = ItemModel.objects.filter(collection__in=collections).aggregate(Sum('approx_duration'))
+        
+        # Format response
+        if global_duration["approx_duration__sum"] is not None :
+            duration = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )
+        else:
+            duration = ""
+        
+        return Response(duration)
 
     @action(detail=True)
     def informers(self, request, pk=None):
