@@ -100,25 +100,31 @@
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
           <dd class="donnee">
+            <ul>
             {% for collector in collection.collectors %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "personne-detail" id=collector.id %}"
-              onclick="window.open(this.href); return false;">
+              <li>
+                <a href="{% url "personne-detail" id=collector.id %}"
+                onclick="window.open(this.href); return false;">
                 {{collector.first_name}} {{collector.last_name}}
-              </a>
+                </a>
+            </li>
             {% endfor %}
+            </ul>
           </dd>
         </dl>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Informateurs' %}</dt>
           <dd class="donnee">
+            <ul>
             {% for informer in collection.informers %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "personne-detail" id=informer.id %}"
-              onclick="window.open(this.href); return false;">
+              <li>
+                <a href="{% url "personne-detail" id=informer.id %}"
+                onclick="window.open(this.href); return false;">
                 {{informer.first_name}} {{informer.last_name}}
-              </a>
+                </a>
+              </li>
             {% endfor %}
+            </ul>
           </dd>
         </dl>
       </div>
@@ -128,13 +134,16 @@
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Lieux' %}</dt>
           <dd class="donnee">
+            <ul>
             {% for location in collection.locations %}
-              {% if not forloop.first %} | {% endif %}
-              <a href="{% url "location_gis-detail" id=location.id %}"
-              onclick="window.open(this.href); return false;">
+              <li>
+                <a href="{% url "location_gis-detail" id=location.id %}"
+                onclick="window.open(this.href); return false;">
                 {{location.code}}
-              </a>
+                </a>
+              </li>
             {% endfor %}
+            </ul>
           </dd>
         </dl>
         {% field_data form.location_details.label|safe collection.location_details|markdown|safe empty=False %}
@@ -145,10 +154,11 @@
       <dl class="container_data">
         <dt class="libelle"> {% trans 'Langues' %}</dt>
         <dd class="donnee">
+          <ul>
           {% for language in collection.languages %}
-            {% if not forloop.first %} | {% endif %}
-              {{language.name}}
+              <li>{{language.name}}</li>
           {% endfor %}
+          </ul>
         </dd>
       </dl>
       {% endif %}
@@ -157,13 +167,16 @@
       <dl class="container_data">
         <dt class="libelle"> {% trans 'Editeurs' %}</dt>
         <dd class="donnee">
+          <ul>
           {% for publisher in collection.publishers %}
-            {% if not forloop.first %} | {% endif %}
+            <li>
               <a href="{% url "publisher-detail" id=publisher.id %}"
                   target="_blank">
                 {{publisher.name|safe}}
               </a>
+            </li>
           {% endfor %}
+          </ul>
         </dd>
       </dl>
       {% endif %}
