@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ..forms.fond import FondForm
 from ..francoralite_template_view import FrancoraliteTemplateView
-import francoralite_front.tools as tools
+from .. import tools as tools
 
 
 class FondDetail(FrancoraliteTemplateView):
@@ -41,6 +41,9 @@ class FondDetail(FrancoraliteTemplateView):
             # Obtain values of the start and en dates of related collections
             context['dates'] = tools.request_api(
                 self.api_url_prefix + context['id'] + '/dates')
+            # Obtain value of the items total duration
+            context['duration'] = tools.request_api(
+                self.api_url_prefix + context['id'] + '/duration')
         except Http404:
             raise Http404(_('Ce fonds n’existe pas.'))
         except Exception as err:
@@ -50,5 +53,6 @@ class FondDetail(FrancoraliteTemplateView):
             context['collectors'] = []
             context['documents'] = []
             context['dates'] = ['', '']
+            context['duration'] = ''
             context['error'] = err
         return context

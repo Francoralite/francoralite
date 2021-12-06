@@ -6,6 +6,29 @@
 
 from base64 import b64decode
 from django.core.files.base import ContentFile
+import os.path
+
+
+class CleanMediaMixin(object):
+
+    FILES_TO_REMOVE = (
+        ('/srv/media/items/', 'cest_deja_lete', '.mp3'),
+        ('/srv/media/items/', 'code', '.mp3'),
+    )
+
+    @classmethod
+    def tearDownClass(cls):
+
+        for directory, file_prefix, file_suffix in cls.FILES_TO_REMOVE:
+            if os.path.exists(directory) and os.path.isdir(directory):
+                for file_name in os.listdir(directory):
+                    file_path = os.path.join(directory, file_name)
+                    if os.path.isfile(file_path):
+                        if file_name.startswith(file_prefix):
+                            if file_name.endswith(file_suffix):
+                                os.remove(file_path)
+
+        super().tearDownClass()
 
 
 def create_tmp_sound(code):

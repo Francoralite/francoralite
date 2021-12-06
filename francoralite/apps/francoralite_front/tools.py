@@ -7,6 +7,7 @@
 import requests
 
 from django.conf import settings
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, Http404
 from django.utils.translation import gettext as _
@@ -26,6 +27,7 @@ HTTP_ERRORS = {
     status.HTTP_401_UNAUTHORIZED: APPLICATION_ERRORS['HTTP_API_401'],
     status.HTTP_403_FORBIDDEN: APPLICATION_ERRORS['HTTP_API_403'],
     status.HTTP_404_NOT_FOUND: APPLICATION_ERRORS['HTTP_API_404'],
+    status.HTTP_409_CONFLICT: APPLICATION_ERRORS['HTTP_API_409'],
 }
 
 
@@ -34,6 +36,9 @@ PROBLEM_NAMES = [
     "recording_context",
     "location_gis",
 ]
+
+
+class UserMessageError(RequestException): pass
 
 
 def get_token_header(request):
@@ -59,8 +64,27 @@ def check_status_code(status_code, allowed_codes=(status.HTTP_200_OK,)):
     if status_code == status.HTTP_404_NOT_FOUND:
         raise Http404(_('Cette fiche n’existe pas.'))
 
+    if status_code == status.HTTP_409_CONFLICT:
+        raise UserMessageError(_('Une fiche avec ce code existe déjà.'))
+
+    if status.HTTP_400_BAD_REQUEST <= status_code < status.HTTP_500_INTERNAL_SERVER_ERROR:
+        raise RequestException()
+
     if status_code not in allowed_codes:
         raise Exception(HTTP_ERRORS[status_code])
+
+
+def handle_message_from_exception(request, exception):
+    """
+    TODO: À renseigner
+    """
+
+    if isinstance(exception, UserMessageError):
+        messages.add_message(request, messages.ERROR, exception)
+
+    elif exception is not None:
+        messages.add_message(request, messages.ERROR,
+                             _('Une erreur indéterminée est survenue.'))
 
 
 def request_api(endpoint):
@@ -137,7 +161,8 @@ def post(entity, form_entity, request, *args, **kwargs):
                     return HttpResponseRedirect('/' + entity)
             return HttpResponseRedirect('/' + entity)
 
-        except RequestException:
+        except RequestException as e:
+            handle_message_from_exception(request, e)
             return HttpResponseRedirect('/' + entity_url + '/add')
 
     return HttpResponseRedirect('/' + entity_url + '/add')
@@ -157,7 +182,7 @@ def post_api(endpoint, data, request, entity):
     )
 
     check_status_code(response.status_code,
-        allowed_codes=(status.HTTP_200_OK, status.HTTP_201_CREATED))
+                      allowed_codes=(status.HTTP_200_OK, status.HTTP_201_CREATED))
 
     entity_json = response.json()
     if entity == "fond":
@@ -213,7 +238,8 @@ def patch(entity, form_entity, request, *args, **kwargs):
                         return HttpResponseRedirect(referer)
             return HttpResponseRedirect('/' + entity)
 
-        except RequestException:
+        except RequestException as e:
+            handle_message_from_exception(request, e)
             return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
     return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
@@ -278,7 +304,8 @@ def delete(entity, request, *args, **kwargs):
         )
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    except RequestException:
+    except RequestException as e:
+        handle_message_from_exception(request, e)
         return HttpResponseRedirect('/' + entity)
 
 

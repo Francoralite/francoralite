@@ -19,6 +19,7 @@ from rest_framework.test import APITestCase
 
 from .factories.item import ItemFactory, ItemCompleteFactory
 from .factories.performancecollectionmusician import PerformanceCollectionMusicianFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item import Item
 from ..models.collection import Collection
 from ..models.mediatype import MediaType
@@ -66,7 +67,7 @@ ITEM_FIELDS = sorted([item[0] for item in ITEM_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestItemList(APITestCase):
+class TestItemList(CleanMediaMixin, APITestCase):
     """
     This class manage all Item tests
     """
@@ -300,9 +301,9 @@ class TestItemList(APITestCase):
             kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='multipart')
 
-        # Ensure code 400 returned
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+        # Ensure code 409 returned
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+
     def test_download_a_file(self, depends=['test_create_an_item'] ):
         """
         Ensure we can download a file of an item

@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_thematic import ItemThematicFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_thematic import ItemThematic
 # Models related
 from ..models.thematic import Thematic
@@ -39,7 +40,7 @@ ITEMTHEMATIC_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemThematicList(APITestCase):
+class TestItemThematicList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemThematic tests
     """

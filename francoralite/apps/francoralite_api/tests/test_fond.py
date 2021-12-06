@@ -132,8 +132,20 @@ class TestFondList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
-
-
+        
+        
+    def test_fond_duration(self):
+        """
+        Total duration of a fond : sum of mission/collection/items durations of this fond
+        """
+        item = Fond.objects.first()
+        url = '/api/fond/' + str(item.id) + "/duration"
+        response = self.client.get(url)
+    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, str)
+        self.assertNotEqual(response.data, "0:00:00")
+        self.assertNotEqual(response.data, "")
 
 
     @parameterized.expand(FOND_STRUCTURE)
@@ -275,8 +287,8 @@ class TestFondList(APITestCase):
             kwargs={'pk': item.id})
         response = self.client.patch(url, data, format='json')
 
-        # Ensure code 400 returned
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # Ensure code 409 returned
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
     def test_delete_a_fond(self):
         """

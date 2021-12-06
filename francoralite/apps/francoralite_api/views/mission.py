@@ -116,8 +116,6 @@ class MissionViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         collections = self.list_collections(id_mission=instance.id)
 
-        # Items in this mission
-        items = ItemModel.objects.filter(collection__in=collections)
         # Sum of items durations
         global_duration = ItemModel.objects.filter(collection__in=collections).aggregate(Sum('approx_duration'))
         # Format response

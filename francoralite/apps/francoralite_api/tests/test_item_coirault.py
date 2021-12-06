@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_coirault import ItemCoiraultFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_coirault import ItemCoirault
 # Models related
 from ..models.skos_concept import SkosConcept
@@ -39,7 +40,7 @@ ITEMCOIRAULT_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemCoiraultList(APITestCase):
+class TestItemCoiraultList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemCoirault tests
     """

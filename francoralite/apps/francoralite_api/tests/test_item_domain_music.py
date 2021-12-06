@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_domain_music import ItemDomainMusicFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_domain_music import ItemDomainMusic
 # Models related
 from ..models.domain_music import DomainMusic
@@ -39,7 +40,7 @@ ITEMDOMAINMUSIC_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemDomainMusicList(APITestCase):
+class TestItemDomainMusicList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemDomainMusic tests
     """

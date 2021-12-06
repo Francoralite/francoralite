@@ -35,15 +35,17 @@ class FrancoraliteSeleniumContext():
         'contributeur',
         'administrateur',
     )
-    
+
     WRITERS = (
         'contributeur',
         'administrateur',
     )
-    
+
     ADMINS = (
         'administrateur',
     )
+
+    string_connect = _('Se connecter')
 
     def __init__(self, url_prefix=None):
         self.URL_PREFIX = url_prefix or 'http://127.0.0.1:8000'
@@ -72,7 +74,7 @@ class FrancoraliteSeleniumContext():
             # ---------------
 
             # Click on the authentication menu
-            self.find_element(by_link_text=_('Se connecter')).click()
+            self.find_element(by_link_text=self.string_connect).click()
 
             # Land on Keycloak authentication page
             title_page = self.find_element(by_id='kc-header-wrapper')
@@ -99,8 +101,8 @@ class FrancoraliteSeleniumContext():
         link_logout.click()
 
         # Test the login link exists
-        link_page = self.find_element(by_link_text=_('Se connecter'))
-        assert link_page.text == _('Se connecter')
+        link_page = self.find_element(by_link_text=self.string_connect)
+        assert link_page.text == self.string_connect
 
     def find_elements(self, parent=None, **kwargs):
 
@@ -189,6 +191,11 @@ class FrancoraliteSeleniumContext():
         ActionChains(self.browser).move_to_element(element).perform()
         return element
 
+    def scroll_to_element(self, **kwargs):
+        element = self.find_element(**kwargs)
+        self.browser.execute_script("arguments[0].scrollIntoView();", element)
+        return element
+
     def clear_element(self, **kwargs):
         element = self.find_element(**kwargs)
         element.send_keys(Keys.CONTROL + 'a')
@@ -211,13 +218,13 @@ class FrancoraliteSeleniumContext():
         for element_id, element_value in data.items():
             element = self.find_element(by_id=element_id)
             assert element.text == element_value
-            
-    def verify_data_form_id (self, data):
+
+    def verify_data_form_id(self, data):
         for element_id, element_value in data.items():
             element = self.find_element(by_id=element_id)
             assert element.get_attribute("value") == element_value
-    
-    def verify_data_form_related (self, data):
+
+    def verify_data_form_related(self, data):
         for element_id, element_value in data.items():
             element = self.find_element(by_class_name=element_id)
             assert element.text == element_value
@@ -227,10 +234,10 @@ class FrancoraliteSeleniumContext():
 
     def save_screenshot(self, *args, **kwargs):
         return self.browser.save_screenshot(*args, **kwargs)
-    
+
     def save_source(self):
         return self.browser.page_source
-    
+
     def save_source_debug(self):
         sys.stdout.write('-------- source ----------')
         sys.stdout.write(self.browser.page_source)

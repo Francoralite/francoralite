@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_compositor import ItemCompositorFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_compositor import ItemCompositor
 # Models related
 from ..models.authority import Authority
@@ -40,7 +41,7 @@ ITEMCOMPOSITOR_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemCompositorList(APITestCase):
+class TestItemCompositorList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemCompositor tests
     """
