@@ -50,6 +50,7 @@ def test_fonds_details(francoralite_context):
         # Verify duration
         francoralite_context.open_url('/fond/2')
         data = {
+            'id_code': 'UPOI_ATP',
             'id_duration' : '0:03:50',
         }
         francoralite_context.verify_data(data)

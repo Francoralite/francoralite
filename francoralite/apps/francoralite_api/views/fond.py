@@ -126,15 +126,15 @@ class FondViewSet(viewsets.ModelViewSet):
         """
         instance = self.get_object()
         
-        # Missions in this fond
-        missions = self.list_missions(id_fonds=instance.id)
+        # Missions for this fond
+        missions = MissionModel.objects.filter(fonds_id=instance.id)
         
-        # Collections in these fonds
+        # Collections in these missions
         collections = CollectionModel.objects.filter(mission__in=missions)
-
+        
         # Sum of items durations
         global_duration = ItemModel.objects.filter(collection__in=collections).aggregate(Sum('approx_duration'))
-
+        
         # Format response
         if global_duration["approx_duration__sum"] is not None :
             duration = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )

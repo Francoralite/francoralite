@@ -11,7 +11,7 @@ import factory
 from ...models.fond import Fond
 from .acquisition_mode import AcquisitionModeFactory
 from .institution import InstitutionFactory
-from .mission import MissionCollectionFactory
+from .mission import MissionFactory, MissionCollectionFactory
 
 
 class FondFactory(factory.django.DjangoModelFactory):
