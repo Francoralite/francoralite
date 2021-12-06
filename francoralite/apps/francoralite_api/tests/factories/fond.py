@@ -11,7 +11,7 @@ import factory
 from ...models.fond import Fond
 from .acquisition_mode import AcquisitionModeFactory
 from .institution import InstitutionFactory
-from .mission import MissionFactory
+from .mission import MissionCollectionFactory
 
 
 class FondFactory(factory.django.DjangoModelFactory):
@@ -47,4 +47,4 @@ class FondFactoryMission(FondFactory):
 
 
         for n in range(nb_missions):
-           MissionFactory(fonds = self)
+           MissionCollectionFactory(fonds = self)

@@ -498,7 +498,7 @@
       "media_type": 2,
       "coupe": null,
       "text_bool": false,
-      "approx_duration": null,
+      "approx_duration": "00:01:20",
       "date_edit": "2021-11-15T17:44:31.581708"
     },
       "model":"francoralite_api.item",
@@ -532,7 +532,7 @@
       "media_type": 2,
       "coupe": null,
       "text_bool": false,
-      "approx_duration": null,
+      "approx_duration": "00:02:30",
       "date_edit": "2021-11-15T17:44:31.581708"
     },
       "model":"francoralite_api.item",

@@ -132,8 +132,20 @@ class TestFondList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
-
-
+        
+        
+    def test_fond_duration(self):
+        """
+        Total duration of a fond : sum of mission/collection/items durations of this fond
+        """
+        item = Fond.objects.first()
+        url = '/api/fond/' + str(item.id) + "/duration"
+        response = self.client.get(url)
+    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, str)
+        self.assertNotEqual(response.data, "0:00:00")
+        self.assertNotEqual(response.data, "")
 
 
     @parameterized.expand(FOND_STRUCTURE)
