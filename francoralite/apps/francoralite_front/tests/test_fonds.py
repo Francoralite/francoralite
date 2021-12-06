@@ -46,6 +46,14 @@ def test_fonds_details(francoralite_context):
             'id_conservation_site': 'Poitiers',
         }
         francoralite_context.verify_data(data)
+        
+        # Verify duration
+        francoralite_context.open_url('/fond/2')
+        data = {
+            'id_code': 'UPOI_ATP',
+            'id_duration' : '0:03:50',
+        }
+        francoralite_context.verify_data(data)
 
         # And, then logout (if authenticated user)
         if username:

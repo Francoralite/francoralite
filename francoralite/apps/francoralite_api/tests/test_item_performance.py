@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_performance import ItemPerformanceFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item import Item
 from ..models.performance_collection import PerformanceCollection
 from ..models.item_performance import ItemPerformance
@@ -39,7 +40,7 @@ ITEMPERFORMANCE_FIELDS = sorted([item[0] for item in ITEMPERFORMANCE_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestItemPerformanceList(APITestCase):
+class TestItemPerformanceList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemPerformance tests
     """

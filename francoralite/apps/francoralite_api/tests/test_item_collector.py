@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_collector import ItemCollectorFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_collector import ItemCollector
 from ..models.authority import Authority
 from ..models.item import Item
@@ -38,7 +39,7 @@ ITEMCOLLECTOR_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemCollectorList(APITestCase):
+class TestItemCollectorList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemCollector tests
     """

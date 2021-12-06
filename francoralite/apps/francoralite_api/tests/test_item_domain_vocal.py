@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item_domain_vocal import ItemDomainVocalFactory
+from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item_domain_vocal import ItemDomainVocal
 # Models related
 from ..models.domain_vocal import DomainVocal
@@ -39,7 +40,7 @@ ITEMDOMAINVOCAL_FIELDS = sorted(
 
 
 @pytest.mark.django_db
-class TestItemDomainVocalList(APITestCase):
+class TestItemDomainVocalList(CleanMediaMixin, APITestCase):
     """
     This class manage all ItemDomainVocal tests
     """
