@@ -4,14 +4,20 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.http import Http404
+from django.utils.translation import gettext as _
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.coupe import CoupeForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.coupe import CoupeForm
+from ... import tools as tools
 
 
 class CoupeDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/coupe-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'coupe:view',
+    }
+    api_url_prefix = '/api/coupe/'
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,7 +25,8 @@ class CoupeDetail(FrancoraliteTemplateView):
             context['coupe'] = tools.request_api(
                 '/api/coupe/' + context['id'])
             context['form'] = CoupeForm()
-
+        except Http404:
+            raise Http404(_('Cette coupe n’existe pas.'))
         except Exception as err:
             context['coupe'] = {}
             context['error'] = err
