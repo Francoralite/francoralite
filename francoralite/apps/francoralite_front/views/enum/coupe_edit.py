@@ -4,43 +4,20 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.coupe import CoupeForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteFormView
+from ...forms.coupe import CoupeForm
 
 
-class CoupeEdit(FormView):
-    template_name = "../templates/enum/coupe-add.html"
+class CoupeEdit(FrancoraliteFormView):
+    api_url_prefix = '/api/coupe/'
+    entity_name = 'coupe'
+
     form_class = CoupeForm
+    template_name = '../templates/enum/coupe-add.html'
+    template_variable_name = 'coupe'
+
     success_url = '/coupe/'
 
-    def get_context_data(self, **kwargs):
-        context = super(CoupeEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            settings.FRONT_HOST_URL + '/api/coupe/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['coupe'] = response.json
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        coupe = requests.get(
-            settings.FRONT_HOST_URL + '/api/coupe/' + str(id))
-        form = CoupeForm(initial=coupe.json())
-
-        return render(request,
-                      '../templates/enum/coupe-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch('coupe', CoupeForm, request, *args, **kwargs)
+    keycloak_scopes = {
+        'DEFAULT': 'coupe:update',
+    }
