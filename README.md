@@ -56,6 +56,12 @@ In case, we want to launch front tests only
 docker-compose exec app bash -c 'py.test francoralite/apps/francoralite_front/tests/ -x'
 ```
 
+### Generate graph models
+
+```
+docker-compose exec app bash -c './scripts/generate_graph_models.sh'
+```
+
 ## URLs
 
 > Replace **50000** with your Traefik listening port
