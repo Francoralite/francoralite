@@ -126,8 +126,7 @@ class EnumsTest:
 
             # Message for error HTTP 409
             message = francoralite_context.find_element(by_id="id_message")
-            assert message.text == _("Une erreur indéterminée est survenue.")
-            # TODO: à terme 400->409  : assert message.text == _('Une fiche avec ce code existe déjà.')
+            assert message.text == _('Une fiche avec ce code existe déjà.')
 
             # And, then logout (if authenticated user)
             if username:

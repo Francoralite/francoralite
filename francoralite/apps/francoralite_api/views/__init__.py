@@ -4,6 +4,7 @@ from rest_framework.views import exception_handler
 
 
 def custom_exception_handler(exc, context):
-    if isinstance(exc, ValidationError) and 'unique' in exc.get_codes().get('code', []):
+    if isinstance(exc, ValidationError) and any(
+        'unique' in err_codes for err_codes in exc.get_codes().values()):
         exc.status_code = status.HTTP_409_CONFLICT
     return exception_handler(exc, context)
