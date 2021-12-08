@@ -474,7 +474,7 @@
   },
   {
     "fields": {
-      "notes": "AABB",
+      "notes": "Notes de AABB",
       "name": "AABB"
     },
     "model": "francoralite_api.coupe",
