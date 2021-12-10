@@ -228,3 +228,26 @@ class TestDanceList(APITestCase):
             kwargs={'pk': item.id})
         response_get = self.client.get(url_get)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
+        
+    def test_search_dance(self):
+        """
+        Search a dance
+        """
+        
+        url  = reverse('dance-list')
+        
+        # Search dances name with "va" (ex. : valse)
+        response = self.client.get(url + "?search=va")
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data), 0)
+        
+        
+        # Search dances name with "dance" (ex. : dance42)
+        response = self.client.get(url + "?search=dance")
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data), 6)
+        

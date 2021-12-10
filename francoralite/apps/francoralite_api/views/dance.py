@@ -6,9 +6,11 @@
 
 
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 from ..models.dance import (
     Dance as DanceModel)
 from ..serializers.dance import DanceSerializer
+from rest_framework import filters
 
 
 class DanceViewSet(viewsets.ModelViewSet):
@@ -18,6 +20,10 @@ class DanceViewSet(viewsets.ModelViewSet):
 
     queryset = DanceModel.objects.all()
     serializer_class = DanceSerializer
+    
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    
+    search_fields = ('name',)
 
     keycloak_scopes = {
         'GET': 'dance:view',
