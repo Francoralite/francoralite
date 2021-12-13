@@ -64,7 +64,7 @@ setup(
     'sqlparse==0.4.2',
     'django-markdownx==3.0.1',
     'django_select2==7.6.2',
-    'lxml==4.6.3',
+    'lxml==4.6.5',
     'django-leaflet==0.28.1',
     'django-geojson==3.1.0',
     'django-cors-headers==3.7.0',
