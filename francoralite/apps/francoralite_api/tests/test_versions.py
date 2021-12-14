@@ -19,4 +19,4 @@ class TestVersions(APITestCase):
          self.assertEqual(len(response.data), 3)
          self.assertEqual(len(response.data["git_commit"]), 40)
          self.assertEqual(response.data["python"][0:6], "3.8.12")
-         self.assertEqual(response.data["django"], (3,1,13,"final",0) )
+         self.assertEqual(response.data["django"], (3,1,14,"final",0) )
