@@ -10,7 +10,7 @@ def test_dance_details(francoralite_context):
         # Verify data
         data = {
             'id_name' : 'polka',
-            'id_notes' : 'Polka',
+            'id_notes' : 'Notes de polka',
         }
         francoralite_context.verify_title('Genre de danse : polka')
         francoralite_context.verify_data(data)
@@ -39,7 +39,7 @@ def test_dance_add(francoralite_context):
     francoralite_context.find_element(by_id='save').click()
 
     # Go to the new dance
-    francoralite_context.open_url('/dance/2')
+    francoralite_context.open_url('/dance/4')
 
     # Verify data
     francoralite_context.verify_title('Genre de danse : bourree')
