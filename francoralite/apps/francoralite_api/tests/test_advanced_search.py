@@ -47,3 +47,25 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["id"], 2) # collection 2
+        
+    def test_dance(self):
+        url = "/advancedsearch/?dance=1"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["id"], 1) # item 1
+        self.assertEqual(response.data[1]["id"], 2) # item 2
+        
+        url = "/advancedsearch/?dance=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["id"], 2) # item 2
+        
+        url = "/advancedsearch/?dance=3"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
