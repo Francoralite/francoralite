@@ -26,6 +26,7 @@ class AdvancedSearchList(generics.ListAPIView):
 
     def get_related_entities(self, type, entity_name, table):
         result = []
+                
         entities = self.request.query_params.get(entity_name, None)
         if entities is not None:
             value = self.request.query_params[entity_name]
@@ -83,14 +84,14 @@ class AdvancedSearchList(generics.ListAPIView):
             ('dance', ItemDance),
             ('language', ItemLanguage)
         ]
-
+        
         # Query items related
         merge_item = []
         for l in list_item_entities:
             entities, coll = self.get_related_entities("item", l[0], l[1])
             if entities is not None:
                 merge_item.append(coll)
-
+        
         # Intersection of the values_list
         if len(merge_item) > 0:
             items_id = self.getIntersection(merge_item)
@@ -105,7 +106,5 @@ class AdvancedSearchList(generics.ListAPIView):
         all_results = list(itertools.chain(
             collections,
             items))
-        # all_results["collection"] = list(collections)
-        # all_results["item"] = list(items)
 
         return all_results

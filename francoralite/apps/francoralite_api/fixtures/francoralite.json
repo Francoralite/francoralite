@@ -415,7 +415,7 @@
       "location":2
     },
     "model":"francoralite_api.collectionlocation",
-    "pk":1
+    "pk":2
   },
   {
     "fields": {
@@ -522,6 +522,14 @@
     "model":"francoralite_api.iteminformer",
     "pk":1
   },
+  {
+    "fields":{
+      "item":1,
+      "dance":1
+    },
+    "model":"francoralite_api.itemdance",
+    "pk":1
+  },
 
   {
     "fields": {
@@ -546,7 +554,7 @@
       "collector":8
     },
     "model":"francoralite_api.itemcollector",
-    "pk":1
+    "pk":2
   },
   {
     "fields":{
@@ -554,7 +562,23 @@
       "informer":4
     },
     "model":"francoralite_api.iteminformer",
-    "pk":1
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "dance":1
+    },
+    "model":"francoralite_api.itemdance",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "dance":2
+    },
+    "model":"francoralite_api.itemdance",
+    "pk":3
   }
 
 ]
