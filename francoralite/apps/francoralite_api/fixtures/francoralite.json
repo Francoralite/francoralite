@@ -415,7 +415,7 @@
       "location":2
     },
     "model":"francoralite_api.collectionlocation",
-    "pk":1
+    "pk":2
   },
   {
     "fields": {
