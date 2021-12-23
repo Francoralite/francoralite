@@ -5,44 +5,19 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.domain_music import DomainMusicForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteFormView
+from ...forms.domain_music import DomainMusicForm
 
 
-class DomainMusicEdit(FormView):
+class DomainMusicEdit(FrancoraliteFormView):
+    api_url_prefix = '/api/domain_music/'
+    entity_name = 'domain_music'
     template_name = "../templates/enum/domain_music-add.html"
     form_class = DomainMusicForm
+    template_variable_name = 'domain_music'
     success_url = '/domain_music/'
 
-    def get_context_data(self, **kwargs):
-        context = super(DomainMusicEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            settings.FRONT_HOST_URL + '/api/domain_music/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['domain_music'] = response.json
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        domain_music = requests.get(
-            settings.FRONT_HOST_URL + '/api/domain_music/' + str(id))
-        form = DomainMusicForm(initial=domain_music.json())
-
-        return render(request,
-                      '../templates/enum/domain_music-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch(
-            'domain_music', DomainMusicForm, request, *args, **kwargs)
+ 
+    keycloak_scopes = {
+        'DEFAULT': 'domain_music:update',
+    }

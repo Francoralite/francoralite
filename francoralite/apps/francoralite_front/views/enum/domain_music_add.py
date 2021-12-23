@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.domain_music import DomainMusicForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.domain_music import DomainMusicForm
+from ... import tools as tools
 
 
 class DomainMusicAdd(FormView):
     template_name = "../templates/enum/domain_music-add.html"
     form_class = DomainMusicForm
     success_url = '/domain_music/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'domain_music:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

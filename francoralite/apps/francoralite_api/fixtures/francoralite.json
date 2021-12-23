@@ -146,6 +146,14 @@
   },
   {
     "fields": {
+      "name": "air de musique",
+      "notes": "Notes air de musique"
+    },
+    "model": "francoralite_api.domainmusic",
+    "pk": 1
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,
