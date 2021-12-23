@@ -19,7 +19,7 @@ class EnumsTest:
             francoralite_context.open_url(self.url_prefix)
 
             # Verify the label of the page
-            francoralite_context.verify_title(_(self.entity.capitalize()))
+            francoralite_context.verify_title(_(self.title))
             
             has_buttons = username in francoralite_context.ADMINS
             assert has_buttons == francoralite_context.exists_element(
@@ -28,7 +28,7 @@ class EnumsTest:
             # links to the entity detail
             for d in self.data :
                 link_view = francoralite_context.find_element(by_link_url=self.url_prefix + '/' + d["id"])
-                assert link_view.text == d["name"]
+                assert link_view.text == d["name"].upper()
                 assert has_buttons == francoralite_context.exists_element(
                     by_link_url=self.url_prefix + '/edit/' + d["id"])
                 assert has_buttons == francoralite_context.exists_element(
@@ -50,7 +50,7 @@ class EnumsTest:
                     'id_name' : d["name"],
                     'id_notes' : d["notes"],
                 }
-                francoralite_context.verify_title(_(self.entity.capitalize()) + ' :')
+                francoralite_context.verify_title(_(self.title) + ' : ' + d["name"])
                 francoralite_context.verify_data(data)
 
             # And, then logout (if authenticated user)
@@ -64,7 +64,7 @@ class EnumsTest:
             francoralite_context.open_url(self.url_prefix + '/add')
 
             # On page add
-            francoralite_context.verify_title(_(self.entity.capitalize()) + ' - Création')
+            francoralite_context.verify_title(_(self.title) + ' - Création')
 
             # Write content
             content = {
@@ -80,7 +80,7 @@ class EnumsTest:
             francoralite_context.open_url(self.url_prefix + '/' + str(self.counter+1))
 
             # Verify data
-            francoralite_context.verify_title(_(self.entity.capitalize()) + ' :')
+            francoralite_context.verify_title(_(self.title) + ' : ' + self.new_data["name"])
             francoralite_context.verify_data(content)
             
             # And, then logout (if authenticated user)

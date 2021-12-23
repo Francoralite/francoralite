@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from ..models.dance import (
     Dance as DanceModel)
@@ -15,7 +16,9 @@ class DanceSerializer(serializers.ModelSerializer):
     Common serializer for all Dance actions
     """
 
-    name = serializers.CharField(required=True)
+    name = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=DanceModel.objects.all())])
     notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
