@@ -10,4 +10,4 @@ class TestDance(EnumsTest):
         {"id":"2", "name":"valse", "notes":"Notes de valse"},
         {"id":"3", "name":"mazurka", "notes":"Notes de mazurka"},
     ]
-    new_data = {"name":"reel", "notes":"Notes de reel"}
+    new_data = {"name":"bourrée", "notes":"Notes de bourrée"}
