@@ -2,7 +2,7 @@ from django.utils.translation import gettext as _
 from enums_test import EnumsTest
 
 
-class TestDance(EnumsTest):
+class TestDomainSong(EnumsTest):
     entity = 'domain_song'
     title = _('Genre de chanson')
     data = [
