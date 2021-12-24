@@ -5,13 +5,18 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.domain_tale import DomainTaleForm
-import francoralite.apps.francoralite_front.tools as tools
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.domain_tale import DomainTaleForm
+from ... import tools as tools
 
 
 class DomainTaleDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/domain_tale-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'domain_tale:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,7 +24,8 @@ class DomainTaleDetail(FrancoraliteTemplateView):
             context['domain_tale'] = tools.request_api(
                 '/api/domain_tale/' + context['id'])
             context['form'] = DomainTaleForm()
-
+        except Http404:
+            raise Http404(_('Ce genre de conte n’existe pas.'))
         except Exception as err:
             context['domain_tale'] = {}
             context['error'] = err

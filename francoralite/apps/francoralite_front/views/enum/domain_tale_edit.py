@@ -5,44 +5,14 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.domain_tale import DomainTaleForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteFormView
+from ...forms.domain_tale import DomainTaleForm
 
 
-class DomainTaleEdit(FormView):
+class DomainTaleEdit(FrancoraliteFormView):
     template_name = "../templates/enum/domain_tale-add.html"
+    api_url_prefix = '/api/domain_tale/'
+    entity_name = 'domain_tale'
     form_class = DomainTaleForm
+    template_variable_name = 'domain_tale'
     success_url = '/domain_tale/'
-
-    def get_context_data(self, **kwargs):
-        context = super(DomainTaleEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            settings.FRONT_HOST_URL + '/api/domain_tale/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['domain_tale'] = response.json
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        domain_tale = requests.get(
-            settings.FRONT_HOST_URL + '/api/domain_tale/' + str(id))
-        form = DomainTaleForm(initial=domain_tale.json())
-
-        return render(request,
-                      '../templates/enum/domain_tale-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch(
-            'domain_tale', DomainTaleForm, request, *args, **kwargs)
