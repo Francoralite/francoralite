@@ -154,6 +154,14 @@
   },
   {
     "fields": {
+      "name": "relations sociales",
+      "notes": "Notes relations sociales"
+    },
+    "model": "francoralite_api.domainsong",
+    "pk": 1
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,

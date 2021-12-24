@@ -23,7 +23,7 @@
 
 {% block title_buttons %}
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.domain_song_add %}
   <a href="{% url "domain_song-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un genre de chanson" %}
@@ -38,7 +38,7 @@
 <div class="fullpage">
   <!-- If there is some domain song (number of elements > 0 ) -->
 {% if domain_songs|length > 0 %}
-  <!-- Table to display the domain_songs --->
+  <!-- Table to display the domain_songs -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
@@ -58,24 +58,26 @@
           {{ domain_song.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.domain_song_update %}
         <a href="{% url "domain_song-edit" id=domain_song.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.domain_song_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{domain_song.title}}"
             data-url="{% url "domain_song-delete" id=domain_song.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.domain_song_delete %}
 	{% modal_delete %}
 {% endif %}
 
