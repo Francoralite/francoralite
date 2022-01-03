@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.emit_vox import EmitVoxForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.emit_vox import EmitVoxForm
+from ... import tools as tools
 
 
 class EmitVoxAdd(FormView):
     template_name = "../templates/enum/emit_vox-add.html"
     form_class = EmitVoxForm
     success_url = '/emit_vox/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'emit_vox:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post('emit_vox', EmitVoxForm, request, *args, **kwargs)

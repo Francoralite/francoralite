@@ -23,7 +23,7 @@
 
 {% block title_buttons %}
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.emit_vox_add %}
   <a href="{% url "emit_vox-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une nature des émissions vocales" %}
@@ -38,12 +38,12 @@
 <div class="fullpage">
   <!-- If there is some emit vox (number of elements > 0 ) -->
 {% if emit_voxs|length > 0 %}
-  <!-- Table to display the emit_voxs --->
+  <!-- Table to display the emit_voxs -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.emit_vox_update or perms.keycloak.emit_vox_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,24 +58,26 @@
           {{ emit_vox.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.emit_vox_update %}
         <a href="{% url "emit_vox-edit" id=emit_vox.id %}" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.emit_vox_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{emit_vox.title}}"
             data-url="{% url "emit_vox-delete" id=emit_vox.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.emit_vox_delete %}
 	{% modal_delete %}
 {% endif %}
 
