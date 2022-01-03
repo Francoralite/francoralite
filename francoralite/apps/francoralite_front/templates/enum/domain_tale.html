@@ -79,7 +79,7 @@
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.domain_tale_delete %}
 	{% modal_delete %}
 {% endif %}
 
