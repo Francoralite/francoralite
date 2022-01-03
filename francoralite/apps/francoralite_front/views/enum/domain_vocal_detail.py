@@ -5,13 +5,19 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.domain_vocal import DomainVocalForm
-import francoralite.apps.francoralite_front.tools as tools
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.domain_vocal import DomainVocalForm
+from ... import tools as tools
+
 
 
 class DomainVocalDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/domain_vocal-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'domain_vocal:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,7 +25,8 @@ class DomainVocalDetail(FrancoraliteTemplateView):
             context['domain_vocal'] = tools.request_api(
                 '/api/domain_vocal/' + context['id'])
             context['form'] = DomainVocalForm()
-
+        except Http404:
+            raise Http404(_('Ce genre vocal n’existe pas.'))
         except Exception as err:
             context['domain_vocal'] = {}
             context['error'] = err

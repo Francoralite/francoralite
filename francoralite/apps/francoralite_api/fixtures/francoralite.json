@@ -170,6 +170,14 @@
   },
   {
     "fields": {
+      "name": "comptine",
+      "notes": "Notes comptine"
+    },
+    "model": "francoralite_api.domainvocal",
+    "pk": 1
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,

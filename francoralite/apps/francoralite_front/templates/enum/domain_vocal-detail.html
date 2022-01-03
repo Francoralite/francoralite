@@ -23,7 +23,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.domain_vocal_update %}
   <a href="{% url "domain_vocal-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -37,8 +37,8 @@
 {% if not error|length %}
 {% if domain_vocal %}
 
-  {% field_data form.name.label|safe domain_vocal.name|safe %}
-  {% field_data form.notes.label|safe domain_vocal.notes|markdown|safe %}
+  {% field_data_id form.name domain_vocal.name|safe %}
+  {% field_data_id form.notes domain_vocal.notes|markdown|safe %}
 
 {% else %}
   <p>{% trans "Ce genre n'existe pas." %}</p>
