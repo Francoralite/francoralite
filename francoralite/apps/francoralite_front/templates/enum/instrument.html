@@ -23,7 +23,7 @@
 
 {% block title_buttons %}
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.instrument_add %}
   <a href="{% url "instrument-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une voix/instrument" %}
@@ -38,13 +38,13 @@
 <div class="fullpage">
   <!-- If there is some instruments (number of elements > 0 ) -->
 {% if instruments|length > 0 %}
-  <!-- Table to display the instruments --->
+  <!-- Table to display the instruments -->
   <table class="listing">
   <thead>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
       <th>{% trans "Classification Hornbostel-Sachs" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.instrument_update or perms.keycloak.instrument_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </thead>
@@ -61,25 +61,27 @@
       </td>
       <td>
         {{ instrument.typology.number|safe}} : {{ instrument.typology.name|safe}}
-        </td>
-        {% if user.is_authenticated %}
+      </td>
       <td>
+        {% if perms.keycloak.instrument_update %}
         <a href="{% url "instrument-edit" id=instrument.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.instrument_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{instrument.name}}"
             data-url="{% url "instrument-delete" id=instrument.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.instrument_delete %}
 	{% modal_delete %}
 {% endif %}
 {% else %}
