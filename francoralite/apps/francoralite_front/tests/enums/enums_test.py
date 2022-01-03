@@ -50,7 +50,10 @@ class EnumsTest:
                     'id_' + name : d[name],
                     'id_' + notes : d[notes],
                 }
-                francoralite_context.verify_title(_(self.title) + ' : ' + d[name])
+                if self.entity == "language":
+                    francoralite_context.verify_title(_(self.title) + ' : ' + d[notes])
+                else:
+                    francoralite_context.verify_title(_(self.title) + ' : ' + d[name])
                 francoralite_context.verify_data(data)
 
             # And, then logout (if authenticated user)

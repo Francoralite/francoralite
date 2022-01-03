@@ -178,6 +178,14 @@
   },
   {
     "fields": {
+      "identifier": "fra",
+      "name": "Français"
+    },
+    "model": "francoralite_api.language",
+    "pk": 1
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,

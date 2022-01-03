@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.language import LanguageForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.language import LanguageForm
+from ... import tools as tools
 
 
 class LanguageAdd(FormView):
     template_name = "../templates/enum/language-add.html"
     form_class = LanguageForm
     success_url = '/language/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'language:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post('language', LanguageForm, request, *args, **kwargs)
