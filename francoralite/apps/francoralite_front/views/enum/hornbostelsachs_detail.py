@@ -5,13 +5,19 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.hornbostelsachs import HornbostelsachsForm
-import francoralite.apps.francoralite_front.tools as tools
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.hornbostelsachs import HornbostelsachsForm
+from ... import tools as tools
+
 
 
 class HornbostelsachsDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/hornbostelsachs-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'hornbostelsachs:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -20,7 +26,8 @@ class HornbostelsachsDetail(FrancoraliteTemplateView):
             context['hornbostelsachs'] = tools.request_api(
                 '/api/hornbostelsachs/' + context['id'])
             context['form'] = HornbostelsachsForm()
-
+        except Http404:
+            raise Http404(_('Cette référence n’existe pas.'))
         except Exception as err:
             context['hornbostelsachs'] = {}
             context['error'] = err

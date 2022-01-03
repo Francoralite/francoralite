@@ -23,7 +23,7 @@
 
 {% block title_buttons %}
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.hornbostelsachs_add %}
   <a href="{% url "hornbostelsachs-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Ajouter une entrée à la classification" %}
@@ -38,12 +38,12 @@
 <div class="fullpage">
   <!-- If there is some classification hornbostelsachs(number of elements > 0 ) -->
 {% if hornbostelsachss|length > 0 %}
-  <!-- Table to display the hornbostelsachss --->
+  <!-- Table to display the hornbostelsachss -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Numéro" %}</th>
       <th>{% trans "Nom" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.hornbostelsachs_update or perms.keycloak.hornbostelsachs_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,24 +58,26 @@
           {{ hornbostelsachs.name|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.hornbostelsachs_update %}
         <a href="{% url "hornbostelsachs-edit" id=hornbostelsachs.id %}"  class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.hornbostelsachs_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{hornbostelsachs.title}}"
             data-url="{% url "hornbostelsachs-delete" id=hornbostelsachs.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.hornbostelsachs_delete %}
 	{% modal_delete %}
 {% endif %}
 
