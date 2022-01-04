@@ -16,14 +16,14 @@
 {% block title_name %}
   {{ block.super }}
     {% if legal_rights %}
-     : {{ legal_rights.value }}
+     : {{ legal_rights.name }}
     {% endif %}
 {% endblock %}
 
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.legal_rights_update %}
   <a href="{% url "legal_rights-edit" id=id %}"  class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -37,11 +37,11 @@
 {% if not error|length %}
 {% if legal_rights %}
 
-  {% field_data form.name.label|safe legal_rights.name|safe %}
-  {% field_data form.notes.label|safe legal_rights.notes|markdown|safe %}
+  {% field_data_id form.name legal_rights.name|safe %}
+  {% field_data_id form.notes legal_rights.notes|markdown|safe %}
 
 {% else %}
-  <p>{% trans "Ces droits légaux n'existe pas." %}</p>
+  <p>{% trans "Ces droits légaux n'existent pas." %}</p>
 {% endif %}
 
 

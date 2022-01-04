@@ -22,7 +22,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.legal_rights_add %}
   <a href="{% url "legal_rights-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer des droits légaux" %}
@@ -37,12 +37,12 @@
 <div class="fullpage">
   <!-- If there is some legal_rights (number of elements > 0 ) -->
 {% if legal_rights|length > 0 %}
-  <!-- Table to display the legal_rights --->
+  <!-- Table to display the legal_rights -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.legal_rights_update or perms.keycloak.legal_rights_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -57,24 +57,26 @@
           {{ legal_rights.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.legal_rights_update %}
         <a href="{% url "legal_rights-edit" id=legal_rights.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.legal_rights_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{legal_rights.title}}"
             data-url="{% url "legal_rights-delete" id=legal_rights.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.legal_rights_delete %}
 	{% modal_delete %}
 {% endif %}
 
