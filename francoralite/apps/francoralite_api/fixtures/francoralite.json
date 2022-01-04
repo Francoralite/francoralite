@@ -202,6 +202,14 @@
   },
   {
     "fields": {
+      "name": "editeur 1",
+      "notes": "Notes éditeur 1"
+    },
+    "model": "francoralite_api.publisher",
+    "pk": 1
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,
