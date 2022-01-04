@@ -5,13 +5,19 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.recording_context import RecordingContextForm
-import francoralite.apps.francoralite_front.tools as tools
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.recording_context import RecordingContextForm
+from ... import tools as tools
 
 
 class RecordingContextDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/recording_context-detail.html"
+    
+    keycloak_scopes = {
+        'DEFAULT': 'recording_context:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -20,7 +26,8 @@ class RecordingContextDetail(FrancoraliteTemplateView):
             context['recording_context'] = tools.request_api(
                 '/api/recordingcontext/' + context['id'])
             context['form'] = RecordingContextForm()
-
+        except Http404:
+            raise Http404(_('Cet éditeur n’existe pas.'))
         except Exception as err:
             context['recording_context'] = {}
             context['error'] = err

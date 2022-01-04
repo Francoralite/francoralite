@@ -23,7 +23,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.recording_context_add %}
   <a href="{% url "recording_context-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un contexte d’enregistrement" %}
@@ -38,12 +38,12 @@
 <div class="fullpage">
   <!-- If there is some recording_context (number of elements > 0 ) -->
 {% if recording_contexts|length > 0 %}
-  <!-- Table to display the recording_context --->
+  <!-- Table to display the recording_context -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.recording_context_update  or perms.keycloak.recording_context_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,24 +58,26 @@
           {{ recording_context.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.recording_context_update %}
         <a href="{% url "recording_context-edit" id=recording_context.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.recording_context_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{recording_context.title}}"
             data-url="{% url "recording_context-delete" id=recording_context.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.recording_context_delete %}
     {% modal_delete %}
 {% endif %}
 
