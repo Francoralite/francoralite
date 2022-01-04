@@ -186,6 +186,14 @@
   },
   {
     "fields": {
+      "name": "duo",
+      "notes": "Notes duo"
+    },
+    "model": "francoralite_api.musicalgroup",
+    "pk": 1
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,
