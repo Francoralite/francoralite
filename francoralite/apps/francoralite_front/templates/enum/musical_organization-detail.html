@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.musical_organization_update %}
   <a href="{% url "musical_organization-edit" id=id %}" class="btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -40,8 +40,8 @@
 {% if not error|length %}
   {% if musical_organization %}
 
-  {% field_data form.name.label|safe musical_organization.name|safe %}
-  {% field_data form.notes.label|safe musical_organization.notes|markdown|safe %}
+  {% field_data_id form.name musical_organization.name|safe %}
+  {% field_data_id form.notes musical_organization.notes|markdown|safe %}
 
 
   {% else %}

@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
-
+from rest_framework.validators import UniqueValidator
 from ..models.musical_organization import (
     MusicalOrganization as MusicalOrganizationModel)
 
@@ -15,7 +15,10 @@ class MusicalOrganizationSerializer(serializers.ModelSerializer):
     Common serializer for all MusicalOrganization actions
     """
 
-    name = serializers.CharField(required=True)
+    name = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=MusicalOrganizationModel.objects.all())]
+        )
     notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
