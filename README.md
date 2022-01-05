@@ -1,4 +1,6 @@
 # Francoralite
+![example workflow](https://github.com/Francoralite/francoralite/actions/workflows/docker_publish_image.yml/badge.svg)
+[![codecov](https://codecov.io/gh/Francoralite/francoralite/branch/develop/graph/badge.svg?token=0FZPO67WYJ)](https://codecov.io/gh/Francoralite/francoralite)
 
 ## Installation
 
