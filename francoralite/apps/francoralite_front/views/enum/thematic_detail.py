@@ -5,13 +5,19 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.thematic import ThematicForm
-import francoralite.apps.francoralite_front.tools as tools
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.thematic import ThematicForm
+from ... import tools as tools
 
 
 class ThematicDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/thematic-detail.html"
+    
+    keycloak_scopes = {
+        'DEFAULT': 'thematic:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,7 +25,8 @@ class ThematicDetail(FrancoraliteTemplateView):
             context['thematic'] = tools.request_api(
                 '/api/thematic/' + context['id'])
             context['form'] = ThematicForm()
-
+        except Http404:
+            raise Http404(_('Cette thématique n’existe pas.'))
         except Exception as err:
             context['thematic'] = {}
             context['error'] = err

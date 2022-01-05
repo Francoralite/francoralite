@@ -22,7 +22,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.thematic_add %}
   <a href="{% url "thematic-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une thématique" %}
@@ -37,12 +37,12 @@
 <div class="fullpage">
   <!-- If there is some thematics (number of elements > 0 ) -->
 {% if thematics|length > 0 %}
-  <!-- Table to display the thematics --->
+  <!-- Table to display the thematics -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.thematic_update or perms.keycloak.thematic_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -57,24 +57,26 @@
           {{ thematic.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.thematic_update %}
         <a href="{% url "thematic-edit" id=thematic.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.thematic_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{thematic.title}}"
             data-url="{% url "thematic-delete" id=thematic.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.thematic_delete %}
 	{% modal_delete %}
 {% endif %}
 
