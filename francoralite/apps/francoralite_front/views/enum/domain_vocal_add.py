@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.domain_vocal import DomainVocalForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.domain_vocal import DomainVocalForm
+from ... import tools as tools
 
 
 class DomainVocalAdd(FormView):
     template_name = "../templates/enum/domain_vocal-add.html"
     form_class = DomainVocalForm
     success_url = '/domain_vocal/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'domain_vocal:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

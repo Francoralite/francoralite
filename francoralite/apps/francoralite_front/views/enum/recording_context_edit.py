@@ -5,45 +5,14 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.recording_context import RecordingContextForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteFormView
+from ...forms.recording_context import RecordingContextForm
 
 
-class RecordingContextEdit(FormView):
+class RecordingContextEdit(FrancoraliteFormView):
     template_name = "../templates/enum/recording_context-add.html"
     form_class = RecordingContextForm
-    success_url = '/recording_context/'
-
-    def get_context_data(self, **kwargs):
-        context = super(RecordingContextEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            settings.FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['recording_context'] = response.json
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        recording_context = requests.get(
-            settings.FRONT_HOST_URL + '/api/recordingcontext/' + str(id))
-        form = RecordingContextForm(initial=recording_context.json())
-
-        return render(request,
-                      '../templates/enum/recording_context-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch(
-            'recording_context',
-            RecordingContextForm, request, *args, **kwargs)
+    api_url_prefix = '/api/recordingcontext/'
+    entity_name = 'recording_context'
+    template_variable_name = 'recording_context'
+    success_url = '/recordingcontext/'

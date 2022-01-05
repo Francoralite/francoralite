@@ -146,6 +146,86 @@
   },
   {
     "fields": {
+      "name": "air de musique",
+      "notes": "Notes air de musique"
+    },
+    "model": "francoralite_api.domainmusic",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "relations sociales",
+      "notes": "Notes relations sociales"
+    },
+    "model": "francoralite_api.domainsong",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "conte facétieux",
+      "notes": "Notes conte facétieux"
+    },
+    "model": "francoralite_api.domaintale",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "comptine",
+      "notes": "Notes comptine"
+    },
+    "model": "francoralite_api.domainvocal",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "identifier": "fra",
+      "name": "Français"
+    },
+    "model": "francoralite_api.language",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "duo",
+      "notes": "Notes duo"
+    },
+    "model": "francoralite_api.musicalgroup",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "monodie",
+      "notes": "Notes monodie"
+    },
+    "model": "francoralite_api.musicalorganization",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "editeur 1",
+      "notes": "Notes éditeur 1"
+    },
+    "model": "francoralite_api.publisher",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "danse",
+      "notes": "Notes danse"
+    },
+    "model": "francoralite_api.thematic",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "danser",
+      "notes": "Notes danser"
+    },
+    "model": "francoralite_api.usefulness",
+    "pk": 1
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,

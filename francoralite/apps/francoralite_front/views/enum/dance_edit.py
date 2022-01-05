@@ -5,43 +5,20 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-import requests
-from django.conf import settings
+from ...francoralite_template_view import FrancoraliteFormView
 from francoralite.apps.francoralite_front.forms.dance import DanceForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
 
 
-class DanceEdit(FormView):
-    template_name = "../templates/enum/dance-add.html"
+class DanceEdit(FrancoraliteFormView):
+    api_url_prefix = '/api/dance/'
+    entity_name = 'dance'
+    
     form_class = DanceForm
+    template_name = "../templates/enum/dance-add.html"
+    template_variable_name = 'dance'
+        
     success_url = '/dance/'
-
-    def get_context_data(self, **kwargs):
-        context = super(DanceEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            settings.FRONT_HOST_URL + '/api/dance/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['dance'] = response.json
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        dance = requests.get(
-            settings.FRONT_HOST_URL + '/api/dance/' + str(id))
-        form = DanceForm(initial=dance.json())
-
-        return render(request,
-                      '../templates/enum/dance-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch('dance', DanceForm, request, *args, **kwargs)
+    
+    keycloak_scopes = {
+        'DEFAULT': 'dance:update',
+    }

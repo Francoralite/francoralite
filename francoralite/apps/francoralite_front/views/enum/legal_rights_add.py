@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.legal_rights import LegalRightsForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.legal_rights import LegalRightsForm
+from ... import tools as tools
 
 
 class LegalRightsAdd(FormView):
     template_name = "../templates/enum/legal_rights-add.html"
     form_class = LegalRightsForm
     success_url = '/legal_rights/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'legal_rights:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

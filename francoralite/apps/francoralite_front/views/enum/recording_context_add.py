@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.recording_context import RecordingContextForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.recording_context import RecordingContextForm
+from ... import tools as tools
 
 
 class RecordingContextAdd(FormView):
     template_name = "../templates/enum/recording_context-add.html"
     form_class = RecordingContextForm
     success_url = '/recording_context/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'recording_context:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

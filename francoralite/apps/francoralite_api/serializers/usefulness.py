@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
-
+from rest_framework.validators import UniqueValidator
 from ..models.usefulness import (
     Usefulness as UsefulnessModel)
 
@@ -15,7 +15,10 @@ class UsefulnessSerializer(serializers.ModelSerializer):
     Common serializer for all Usefulness actions
     """
 
-    name = serializers.CharField(required=True)
+    name = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=UsefulnessModel.objects.all())]
+        )
     notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:

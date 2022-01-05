@@ -23,7 +23,7 @@
 
 {% block title_buttons %}
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.domain_music_add %}
   <a href="{% url "domain_music-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un genre de musique" %}
@@ -38,12 +38,12 @@
 <div class="fullpage">
   <!-- If there is some domain music (number of elements > 0 ) -->
 {% if domain_musics|length > 0 %}
-  <!-- Table to display the domain_musics --->
+  <!-- Table to display the domain_musics -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.domain_music_update or perms.keycloak.domain_music_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,24 +58,26 @@
           {{ domain_music.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.domain_music_update %}
         <a href="{% url "domain_music-edit" id=domain_music.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.domain_music_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{domain_music.title}}"
             data-url="{% url "domain_music-delete" id=domain_music.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
-      </td>
-      {% endif %}
+        {% endif %}
+      </td>      
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.domain_music_delete %}
 	{% modal_delete %}
 {% endif %}
 

@@ -5,9 +5,11 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.views.generic.base import View
-import francoralite.apps.francoralite_front.tools as tools
-
+from ... import tools as tools
 
 class EmitVoxDelete(View):
+    keycloak_scopes = {
+        'DEFAULT': 'emit_vox:delete',
+    }
     def get(self, request, *args, **kwargs):
         return tools.delete('emit_vox', request, *args, **kwargs)

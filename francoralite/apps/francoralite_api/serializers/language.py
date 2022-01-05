@@ -5,7 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
-
+from rest_framework.validators import UniqueValidator
 from ..models.language import Language as LanguageModel
 
 
@@ -14,7 +14,11 @@ class LanguageSerializer(serializers.ModelSerializer):
     Common serializer for all Language actions
     """
 
-    identifier = serializers.CharField(max_length=3)
+    identifier = serializers.CharField(
+        max_length=3,
+        required=True,
+        validators=[UniqueValidator(queryset=LanguageModel.objects.all())]
+        )
     part2B = serializers.CharField(
         max_length=3, required=False, allow_blank=True)
     part2T = serializers.CharField(

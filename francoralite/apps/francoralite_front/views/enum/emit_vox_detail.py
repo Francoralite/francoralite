@@ -5,13 +5,17 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.emit_vox import EmitVoxForm
-import francoralite.apps.francoralite_front.tools as tools
-
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.emit_vox import EmitVoxForm
+from ... import tools as tools
 
 class EmitVoxDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/emit_vox-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'emit_vox:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,7 +23,8 @@ class EmitVoxDetail(FrancoraliteTemplateView):
             context['emit_vox'] = tools.request_api(
                 '/api/emit_vox/' + context['id'])
             context['form'] = EmitVoxForm()
-
+        except Http404:
+            raise Http404(_('Cette nature d’émission vocale n’existe pas.'))
         except Exception as err:
             context['emit_vox'] = {}
             context['error'] = err

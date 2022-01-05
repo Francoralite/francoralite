@@ -25,7 +25,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.language_update %}
   <a href="{% url "language-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </button>
@@ -42,14 +42,14 @@
 {% if language %}
 
 
-  {% field_data form.identifier.label|safe language.identifier|upper|safe %}
-  {% field_data form.part2B.label|safe language.part2B|safe %}
-  {% field_data form.part2T.label|safe language.part2T|safe %}
-  {% field_data form.part1.label|safe language.part1|safe %}
-  {% field_data form.scope.label|safe language.scope|safe %}
-  {% field_data form.type.label|safe language.type|safe %}
-  {% field_data form.name.label|safe language.name|safe %}
-  {% field_data form.comment.label|safe dance.comment|markdown|safe %}
+  {% field_data_id form.identifier language.identifier|upper|safe %}
+  {% field_data_id form.part2B language.part2B|safe %}
+  {% field_data_id form.part2T language.part2T|safe %}
+  {% field_data_id form.part1 language.part1|safe %}
+  {% field_data_id form.scope language.scope|safe %}
+  {% field_data_id form.type language.type|safe %}
+  {% field_data_id form.name language.name|safe %}
+  {% field_data_id form.comment dance.comment|markdown|safe %}
 
 {% else %}
   <p>{% trans "Cette langue n'existe pas." %}</p>

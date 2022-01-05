@@ -5,13 +5,18 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-from francoralite.apps.francoralite_front.forms.mediatype import MediaTypeForm
-import francoralite.apps.francoralite_front.tools as tools
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.mediatype import MediaTypeForm
+from ... import tools as tools
 
 
 class MediaTypeDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/mediatype-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'mediatype:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,7 +24,8 @@ class MediaTypeDetail(FrancoraliteTemplateView):
             context['mediatype'] = tools.request_api(
                 '/api/mediatype/' + context['id'])
             context['form'] = MediaTypeForm()
-
+        except Http404:
+            raise Http404(_('Ce type de média n’existe pas.'))
         except Exception as err:
             context['mediatype'] = {}
             context['error'] = err

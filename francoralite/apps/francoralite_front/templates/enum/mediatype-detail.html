@@ -16,14 +16,14 @@
 {% block title_name %}
   {{ block.super }}
     {% if mediatype %}
-     : {{ mediatype.value }}
+     : {{ mediatype.name }}
     {% endif %}
 {% endblock %}
 
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.mediatype_update %}
   <a href="{% url "mediatype-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -37,8 +37,8 @@
 {% if not error|length %}
 {% if mediatype %}
 
-  {% field_data form.name.label|safe mediatype.name|safe %}
-  {% field_data form.notes.label|safe mediatype.notes|markdown|safe %}
+  {% field_data_id form.name mediatype.name|safe %}
+  {% field_data_id form.notes mediatype.notes|markdown|safe %}
 
 {% else %}
   <p>{% trans "Ce type de média n'existe pas." %}</p>
