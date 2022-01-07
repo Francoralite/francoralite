@@ -87,7 +87,8 @@ setup(
       'coveralls==3.0.1',
       'selenium==3.141.0',
       'coverage==5.5',
-      'coveragepy-lcov==0.1.1'
+      'coveragepy-lcov==0.1.1',
+      'icecream==2.1.1',
     ],
   },
   platforms = ['OS Independent'],
