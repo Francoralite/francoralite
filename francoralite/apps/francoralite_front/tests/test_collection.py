@@ -11,17 +11,23 @@ def test_collection_list(francoralite_context):
         francoralite_context.verify_title(_('Enquêtes'))
 
         # links to the collections
-        link_view_1 = francoralite_context.find_element(by_link_url='/collection/1')
+        link_view_1 = francoralite_context.find_element(
+            by_link_url='/collection/1')
         assert link_view_1.text == 'UPOI_AFE_0000_0001'
 
-        link_view_2 = francoralite_context.find_element(by_link_url='/collection/2')
+        link_view_2 = francoralite_context.find_element(
+            by_link_url='/collection/2')
         assert link_view_2.text == 'UPOI_ATP_0001_0001'
 
         has_buttons = username in ('contributeur', 'administrateur')
-        assert has_buttons == francoralite_context.exists_element(by_link_url='/collection/edit/1')
-        assert has_buttons == francoralite_context.exists_element(by_link_url='/collection/edit/2')
-        assert has_buttons == francoralite_context.exists_element(by_button_url='/collection/delete/1')
-        assert has_buttons == francoralite_context.exists_element(by_button_url='/collection/delete/2')
+        assert has_buttons == francoralite_context.exists_element(
+            by_link_url='/collection/edit/1')
+        assert has_buttons == francoralite_context.exists_element(
+            by_link_url='/collection/edit/2')
+        assert has_buttons == francoralite_context.exists_element(
+            by_button_url='/collection/delete/1')
+        assert has_buttons == francoralite_context.exists_element(
+            by_button_url='/collection/delete/2')
 
         # And, then logout (if authenticated user)
         if username:
@@ -57,10 +63,12 @@ def test_collection_add(francoralite_context):
     francoralite_context.open_url('/mission/1')
 
     # Verify the label of the collection page
-    francoralite_context.verify_title("Mission : Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]")
+    francoralite_context.verify_title(
+        "Mission : Extraits d'enquêtes du fonds Archives de Folklore et d'Ethnologie [Exemple]")
 
     # Click on the "add" link
-    francoralite_context.find_element(by_link_url='/institution/1/fond/1/mission/1/collection/add').click()
+    francoralite_context.find_element(
+        by_link_url='/institution/1/fond/1/mission/1/collection/add').click()
 
     # Write content
     content = {
@@ -78,7 +86,8 @@ def test_collection_add(francoralite_context):
     content['id_code'] = code.upper()
 
     description = 'Ceci est une collection de test.'
-    francoralite_context.find_element(by_div_class='ProseMirror').send_keys(description)
+    francoralite_context.find_element(
+        by_div_class='ProseMirror').send_keys(description)
     content['id_description'] = description
 
     year_published = '2021'
@@ -89,10 +98,11 @@ def test_collection_add(francoralite_context):
     francoralite_context.find_element(by_id='save').click()
 
     # Go to the new collection
-    francoralite_context.open_url('/collection/3')
+    francoralite_context.open_url('/collection/4')
 
     # Verify content
     francoralite_context.verify_data(content)
+
 
 def test_collection_update(francoralite_context):
     for username in francoralite_context.WRITERS:
@@ -117,7 +127,7 @@ def test_collection_update(francoralite_context):
         # And, then logout (if authenticated user)
         if username:
             francoralite_context.logout(username)
-            
+
 
 def test_collection_409_err(francoralite_context):
     for username in francoralite_context.WRITERS:

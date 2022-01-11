@@ -553,6 +553,88 @@
     "pk":2
   },
   {
+    "fields":{
+      "collection":2,
+      "number":1,
+      "instrument":2
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":1
+  },
+  {
+    "fields": {
+      "mission": 3,
+      "title": "Répertoire joué au violon et témoignage de M. Charles Aubrière et Mme Aubrière - La Biroire, 1969 ",
+      "description": "L'informateur joue au violon et témoigne de sa pratique. Mme Aubrière apporte quelques informations. Le violon semble accordé approximativement 3 demi-tons au-dessous du la 440Hz. L’informateur joue souvent en démanchant avec de nombreux glissés.",
+      "code": "UPOI_ATP_0001_0002",
+      "code_partner": "MUS1969.33.7 à MUS1969.33.34",
+      "recording_context": 1,
+      "recorded_from_year": "1969-09-07",
+      "recorded_to_year": "1969-09-07",
+      "year_published": null,
+      "location_details": "",
+      "cultural_area": "Poitou",
+      "language": "",
+      "booklet_author": "",
+      "metadata_author": "",
+      "booklet_description": "",
+      "media_type": 2,
+      "legal_rights": 1
+    },
+      "model":"francoralite_api.collection",
+      "pk":3
+  },
+   {
+    "fields":{
+      "collection":3,
+      "location":3
+    },
+    "model":"francoralite_api.collectionlocation",
+    "pk":2
+  },
+  {
+    "fields":{
+      "collection":3,
+      "collector":6
+    },
+    "model":"francoralite_api.collectioncollectors",
+    "pk":2
+  },
+  {
+    "fields":{
+      "collection":3,
+      "informer":4
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":3
+  },
+  {
+    "fields":{
+      "collection":3,
+      "informer":5
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":3,
+      "number":1,
+      "instrument":1
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":2
+  },
+  {
+    "fields":{
+      "collection":3,
+      "number":1,
+      "instrument":2
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":3
+  },
+  {
     "fields": {
       "notes": "Notes de AABB",
       "name": "AABB"
@@ -566,8 +648,12 @@
   {"fields": {"notes": "Notes de mazurka", "name": "mazurka"}, "model": "francoralite_api.dance", "pk": 3},
 
   {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "francoralite_api.emitvox", "pk": 1},
+  
   {"fields": {"number": "321.322", "name": "Violon"}, "model": "francoralite_api.hornbostelsachs", "pk": 1},
+  {"fields": {"number": "4", "name": "Voix"}, "model": "francoralite_api.hornbostelsachs", "pk": 2},
+  
   {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "francoralite_api.instrument", "pk": 1},
+  {"fields": {"notes": "", "name": "Voix d'homme", "typology": 2}, "model": "francoralite_api.instrument", "pk": 2},
 
   {
     "fields": {
@@ -610,7 +696,6 @@
     "model":"francoralite_api.itemdance",
     "pk":1
   },
-
   {
     "fields": {
       "collection": 2,
@@ -659,6 +744,14 @@
     },
     "model":"francoralite_api.itemdance",
     "pk":3
+  },
+  {
+    "fields":{
+      "item":2,
+      "performance":1
+    },
+    "model":"francoralite_api.itemperformance",
+    "pk":1
   }
 
 ]

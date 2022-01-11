@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from collections import Counter
 import itertools
 from rest_framework import generics
 
@@ -18,6 +19,8 @@ from ..models.item_informer import ItemInformer
 from ..models.item_collector import ItemCollector
 from ..models.item_dance import ItemDance
 from ..models.item_language import ItemLanguage
+from ..models.item_performance import ItemPerformance
+from ..models.performance_collection import PerformanceCollection
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
@@ -26,8 +29,8 @@ class AdvancedSearchList(generics.ListAPIView):
 
     def get_related_entities(self, type, entity_name, table):
         result = []
-                
         entities = self.request.query_params.get(entity_name, None)
+
         if entities is not None:
             value = self.request.query_params[entity_name]
             filter_entity = entity_name + '__exact'
@@ -44,67 +47,70 @@ class AdvancedSearchList(generics.ListAPIView):
         return i
 
     def get_queryset(self):
-        limit = 5
         all_results = []
 
-        # Collections --------------------------------
-        collections_id = []
-        list_coll_entities = [
-            ('informer', CollectionInformer),
-            ('collector', CollectionCollectors),
-            ('location', CollectionLocation),
-            ('publisher', CollectionPublisher),
-            ('language', CollectionLanguage)
+        # Initialize data from ORM
+        collections = Collection.objects.all()
+        performances_col = PerformanceCollection.objects.all()
+        items = Item.objects.all()
+        items_ref = Item.objects.all()
+        item_performances = ItemPerformance.objects.all()
+
+        # Requeted ------------------------------------------------------
+        instruments = self.request.query_params.get("instrument", [])
+        dances = self.request.query_params.get("dance", [])
+        locations = self.request.query_params.get("location", [])
+        # ---------------------------------------------------- end requeted
+
+        # Filtering ----------------------------------------------------
+        if instruments:
+            for instrument in instruments:
+                performances_col = performances_col.filter(
+                    instrument=instrument)
+
+        # -- collections --
+        if performances_col:
+            collections = collections.filter(
+                performancecollection__in=performances_col)
+
+        if locations:
+            collections = collections.filter(
+                collectionlocation__location__in=locations)
+
+        # -- items --
+        if performances_col and instruments:
+            item_performances = item_performances.filter(
+                performance__in=performances_col)
+            if item_performances:
+                items = items.filter(
+                    id__in=item_performances.values_list("item"))
+            else:
+                items = []
+
+        if dances and items:
+            items = items.filter(itemdance__dance__in=dances)
+        # ---------------------------------------------------- end filtering
+
+        # Controls : empty for non filtered entities --------------
+
+        searching_item = (True, False)[
+            instruments == [] and dances == []
+        ]
+        searching_collection = (True, False)[
+            instruments == [] and locations == [] and dances != []
         ]
 
-        # Query collections related
-        merge_collection = []
-        for l in list_coll_entities:
-            entities, coll = self.get_related_entities(
-                "collection", l[0], l[1])
-            if entities is not None:
-                merge_collection.append(coll)
+        if Counter(Item.objects.all()) == Counter(items) and searching_item == False:
+            items = []
+        if Counter(Collection.objects.all()) == Counter(collections) or searching_collection == False:
+            collections = []
 
-        # Intersection of the values_list
-        if len(merge_collection) > 0:
-            collections_id = self.getIntersection(merge_collection)
+        # -------------------------------------------------------
 
-        # Composing the list of collection IDs
-        kwargs = {}
-        kwargs['id__in'] = [x for x in collections_id]
-
-        # Query collections with the Ids
-        collections = Collection.objects.filter(**kwargs)[:limit]
-
-        # Items --------------------------------
-        items_id = []
-        list_item_entities = [
-            ('informer', ItemInformer),
-            ('collector', ItemCollector),
-            ('dance', ItemDance),
-            ('language', ItemLanguage)
-        ]
-        
-        # Query items related
-        merge_item = []
-        for l in list_item_entities:
-            entities, coll = self.get_related_entities("item", l[0], l[1])
-            if entities is not None:
-                merge_item.append(coll)
-        
-        # Intersection of the values_list
-        if len(merge_item) > 0:
-            items_id = self.getIntersection(merge_item)
-
-        # Composing the list of item IDs
-        kwargs = {}
-        kwargs['id__in'] = [x for x in items_id]
-
-        # Query items with the Ids
-        items = Item.objects.filter(**kwargs)[:limit]
-
+        # Composing results
         all_results = list(itertools.chain(
-            collections,
-            items))
+            set(collections),
+            set(items))
+        )
 
         return all_results
