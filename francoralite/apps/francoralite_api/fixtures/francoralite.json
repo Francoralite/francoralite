@@ -495,7 +495,7 @@
       "location":2
     },
     "model":"francoralite_api.collectionlocation",
-    "pk":2
+    "pk":3
   },
   {
     "fields": {
@@ -752,6 +752,23 @@
     },
     "model":"francoralite_api.itemperformance",
     "pk":1
+  },
+  {
+    "fields": {
+      "collection": 1,
+      "title": "Information autobiographique de Monsieur Charles Aubrière",
+      "description": "M. Aubrière évoque son père, son apprentissage du violon, sa pratique musicale et sur son professeur de violon.",
+      "code": "UPOI_AFE_0000_0001_001",
+      "code_partner": "MUS1969.33.2",
+      "file": "items/violonneux.mp3",
+      "media_type": 2,
+      "coupe": null,
+      "text_bool": false,
+      "approx_duration": "00:02:30",
+      "date_edit": "2021-11-15T17:44:31.581708"
+    },
+      "model":"francoralite_api.item",
+      "pk":3
   }
 
 ]
