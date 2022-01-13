@@ -534,7 +534,7 @@
       "collector":6
     },
     "model":"francoralite_api.collectioncollectors",
-    "pk":1
+    "pk":2
   },
   {
     "fields":{
@@ -542,7 +542,7 @@
       "informer":4
     },
     "model":"francoralite_api.collectioninformer",
-    "pk":1
+    "pk":2
   },
   {
     "fields":{
@@ -550,7 +550,7 @@
       "informer":5
     },
     "model":"francoralite_api.collectioninformer",
-    "pk":2
+    "pk":3
   },
   {
     "fields":{
@@ -598,7 +598,7 @@
       "collector":6
     },
     "model":"francoralite_api.collectioncollectors",
-    "pk":2
+    "pk":3
   },
   {
     "fields":{
@@ -606,7 +606,7 @@
       "informer":4
     },
     "model":"francoralite_api.collectioninformer",
-    "pk":3
+    "pk":4
   },
   {
     "fields":{
@@ -614,7 +614,7 @@
       "informer":5
     },
     "model":"francoralite_api.collectioninformer",
-    "pk":4
+    "pk":5
   },
   {
     "fields":{

@@ -1,0 +1,76 @@
+# Données de test
+Les données de test sont dans le fichier `francoralité/apps/francoralite_api/fixtures/francoralite.json`
+
+
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+graph RL
+    subgraph collections
+    c1((c1))
+    c1 <-- cinf1 --> a2
+    c1 <-- ccol1 --> a3
+    c1 <-- cloc3 --> l2
+    c2((c2))
+    c2 <-- cloc1 --> l3
+    c2 <-- ccol2 --> 6
+    c2 <-- cinf2 --> a4
+    c2 <-- cinf3 --> a5
+    c2 <-- pc1 --> inst2
+    c3((c3))
+    c3 <-- cloc2 --> l3
+    c3 <-- ccol3 --> a6
+    c3 <-- cinf4 --> a4
+    c3 <-- cinf5 --> a5
+    c3 <-- pc2 --> inst1
+    c3 <-- pc3 --> inst2
+    classDef collection fill:#f9f;
+    class c2,c3 collection;
+    end
+
+    subgraph items
+    i1([i1])
+    i2([i2])
+    classDef item fill:#f96;
+    class i1,i2 item;
+    i1 --> c2
+    i1 <-- icol1 --> a8
+    i1 <-- iinf1 --> a4
+    i2 --> c2
+    i2 <-- icol2 --> a8
+    i2 <-- iinf2 --> a4
+    i3 --> c1
+    end
+
+    subgraph danses
+    d1(d1 : polka)
+    d2(d2:valse)
+    id1 --> d1
+    id1 --> i1
+    id2 --> d1
+    id2 --> i2
+    id3 --> d2
+    id3 --> i2
+    end
+
+    subgraph instruments
+    inst1(inst1 : violon)
+    inst2(inst2 : voix d'homme)
+    end
+
+    subgraph locations
+    l1(l1 : Poitiers)
+    l2(l2 : Nouveau Brunswick)
+    l3(l3 : La Biroire)
+    end
+
+    subgraph authorities
+    a1(a1 : Astérix)
+    a2(a2 : Cecilia Mc Graw)
+    a3(a3 : Jeanna d'Arc Lortie)
+    a4(a4 : Charles Aubrière)
+    a5(a5 : Mme Aubrière)
+    a6(a6 : Jeanne-Marie Bourreau)
+    a7(a7 : Fernand Nathan)
+    a8( a8 : Claudie Marcel-Dubois)
+    end
+```
