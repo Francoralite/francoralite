@@ -28,14 +28,28 @@ class AdvancedSearchList(generics.ListAPIView):
         locations = self.request.query_params.getlist("location", [])
         # ---------------------------------------------------- end requeted
 
+        # Requeted type -----------------------------------------------------
+        # Default value is "a"  --> AND type
+        instruments_t = self.request.query_params.get("instrument_t", "a")
+        dances_t = self.request.query_params.get("dance_t", "a")
+        locations_t = self.request.query_params.get("location_t", "a")
+        # -- -------------------------------------------- end requeted type
+
         # Filtering ----------------------------------------------------
         if instruments:
-            # Filter : instrument AND instrument AND ...
-            for instrument in instruments:
+            if instruments_t == "a":
+                # Filter : instrument AND instrument AND ...
+                for instrument in instruments:
+                    collections_qs = collections_qs.filter(id__in=Instrument.objects.filter(
+                        id=instrument).values_list('performancecollection__collection'))
+                    items_qs = items_qs.filter(id__in=Instrument.objects.filter(
+                        id=instrument).values_list('performancecollection__itemperformance__item'))
+            else:
+                # Filter : instrument OR instrument OR ...
                 collections_qs = collections_qs.filter(id__in=Instrument.objects.filter(
-                    id=instrument).values_list('performancecollection__collection'))
+                    id__in=instruments).values_list('performancecollection__collection'))
                 items_qs = items_qs.filter(id__in=Instrument.objects.filter(
-                    id=instrument).values_list('performancecollection__itemperformance__item'))
+                    id__in=instruments).values_list('performancecollection__itemperformance__item'))
 
         if locations:
             # Filter : location OR location OR ...

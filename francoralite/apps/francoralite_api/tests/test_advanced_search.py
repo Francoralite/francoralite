@@ -149,3 +149,36 @@ class TestAdvancedSearch(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+
+    def test_multi_criteria_or(self):
+        """
+        - instrument : 2 - voix d'homme
+        - instrument : 1 - violon
+        """
+        url = "/advancedsearch/?instrument=2&instrument=1&instrument_t=o"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # collection 2
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 3)  # collection 3
+        self.assertEqual(response.data[2]["entity"], "Item")
+        self.assertEqual(response.data[2]["id"], 2)  # item 2
+        
+        """
+        - dance : 2 - valse
+        - dance : 1 - polka
+        """
+        url = "/advancedsearch/?dance=2&dance=1&dance_t=o"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # collection 2
+        self.assertEqual(response.data[1]["entity"], "Item")
+        self.assertEqual(response.data[1]["id"], 1)  # item 1
+        self.assertEqual(response.data[2]["entity"], "Item")
+        self.assertEqual(response.data[2]["id"], 2)  # item 2

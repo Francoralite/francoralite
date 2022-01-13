@@ -12,26 +12,24 @@ graph RL
     c1 <-- cloc3 --> l2
     c2((c2))
     c2 <-- cloc1 --> l3
-    c2 <-- ccol2 --> 6
+    c2 <-- ccol2 --> a6
     c2 <-- cinf2 --> a4
     c2 <-- cinf3 --> a5
-    c2 <-- pc1 --> inst2
     c3((c3))
     c3 <-- cloc2 --> l3
     c3 <-- ccol3 --> a6
     c3 <-- cinf4 --> a4
     c3 <-- cinf5 --> a5
-    c3 <-- pc2 --> inst1
-    c3 <-- pc3 --> inst2
     classDef collection fill:#f9f;
-    class c2,c3 collection;
+    class c1,c2,c3 collection;
     end
 
     subgraph items
     i1([i1])
     i2([i2])
+    i3([i3])
     classDef item fill:#f96;
-    class i1,i2 item;
+    class i1,i2,i3 item;
     i1 --> c2
     i1 <-- icol1 --> a8
     i1 <-- iinf1 --> a4
@@ -52,6 +50,17 @@ graph RL
     id3 --> i2
     end
 
+    subgraph performances
+    pc1 --> c2
+    pc1 --> inst2
+    pc2 --> c3
+    pc2 --> inst1
+    pc3 --> c3
+    pc3 --> inst2
+    ic1 --> i2
+    ic1 --> pc1
+    end
+
     subgraph instruments
     inst1(inst1 : violon)
     inst2(inst2 : voix d'homme)
@@ -66,7 +75,7 @@ graph RL
     subgraph authorities
     a1(a1 : Astérix)
     a2(a2 : Cecilia Mc Graw)
-    a3(a3 : Jeanna d'Arc Lortie)
+    a3(a3 : Jeanne d'Arc Lortie)
     a4(a4 : Charles Aubrière)
     a5(a5 : Mme Aubrière)
     a6(a6 : Jeanne-Marie Bourreau)
