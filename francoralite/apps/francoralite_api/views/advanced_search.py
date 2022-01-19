@@ -4,7 +4,6 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-import itertools
 from rest_framework import generics
 
 from ..models.collection import Collection
@@ -19,56 +18,73 @@ class AdvancedSearchList(generics.ListAPIView):
     def get_queryset(self):
 
         # Initialize data from ORM (-> querysets)
-        collections_qs = Collection.objects.all()
-        items_qs = Item.objects.all()
-
-        # Requeted ------------------------------------------------------
-        instruments = self.request.query_params.getlist("instrument", [])
-        dances = self.request.query_params.getlist("dance", [])
-        locations = self.request.query_params.getlist("location", [])
-        # ---------------------------------------------------- end requeted
-
-        # Requeted type -----------------------------------------------------
-        # Default value is "a"  --> AND type
-        instruments_t = self.request.query_params.get("instrument_t", "a")
-        dances_t = self.request.query_params.get("dance_t", "a")
-        locations_t = self.request.query_params.get("location_t", "a")
-        # -- -------------------------------------------- end requeted type
+        query_sets = [
+            Collection.objects.all(),
+            Item.objects.all(),
+        ]
 
         # Filtering ----------------------------------------------------
-        if instruments:
-            if instruments_t == "a":
-                # Filter : instrument AND instrument AND ...
-                for instrument in instruments:
-                    collections_qs = collections_qs.filter(id__in=Instrument.objects.filter(
-                        id=instrument).values_list('performancecollection__collection'))
-                    items_qs = items_qs.filter(id__in=Instrument.objects.filter(
-                        id=instrument).values_list('performancecollection__itemperformance__item'))
+        filters = (
+            (
+                'instrument',
+                (
+                    'performancecollection__collection',
+                    'performancecollection__itemperformance__item',
+                ),
+                Instrument,
+            ),
+            (
+                'location',
+                (
+                    'collectionlocation__location',
+                    'collection__collectionlocation__location',
+                ),
+                None,
+            ),
+            (
+                'dance',
+                (
+                    'collection__itemdance__dance',
+                    'itemdance__dance',
+                ),
+                None,
+            ),
+        )
+
+        or_operators = self.request.query_params.getlist('or_operators', [])
+
+        for name, paths, sub_model in filters:
+            values = self.request.query_params.getlist(name, [])
+            if not values:
+                continue
+            if name in or_operators:
+                # Filter : value OR value OR ...
+                for index, path in enumerate(paths):
+                    if sub_model is not None:
+                        # Use a sub-query
+                        query_sets[index] = query_sets[index].filter(
+                            id__in=sub_model.objects.filter(
+                                id__in=values).values_list(path))
+                    else:
+                        # Use joins
+                        query_sets[index] = query_sets[index].filter(
+                            **{'%s__in' % path: values})
             else:
-                # Filter : instrument OR instrument OR ...
-                collections_qs = collections_qs.filter(id__in=Instrument.objects.filter(
-                    id__in=instruments).values_list('performancecollection__collection'))
-                items_qs = items_qs.filter(id__in=Instrument.objects.filter(
-                    id__in=instruments).values_list('performancecollection__itemperformance__item'))
-
-        if locations:
-            # Filter : location OR location OR ...
-            collections_qs = collections_qs.filter(
-                collectionlocation__location__in=locations)
-            items_qs = items_qs.filter(
-                collection__collectionlocation__location__in=locations)
-
-        if dances:
-            # Filter : dance OR dance OR ...
-            collections_qs = collections_qs.filter(
-                collection__itemdance__dance__in=dances)
-            items_qs = items_qs.filter(itemdance__dance__in=dances)
+                # Filter : value AND value AND ...
+                for value in values:
+                    for index, path in enumerate(paths):
+                        if sub_model is not None:
+                            # Use a sub-query
+                            query_sets[index] = query_sets[index].filter(
+                                id__in=sub_model.objects.filter(
+                                    id=value).values_list(path))
+                        else:
+                            # Use joins
+                            query_sets[index] = query_sets[index].filter(
+                                **{path: value})
         # ---------------------------------------------------- end filtering
 
         # Composing results
-        all_results = list(itertools.chain(
-            set(collections_qs),
-            set(items_qs),
-        ))
+        all_results = [item for qs in query_sets for item in qs.distinct()]
 
         return all_results
