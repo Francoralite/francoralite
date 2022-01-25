@@ -49,6 +49,14 @@ class AdvancedSearchList(generics.ListAPIView):
                 ),
                 None,
             ),
+            (
+                'collector',
+                (
+                    'collectioncollectors__collector',
+                    'itemcollector__collector',
+                ),
+                None,
+            ),
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])

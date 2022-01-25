@@ -81,6 +81,27 @@ class TestAdvancedSearch(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+        
+    def test_collector(self):
+        url = "/advancedsearch/?collector=3"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 1)  # collection 1
+        
+        url = "/advancedsearch/?collector=8"
+        response = self.client.get(url)
+        from icecream import ic
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["entity"], "Item")
+        self.assertEqual(response.data[0]["id"], 1)  # item 1
+        self.assertEqual(response.data[1]["entity"], "Item")
+        self.assertEqual(response.data[1]["id"], 2)  # item 2
+        
 
     def test_multi_criteria(self):
         """
@@ -147,6 +168,18 @@ class TestAdvancedSearch(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+        
+        """
+        - collector : 6 - Jeanne-Marie Bourreau
+        - instrument : 1 - violon
+        """
+        url = "/advancedsearch/?collector=6&instrument=1"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 3)  # Collection 3
 
     def test_multi_criteria_or(self):
         """
@@ -180,3 +213,19 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[1]["id"], 1)  # item 1
         self.assertEqual(response.data[2]["entity"], "Item")
         self.assertEqual(response.data[2]["id"], 2)  # item 2
+        
+        """
+        - collector : 3 - Jeanne d'Arc Lortie
+        - collector : 6 - Jeanne-Marie Bourreau
+        """
+        url = "/advancedsearch/?collector=3&collector=6&or_operators=collector"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 1)  # collection 1
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 2)  # collection 2
+        self.assertEqual(response.data[2]["entity"], "Collection")
+        self.assertEqual(response.data[2]["id"], 3)  # collection 3
