@@ -57,6 +57,14 @@ class AdvancedSearchList(generics.ListAPIView):
                 ),
                 None,
             ),
+            (
+                'informer',
+                (
+                    'collectioninformer__informer',
+                    'iteminformer__informer',
+                ),
+                None,
+            ),
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])

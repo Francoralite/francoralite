@@ -93,7 +93,6 @@ class TestAdvancedSearch(APITestCase):
         
         url = "/advancedsearch/?collector=8"
         response = self.client.get(url)
-        from icecream import ic
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
@@ -101,6 +100,29 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[0]["id"], 1)  # item 1
         self.assertEqual(response.data[1]["entity"], "Item")
         self.assertEqual(response.data[1]["id"], 2)  # item 2
+        
+    def test_informer(self):
+        url = "/advancedsearch/?informer=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 1)  # collection 1
+        
+        url = "/advancedsearch/?informer=4"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 4)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # collection 2
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 3)  # collection 3
+        self.assertEqual(response.data[2]["entity"], "Item")
+        self.assertEqual(response.data[2]["id"], 1)  # item 1
+        self.assertEqual(response.data[3]["entity"], "Item")
+        self.assertEqual(response.data[3]["id"], 2)  # item 2
         
 
     def test_multi_criteria(self):
@@ -180,6 +202,30 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 3)  # Collection 3
+        
+        """
+        - informer : 4 - Charles Aubrière
+        - informer : 5 - Mme Aubrière
+        """
+        url = "/advancedsearch/?informer=4&informer=5"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # Collection 2
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 3)  # Collection 3
+        
+        """
+        - informer : 4 - Charles Aubrière
+        - informer : 2 - Cecilia Mc Graw
+        """
+        url = "/advancedsearch/?informer=4&informer=2"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
 
     def test_multi_criteria_or(self):
         """
@@ -229,3 +275,23 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[1]["id"], 2)  # collection 2
         self.assertEqual(response.data[2]["entity"], "Collection")
         self.assertEqual(response.data[2]["id"], 3)  # collection 3
+        
+        """
+        - informer : 4 - Charles Aubrière
+        - informer : 2 - Cecilia Mc Graw
+        """
+        url = "/advancedsearch/?informer=2&informer=4&or_operators=informer"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 5)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 1)  # collection 1
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 2)  # collection 2
+        self.assertEqual(response.data[2]["entity"], "Collection")
+        self.assertEqual(response.data[2]["id"], 3)  # collection 3
+        self.assertEqual(response.data[3]["entity"], "Item")
+        self.assertEqual(response.data[3]["id"], 1)  # item 1
+        self.assertEqual(response.data[4]["entity"], "Item")
+        self.assertEqual(response.data[4]["id"], 2)  # item 2
