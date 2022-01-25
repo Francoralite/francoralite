@@ -6,6 +6,7 @@
 
 from rest_framework import generics
 
+from  ..models.coupe import Coupe
 from ..models.collection import Collection
 from ..models.instrument import Instrument
 from ..models.item import Item
@@ -64,6 +65,14 @@ class AdvancedSearchList(generics.ListAPIView):
                     'iteminformer__informer',
                 ),
                 None,
+            ),
+            (
+                'coupe',
+                (
+                    'items__collection',
+                    'items'
+                ),
+                Coupe,
             ),
         )
 

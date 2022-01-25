@@ -82,4 +82,12 @@ graph RL
     a7(a7 : Fernand Nathan)
     a8( a8 : Claudie Marcel-Dubois)
     end
+
+    subgraph coupes
+    coup1(1 : AABB)
+    coup2(2 : ABCD)
+    coup1 --> i1
+    coup1 --> i2
+    coup2 --> i3
+    end
 ```

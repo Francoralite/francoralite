@@ -138,7 +138,7 @@
   },
   {
     "fields": {
-      "notes": "AABB",
+      "notes": "Notes de AABB",
       "name": "AABB"
     },
     "model": "francoralite_api.coupe",
@@ -636,11 +636,11 @@
   },
   {
     "fields": {
-      "notes": "Notes de AABB",
-      "name": "AABB"
+      "notes": "Notes de ABCD",
+      "name": "ABCD"
     },
     "model": "francoralite_api.coupe",
-    "pk": 1
+    "pk": 2
   },
 
   {"fields": {"notes": "Notes de polka", "name": "polka"}, "model": "francoralite_api.dance", "pk": 1},
@@ -664,7 +664,7 @@
       "code_partner": "MUS1969.33.1",
       "file": "items/violonneux.mp3",
       "media_type": 2,
-      "coupe": null,
+      "coupe": 1,
       "text_bool": false,
       "approx_duration": "00:01:20",
       "date_edit": "2021-11-15T17:44:31.581708"
@@ -705,7 +705,7 @@
       "code_partner": "MUS1969.33.2",
       "file": "items/violonneux.mp3",
       "media_type": 2,
-      "coupe": null,
+      "coupe": 1,
       "text_bool": false,
       "approx_duration": "00:02:30",
       "date_edit": "2021-11-15T17:44:31.581708"
@@ -762,7 +762,7 @@
       "code_partner": "MUS1969.33.2",
       "file": "items/violonneux.mp3",
       "media_type": 2,
-      "coupe": null,
+      "coupe": 2,
       "text_bool": false,
       "approx_duration": "00:02:30",
       "date_edit": "2021-11-15T17:44:31.581708"
