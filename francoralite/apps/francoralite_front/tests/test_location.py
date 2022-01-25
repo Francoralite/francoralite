@@ -42,7 +42,7 @@ def test_location_details(francoralite_context):
             francoralite_context.logout(username)
 
 def test_location_add(francoralite_context):
-    last_id = 3
+    last_id = 4
     for username in francoralite_context.WRITERS:
         last_id = last_id + 1
         # Open the first location page for each profile

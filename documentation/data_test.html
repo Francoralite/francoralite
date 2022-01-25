@@ -384,16 +384,21 @@ graph RL
     c3 <-- ccol3 --> a6
     c3 <-- cinf4 --> a4
     c3 <-- cinf5 --> a5
+    c4((c4))
+    c4 <-- cloc4 --> l4
+    c4 <-- ccol4 --> a8
+    c4 <-- cinf6 --> a9
     classDef collection fill:#f9f;
-    class c1,c2,c3 collection;
+    class c1,c2,c3,c4 collection;
     end
 
     subgraph items
     i1([i1])
     i2([i2])
     i3([i3])
+    i4([i4])
     classDef item fill:#f96;
-    class i1,i2,i3 item;
+    class i1,i2,i3,i4 item;
     i1 --> c2
     i1 <-- icol1 --> a8
     i1 <-- iinf1 --> a4
@@ -401,6 +406,9 @@ graph RL
     i2 <-- icol2 --> a8
     i2 <-- iinf2 --> a4
     i3 --> c1
+    i4 --> c4
+    i4 <-- icol3 --> a8
+    i4 <-- iinf3 --> a9
     end
 
     subgraph danses
@@ -423,17 +431,23 @@ graph RL
     pc3 --> inst2
     ic1 --> i2
     ic1 --> pc1
+    pc4 --> c4
+    pc4 --> inst3
+    ic2 --> pc4
+    ic2 --> c4
     end
 
     subgraph instruments
     inst1(inst1 : violon)
     inst2(inst2 : voix d'homme)
+    inst3(inst3 : voix de fille)
     end
 
     subgraph locations
     l1(l1 : Poitiers)
     l2(l2 : Nouveau Brunswick)
     l3(l3 : La Biroire)
+    l4(l4 : l'Épine)
     end
 
     subgraph authorities
@@ -444,15 +458,18 @@ graph RL
     a5(a5 : Mme Aubrière)
     a6(a6 : Jeanne-Marie Bourreau)
     a7(a7 : Fernand Nathan)
-    a8( a8 : Claudie Marcel-Dubois)
+    a8(a8 : Claudie Marcel-Dubois)
+    a9(a9 : Michèle Bouchereau)
     end
 
     subgraph coupes
     coup1(1 : AABB)
     coup2(2 : ABCD)
+    coup3(3 : 6F-6M)
     coup1 --> i1
     coup1 --> i2
     coup2 --> i3
+    coup3 --> i4
     end
 </div></code></pre>
 

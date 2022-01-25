@@ -4,7 +4,7 @@
       "latitude": 46.5802596,
       "notes": "",
       "code": "poitiers",
-      "name": "Poitiers, Vienne, Nouvelle-Aquitaine, France m\u00e9tropolitaine, 86000, France",
+      "name": "Poitiers, Vienne, Nouvelle-Aquitaine, France métropolitaine, 86000, France",
       "longitude": 0.340196
     },
     "model": "francoralite_api.location",
@@ -31,6 +31,17 @@
     },
     "model": "francoralite_api.location",
     "pk": 3
+  },
+  {
+    "fields": {
+      "latitude": 46.9794444,
+      "notes": "",
+      "code": "L'Épine (île de Noirmoutier, Vendée)",
+      "name": "L'Épine, Les Sables-d'Olonne, Vendée, Pays de la Loire, France métropolitaine, 85740, France",
+      "longitude": -2.2669444
+    },
+    "model": "francoralite_api.location",
+    "pk": 4
   },
   {
     "fields": {
@@ -143,6 +154,22 @@
     },
     "model": "francoralite_api.coupe",
     "pk": 1
+  },
+  {
+    "fields": {
+      "notes": "Notes de ABCD",
+      "name": "ABCD"
+    },
+    "model": "francoralite_api.coupe",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "notes": "6F-6M",
+      "name": "6F-6M"
+    },
+    "model": "francoralite_api.coupe",
+    "pk": 3
   },
   {
     "fields": {
@@ -394,6 +421,27 @@
   },
   {
     "fields": {
+      "first_name": "Michèle",
+      "last_name": "Bouchereau",
+      "is_collector": false,
+      "birth_location": null,
+      "is_editor": false,
+      "is_composer": false,
+      "civility": "Mlle",
+      "uri": "",
+      "is_informer": true,
+      "alias": "",
+      "death_location": null,
+      "birth_date": "1948-01-01",
+      "is_author": false,
+      "biography": "",
+      "death_date": null
+    },
+    "model": "francoralite_api.authority",
+    "pk": 9
+  },
+  {
+    "fields": {
       "notes": "",
       "name": "Université de Poitiers"
     },
@@ -584,7 +632,7 @@
       "model":"francoralite_api.collection",
       "pk":3
   },
-   {
+  {
     "fields":{
       "collection":3,
       "location":3
@@ -635,12 +683,57 @@
     "pk":3
   },
   {
-    "fields": {
-      "notes": "Notes de ABCD",
-      "name": "ABCD"
+    "fields":{
+      "mission": 2,
+      "title": "Répertoire chanté de Michelle Bouchereau - L'Épine, île de Noirmoutier, 1956 [Extrait d'enquête]",
+      "alt_title":"",
+      "description":"Extrait d'enquête à L'Épine, île de Noirmoutier (Vendée) auprès de Michelle Bouchereau, agée d'une dizaine d'années.",
+      "code":"UPOI_ATP_0000_0009",
+		  "code_partner":"56-10-138",
+      "recording_context":6,
+		  "recorded_from_year":"1956-06-11",
+		  "recorded_to_year":"1956-06-11",
+      "booklet_description":"Carnets d'enquête, photographies.",
+		  "comment":"",
+		  "media_type": 3,
+      "location_details":"",
+		  "cultural_area":"Vendée"
     },
-    "model": "francoralite_api.coupe",
-    "pk": 2
+    "model":"francoralite_api.collection",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "location":4
+    },
+    "model":"francoralite_api.collectionlocation",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "collector":8
+    },
+    "model":"francoralite_api.collectioncollectors",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "informer":9
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":6
+  },
+  {
+    "fields":{
+      "collection":4,
+      "number":1,
+      "instrument":3
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":4
   },
 
   {"fields": {"notes": "Notes de polka", "name": "polka"}, "model": "francoralite_api.dance", "pk": 1},
@@ -648,12 +741,15 @@
   {"fields": {"notes": "Notes de mazurka", "name": "mazurka"}, "model": "francoralite_api.dance", "pk": 3},
 
   {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "francoralite_api.emitvox", "pk": 1},
+  {"fields": {"notes": "", "name": "chanté"}, "model": "francoralite_api.emitvox", "pk": 2},
   
   {"fields": {"number": "321.322", "name": "Violon"}, "model": "francoralite_api.hornbostelsachs", "pk": 1},
   {"fields": {"number": "4", "name": "Voix"}, "model": "francoralite_api.hornbostelsachs", "pk": 2},
   
   {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "francoralite_api.instrument", "pk": 1},
   {"fields": {"notes": "", "name": "Voix d'homme", "typology": 2}, "model": "francoralite_api.instrument", "pk": 2},
+  {"fields": {"notes": "", "name": "Voix de fille", "typology": 2}, "model": "francoralite_api.instrument", "pk": 3},
+  
 
   {
     "fields": {
@@ -769,6 +865,63 @@
     },
       "model":"francoralite_api.item",
       "pk":3
+  },
+  {
+    "fields": {
+      "collection": 4,
+      "title": "La destinée la rose au bois (LAF) / Ils me mirent à l'école (inc.)",
+      "alt_title": "Ils me mirent à l'école du roi (inc.)",
+      "trans_title": "La destinée la rose au bois",
+      "description":"Michèle Bouchereau chante une chanson, elle est applaudie. On perçoit à l'arrière-plan des bruits de vaisselle.",
+      "code":"UPOI_ATP_0000_0009_001",
+      "code_partner":"56-10-199 OU 56-10-138 -714-15",
+      "auto_period_access":false,
+      "remarks":"",
+      "date_edit":"2020-10-01T02:30:19.929520",
+      "media_type":3,
+      "approx_duration":null,
+      "file":"items/violonneux.mp3",
+      "timbre":"",
+      "timbre_ref":"",
+      "melody":"X: 1\r\nT: La destinée la rose au bois\r\nS: Version Michèle Bouchereau\r\nL: 1/8\r\nN: Mission Vendée 1956\r\nK: G\r\nQ: 120\r\n|:G2 DB BBBG|A2 Ac BA G2:|\r\n|d|dedc BBBB|BdcB DDDD|D2 z2 |d2 dedc BABd|B2A2 G4||",
+      "domain":"C",
+      "deposit_digest":"",
+      "deposit_names":"",
+      "deposit_places":"",
+      "deposit_periods":"",
+      "text_bool":true,
+      "text":"Ils me mirent à l’école\r\nÀ l’école du roi\r\n\r\n* * *\r\n\r\nÀ l’école du roi\r\n**La destinée la rose au bois**\r\nÀ l’école du roi\r\n**La destinée r-au bois.**\r\n\r\n* * *\r\n\r\n\r\nIl me fit faire t-une robe / Une robe de soie.\r\n\r\nLe tailleur qui la coupe / C’est le tailleur du roi.\r\n\r\nÀ chaque coup d’aiguille / Ma mie embrassez-moi. \r\n\r\nQuand les maisons sont propres / Les amoureux y vont. \r\n\r\nIls s’en vont quatre à quatre / En frappant du talon. \r\n\r\nQuand les maisons sont sales / Les amoureux s’en vont.",
+      "incipit":"Ils me mirent à l'école du roi",
+      "refrain":"La destinée la rose au bois\r\nLa destinée au bois",
+      "jingle":"",
+      "coupe": 3
+    },
+    "model":"francoralite_api.item",
+    "pk":4
+  },
+  {
+    "fields":{
+      "item":4,
+      "collector":8
+    },
+    "model":"francoralite_api.itemcollector",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":4,
+      "informer":9
+    },
+    "model":"francoralite_api.iteminformer",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":4,
+      "performance":4
+    },
+    "model":"francoralite_api.itemperformance",
+    "pk":2
   }
 
 ]

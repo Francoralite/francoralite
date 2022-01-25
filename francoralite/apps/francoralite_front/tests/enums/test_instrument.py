@@ -7,6 +7,7 @@ class TestInstrument(EnumsTest):
     title = _("Voix/Instruments")
     data = [
         {"id": "1", "name": "Violon", "notes": ""},
-        {"id": "2", "name": "Voix d'homme", "notes": ""}
+        {"id": "2", "name": "Voix d'homme", "notes": ""},
+        {"id": "3", "name": "Voix de fille", "notes": ""},
     ]
     new_data = {"name": "guitare", "notes": "Notes guitare"}

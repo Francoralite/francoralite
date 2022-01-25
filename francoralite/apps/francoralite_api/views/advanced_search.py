@@ -74,6 +74,9 @@ class AdvancedSearchList(generics.ListAPIView):
                 ),
                 Coupe,
             ),
+            (
+                'refrain', None, None,
+            ),
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])
@@ -81,6 +84,13 @@ class AdvancedSearchList(generics.ListAPIView):
         for name, paths, sub_model in filters:
             values = self.request.query_params.getlist(name, [])
             if not values:
+                continue
+            if name == "refrain":
+                # Filtering only on items
+                query_sets[0] = Collection.objects.none()
+                query_sets[1] = query_sets[1].filter(
+                    refrain__icontains=values[0])
+                # Only one refrain field, so continue ...
                 continue
             if name in or_operators:
                 # Filter : value OR value OR ...
