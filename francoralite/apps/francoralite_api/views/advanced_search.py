@@ -88,6 +88,14 @@ class AdvancedSearchList(generics.ListAPIView):
                 ),
                 None,
             ),
+            (
+                'thematic',
+                (
+                    'collection__itemthematic__thematic',
+                    'itemthematic__thematic'
+                ),
+                None,
+            ),
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])

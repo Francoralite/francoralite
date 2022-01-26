@@ -245,6 +245,14 @@
   },
   {
     "fields": {
+      "name": "récit",
+      "notes": ""
+    },
+    "model": "francoralite_api.thematic",
+    "pk": 2
+  },
+  {
+    "fields": {
       "name": "danser",
       "notes": "Notes danser"
     },
@@ -811,6 +819,14 @@
     "pk":2
   },
   {
+    "fields":{
+      "item":1,
+      "thematic":2
+    },
+    "model":"francoralite_api.itemthematic",
+    "pk":1
+  },
+  {
     "fields": {
       "collection": 2,
       "title": "Information autobiographique de Monsieur Charles Aubrière",
@@ -866,6 +882,22 @@
     },
     "model":"francoralite_api.itemperformance",
     "pk":1
+  },
+  {
+    "fields":{
+      "item":2,
+      "thematic":2
+    },
+    "model":"francoralite_api.itemthematic",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "thematic":1
+    },
+    "model":"francoralite_api.itemthematic",
+    "pk":3
   },
   {
     "fields": {
@@ -955,6 +987,14 @@
       "usefulness":1
     },
     "model":"francoralite_api.itemusefulness",
+    "pk":4
+  },
+  {
+    "fields":{
+      "item":4,
+      "thematic":1
+    },
+    "model":"francoralite_api.itemthematic",
     "pk":4
   }
 

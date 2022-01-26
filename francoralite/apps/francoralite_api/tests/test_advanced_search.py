@@ -190,6 +190,22 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[2]["id"], 4)  # item 4
         self.assertEqual(response.data[3]["entity"], "Item")
         self.assertEqual(response.data[3]["id"], 1)  # item 1
+        
+    def test_thematic(self):
+        url = "/advancedsearch/?thematic=1"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 4)
+
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 4)  # collection 4
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 2)  # collection 2
+        self.assertEqual(response.data[2]["entity"], "Item")
+        self.assertEqual(response.data[2]["id"], 4)  # item 4
+        self.assertEqual(response.data[3]["entity"], "Item")
+        self.assertEqual(response.data[3]["id"], 2)  # item 2
 
     def test_multi_criteria(self):
         """
@@ -320,6 +336,20 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
         self.assertEqual(response.data[1]["id"], 1)  # item 1
+        
+        """
+        - thématique : 1 - danse
+        - thématique : 2 - récit
+        """
+        url = "/advancedsearch/?thematic=1&thematic=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # collection 2
+        self.assertEqual(response.data[1]["entity"], "Item")
+        self.assertEqual(response.data[1]["id"], 2)  # item 2
 
     def test_multi_criteria_or(self):
         """
@@ -432,3 +462,23 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[4]["id"], 4)  # item 4
         self.assertEqual(response.data[5]["entity"], "Item")
         self.assertEqual(response.data[5]["id"], 1)  # item 1
+        
+        """
+        - thématique : 1 - danse
+        - thématique : 2 - récit
+        """
+        url = "/advancedsearch/?thematic=1&thematic=2&or_operators=thematic"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 5)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 4)  # collection 4
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 2)  # collection 2
+        self.assertEqual(response.data[2]["entity"], "Item")
+        self.assertEqual(response.data[2]["id"], 4)  # item 4
+        self.assertEqual(response.data[3]["entity"], "Item")
+        self.assertEqual(response.data[3]["id"], 1)  # item 1
+        self.assertEqual(response.data[4]["entity"], "Item")
+        self.assertEqual(response.data[4]["id"], 2)  # item 2

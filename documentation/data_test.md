@@ -116,4 +116,13 @@ graph RL
     use2 <-- use_i3 -->  i3
     use1 <-- use_i4 -->  i4
     end
+
+    subgraph thématiques
+    them1(1 : danse)
+    them2(2 : récit)
+    them2 <-- them_i1 --> i1
+    them2 <-- them_i2 --> i2
+    them1 <-- them_i3 --> i2
+    them1 <-- them_i4 --> i4
+    end
 ```
