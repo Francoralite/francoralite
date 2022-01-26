@@ -77,6 +77,9 @@ class AdvancedSearchList(generics.ListAPIView):
             (
                 'refrain', None, None,
             ),
+            (
+                'incipit', None, None,
+            ),
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])
@@ -91,6 +94,13 @@ class AdvancedSearchList(generics.ListAPIView):
                 query_sets[1] = query_sets[1].filter(
                     refrain__icontains=values[0])
                 # Only one refrain field, so continue ...
+                continue
+            if name == "incipit":
+                # Filtering only on items
+                query_sets[0] = Collection.objects.none()
+                query_sets[1] = query_sets[1].filter(
+                    incipit__icontains=values[0])
+                # Only one incipit field, so continue ...
                 continue
             if name in or_operators:
                 # Filter : value OR value OR ...

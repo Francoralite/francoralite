@@ -159,7 +159,21 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["entity"], "Item")
         self.assertEqual(response.data[0]["id"], 4)  # item 4
+    
+    def test_incipit(self):
+        url = "/advancedsearch/?incipit=école%20du%20roi"
+        response = self.client.get(url)
         
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["entity"], "Item")
+        self.assertEqual(response.data[0]["id"], 4)  # item 4
+        
+        url = "/advancedsearch/?incipit=ordinateur"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
 
     def test_multi_criteria(self):
         """
