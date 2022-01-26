@@ -174,6 +174,22 @@ class TestAdvancedSearch(APITestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+        
+    def test_usefulness(self):
+        url = "/advancedsearch/?usefulness=1"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 4)
+
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 4)  # collection 4
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 2)  # collection 2
+        self.assertEqual(response.data[2]["entity"], "Item")
+        self.assertEqual(response.data[2]["id"], 4)  # item 4
+        self.assertEqual(response.data[3]["entity"], "Item")
+        self.assertEqual(response.data[3]["id"], 1)  # item 1
 
     def test_multi_criteria(self):
         """
@@ -290,6 +306,20 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[0]["id"], 2)  # Collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
         self.assertEqual(response.data[1]["id"], 2)  # item 2
+        
+        """
+        - fonction : 1 - ecouter
+        - fonction : 2 - danser
+        """
+        url = "/advancedsearch/?usefulness=1&usefulness=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # collection 2
+        self.assertEqual(response.data[1]["entity"], "Item")
+        self.assertEqual(response.data[1]["id"], 1)  # item 1
 
     def test_multi_criteria_or(self):
         """
@@ -379,3 +409,26 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[3]["id"], 1)  # item 1
         self.assertEqual(response.data[4]["entity"], "Item")
         self.assertEqual(response.data[4]["id"], 2)  # item 2
+        
+        
+        """
+        - fonction : 1 - ecouter
+        - fonction : 2 - danser
+        """
+        url = "/advancedsearch/?usefulness=1&usefulness=2&or_operators=usefulness"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 6)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 1)  # collection 1
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 4)  # collection 4
+        self.assertEqual(response.data[2]["entity"], "Collection")
+        self.assertEqual(response.data[2]["id"], 2)  # collection 2
+        self.assertEqual(response.data[3]["entity"], "Item")
+        self.assertEqual(response.data[3]["id"], 3)  # item 3
+        self.assertEqual(response.data[4]["entity"], "Item")
+        self.assertEqual(response.data[4]["id"], 4)  # item 4
+        self.assertEqual(response.data[5]["entity"], "Item")
+        self.assertEqual(response.data[5]["id"], 1)  # item 1

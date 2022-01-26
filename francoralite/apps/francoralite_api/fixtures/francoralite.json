@@ -750,6 +750,8 @@
   {"fields": {"notes": "", "name": "Voix d'homme", "typology": 2}, "model": "francoralite_api.instrument", "pk": 2},
   {"fields": {"notes": "", "name": "Voix de fille", "typology": 2}, "model": "francoralite_api.instrument", "pk": 3},
   
+  {"fields": {"notes": "", "name": "ecouter"}, "model": "francoralite_api.usefulness", "pk": 1},
+  {"fields": {"notes": "", "name": "danser"}, "model": "francoralite_api.usefulness", "pk": 2},
 
   {
     "fields": {
@@ -791,6 +793,22 @@
     },
     "model":"francoralite_api.itemdance",
     "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "usefulness":1
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "usefulness":2
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":2
   },
   {
     "fields": {
@@ -867,6 +885,14 @@
       "pk":3
   },
   {
+    "fields":{
+      "item":3,
+      "usefulness":2
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":3
+  },
+  {
     "fields": {
       "collection": 4,
       "title": "La destinée la rose au bois (LAF) / Ils me mirent à l'école (inc.)",
@@ -922,6 +948,14 @@
     },
     "model":"francoralite_api.itemperformance",
     "pk":2
+  },
+  {
+    "fields":{
+      "item":4,
+      "usefulness":1
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":4
   }
 
 ]

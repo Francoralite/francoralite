@@ -471,6 +471,15 @@ graph RL
     coup2 --> i3
     coup3 --> i4
     end
+
+    subgraph fonctions
+    use1(1 : écouter)
+    use2(2 : danser)
+    use1 <-- use_i1 -->  i1
+    use2 <-- use_i2 -->  i1
+    use2 <-- use_i3 -->  i3
+    use1 <-- use_i4 -->  i4
+    end
 </div></code></pre>
 
 </body>
