@@ -175,6 +175,44 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
         
+    def test_timbre(self):
+        url = "/advancedsearch/?timbre=timbre_1"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["entity"], "Item")
+        self.assertEqual(response.data[0]["id"], 1)  # item 1
+        self.assertEqual(response.data[1]["entity"], "Item")
+        self.assertEqual(response.data[1]["id"], 2)  # item 2
+        
+        url = "/advancedsearch/?timbre=timbre_2"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["entity"], "Item")
+        self.assertEqual(response.data[0]["id"], 4)  # item 4
+        
+    def test_timbre_ref(self):
+        url = "/advancedsearch/?timbre_ref=timbre_ref_1"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["entity"], "Item")
+        self.assertEqual(response.data[0]["id"], 1)  # item 1
+        self.assertEqual(response.data[1]["entity"], "Item")
+        self.assertEqual(response.data[1]["id"], 2)  # item 2
+        
+        url = "/advancedsearch/?timbre_ref=timbre_ref_2"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["entity"], "Item")
+        self.assertEqual(response.data[0]["id"], 4)  # item 4
+        
     def test_usefulness(self):
         url = "/advancedsearch/?usefulness=1"
         response = self.client.get(url)

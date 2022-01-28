@@ -773,7 +773,9 @@
       "coupe": 1,
       "text_bool": false,
       "approx_duration": "00:01:20",
-      "date_edit": "2021-11-15T17:44:31.581708"
+      "date_edit": "2021-11-15T17:44:31.581708",
+      "timbre": "timbre_1",
+      "timbre_ref": "timbre_ref_1"
     },
       "model":"francoralite_api.item",
       "pk":1
@@ -838,7 +840,9 @@
       "coupe": 1,
       "text_bool": false,
       "approx_duration": "00:02:30",
-      "date_edit": "2021-11-15T17:44:31.581708"
+      "date_edit": "2021-11-15T17:44:31.581708",
+      "timbre": "timbre_1",
+      "timbre_ref": "timbre_ref_1"
     },
       "model":"francoralite_api.item",
       "pk":2
@@ -911,7 +915,9 @@
       "coupe": 2,
       "text_bool": false,
       "approx_duration": "00:02:30",
-      "date_edit": "2021-11-15T17:44:31.581708"
+      "date_edit": "2021-11-15T17:44:31.581708",
+      "timbre": "",
+      "timbre_ref": ""
     },
       "model":"francoralite_api.item",
       "pk":3
@@ -939,8 +945,8 @@
       "media_type":3,
       "approx_duration":null,
       "file":"items/violonneux.mp3",
-      "timbre":"",
-      "timbre_ref":"",
+      "timbre": "timbre_2",
+      "timbre_ref": "timbre_ref_2",
       "melody":"X: 1\r\nT: La destinée la rose au bois\r\nS: Version Michèle Bouchereau\r\nL: 1/8\r\nN: Mission Vendée 1956\r\nK: G\r\nQ: 120\r\n|:G2 DB BBBG|A2 Ac BA G2:|\r\n|d|dedc BBBB|BdcB DDDD|D2 z2 |d2 dedc BABd|B2A2 G4||",
       "domain":"C",
       "deposit_digest":"",
