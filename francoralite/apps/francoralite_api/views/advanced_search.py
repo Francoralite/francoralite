@@ -102,6 +102,38 @@ class AdvancedSearchList(generics.ListAPIView):
                 ),
                 None,
             ),
+            (
+                'domain_music',
+                (
+                    'collection__itemdomainmusic__domain_music',
+                    'itemdomainmusic__domain_music'
+                ),
+                None,
+            ),
+            (
+                'domain_song',
+                (
+                    'collection__itemdomainsong__domain_song',
+                    'itemdomainsong__domain_song'
+                ),
+                None,
+            ),
+            (
+                'domain_tale',
+                (
+                    'collection__itemdomaintale__domain_tale',
+                    'itemdomaintale__domain_tale'
+                ),
+                None,
+            ),
+            (
+                'domain_vocal',
+                (
+                    'collection__itemdomainvocal__domain_vocal',
+                    'itemdomainvocal__domain_vocal'
+                ),
+                None,
+            ),
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])

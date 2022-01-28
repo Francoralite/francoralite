@@ -181,6 +181,14 @@
   },
   {
     "fields": {
+      "name": "air de chanson",
+      "notes": "Notes air de chanson"
+    },
+    "model": "francoralite_api.domainmusic",
+    "pk": 2
+  },
+  {
+    "fields": {
       "name": "relations sociales",
       "notes": "Notes relations sociales"
     },
@@ -189,11 +197,35 @@
   },
   {
     "fields": {
+      "name": "mariage",
+      "notes": ""
+    },
+    "model": "francoralite_api.domainsong",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "éducation",
+      "notes": ""
+    },
+    "model": "francoralite_api.domainsong",
+    "pk": 3
+  },
+  {
+    "fields": {
       "name": "conte facétieux",
       "notes": "Notes conte facétieux"
     },
     "model": "francoralite_api.domaintale",
     "pk": 1
+  },
+  {
+    "fields": {
+      "name": "récit",
+      "notes": "Notes récit"
+    },
+    "model": "francoralite_api.domaintale",
+    "pk": 2
   },
   {
     "fields": {
@@ -829,6 +861,14 @@
     "pk":1
   },
   {
+    "fields":{
+      "item":1,
+      "domain_tale":2
+    },
+    "model":"francoralite_api.itemdomaintale",
+    "pk":1
+  },
+  {
     "fields": {
       "collection": 2,
       "title": "Information autobiographique de Monsieur Charles Aubrière",
@@ -904,6 +944,14 @@
     "pk":3
   },
   {
+    "fields":{
+      "item":2,
+      "domain_tale":2
+    },
+    "model":"francoralite_api.itemdomaintale",
+    "pk":2
+  },
+  {
     "fields": {
       "collection": 1,
       "title": "Information autobiographique de Monsieur Charles Aubrière",
@@ -928,6 +976,14 @@
       "usefulness":2
     },
     "model":"francoralite_api.itemusefulness",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":3,
+      "domain_tale":2
+    },
+    "model":"francoralite_api.itemdomaintale",
     "pk":3
   },
   {
@@ -1002,6 +1058,30 @@
     },
     "model":"francoralite_api.itemthematic",
     "pk":4
+  },
+  {
+    "fields":{
+      "item":4,
+      "domain_music":2
+    },
+    "model":"francoralite_api.itemdomainmusic",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":4,
+      "domain_song":2
+    },
+    "model":"francoralite_api.itemdomainsong",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":4,
+      "domain_song":3
+    },
+    "model":"francoralite_api.itemdomainsong",
+    "pk":2
   }
 
 ]

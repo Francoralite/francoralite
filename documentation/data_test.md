@@ -125,4 +125,16 @@ graph RL
     them1 <-- them_i3 --> i2
     them1 <-- them_i4 --> i4
     end
+
+    subgraph domaines
+    d_mus1(mus1 : air de musique)
+    d_mus2(mus2 : air de chanson)
+    d_mus2 <-- dmus_i4 --> i4
+    d_tal1(tal1 : conte facétieux)
+    d_tal2(tal2 : récit)
+    d_tal2<-- dtal_i1 --> i1
+    d_tal2<-- dtal_i2 --> i2
+    d_tal2<-- dtal_i3 --> i3
+    d_voc1(voc1 : comptine)
+    end
 ```
