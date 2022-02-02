@@ -4,6 +4,8 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+import datetime
+
 from rest_framework import generics
 
 from ..models.coupe import Coupe
@@ -134,12 +136,16 @@ class AdvancedSearchList(generics.ListAPIView):
                 ),
                 None,
             ),
+            (
+                'date', None, 'items',
+            ),
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])
 
         for name, paths, sub_model in filters:
             values = self.request.query_params.getlist(name, [])
+            
             if not values:
                 continue
             if name == "refrain":
@@ -169,6 +175,23 @@ class AdvancedSearchList(generics.ListAPIView):
                 query_sets[1] = query_sets[1].filter(
                     timbre_ref__icontains=values[0])
                 # Only one timbre_ref field, so continue ...
+                continue
+            if name == "date":
+                # Exctract dates
+                date_from, date_to = values[0].split('_')
+                # There is no date from
+                if date_from == "":
+                    date_from = "0001-01-01"
+                # There is no date to
+                if date_to == "":
+                    date_to = datetime.date.today()
+                
+                query_sets[0] = Collection.objects.filter(
+                    recorded_from_year__gte=date_from,
+                    recorded_to_year__lte=date_to,)
+                # Items that are related to collections
+                query_sets[1] =  query_sets[1].filter(collection__in=query_sets[0])
+                
                 continue
             if name in or_operators:
                 # Filter : value OR value OR ...
