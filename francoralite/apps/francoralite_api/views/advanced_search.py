@@ -137,7 +137,7 @@ class AdvancedSearchList(generics.ListAPIView):
                 None,
             ),
             (
-                'date', None, 'items',
+                'date', None, None,
             ),
         )
 
@@ -186,13 +186,13 @@ class AdvancedSearchList(generics.ListAPIView):
                 if date_to == "":
                     date_to = datetime.date.today()
                 
-                query_sets[0] = Collection.objects.filter(
+                query_sets[0] = query_sets[0].filter(
                     recorded_from_year__gte=date_from,
                     recorded_to_year__lte=date_to,)
                 # Items that are related to collections
-                query_sets[1] =  query_sets[1].filter(collection__in=query_sets[0])
-                
+                query_sets[1] =  query_sets[1].filter(collection__in=query_sets[0])    
                 continue
+                    
             if name in or_operators:
                 # Filter : value OR value OR ...
                 for index, path in enumerate(paths):

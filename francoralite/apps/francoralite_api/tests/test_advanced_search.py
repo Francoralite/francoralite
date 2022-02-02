@@ -508,6 +508,22 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
         self.assertEqual(response.data[1]["entity"], "Item")
         self.assertEqual(response.data[1]["id"], 4)  # item 4
+        
+        """
+        - date
+        - Récit : 2
+        """
+        url = "/advancedsearch/?date=1969-09-01_1969-09-07&domain_tale=2"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # collection 2
+        self.assertEqual(response.data[1]["entity"], "Item")
+        self.assertEqual(response.data[1]["id"], 1)  # item 1
+        self.assertEqual(response.data[2]["entity"], "Item")
+        self.assertEqual(response.data[2]["id"], 2)  # item 2
 
     def test_multi_criteria_or(self):
         """
