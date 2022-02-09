@@ -12,32 +12,6 @@ class TestAdvancedSearch(APITestCase):
 
     fixtures = ['francoralite.json']
 
-    def test_informer(self):
-        url = "/advancedsearch/?informer=4"
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
-        self.assertEqual(response.data[0]["id"], 2)  # collection 2
-        self.assertEqual(response.data[1]["id"], 1)  # item 1
-        self.assertEqual(response.data[2]["id"], 2)  # item 2
-
-    def test_collector(self):
-        url = "/advancedsearch/?collector=8"
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
-        self.assertEqual(response.data[0]["id"], 1)  # item 1
-        self.assertEqual(response.data[1]["id"], 2)  # item 2
-
-        url = "/advancedsearch/?collector=6"
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]["id"], 2)  # collection 2
-
     def test_location(self):
         url = "/advancedsearch/?location=3"
         response = self.client.get(url)
@@ -90,6 +64,16 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
+
+        url = "/advancedsearch/?collector=6"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["entity"], "Collection")
+        self.assertEqual(response.data[0]["id"], 2)  # collection 2
+        self.assertEqual(response.data[1]["entity"], "Collection")
+        self.assertEqual(response.data[1]["id"], 3)  # collection 3
 
         url = "/advancedsearch/?collector=8"
         response = self.client.get(url)
