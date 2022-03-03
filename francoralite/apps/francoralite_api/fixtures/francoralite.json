@@ -285,14 +285,6 @@
   },
   {
     "fields": {
-      "name": "danser",
-      "notes": "Notes danser"
-    },
-    "model": "francoralite_api.usefulness",
-    "pk": 1
-  },
-  {
-    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,
