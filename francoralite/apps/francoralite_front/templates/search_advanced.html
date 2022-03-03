@@ -1,136 +1,39 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% load bootstrap3 %}
-{% load data_display %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+{% load static %}
 
 {% block javascript %}
   {{ block.super }}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-select/2.5.1/vue-select.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
-
+  <script src="{% static "francoralite_front/js/webcomponents/autocomplete.js" %}" defer></script>
 {% endblock %}
 
 {% block stylesheets %}
   {{ block.super }}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+  <link rel="stylesheet" href="{% static "francoralite_front/css/webcomponents/autocomplete.css" %}">
 {% endblock %}
 
 {% block content %}
-
-{% regroup results by entity as result_list %}
-
 <h1>{% trans "Recherche avancée"%}</h1>
 <hr/>
 
-{{ form.media }}
-<div id="app">
+<form>
+  <label for="informers">{% trans "Informateur" %}</label>
+  <br>
+  <francoralite-informers name="informer" data-values=""></francoralite-informers>
 
-<!-- INFORMERS -->
-<form @submit.prevent="submitform">
-  <div class="container_data">
-    <label class="control_label">{% trans "Informateur" %}</label>
-    <v-select
-      multiple
-        v-model="informers"
-        label="first_name"
-        :filterable="false"
-        @search="onSearchInformers"
-        :options="optionsInformers"
-        placeholder="{% trans "Recherche sur informateur" %} ...">
-        <template slot="option" slot-scope="option">
-          ${ option.first_name } ${ option.last_name } -
-          <a :href="option.url"
-            onclick="window.open(this.href); return false;">
-            <i>Fiche...</i></a>
-        </template>
-        <template slot="selected-option" slot-scope="option">
-          <a :href="option.url"
-          onclick="window.open(this.href); return false;">
-          ${ option.first_name } ${ option.last_name }</a>
-        </template>
-    </v-select>
-  </div>
+  <br><br>
 
-  <!-- COLLECTORS -->
-  <div class="container_data">
-    <label class="control_label">{% trans "Enquêteur" %}</label>
-    <v-select
-      multiple
-        v-model="collectors"
-        label="first_name"
-        :filterable="false"
-        @search="onSearchCollectors"
-        :options="optionsCollectors"
-        placeholder="{% trans "Recherche sur enquêteur" %} ...">
-        <template slot="option" slot-scope="option">
-          ${ option.first_name } ${ option.last_name } -
-          <a :href="option.url"
-            onclick="window.open(this.href); return false;">
-            <i>Fiche...</i></a>
-        </template>
-        <template slot="selected-option" slot-scope="option">
-          <a :href="option.url"
-          onclick="window.open(this.href); return false;">
-          ${ option.first_name } ${ option.last_name }</a>
-        </template>
-    </v-select>
-  </div>
+  <label for="collectors">{% trans "Enquêteur" %}</label>
+  <br>
+  <francoralite-collectors name="collector" data-values=""></francoralite-collectors>
 
-  <!-- LOCATIONS -->
-  <div class="container_data">
-    <label class="control_label">{% trans "Lieu" %}</label>
-    <v-select
-      multiple
-      v-model="locations"
-      label="name"
-      :filterable="false"
-      @search="onSearchLocations"
-      :options="optionsLocations"
-      placeholder="{% trans "Recherche sur lieu" %} ...">
-      <template slot="option" slot-scope="option">
-        <b>${ option.code }</b>
-        <p>${ option.name }</p>
-        <p><a :href="option.url"
-          onclick="window.open(this.href); return false;">Fiche...</a></p>
-      </template>
-      <template slot="selected-option" slot-scope="option">
-        <a :href="option.url"
-        onclick="window.open(this.href); return false;">
-        ${ option.code }</a>
-      </template>
-    </v-select>
-  </div>
+  <br><br>
 
-  <!-- DANCES -->
-  <div class="container_data">
-    <label class="control_label">{% trans "Danse" %}</label>
-    <v-select
-      multiple
-      v-model="dances"
-      label="name"
-      :filterable="false"
-      @search="onSearchDance"
-      :options="optionsDances"
-      placeholder="{% trans "Recherche sur danse" %} ...">
-        <template slot="option" slot-scope="option">
-          <p>${ option.name }</p>
-        </template>
-        <template slot="selected-option" slot-scope="option">
-          ${ option.name }
-        </template>
-    </v-select>
-  </div>
+  <label for="locations">{% trans "Lieu" %}</label>
+  <br>
+  <francoralite-locations name="location" data-values=""></francoralite-locations>
 
+  <br><br>
 
   <button type="submit" id="btn" class="btn btn-default">
     <span class="glyphicon glyphicon-search">
@@ -139,201 +42,60 @@
   </button>
 </form>
 
-<div v-if="search">
+{% if collections or items %}
+<hr/>
+
+<div>
   <h2>Résultats</h2>
 
-  <div v-if="result_collections.length">
+  {% if collections %}
+  <div>
     <table class="listing">
       <caption>{% trans "Enquête(s)" %}</caption>
       <thead>
         <th class="highlight">{% trans "Cote" %}</th>
         <th>{% trans "Titre" %}</th>
       </thead>
-      <tr  v-for="res in result_collections">
+      {% for collection in collections %}
+      <tr>
         <td class="highlight">
-          <a :href="'/collection/' + res.id">
-            ${res.code}</a>
-          </td>
-          <td>
-            ${res.title}
-          </td>
-        </tr>
-      </table>
+          <a href="/collection/{{ collection.id }}">{{ collection.code }}</a>
+        </td>
+        <td>{{ collection.title }}</td>
+      </tr>
+      {% endfor %}
+    </table>
   </div>
-  <div v-else>
+  {% else %}
+  <div>
     {% trans "Il n'y pas d'enquête qui correspond à ces critères." %}
   </div>
+  {% endif %}
 
-  <div v-if="result_items.length">
+  {% if items %}
+  <div>
     <table class="listing">
       <caption>{% trans "Item(s)" %}</caption>
       <thead>
         <th class="highlight">{% trans "Cote" %}</th>
         <th>{% trans "Titre" %}</th>
       </thead>
-      <tr  v-for="res in result_items">
+      {% for item in items %}
+      <tr>
         <td class="highlight">
-          <a :href="'/item/' + res.id">
-            ${res.code}</a>
-          </td>
-          <td>
-            ${res.title}
-          </td>
-        </tr>
-      </table>
+          <a href="/item/{{ item.id }}">{{ item.code }}</a>
+        </td>
+        <td>{{ item.title }}</td>
+      </tr>
+      {% endfor %}
+    </table>
   </div>
-  <div v-else>
+  {% else %}
+  <div>
     {% trans "Il n'y pas d'item qui correspond à ces critères." %}
   </div>
+  {% endif %}
 
 </div>
-
-
-</div> <!-- end app -->
-
-
-
-<script type="application/javascript">
-Vue.component('v-select', VueSelect.VueSelect)
-
-new Vue({
-  delimiters: ['${', '}'],
-  el: '#app',
-  data: {
-    result_collections: [],
-    result_items: [],
-    informers: [],
-    optionsInformers: [],
-    collectors: [],
-    optionsCollectors: [],
-    locations: [],
-    optionsLocations: [],
-    dances: [],
-    optionsDances: [],
-    search: false
-  },
-  watch: {
-    results(){
-      if(this.results.length>0){
-        console.log(this.results[0].description);
-      }
-    }
-  },
-  computed: {
-    informers_id: function(){
-      if(this.informers.length > 0){
-        return 'informer='+this.informers[0].id;
-      }
-      return '';
-    },
-    collectors_id: function(){
-      if(this.collectors.length > 0){
-        return 'collector='+this.collectors[0].id;
-      }
-      return '';
-    },
-    locations_id: function(){
-      if(this.locations.length > 0){
-        return 'location='+this.locations[0].id;
-      }
-      return '';
-    },
-    dances_id: function(){
-      if(this.dances.length > 0){
-        return 'location='+this.dances[0].id;
-      }
-      return '';
-    }
-  },
-  methods: {
-    searchRelated:
-    _.debounce((loading, search, vm, url, options, entity)=>
-    {
-      if(search.length > 1){
-        axios.get(url).then(
-          res => {
-            length = 5;
-            if(res.data.length > length){
-              res.data.length = length;
-            };
-            for(i = 0; i < res.data.length; i++) {
-              res.data[i].url= "/"+entity+"/"+res.data[i].id;
-            };
-            vm[options] = res.data;
-          }
-        );
-      };
-      loading(false);
-    }),
-    onSearchInformers(search, loading) {
-      loading(true);
-       this.searchRelated(
-       loading, search, this,
-        `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
-        'optionsInformers',
-        'authority'
-       );
-    },
-    onSearchCollectors(search, loading) {
-      loading(true);
-       this.searchRelated(
-       loading, search, this,
-        `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
-        'optionsCollectors',
-        'authority'
-       );
-    },
-    onSearchLocations(search, loading) {
-        loading(true);
-        this.searchRelated(
-          loading, search, this,
-           `/api/locationgis?ordering=code&search=${escape(search)}`,
-           'optionsLocations',
-           'location_gis'
-        );
-    },
-    onSearchDance(search, loading) {
-      loading(true);
-       this.searchRelated(
-       loading, search, this,
-        `/api/dance?search=${escape(search)}`,
-        'optionsDances',
-        'dance'
-       );
-    },
-    submitform(){
-      axios.get('/advancedsearch/?'+
-      this.informers_id+'&'+
-      this.collectors_id+'&'+
-      this.locations_id+'&'+
-      this.dances.id)
-      .then(res => {
-        // response
-        this.search = true;
-        // RAZ previous results
-        this.result_collections = [];
-        this.result_items = [];
-
-        res.data.forEach(element => {
-            if (element.entity == 'Collection'){
-              this.result_collections.push(element);
-            };
-            if (element.entity == 'Item'){
-              this.result_items.push(element);
-            };
-        });
-      })
-      .catch(err => {
-        // error
-        console.log(err);
-      })
-    },
-  },
-  mounted: function () {}
-})
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
-
-{{ form.media.js }}
+{% endif %}
 {% endblock %}

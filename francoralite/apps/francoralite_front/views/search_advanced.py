@@ -4,19 +4,23 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.utils.http import urlencode
+
 from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
+from francoralite.apps.francoralite_front.tools import request_api
 
 
 class SearchAdvancedView(FrancoraliteTemplateView):
     template_name = "../templates/search_advanced.html"
 
-    def get_context_data(self, **kwargs):
-        try:
-            context = super(
-                SearchAdvancedView, self).get_context_data(**kwargs)
-            context["collections"] = []
+    def get(self, request, *args, **kwargs):
+        url = '/advancedsearch/?' + urlencode(request.GET, doseq=True)
+        results = request_api(url)
 
-        except Exception as err:
-            context["collections"] = []
-            context['error'] = err
-        return context
+        context = self.get_context_data(**kwargs)
+        context['collections'] = tuple(result for result in results
+            if result.get('entity') == 'Collection')
+        context['items'] = tuple(result for result in results
+            if result.get('entity') == 'Item')
+
+        return self.render_to_response(context)

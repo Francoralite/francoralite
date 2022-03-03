@@ -1,0 +1,130 @@
+.francoralite-autocomplete-webcomponent {
+    --component-default-width: 600px;
+    --component-bg-color: white;
+    --component-fg-color: #6f0a08;
+    --item-bg-color: var(--component-fg-color);
+    --item-fg-color: var(--component-bg-color);
+    --input-fg-color: #333333;
+    --proposal-bg-color: var(--component-bg-color);
+    --proposal-hover-bg-color: #f3b9b9;
+    --proposal-fg-color: var(--input-fg-color);
+    --proposal-link-color: var(--component-fg-color);
+    --operator-width: 0px;
+    --operator-checked-bg-color: #f3b9b9;
+    --operator-checked-fg-color: var(--component-fg-color);
+    --operator-unchecked-bg-color: var(--component-fg-color);
+    --operator-unchecked-fg-color: var(--component-bg-color);
+    position: relative;
+    display: inline-flex;
+    flex-flow: row wrap;
+    width: calc(var(--component-default-width) - var(--operator-width));
+    max-width: calc(100% - var(--operator-width) - 6px);
+    margin: 0;
+    padding: 2px calc(2px + var(--operator-width)) 2px 2px;
+    border: 1px solid var(--component-fg-color);
+    border-radius: 3px;
+    background: var(--component-bg-color);
+}
+
+.francoralite-autocomplete-webcomponent.with-operator {
+    --operator-width: 6em;
+}
+
+.francoralite-autocomplete-webcomponent .item {
+    margin: 2px;
+    padding: 0 2px 0 5px;
+    border-radius: 3px;
+    background: var(--item-bg-color);
+    color: var(--item-fg-color);
+}
+
+.francoralite-autocomplete-webcomponent .item a {
+    color: var(--item-fg-color);
+}
+
+.francoralite-autocomplete-webcomponent .remove {
+    margin: 0;
+    padding: 1px 4px;
+    border: none;
+    background: none;
+    color: var(--item-fg-color);
+    cursor: pointer;
+}
+
+.francoralite-autocomplete-webcomponent .input {
+    flex: 1 1 auto;
+    width: 3em;
+    min-width: 3em;
+    margin: 2px;
+    padding: 0;
+    border: none;
+    box-shadow: none !important;
+    outline: none;
+    background: none;
+    color: var(--input-fg-color);
+}
+
+.francoralite-autocomplete-webcomponent .proposals {
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    max-height: 12em;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--component-fg-color);
+    background: var(--proposal-bg-color);
+    color: var(--proposal-fg-color);
+    list-style: none;
+    overflow: auto;
+    z-index: 99999;
+}
+
+.francoralite-autocomplete-webcomponent .proposals:empty {
+    display: none;
+}
+
+.francoralite-autocomplete-webcomponent .proposal {
+    margin: 0;
+    padding: 1px 5px;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.francoralite-autocomplete-webcomponent .proposal:hover {
+    background: var(--proposal-hover-bg-color);
+    cursor: pointer;
+}
+
+.francoralite-autocomplete-webcomponent .proposal a,
+.francoralite-autocomplete-webcomponent .proposal a:hover {
+    color: var(--proposal-link-color);
+}
+
+.francoralite-autocomplete-webcomponent .operator {
+    display: none;
+}
+
+.francoralite-autocomplete-webcomponent .operator + label {
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    bottom: -1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--operator-width) - 4px);
+    margin: 0;
+    padding: 2px;
+    border: 1px solid var(--component-fg-color);
+    border-radius: 0 3px 3px 0;
+    white-space: nowrap;
+    background: var(--operator-checked-bg-color);
+    color: var(--operator-checked-fg-color);
+    cursor: pointer;
+}
+
+.francoralite-autocomplete-webcomponent .operator:not(:checked) + label {
+    background: var(--operator-unchecked-bg-color);
+    color: var(--operator-unchecked-fg-color);
+}
