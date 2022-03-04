@@ -16,6 +16,7 @@
 <h1>{% trans "Recherche avancée"%}</h1>
 <hr/>
 
+<h2>Filtres de recherche</h2>
 <form>
   <label for="informer">{% trans "Informateur" %}</label>
   <br>
@@ -85,6 +86,7 @@
       <thead>
         <th class="highlight">{% trans "Cote" %}</th>
         <th>{% trans "Titre" %}</th>
+        <th>Piste son</th>
       </thead>
       {% for item in items %}
       <tr>
@@ -92,6 +94,13 @@
           <a href="/item/{{ item.id }}">{{ item.code }}</a>
         </td>
         <td>{{ item.title }}</td>
+        <td>
+          <audio
+            controls
+            src="/api/item/{{item.id}}/download">
+            Votre navigateur Internet ne prend pas en charge cet élément audio
+          </audio>
+        </td>
       </tr>
       {% endfor %}
     </table>
