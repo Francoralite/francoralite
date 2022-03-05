@@ -9,6 +9,7 @@ from rest_framework import generics
 
 from ..models.coupe import Coupe
 from ..models.collection import Collection
+from ..models.collection_location import CollectionLocation
 from ..models.instrument import Instrument
 from ..models.item import Item
 from ..serializers.advanced_search import AdvancedSearchSerializer
@@ -185,7 +186,11 @@ class AdvancedSearchList(generics.ListAPIView):
             query_sets[1] = query_sets[1].filter(
                 collection__in=Collection.objects.filter(date_filter))
         # ---------------------------------------------------- end filtering
-
+      
+        # Collecting the locations
+        collection_locations = CollectionLocation.objects.filter(collection__in=query_sets[0])
+        query_sets.append(collection_locations)
+        
         # Composing results
         all_results = [item for qs in query_sets for item in qs.distinct()]
 

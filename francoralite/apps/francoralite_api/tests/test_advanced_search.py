@@ -17,7 +17,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 4)
+        self.assertEqual(len(response.data), 6)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -32,7 +32,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 4)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -44,7 +44,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -61,7 +61,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
 
@@ -69,7 +69,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 4)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -79,7 +79,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 4)
+        self.assertEqual(len(response.data), 5)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -94,7 +94,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
 
@@ -102,7 +102,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 4)
+        self.assertEqual(len(response.data), 6)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -117,7 +117,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 4)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -129,7 +129,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -202,7 +202,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 4)
+        self.assertEqual(len(response.data), 6)
 
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
@@ -218,7 +218,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 4)
+        self.assertEqual(len(response.data), 6)
 
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
@@ -240,7 +240,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
 
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
@@ -256,7 +256,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
 
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
@@ -274,7 +274,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data), 7)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -298,7 +298,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 3)  # collection 3
 
@@ -306,7 +306,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 4)
+        self.assertEqual(len(response.data), 6)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -320,7 +320,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 3)  # collection 3
 
@@ -328,7 +328,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 7)
+        self.assertEqual(len(response.data), 10)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
 
@@ -340,7 +340,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 5)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -356,7 +356,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 3)  # collection 3
 
@@ -368,7 +368,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # Collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -382,7 +382,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # Collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -406,7 +406,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 3)  # Collection 3
 
@@ -418,7 +418,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 4)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # Collection 2
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -442,7 +442,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # Collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -456,7 +456,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -470,7 +470,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -485,7 +485,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
 
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
@@ -500,7 +500,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 4)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -517,7 +517,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 5)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -533,7 +533,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 4)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 2)  # collection 2
         self.assertEqual(response.data[1]["entity"], "Item")
@@ -549,7 +549,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 6)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -565,7 +565,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data), 8)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -585,7 +585,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data), 7)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -606,7 +606,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 6)
+        self.assertEqual(len(response.data), 9)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 1)  # collection 1
         self.assertEqual(response.data[1]["entity"], "Collection")
@@ -628,7 +628,7 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data), 7)
         self.assertEqual(response.data[0]["entity"], "Collection")
         self.assertEqual(response.data[0]["id"], 4)  # collection 4
         self.assertEqual(response.data[1]["entity"], "Collection")

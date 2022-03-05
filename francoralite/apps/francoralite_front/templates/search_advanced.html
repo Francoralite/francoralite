@@ -1,15 +1,31 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load data_display %}
+{% load leaflet_tags %}
 
 {% block javascript %}
   {{ block.super }}
   <script src="{% static "francoralite_front/js/webcomponents/autocomplete.js" %}" defer></script>
+  {% leaflet_js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
 {% endblock %}
 
 {% block stylesheets %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static "francoralite_front/css/webcomponents/autocomplete.css" %}">
+  <style>
+    #id_map {
+      height: 600px;
+      width: 100%;
+     }
+     .leaflet-container {
+       justify-content: center;
+     }
+  </style>
+  {% leaflet_css %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
 {% endblock %}
 
 {% block content %}
@@ -86,7 +102,7 @@
       <thead>
         <th class="highlight">{% trans "Cote" %}</th>
         <th>{% trans "Titre" %}</th>
-        <th>Piste son</th>
+        <th>{% trans "Piste son" %}</th>
       </thead>
       {% for item in items %}
       <tr>
@@ -110,6 +126,50 @@
     {% trans "Il n'y pas d'item qui correspond à ces critères." %}
   </div>
   {% endif %}
+
+  <div>
+    <h3>{% trans "Lieux" %}</h3>
+    <script  type="text/javascript">
+      function map_init_basic (map, options) {
+
+        // Adjusting bounds and zoom
+        let bounds = [ [60, -85], [30, 10] ];
+
+        map.setMinZoom(3);
+        map.setMaxZoom(18);
+        map.setMaxBounds( bounds );
+        map.fitBounds( bounds );
+
+        var markers = L.markerClusterGroup( {
+          showCoverageOnHover: true,
+          zoomToBoundsOnClick: true,
+          removeOutsideVisibleBounds: true
+        } );
+
+        locate_collections(map, markers);
+        
+      }
+
+      function locate_collections (map, markers) {
+        {% for location in locations %}
+            markers.addLayer( L.marker([{{location.location.latitude|virgule}},
+             {{location.location.longitude|virgule}} ]).bindPopup(
+              "<h5><a href=\"/collection/{{location.collection.id}}\">"+
+              "{{location.collection.code}} - {{location.collection.title|safe|escape}}</a></h5>"+
+              "<p>{{location.collection.descriptions|safe}}</p>"+
+              "<hr />"+
+              "Lieu : <a href=\"/location_gis/{{location.location.id}}\"><b>{{location.location.code}}"+
+              "</b></a><p>{{location.location.name|safe}}</p><hr/><i>{{location.location.notes|safe}}</i>" ) );
+        {% endfor %}
+        map.addLayer(markers);
+      }
+
+
+    </script>
+  
+    {% leaflet_map "id_map" callback="window.map_init_basic" %}
+
+  </div>
 
 </div>
 {% endif %}

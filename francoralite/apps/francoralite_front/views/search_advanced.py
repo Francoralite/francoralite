@@ -22,5 +22,7 @@ class SearchAdvancedView(FrancoraliteTemplateView):
             if result.get('entity') == 'Collection')
         context['items'] = tuple(result for result in results
             if result.get('entity') == 'Item')
+        context['locations'] = tuple(result for result in results
+            if result.get('entity') == 'CollectionLocation')
 
         return self.render_to_response(context)

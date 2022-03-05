@@ -16,6 +16,8 @@ from ..models.mission import Mission as MissionModel
 from .mission import MissionSerializer
 from ..models.collection import Collection as CollectionModel
 from .collection import CollectionSerializer
+from ..models.collection_location import CollectionLocation as CollectionLocationModel
+from .collection_location import CollectionLocationSerializer
 from ..models.item import Item as ItemModel
 from .item import ItemSerializer
 
@@ -35,6 +37,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = CollectionSerializer(instance)
         elif isinstance(instance, ItemModel):
             serializer = ItemSerializer(instance)
+        elif isinstance(instance, CollectionLocationModel):
+            serializer = CollectionLocationSerializer(instance)
         else:
             raise Exception("Not an known instance!")
         data = serializer.data
