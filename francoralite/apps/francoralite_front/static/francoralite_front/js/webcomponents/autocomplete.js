@@ -102,7 +102,7 @@ class FrancoraliteAutocomplete extends HTMLElement {
 
     inputChanged(event) {
         const text = this.inputField.value;
-        if (text && text.length >= 3) {
+        if (text && text.length >= 1) {
             const xhr = new XMLHttpRequest();
             xhr.addEventListener('load', (event) => {
                 const data = JSON.parse(event.target.response);
@@ -193,19 +193,19 @@ class FrancoraliteAuthorities extends FrancoraliteAutocomplete {
 
 class FrancoraliteInformers extends FrancoraliteAuthorities {
     getDefaultUrl() {
-        return '/api/authority?is_informer=true&ordering=first_name+last_name&search=';
+        return '/api/authority?limit=10&is_informer=true&ordering=first_name+last_name&search=';
     }
 }
 
 class FrancoraliteCollectors extends FrancoraliteAuthorities {
     getDefaultUrl() {
-        return '/api/authority?is_collector=true&ordering=first_name+last_name&search=';
+        return '/api/authority?limit=10&is_collector=true&ordering=first_name+last_name&search=';
     }
 }
 
 class FrancoraliteLocations extends FrancoraliteAutocomplete {
     getDefaultUrl() {
-        return '/api/locationgis?ordering=code&search=';
+        return '/api/locationgis?limit=10&ordering=code&search=';
     }
 
     parseProposal(item) {
@@ -220,7 +220,7 @@ class FrancoraliteLocations extends FrancoraliteAutocomplete {
 
 class FrancoraliteDances extends FrancoraliteAutocomplete {
     getDefaultUrl() {
-        return '/api/dance?&search=';
+        return '/api/dance?limit=10&&search=';
     }
 
     parseProposal(item) {
