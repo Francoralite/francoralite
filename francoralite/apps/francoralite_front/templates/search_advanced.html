@@ -34,35 +34,35 @@
 
 <h2>Filtres de recherche</h2>
 <form>
-  <details>
+  <details{% if parameters_json.informer or parameters_json.collector %} open{% endif %}>
     <summary>{% trans "Qui ?" %}</summary>
     <label for="informer">{% trans "Informateur" %}</label>
     <br>
-    <francoralite-informers name="informer" data-values=""></francoralite-informers>
+    <francoralite-informers name="informer" data-values="{{ parameters_json.informer }}"{% if 'informer' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-informers>
     <br><br>
     <label for="collector">{% trans "Enquêteur" %}</label>
     <br>
-    <francoralite-collectors name="collector" data-values=""></francoralite-collectors>
+    <francoralite-collectors name="collector" data-values="{{ parameters_json.collector }}"{% if 'collector' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-collectors>
   </details>
 
   <details>
     <summary>{% trans "Quand ?" %}</summary>
   </details>
 
-  <details>
+  <details{% if parameters_json.location %} open{% endif %}>
     <summary>{% trans "Où ?" %}</summary>
     <label for="location">{% trans "Lieu" %}</label>
     <br>
-    <francoralite-locations name="location" data-values=""></francoralite-locations>
+    <francoralite-locations name="location" data-values="{{ parameters_json.location }}"{% if 'location' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-locations>
   </details>
 
-  <details>
+  <details{% if parameters_json.dance %} open{% endif %}>
     <summary>{% trans "Quoi ?" %}</summary>
     <label for="dance">{% trans "Danse" %}</label>
     <br>
-    <francoralite-dances name="dance" data-values=""></francoralite-dances>
+    <francoralite-dances name="dance" data-values="{{ parameters_json.dance }}"{% if 'dance' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-dances>
   </details>
-  
+
   <button type="submit" id="btn" class="btn btn-default">
     <span class="glyphicon glyphicon-search">
     </span>
@@ -152,7 +152,7 @@
         } );
 
         locate_collections(map, markers);
-        
+
       }
 
       function locate_collections (map, markers) {
@@ -171,7 +171,7 @@
 
 
     </script>
-  
+
     {% leaflet_map "id_map" callback="window.map_init_basic" %}
 
   </div>

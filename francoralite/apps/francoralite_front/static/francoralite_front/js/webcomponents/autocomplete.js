@@ -48,7 +48,7 @@ class FrancoraliteAutocomplete extends HTMLElement {
         }
 
         JSON.parse(this.getAttribute('data-values') || '[]').forEach(
-            item => this.addSelectedItem(item[0], item[1], item[2], item[3])
+            item => this.addSelectedItem(this.parseProposal(item))
         );
     }
 
@@ -64,6 +64,12 @@ class FrancoraliteAutocomplete extends HTMLElement {
                 this.operatorLabel.innerHTML = event.target.checked ?
                     this.operatorCheckedText : this.operatorUncheckedText;
             });
+        }
+        if (this.getAttribute('data-default-operator') === 'checked') {
+            this.operatorCheckbox.checked = true;
+            if (this.operatorCheckedText) {
+                this.operatorLabel.innerHTML = this.operatorCheckedText;
+            }
         }
 
         this.addEventListener('click', (event) => {
@@ -140,33 +146,33 @@ class FrancoraliteAutocomplete extends HTMLElement {
 
     proposalClick(event) {
         if (event.target instanceof HTMLLIElement) {
-            this.addSelectedItem(
-                event.target.getAttribute('data-value'),
-                event.target.getAttribute('data-label'),
-                event.target.getAttribute('data-url'),
-                event.target.getAttribute('data-tooltip')
-            );
+            this.addSelectedItem({
+                'value': event.target.getAttribute('data-value'),
+                'label': event.target.getAttribute('data-label'),
+                'url': event.target.getAttribute('data-url'),
+                'tooltip': event.target.getAttribute('data-tooltip')
+            });
             this.showProposals([]);
             this.inputField.value = '';
             this.inputField.focus();
         }
     }
 
-    addSelectedItem(value, label, url, tooltip) {
-        if (! label) {
-            label = value;
+    addSelectedItem(item) {
+        if (! item.label) {
+            item.label = item.value;
         }
 
         const span = document.createElement('span');
         span.setAttribute('class', 'item');
-        span.setAttribute('title', tooltip || '');
-        span.innerHTML = url ? '<a href="' + url + '">' + label + '</a>' : label;
+        span.setAttribute('title', item.tooltip || '');
+        span.innerHTML = item.url ? '<a href="' + item.url + '">' + item.label + '</a>' : item.label;
         this.insertBefore(span, this.inputField);
 
         const input = document.createElement('input');
         input.setAttribute('type', 'hidden');
         input.setAttribute('name', this.getAttribute('name'));
-        input.setAttribute('value', value);
+        input.setAttribute('value', item.value);
         span.appendChild(input);
 
         const button = document.createElement('button');
@@ -220,7 +226,7 @@ class FrancoraliteLocations extends FrancoraliteAutocomplete {
 
 class FrancoraliteDances extends FrancoraliteAutocomplete {
     getDefaultUrl() {
-        return '/api/dance?limit=10&&search=';
+        return '/api/dance?limit=10&search=';
     }
 
     parseProposal(item) {

@@ -8,11 +8,14 @@ from django.db import models
 from rest_framework import generics
 from rest_framework.response import Response
 
+from ..models.authority import Authority
 from ..models.coupe import Coupe
 from ..models.collection import Collection
 from ..models.collection_location import CollectionLocation
+from ..models.dance import Dance
 from ..models.instrument import Instrument
 from ..models.item import Item
+from ..models.location import Location
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
@@ -42,24 +45,28 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'collectionlocation__location',
                     'collection__collectionlocation__location',
                 ),
+                'parameter_model': Location,
             }, {
                 'name': 'dance',
                 'paths': (
                     'collection__itemdance__dance',
                     'itemdance__dance',
                 ),
+                'parameter_model': Dance,
             }, {
                 'name': 'collector',
                 'paths': (
                     'collectioncollectors__collector',
                     'itemcollector__collector',
                 ),
+                'parameter_model': Authority,
             }, {
                 'name': 'informer',
                 'paths': (
                     'collectioninformer__informer',
                     'iteminformer__informer',
                 ),
+                'parameter_model': Authority,
             }, {
                 'name': 'coupe',
                 'sub_model': Coupe,
@@ -191,6 +198,29 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Collecting the locations
         locations_qs = CollectionLocation.objects.filter(collection__in=query_sets[0])
 
+        # Building a list of parameter names by model
+        parameter_models = {}
+        for field in fields:
+            model = field.get('parameter_model')
+            if model:
+                parameter_models.setdefault(model, []).append(field.get('name'))
+
+        # Collecting parameter instances
+        parameters = {}
+        for model, names in parameter_models.items():
+            keys = set(
+                key
+                for name in names
+                for key in self.request.query_params.getlist(name, [])
+            )
+            if keys:
+                serializer = self.get_serializer()
+                for instance in model.objects.filter(id__in=keys):
+                    serialized = serializer.to_representation(instance)
+                    for name in names:
+                        if str(instance.id) in self.request.query_params.getlist(name, []):
+                            parameters.setdefault(name, []).append(serialized)
+
         # Composing results
         collections = self.get_serializer(query_sets[0].distinct(), many=True).data
         items = self.get_serializer(query_sets[1].distinct(), many=True).data
@@ -198,6 +228,7 @@ class AdvancedSearchList(generics.GenericAPIView):
 
         # Returning results
         return Response({
+            'parameters': parameters,
             'results': {
                 'collections': collections,
                 'items': items,
