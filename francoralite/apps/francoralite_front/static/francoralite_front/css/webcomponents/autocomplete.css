@@ -6,11 +6,11 @@
     --item-fg-color: var(--component-bg-color);
     --input-fg-color: #333333;
     --proposal-bg-color: var(--component-bg-color);
-    --proposal-hover-bg-color: #f3b9b9;
+    --proposal-hover-bg-color: #AE8484;
     --proposal-fg-color: var(--input-fg-color);
     --proposal-link-color: var(--component-fg-color);
     --operator-width: 0px;
-    --operator-checked-bg-color: #f3b9b9;
+    --operator-checked-bg-color: #AE8484;
     --operator-checked-fg-color: var(--component-fg-color);
     --operator-unchecked-bg-color: var(--component-fg-color);
     --operator-unchecked-fg-color: var(--component-bg-color);
@@ -27,7 +27,7 @@
 }
 
 .francoralite-autocomplete-webcomponent.with-operator {
-    --operator-width: 6em;
+    --operator-width: 3em;
 }
 
 .francoralite-autocomplete-webcomponent .item {

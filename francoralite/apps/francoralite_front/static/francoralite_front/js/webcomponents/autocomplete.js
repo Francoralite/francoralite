@@ -86,9 +86,9 @@ class FrancoraliteAutocomplete extends HTMLElement {
     getDefaultOperator() {
         return {
             'name': 'or_operators',
-            'label': 'commun',
-            'checked-label': 'tous',
-            'tooltip': 'cochez la case pour utiliser l’opérateur OR (au lieu de AND)'
+            'label': 'et',
+            'checked-label': 'ou',
+            'tooltip': 'cochez la case pour changer l’opérateur de requêtage'
         };
     }
 
