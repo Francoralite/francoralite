@@ -15,14 +15,11 @@ class SearchAdvancedView(FrancoraliteTemplateView):
 
     def get(self, request, *args, **kwargs):
         url = '/advancedsearch/?' + urlencode(request.GET, doseq=True)
-        results = request_api(url)
+        api_response = request_api(url)
 
         context = self.get_context_data(**kwargs)
-        context['collections'] = tuple(result for result in results
-            if result.get('entity') == 'Collection')
-        context['items'] = tuple(result for result in results
-            if result.get('entity') == 'Item')
-        context['locations'] = tuple(result for result in results
-            if result.get('entity') == 'CollectionLocation')
+        context['collections'] = api_response['results']['collections']
+        context['items'] = api_response['results']['items']
+        context['locations'] = api_response['results']['locations']
 
         return self.render_to_response(context)
