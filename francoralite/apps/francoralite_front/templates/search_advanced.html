@@ -34,30 +34,35 @@
 
 <h2>Filtres de recherche</h2>
 <form>
-  <label for="informer">{% trans "Informateur" %}</label>
-  <br>
-  <francoralite-informers name="informer" data-values=""></francoralite-informers>
+  <details>
+    <summary>{% trans "Qui ?" %}</summary>
+    <label for="informer">{% trans "Informateur" %}</label>
+    <br>
+    <francoralite-informers name="informer" data-values=""></francoralite-informers>
+    <br><br>
+    <label for="collector">{% trans "Enquêteur" %}</label>
+    <br>
+    <francoralite-collectors name="collector" data-values=""></francoralite-collectors>
+  </details>
 
-  <br><br>
+  <details>
+    <summary>{% trans "Quand ?" %}</summary>
+  </details>
 
-  <label for="collector">{% trans "Enquêteur" %}</label>
-  <br>
-  <francoralite-collectors name="collector" data-values=""></francoralite-collectors>
+  <details>
+    <summary>{% trans "Où ?" %}</summary>
+    <label for="location">{% trans "Lieu" %}</label>
+    <br>
+    <francoralite-locations name="location" data-values=""></francoralite-locations>
+  </details>
 
-  <br><br>
-
-  <label for="location">{% trans "Lieu" %}</label>
-  <br>
-  <francoralite-locations name="location" data-values=""></francoralite-locations>
-
-  <br><br>
-
-  <label for="dance">{% trans "Danse" %}</label>
-  <br>
-  <francoralite-dances name="dance" data-values=""></francoralite-dances>
-
-  <br><br>
-
+  <details>
+    <summary>{% trans "Quoi ?" %}</summary>
+    <label for="dance">{% trans "Danse" %}</label>
+    <br>
+    <francoralite-dances name="dance" data-values=""></francoralite-dances>
+  </details>
+  
   <button type="submit" id="btn" class="btn btn-default">
     <span class="glyphicon glyphicon-search">
     </span>
