@@ -9,12 +9,14 @@ from rest_framework import serializers
 from ..models.authority import Authority as AuthorityModel
 from ..models.collection import Collection as CollectionModel
 from ..models.collection_location import CollectionLocation as CollectionLocationModel
+from ..models.coupe import Coupe as CoupeModel
 from ..models.dance import Dance as DanceModel
 from ..models.item import Item as ItemModel
 from ..models.location import Location as LocationModel
 from .authority import AuthoritySerializer
 from .collection import CollectionSerializer
 from .collection_location import CollectionLocationSerializer
+from .coupe import CoupeSerializer
 from .dance import DanceSerializer
 from .item import ItemSerializer
 from .location_gis import LocationGisSerializer
@@ -29,6 +31,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = CollectionSerializer(instance)
         elif isinstance(instance, CollectionLocationModel):
             serializer = CollectionLocationSerializer(instance)
+        elif isinstance(instance, CoupeModel):
+            serializer = CoupeSerializer(instance)
         elif isinstance(instance, DanceModel):
             serializer = DanceSerializer(instance)
         elif isinstance(instance, ItemModel):

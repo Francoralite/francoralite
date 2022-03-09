@@ -71,6 +71,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'name': 'coupe',
                 'sub_model': Coupe,
                 'paths': ('items__collection', 'items'),
+                'parameter_model': Coupe,
             }, {
                 'name': 'usefulness',
                 'paths': (

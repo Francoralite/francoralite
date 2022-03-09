@@ -75,6 +75,16 @@
     </a>
   </details>
 
+  <details{% if parameters_json.coupe %} open{% endif %}  id="details_song">
+    <summary>{% trans "Chanson" %}</summary>
+    <label for="coupe">{% trans "Coupe" %}</label>
+    <br>
+    <francoralite-coupes name="coupe" data-values="{{ parameters_json.coupe }}"{% if 'coupe' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-coupes>
+    <a id="link_coupe" href="/coupe">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
+    </a>
+  </details>
+
   <button type="submit" id="btn" class="btn btn-default">
     <span class="glyphicon glyphicon-search">
     </span>

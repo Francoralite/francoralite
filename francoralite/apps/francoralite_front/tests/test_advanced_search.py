@@ -50,6 +50,11 @@ def test_links_to_list(francoralite_context):
             'title':'Lieux'
         },
         {
+            'id_block':'details_song',
+            'id_link':'link_coupe',
+            'title':'Coupe'
+        },
+        {
             'id_block':'details_what',
             'id_link':'link_dance',
             'title':'Genre de danse'

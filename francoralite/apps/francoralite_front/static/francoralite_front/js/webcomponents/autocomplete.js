@@ -224,6 +224,21 @@ class FrancoraliteLocations extends FrancoraliteAutocomplete {
     }
 }
 
+class FrancoraliteCoupes extends FrancoraliteAutocomplete {
+    getDefaultUrl() {
+        return '/api/coupe?limit=10&search=';
+    }
+
+    parseProposal(item) {
+        return {
+            'value': item.id,
+            'label': item.name,
+            'url': null,
+            'tooltip': null
+        };
+    }
+}
+
 class FrancoraliteDances extends FrancoraliteAutocomplete {
     getDefaultUrl() {
         return '/api/dance?limit=10&search=';
@@ -243,4 +258,5 @@ customElements.define('francoralite-autocomplete', FrancoraliteAutocomplete);
 customElements.define('francoralite-informers', FrancoraliteInformers);
 customElements.define('francoralite-collectors', FrancoraliteCollectors);
 customElements.define('francoralite-locations', FrancoraliteLocations);
+customElements.define('francoralite-coupes', FrancoraliteCoupes);
 customElements.define('francoralite-dances', FrancoraliteDances);
