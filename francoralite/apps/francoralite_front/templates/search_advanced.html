@@ -34,33 +34,45 @@
 
 <h2>Filtres de recherche</h2>
 <form>
-  <details{% if parameters_json.informer or parameters_json.collector %} open{% endif %}>
+  <details{% if parameters_json.informer or parameters_json.collector %} open{% endif %} id="details_who">
     <summary>{% trans "Qui ?" %}</summary>
     <label for="informer">{% trans "Informateur" %}</label>
     <br>
     <francoralite-informers name="informer" data-values="{{ parameters_json.informer }}"{% if 'informer' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-informers>
+    <a id="link_authority_informer" href="/authority_informer">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Informateurs ..."%}
+    </a>
     <br><br>
     <label for="collector">{% trans "Enquêteur" %}</label>
     <br>
     <francoralite-collectors name="collector" data-values="{{ parameters_json.collector }}"{% if 'collector' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-collectors>
+    <a id="link_authority_collector" href="/authority_collector">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Enquêteurs ..."%}
+    </a>
   </details>
 
   <details>
     <summary>{% trans "Quand ?" %}</summary>
   </details>
 
-  <details{% if parameters_json.location %} open{% endif %}>
+  <details{% if parameters_json.location %} open{% endif %}  id="details_where">
     <summary>{% trans "Où ?" %}</summary>
     <label for="location">{% trans "Lieu" %}</label>
     <br>
     <francoralite-locations name="location" data-values="{{ parameters_json.location }}"{% if 'location' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-locations>
+    <a id="link_location" href="/location_gis/">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Lieux ..."%}
+    </a>
   </details>
 
-  <details{% if parameters_json.dance %} open{% endif %}>
+  <details{% if parameters_json.dance %} open{% endif %}  id="details_what">
     <summary>{% trans "Quoi ?" %}</summary>
     <label for="dance">{% trans "Danse" %}</label>
     <br>
     <francoralite-dances name="dance" data-values="{{ parameters_json.dance }}"{% if 'dance' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-dances>
+    <a id="link_dance" href="/dance">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Danses ..."%}
+    </a>
   </details>
 
   <button type="submit" id="btn" class="btn btn-default">

@@ -19,3 +19,47 @@ def test_search_dance(francoralite_context):
 #     # There is an option named "valse"
 #     francoralite_context.find_element(
 #         by_xpath="//p[contains(text(), 'valse')]", visibility_timeout=5)
+
+def click_to_list(id_block, id_link, title, context):
+    
+    # Go to advanced search page
+    url_prefix = "/search_advanced/"
+    context.open_url(url_prefix)
+    
+    # Link to list
+    context.find_element(by_id=id_block).click()
+    context.find_element(by_id=id_link).click()
+    context.verify_title(title)
+
+def test_links_to_list(francoralite_context):
+
+    links = [
+        {
+            'id_block':'details_who',
+            'id_link':'link_authority_informer',
+            'title':'Informateurs'
+        },
+        {
+            'id_block':'details_who',
+            'id_link':'link_authority_collector',
+            'title':'Enquêteurs'
+        },
+        {
+            'id_block':'details_where',
+            'id_link':'link_location',
+            'title':'Lieux'
+        },
+        {
+            'id_block':'details_what',
+            'id_link':'link_dance',
+            'title':'Genre de danse'
+        },
+    ]
+    
+    for link in links :
+        click_to_list(
+            id_block=link['id_block'],
+            id_link=link['id_link'],
+            title=link['title'],
+            context=francoralite_context
+        )
