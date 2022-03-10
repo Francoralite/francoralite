@@ -65,8 +65,16 @@
     </a>
   </details>
 
-  <details{% if parameters_json.dance %} open{% endif %}  id="details_what">
+  <details{% if parameters_json.media_type or parameters_json.dance %} open{% endif %}  id="details_what">
     <summary>{% trans "Quoi ?" %}</summary>
+    <label for="dance">{% trans "Type de média" %}</label>
+    <br>
+    <francoralite-media-type name="media_type" data-values="{{ parameters_json.media_type }}"{% if 'media_type' in or_operators %} data-default-operator="checked"{% endif %}>
+    </francoralite-media-type>
+    <a id="link_media_type" href="/mediatype">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Types de média ..."%}
+    </a>
+    <br><br>
     <label for="dance">{% trans "Danse" %}</label>
     <br>
     <francoralite-dances name="dance" data-values="{{ parameters_json.dance }}"{% if 'dance' in or_operators %} data-default-operator="checked"{% endif %}></francoralite-dances>

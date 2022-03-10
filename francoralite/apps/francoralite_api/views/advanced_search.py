@@ -20,6 +20,7 @@ from ..models.domain_vocal import DomainVocal
 from ..models.instrument import Instrument
 from ..models.item import Item
 from ..models.location import Location
+from ..models.mediatype import MediaType
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
@@ -132,6 +133,11 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'name': 'timbre_ref',
                 'paths': (None, 'timbre_ref'),
                 'lookups': 'icontains',
+            },
+            {
+                'name': 'media_type',
+                'paths': ('media_type', 'media_type'),
+                'parameter_model': MediaType,
             },
         )
 

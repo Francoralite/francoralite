@@ -501,6 +501,20 @@ graph RL
     d_tal2<-- dtal_i3 --> i3
     d_voc1(voc1 : comptine)
     end
+
+    subgraph type_media
+    t_media1(media1 : cassette audio)
+    t_media2(media2 : bande DAT)
+    t_media3(media3 : Archive sonore)
+    t_media2 --> c1
+    t_media2 --> c2
+    t_media2 --> c3
+    t_media2 --> i1
+    t_media2 --> i2
+    t_media2 --> i3
+    t_media3 --> c4
+    t_media3 --> i4
+    end
 </div></code></pre>
 
 </body>

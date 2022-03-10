@@ -391,6 +391,32 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['locations']), 3)
         self.assertEqual(response.data['results']['collections'][0]['entity'], 'Collection')
         self.assertEqual(response.data['results']['collections'][0]['id'], 1)  # collection 1
+        
+    def test_media_type(self):
+        url = "/advancedsearch/?media_type=1"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 0)
+        self.assertEqual(len(response.data['results']['items']), 0)
+        self.assertEqual(len(response.data['results']['locations']), 0)
+        
+        
+        url = "/advancedsearch/?media_type=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 3)
+        self.assertEqual(len(response.data['results']['items']), 3)
+        self.assertEqual(len(response.data['results']['locations']), 3)
+        
+        url = "/advancedsearch/?media_type=3"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 1)
+        self.assertEqual(len(response.data['results']['items']), 1)
+        self.assertEqual(len(response.data['results']['locations']), 1)
 
     def test_multi_criteria(self):
         """

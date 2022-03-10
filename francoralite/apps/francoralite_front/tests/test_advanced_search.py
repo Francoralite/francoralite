@@ -79,6 +79,11 @@ def test_links_to_list(francoralite_context):
             'id_link':'link_dance',
             'title':'Genre de danse'
         },
+        {
+            'id_block':'details_what',
+            'id_link':'link_media_type',
+            'title':'Type de média'
+        },
     ]
     
     for link in links :

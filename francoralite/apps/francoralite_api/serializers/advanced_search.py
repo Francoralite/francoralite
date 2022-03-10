@@ -17,6 +17,7 @@ from ..models.domain_tale import DomainTale as DomainTaleModel
 from ..models.domain_vocal import DomainVocal as DomainVocalModel
 from ..models.item import Item as ItemModel
 from ..models.location import Location as LocationModel
+from ..models.mediatype import MediaType as MediaTypeModel
 from .authority import AuthoritySerializer
 from .collection import CollectionSerializer
 from .collection_location import CollectionLocationSerializer
@@ -28,6 +29,7 @@ from .domain_tale import DomainTaleSerializer
 from .domain_vocal import DomainVocalSerializer
 from .item import ItemSerializer
 from .location_gis import LocationGisSerializer
+from .mediatype import MediaTypeSerializer
 
 
 class AdvancedSearchSerializer(serializers.Serializer):
@@ -55,6 +57,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = ItemSerializer(instance)
         elif isinstance(instance, LocationModel):
             serializer = LocationGisSerializer(instance)
+        elif isinstance(instance, MediaTypeModel):
+            serializer = MediaTypeSerializer(instance)
         else:
             raise Exception("Unknown instance type: %s" % type(instance))
         data = serializer.data
