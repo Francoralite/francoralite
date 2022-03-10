@@ -105,6 +105,17 @@
     </a>
   </details>
 
+  <details{% if parameters_json.domain_vocal %} open{% endif %}  id="details_vocal">
+    <summary>{% trans "Autre expression vocale" %}</summary>
+    <label for="domain_vocal">{% trans "Genre d'autre expression vocale" %}</label>
+    <br>
+    <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_json.domain_vocal }}"{% if 'domain_vocal' in or_operators %} data-default-operator="checked"{% endif %}>
+    </francoralite-domain-vocal>
+    <a id="link_domain_vocal" href="/domain_vocal">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
+    </a>
+  </details>
+
   <details{% if parameters_json.domain_music %} open{% endif %}  id="details_music">
     <summary>{% trans "Musique / Expression instrumentale" %}</summary>
     <label for="domain_music">{% trans "Genre de musique" %}</label>

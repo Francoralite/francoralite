@@ -16,6 +16,7 @@ from ..models.dance import Dance
 from ..models.domain_song import DomainSong
 from ..models.domain_music import DomainMusic
 from ..models.domain_tale import DomainTale
+from ..models.domain_vocal import DomainVocal
 from ..models.instrument import Instrument
 from ..models.item import Item
 from ..models.location import Location
@@ -114,6 +115,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'collection__itemdomainvocal__domain_vocal',
                     'itemdomainvocal__domain_vocal'
                 ),
+                'parameter_model': DomainVocal,
             }, {
                 'name': 'refrain',
                 'paths': (None, 'refrain'),

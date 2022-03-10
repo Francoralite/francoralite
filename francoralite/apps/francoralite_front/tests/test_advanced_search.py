@@ -27,7 +27,7 @@ def click_to_list(id_block, id_link, title, context):
     context.open_url(url_prefix)
     
     # Link to list
-    context.find_element(by_id=id_block).click()
+    context.scroll_to_element(by_id=id_block).click()
     context.find_element(by_id=id_link).click()
     context.verify_title(title)
 
@@ -63,6 +63,11 @@ def test_links_to_list(francoralite_context):
             'id_block':'details_song',
             'id_link':'link_coupe',
             'title':'Coupe'
+        },
+        {
+            'id_block':'details_vocal',
+            'id_link':'link_domain_vocal',
+            'title':'Genre vocal'
         },
         {
             'id_block':'details_music',
