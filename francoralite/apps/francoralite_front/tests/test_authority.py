@@ -60,7 +60,7 @@ def test_authority_add(francoralite_context):
     francoralite_context.find_element(by_id='save').click()
 
     # Go to the new authority
-    francoralite_context.open_url('/authority/9')
+    francoralite_context.open_url('/authority/10')
 
     # Verify data
     content['id_biography'] = biography

@@ -98,7 +98,7 @@ def test_collection_add(francoralite_context):
     francoralite_context.find_element(by_id='save').click()
 
     # Go to the new collection
-    francoralite_context.open_url('/collection/4')
+    francoralite_context.open_url('/collection/5')
 
     # Verify content
     francoralite_context.verify_data(content)

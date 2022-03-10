@@ -7,17 +7,29 @@
 from rest_framework import serializers
 
 from ..models.authority import Authority as AuthorityModel
-from .authority import AuthoritySerializer
-from ..models.location import Location as LocationModel
-from .location_gis import LocationGisSerializer
-from ..models.fond import Fond as FondModel
-from .fond import FondSerializer
-from ..models.mission import Mission as MissionModel
-from .mission import MissionSerializer
 from ..models.collection import Collection as CollectionModel
-from .collection import CollectionSerializer
+from ..models.collection_location import CollectionLocation as CollectionLocationModel
+from ..models.coupe import Coupe as CoupeModel
+from ..models.dance import Dance as DanceModel
+from ..models.domain_song import DomainSong as DomainSongModel
+from ..models.domain_music import DomainMusic as DomainMusicModel
+from ..models.domain_tale import DomainTale as DomainTaleModel
+from ..models.domain_vocal import DomainVocal as DomainVocalModel
 from ..models.item import Item as ItemModel
+from ..models.location import Location as LocationModel
+from ..models.mediatype import MediaType as MediaTypeModel
+from .authority import AuthoritySerializer
+from .collection import CollectionSerializer
+from .collection_location import CollectionLocationSerializer
+from .coupe import CoupeSerializer
+from .dance import DanceSerializer
+from .domain_song import DomainSongSerializer
+from .domain_music import DomainMusicSerializer
+from .domain_tale import DomainTaleSerializer
+from .domain_vocal import DomainVocalSerializer
 from .item import ItemSerializer
+from .location_gis import LocationGisSerializer
+from .mediatype import MediaTypeSerializer
 
 
 class AdvancedSearchSerializer(serializers.Serializer):
@@ -25,18 +37,30 @@ class AdvancedSearchSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if isinstance(instance, AuthorityModel):
             serializer = AuthoritySerializer(instance)
-        elif isinstance(instance, LocationModel):
-            serializer = LocationGisSerializer(instance)
-        elif isinstance(instance, FondModel):
-            serializer = FondSerializer(instance)
-        elif isinstance(instance, MissionModel):
-            serializer = MissionSerializer(instance)
         elif isinstance(instance, CollectionModel):
             serializer = CollectionSerializer(instance)
+        elif isinstance(instance, CollectionLocationModel):
+            serializer = CollectionLocationSerializer(instance)
+        elif isinstance(instance, CoupeModel):
+            serializer = CoupeSerializer(instance)
+        elif isinstance(instance, DanceModel):
+            serializer = DanceSerializer(instance)
+        elif isinstance(instance, DomainSongModel):
+            serializer = DomainSongSerializer(instance)
+        elif isinstance(instance, DomainMusicModel):
+            serializer = DomainMusicSerializer(instance)
+        elif isinstance(instance, DomainTaleModel):
+            serializer = DomainTaleSerializer(instance)
+        elif isinstance(instance, DomainVocalModel):
+            serializer = DomainVocalSerializer(instance)
         elif isinstance(instance, ItemModel):
             serializer = ItemSerializer(instance)
+        elif isinstance(instance, LocationModel):
+            serializer = LocationGisSerializer(instance)
+        elif isinstance(instance, MediaTypeModel):
+            serializer = MediaTypeSerializer(instance)
         else:
-            raise Exception("Not an known instance!")
+            raise Exception("Unknown instance type: %s" % type(instance))
         data = serializer.data
         data['entity'] = type(instance).__name__
         return data

@@ -6,6 +6,7 @@ class TestUsefulness(EnumsTest):
     entity = 'usefulness'
     title = _("Fonction")
     data = [
-        {"id":"1", "name":"danser", "notes":"Notes danser"}
+        {"id":"1", "name":"ecouter", "notes":""},
+        {"id":"2", "name":"danser", "notes":""},
     ]
     new_data = {"name":"jeu", "notes":"Notes jeu"}
