@@ -50,6 +50,11 @@ def test_links_to_list(francoralite_context):
             'title':'Lieux'
         },
         {
+            'id_block':'details_tale',
+            'id_link':'link_domain_tale',
+            'title':'Genre de conte'
+        },
+        {
             'id_block':'details_song',
             'id_link':'link_domain_song',
             'title':'Genre de chanson'

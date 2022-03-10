@@ -15,6 +15,7 @@ from ..models.collection_location import CollectionLocation
 from ..models.dance import Dance
 from ..models.domain_song import DomainSong
 from ..models.domain_music import DomainMusic
+from ..models.domain_tale import DomainTale
 from ..models.instrument import Instrument
 from ..models.item import Item
 from ..models.location import Location
@@ -106,6 +107,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'collection__itemdomaintale__domain_tale',
                     'itemdomaintale__domain_tale'
                 ),
+                'parameter_model': DomainTale,
             }, {
                 'name': 'domain_vocal',
                 'paths': (

@@ -75,6 +75,18 @@
     </a>
   </details>
 
+  <details{% if parameters_json.domain_tale %} open{% endif %}  id="details_tale">
+    <summary>{% trans "Conte" %}</summary>
+    <label for="domain_music">{% trans "Genre de conte" %}</label>
+    <br>
+    <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_json.domain_tale }}"{% if 'domain_tale' in or_operators %} data-default-operator="checked"{% endif %}>
+    </francoralite-domain-tale>
+    <a id="link_domain_tale" href="/domain_tale">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
+    </a>
+  </details>
+
+
   <details{% if parameters_json.domain_song or parameters_json.coupe %} open{% endif %}  id="details_song">
     <summary>{% trans "Chanson" %}</summary>
     <label for="domain_song">{% trans "Genre de chanson" %}</label>
