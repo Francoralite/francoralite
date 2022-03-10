@@ -11,6 +11,7 @@ from ..models.collection import Collection as CollectionModel
 from ..models.collection_location import CollectionLocation as CollectionLocationModel
 from ..models.coupe import Coupe as CoupeModel
 from ..models.dance import Dance as DanceModel
+from ..models.domain_song import DomainSong as DomainSongModel
 from ..models.item import Item as ItemModel
 from ..models.location import Location as LocationModel
 from .authority import AuthoritySerializer
@@ -18,6 +19,7 @@ from .collection import CollectionSerializer
 from .collection_location import CollectionLocationSerializer
 from .coupe import CoupeSerializer
 from .dance import DanceSerializer
+from .domain_song import DomainSongSerializer
 from .item import ItemSerializer
 from .location_gis import LocationGisSerializer
 
@@ -35,6 +37,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = CoupeSerializer(instance)
         elif isinstance(instance, DanceModel):
             serializer = DanceSerializer(instance)
+        elif isinstance(instance, DomainSongModel):
+            serializer = DomainSongSerializer(instance)
         elif isinstance(instance, ItemModel):
             serializer = ItemSerializer(instance)
         elif isinstance(instance, LocationModel):

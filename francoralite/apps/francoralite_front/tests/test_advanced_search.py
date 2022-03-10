@@ -51,6 +51,11 @@ def test_links_to_list(francoralite_context):
         },
         {
             'id_block':'details_song',
+            'id_link':'link_domain_song',
+            'title':'Genre de chanson'
+        },
+        {
+            'id_block':'details_song',
             'id_link':'link_coupe',
             'title':'Coupe'
         },
