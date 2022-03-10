@@ -23,19 +23,24 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
 {% endblock %}
 
-{% block title %}
-   {{ block.super}}
+{% block title_name %}
+   {{ block.super}} -
    {% if id %}
-   {% trans "Modification" %}
+    {% trans "Modification" %}
    {% else %}
-   {% trans "Création" %}
+     {% trans "Création" %}
    {% endif %}
 {% endblock %}
+
+{% block content %}
 
 {% block title_buttons %}
 {% endblock %}
 
-{% block content %}
+{% block title %}
+	{{ block.super }}
+{% endblock %}
+
 {{ form.media }}
 {% if not error|length %}
   <div class="container">

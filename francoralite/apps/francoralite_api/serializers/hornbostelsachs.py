@@ -5,11 +5,13 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from ..models.hornbostelsachs import HornbostelSachs as HornbostelSachsModel
 
-
 class HornbostelSachsSerializer(serializers.ModelSerializer):
-    number = serializers.CharField(required=True)
+    number = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=HornbostelSachsModel.objects.all())])
     name = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:

@@ -5,13 +5,18 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
-from francoralite.apps.francoralite_front.forms.musical_organization import MusicalOrganizationForm
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.musical_organization import MusicalOrganizationForm
+from ... import tools as tools
 
 
 class MusicalOrganizationDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/musical_organization-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'musical_organization:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -21,6 +26,8 @@ class MusicalOrganizationDetail(FrancoraliteTemplateView):
             context['musical_organization'] = tools.request_api(
                 '/api/musical_organization/' + context['id'])
             context['form'] = MusicalOrganizationForm()
+        except Http404:
+            raise Http404(_('Cette organisation musicale n’existe pas.'))
         except Exception as err:
             context['musical_organization'] = {}
             context['form'] = MusicalOrganizationForm()

@@ -24,7 +24,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.publisher_add %}
   <a href="{% url "publisher-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un éditeur" %}
@@ -39,12 +39,12 @@
 <div class="fullpage">
   <!-- If there is some publisher (number of elements > 0 ) -->
 {% if publishers|length > 0 %}
-  <!-- Table to display the publisher --->
+  <!-- Table to display the publisher -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.publisher_update or perms.keycloak.publisher_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,25 +58,26 @@
         {% if publisher.notes %}
           {{ publisher.notes|markdown|safe }}
         {% endif %}
-      </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.publisher_update %}
         <a href="{% url "publisher-edit" id=publisher.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.publisher_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{publisher.title}}"
             data-url="{% url "publisher-delete" id=publisher.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.publisher_delete %}
 	{% modal_delete %}
 {% endif %}
 

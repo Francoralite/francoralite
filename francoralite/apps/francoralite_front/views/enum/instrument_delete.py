@@ -5,9 +5,13 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.views.generic.base import View
-import francoralite.apps.francoralite_front.tools as tools
+from ... import tools as tools
 
 
 class InstrumentDelete(View):
+    keycloak_scopes = {
+        'DEFAULT': 'instrument:delete',
+    }
+
     def get(self, request, *args, **kwargs):
         return tools.delete('instrument', request, *args, **kwargs)

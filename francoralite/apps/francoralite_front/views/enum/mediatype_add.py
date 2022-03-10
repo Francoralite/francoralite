@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.mediatype import MediaTypeForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.mediatype import MediaTypeForm
+from ... import tools as tools
 
 
 class MediaTypeAdd(FormView):
     template_name = "../templates/enum/mediatype-add.html"
     form_class = MediaTypeForm
     success_url = '/mediatype/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'mediatype:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post('mediatype', MediaTypeForm, request, *args, **kwargs)

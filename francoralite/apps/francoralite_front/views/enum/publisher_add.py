@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.publisher import PublisherForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.publisher import PublisherForm
+from ... import tools as tools
 
 
 class PublisherAdd(FormView):
     template_name = "../templates/enum/publisher-add.html"
     form_class = PublisherForm
     success_url = '/publisher/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'publisher:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post('publisher', PublisherForm, request, *args, **kwargs)

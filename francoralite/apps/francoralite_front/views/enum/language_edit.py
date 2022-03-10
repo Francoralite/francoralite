@@ -5,17 +5,16 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.language import LanguageForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteFormView
+from ...forms.language import LanguageForm
 
 
-class LanguageEdit(FormView):
+class LanguageEdit(FrancoraliteFormView):
     template_name = "../templates/enum/language-add.html"
+    api_url_prefix = '/api/language/'
+    entity_name = 'language'
     form_class = LanguageForm
+    template_variable_name = 'language'
     success_url = '/language/'
 
     keycloak_scopes = {
@@ -23,32 +22,3 @@ class LanguageEdit(FormView):
             'POST': 'language:add',
             'PATCH': 'language:update',
             'PUT': 'language:update'}
-
-    def get_context_data(self, **kwargs):
-        try:
-            context = super(LanguageEdit, self).get_context_data(**kwargs)
-            id = kwargs.get('id')
-            # Obtain values of the record
-            context['language'] = tools.request_api(
-                '/api/language/' + str(id))
-        except Exception as err:
-            context['language'] = {}
-            context['error'] = err
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        language = requests.get(
-            settings.FRONT_HOST_URL + '/api/language/' + str(id))
-        data = language.json()
-        form = LanguageForm(initial=data)
-
-        return render(request,
-                      '../templates/enum/language-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch('language', LanguageForm, request, *args, **kwargs)

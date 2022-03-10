@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.musical_group import MusicalGroupForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.musical_group import MusicalGroupForm
+from ... import tools as tools
 
 
 class MusicalGroupAdd(FormView):
     template_name = "../templates/enum/musical_group-add.html"
     form_class = MusicalGroupForm
     success_url = '/musical_group/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'musical_group:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

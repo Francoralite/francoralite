@@ -4,7 +4,7 @@
       "latitude": 46.5802596,
       "notes": "",
       "code": "poitiers",
-      "name": "Poitiers, Vienne, Nouvelle-Aquitaine, France m\u00e9tropolitaine, 86000, France",
+      "name": "Poitiers, Vienne, Nouvelle-Aquitaine, France métropolitaine, 86000, France",
       "longitude": 0.340196
     },
     "model": "francoralite_api.location",
@@ -31,6 +31,17 @@
     },
     "model": "francoralite_api.location",
     "pk": 3
+  },
+  {
+    "fields": {
+      "latitude": 46.9794444,
+      "notes": "",
+      "code": "L'Épine (île de Noirmoutier, Vendée)",
+      "name": "L'Épine, Les Sables-d'Olonne, Vendée, Pays de la Loire, France métropolitaine, 85740, France",
+      "longitude": -2.2669444
+    },
+    "model": "francoralite_api.location",
+    "pk": 4
   },
   {
     "fields": {
@@ -138,11 +149,139 @@
   },
   {
     "fields": {
-      "notes": "AABB",
+      "notes": "Notes de AABB",
       "name": "AABB"
     },
     "model": "francoralite_api.coupe",
     "pk": 1
+  },
+  {
+    "fields": {
+      "notes": "Notes de ABCD",
+      "name": "ABCD"
+    },
+    "model": "francoralite_api.coupe",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "notes": "6F-6M",
+      "name": "6F-6M"
+    },
+    "model": "francoralite_api.coupe",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "name": "air de musique",
+      "notes": "Notes air de musique"
+    },
+    "model": "francoralite_api.domainmusic",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "air de chanson",
+      "notes": "Notes air de chanson"
+    },
+    "model": "francoralite_api.domainmusic",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "relations sociales",
+      "notes": "Notes relations sociales"
+    },
+    "model": "francoralite_api.domainsong",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "mariage",
+      "notes": ""
+    },
+    "model": "francoralite_api.domainsong",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "éducation",
+      "notes": ""
+    },
+    "model": "francoralite_api.domainsong",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "name": "conte facétieux",
+      "notes": "Notes conte facétieux"
+    },
+    "model": "francoralite_api.domaintale",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "récit",
+      "notes": "Notes récit"
+    },
+    "model": "francoralite_api.domaintale",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "comptine",
+      "notes": "Notes comptine"
+    },
+    "model": "francoralite_api.domainvocal",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "identifier": "fra",
+      "name": "Français"
+    },
+    "model": "francoralite_api.language",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "duo",
+      "notes": "Notes duo"
+    },
+    "model": "francoralite_api.musicalgroup",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "monodie",
+      "notes": "Notes monodie"
+    },
+    "model": "francoralite_api.musicalorganization",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "editeur 1",
+      "notes": "Notes éditeur 1"
+    },
+    "model": "francoralite_api.publisher",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "danse",
+      "notes": "Notes danse"
+    },
+    "model": "francoralite_api.thematic",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "récit",
+      "notes": ""
+    },
+    "model": "francoralite_api.thematic",
+    "pk": 2
   },
   {
     "fields": {
@@ -314,6 +453,27 @@
   },
   {
     "fields": {
+      "first_name": "Michèle",
+      "last_name": "Bouchereau",
+      "is_collector": false,
+      "birth_location": null,
+      "is_editor": false,
+      "is_composer": false,
+      "civility": "Mlle",
+      "uri": "",
+      "is_informer": true,
+      "alias": "",
+      "death_location": null,
+      "birth_date": "1948-01-01",
+      "is_author": false,
+      "biography": "",
+      "death_date": null
+    },
+    "model": "francoralite_api.authority",
+    "pk": 9
+  },
+  {
+    "fields": {
       "notes": "",
       "name": "Université de Poitiers"
     },
@@ -415,7 +575,7 @@
       "location":2
     },
     "model":"francoralite_api.collectionlocation",
-    "pk":1
+    "pk":3
   },
   {
     "fields": {
@@ -454,7 +614,7 @@
       "collector":6
     },
     "model":"francoralite_api.collectioncollectors",
-    "pk":1
+    "pk":2
   },
   {
     "fields":{
@@ -462,7 +622,7 @@
       "informer":4
     },
     "model":"francoralite_api.collectioninformer",
-    "pk":1
+    "pk":2
   },
   {
     "fields":{
@@ -470,22 +630,160 @@
       "informer":5
     },
     "model":"francoralite_api.collectioninformer",
-    "pk":2
+    "pk":3
+  },
+  {
+    "fields":{
+      "collection":2,
+      "number":1,
+      "instrument":2
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":1
   },
   {
     "fields": {
-      "notes": "AABB",
-      "name": "AABB"
+      "mission": 3,
+      "title": "Répertoire joué au violon et témoignage de M. Charles Aubrière et Mme Aubrière - La Biroire, 1969 ",
+      "description": "L'informateur joue au violon et témoigne de sa pratique. Mme Aubrière apporte quelques informations. Le violon semble accordé approximativement 3 demi-tons au-dessous du la 440Hz. L’informateur joue souvent en démanchant avec de nombreux glissés.",
+      "code": "UPOI_ATP_0001_0002",
+      "code_partner": "MUS1969.33.7 à MUS1969.33.34",
+      "recording_context": 1,
+      "recorded_from_year": "1969-09-07",
+      "recorded_to_year": "1969-09-07",
+      "year_published": null,
+      "location_details": "",
+      "cultural_area": "Poitou",
+      "language": "",
+      "booklet_author": "",
+      "metadata_author": "",
+      "booklet_description": "",
+      "media_type": 2,
+      "legal_rights": 1
     },
-    "model": "francoralite_api.coupe",
-    "pk": 1
+      "model":"francoralite_api.collection",
+      "pk":3
+  },
+  {
+    "fields":{
+      "collection":3,
+      "location":3
+    },
+    "model":"francoralite_api.collectionlocation",
+    "pk":2
+  },
+  {
+    "fields":{
+      "collection":3,
+      "collector":6
+    },
+    "model":"francoralite_api.collectioncollectors",
+    "pk":3
+  },
+  {
+    "fields":{
+      "collection":3,
+      "informer":4
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":3,
+      "informer":5
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":5
+  },
+  {
+    "fields":{
+      "collection":3,
+      "number":1,
+      "instrument":1
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":2
+  },
+  {
+    "fields":{
+      "collection":3,
+      "number":1,
+      "instrument":2
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":3
+  },
+  {
+    "fields":{
+      "mission": 2,
+      "title": "Répertoire chanté de Michelle Bouchereau - L'Épine, île de Noirmoutier, 1956 [Extrait d'enquête]",
+      "alt_title":"",
+      "description":"Extrait d'enquête à L'Épine, île de Noirmoutier (Vendée) auprès de Michelle Bouchereau, agée d'une dizaine d'années.",
+      "code":"UPOI_ATP_0000_0009",
+		  "code_partner":"56-10-138",
+      "recording_context":6,
+		  "recorded_from_year":"1956-06-11",
+		  "recorded_to_year":"1956-06-11",
+      "booklet_description":"Carnets d'enquête, photographies.",
+		  "comment":"",
+		  "media_type": 3,
+      "location_details":"",
+		  "cultural_area":"Vendée"
+    },
+    "model":"francoralite_api.collection",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "location":4
+    },
+    "model":"francoralite_api.collectionlocation",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "collector":8
+    },
+    "model":"francoralite_api.collectioncollectors",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "informer":9
+    },
+    "model":"francoralite_api.collectioninformer",
+    "pk":6
+  },
+  {
+    "fields":{
+      "collection":4,
+      "number":1,
+      "instrument":3
+    },
+    "model":"francoralite_api.performancecollection",
+    "pk":4
   },
 
-  {"fields": {"notes": "Polka", "name": "polka"}, "model": "francoralite_api.dance", "pk": 1},
+  {"fields": {"notes": "Notes de polka", "name": "polka"}, "model": "francoralite_api.dance", "pk": 1},
+  {"fields": {"notes": "Notes de valse", "name": "valse"}, "model": "francoralite_api.dance", "pk": 2},
+  {"fields": {"notes": "Notes de mazurka", "name": "mazurka"}, "model": "francoralite_api.dance", "pk": 3},
 
   {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "francoralite_api.emitvox", "pk": 1},
+  {"fields": {"notes": "", "name": "chanté"}, "model": "francoralite_api.emitvox", "pk": 2},
+  
   {"fields": {"number": "321.322", "name": "Violon"}, "model": "francoralite_api.hornbostelsachs", "pk": 1},
+  {"fields": {"number": "4", "name": "Voix"}, "model": "francoralite_api.hornbostelsachs", "pk": 2},
+  
   {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "francoralite_api.instrument", "pk": 1},
+  {"fields": {"notes": "", "name": "Voix d'homme", "typology": 2}, "model": "francoralite_api.instrument", "pk": 2},
+  {"fields": {"notes": "", "name": "Voix de fille", "typology": 2}, "model": "francoralite_api.instrument", "pk": 3},
+  
+  {"fields": {"notes": "", "name": "ecouter"}, "model": "francoralite_api.usefulness", "pk": 1},
+  {"fields": {"notes": "", "name": "danser"}, "model": "francoralite_api.usefulness", "pk": 2},
 
   {
     "fields": {
@@ -496,10 +794,12 @@
       "code_partner": "MUS1969.33.1",
       "file": "items/violonneux.mp3",
       "media_type": 2,
-      "coupe": null,
+      "coupe": 1,
       "text_bool": false,
       "approx_duration": "00:01:20",
-      "date_edit": "2021-11-15T17:44:31.581708"
+      "date_edit": "2021-11-15T17:44:31.581708",
+      "timbre": "timbre_1",
+      "timbre_ref": "timbre_ref_1"
     },
       "model":"francoralite_api.item",
       "pk":1
@@ -520,7 +820,46 @@
     "model":"francoralite_api.iteminformer",
     "pk":1
   },
-
+  {
+    "fields":{
+      "item":1,
+      "dance":1
+    },
+    "model":"francoralite_api.itemdance",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "usefulness":1
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "usefulness":2
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":1,
+      "thematic":2
+    },
+    "model":"francoralite_api.itemthematic",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "domain_tale":2
+    },
+    "model":"francoralite_api.itemdomaintale",
+    "pk":1
+  },
   {
     "fields": {
       "collection": 2,
@@ -530,10 +869,12 @@
       "code_partner": "MUS1969.33.2",
       "file": "items/violonneux.mp3",
       "media_type": 2,
-      "coupe": null,
+      "coupe": 1,
       "text_bool": false,
       "approx_duration": "00:02:30",
-      "date_edit": "2021-11-15T17:44:31.581708"
+      "date_edit": "2021-11-15T17:44:31.581708",
+      "timbre": "timbre_1",
+      "timbre_ref": "timbre_ref_1"
     },
       "model":"francoralite_api.item",
       "pk":2
@@ -544,7 +885,7 @@
       "collector":8
     },
     "model":"francoralite_api.itemcollector",
-    "pk":1
+    "pk":2
   },
   {
     "fields":{
@@ -552,7 +893,187 @@
       "informer":4
     },
     "model":"francoralite_api.iteminformer",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "dance":1
+    },
+    "model":"francoralite_api.itemdance",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "dance":2
+    },
+    "model":"francoralite_api.itemdance",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":2,
+      "performance":1
+    },
+    "model":"francoralite_api.itemperformance",
     "pk":1
+  },
+  {
+    "fields":{
+      "item":2,
+      "thematic":2
+    },
+    "model":"francoralite_api.itemthematic",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "thematic":1
+    },
+    "model":"francoralite_api.itemthematic",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":2,
+      "domain_tale":2
+    },
+    "model":"francoralite_api.itemdomaintale",
+    "pk":2
+  },
+  {
+    "fields": {
+      "collection": 1,
+      "title": "Information autobiographique de Monsieur Charles Aubrière",
+      "description": "M. Aubrière évoque son père, son apprentissage du violon, sa pratique musicale et sur son professeur de violon.",
+      "code": "UPOI_AFE_0000_0001_001",
+      "code_partner": "MUS1969.33.2",
+      "file": "items/violonneux.mp3",
+      "media_type": 2,
+      "coupe": 2,
+      "text_bool": false,
+      "approx_duration": "00:02:30",
+      "date_edit": "2021-11-15T17:44:31.581708",
+      "timbre": "",
+      "timbre_ref": ""
+    },
+      "model":"francoralite_api.item",
+      "pk":3
+  },
+  {
+    "fields":{
+      "item":3,
+      "usefulness":2
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":3,
+      "domain_tale":2
+    },
+    "model":"francoralite_api.itemdomaintale",
+    "pk":3
+  },
+  {
+    "fields": {
+      "collection": 4,
+      "title": "La destinée la rose au bois (LAF) / Ils me mirent à l'école (inc.)",
+      "alt_title": "Ils me mirent à l'école du roi (inc.)",
+      "trans_title": "La destinée la rose au bois",
+      "description":"Michèle Bouchereau chante une chanson, elle est applaudie. On perçoit à l'arrière-plan des bruits de vaisselle.",
+      "code":"UPOI_ATP_0000_0009_001",
+      "code_partner":"56-10-199 OU 56-10-138 -714-15",
+      "auto_period_access":false,
+      "remarks":"",
+      "date_edit":"2020-10-01T02:30:19.929520",
+      "media_type":3,
+      "approx_duration":null,
+      "file":"items/violonneux.mp3",
+      "timbre": "timbre_2",
+      "timbre_ref": "timbre_ref_2",
+      "melody":"X: 1\r\nT: La destinée la rose au bois\r\nS: Version Michèle Bouchereau\r\nL: 1/8\r\nN: Mission Vendée 1956\r\nK: G\r\nQ: 120\r\n|:G2 DB BBBG|A2 Ac BA G2:|\r\n|d|dedc BBBB|BdcB DDDD|D2 z2 |d2 dedc BABd|B2A2 G4||",
+      "domain":"C",
+      "deposit_digest":"",
+      "deposit_names":"",
+      "deposit_places":"",
+      "deposit_periods":"",
+      "text_bool":true,
+      "text":"Ils me mirent à l’école\r\nÀ l’école du roi\r\n\r\n* * *\r\n\r\nÀ l’école du roi\r\n**La destinée la rose au bois**\r\nÀ l’école du roi\r\n**La destinée r-au bois.**\r\n\r\n* * *\r\n\r\n\r\nIl me fit faire t-une robe / Une robe de soie.\r\n\r\nLe tailleur qui la coupe / C’est le tailleur du roi.\r\n\r\nÀ chaque coup d’aiguille / Ma mie embrassez-moi. \r\n\r\nQuand les maisons sont propres / Les amoureux y vont. \r\n\r\nIls s’en vont quatre à quatre / En frappant du talon. \r\n\r\nQuand les maisons sont sales / Les amoureux s’en vont.",
+      "incipit":"Ils me mirent à l'école du roi",
+      "refrain":"La destinée la rose au bois\r\nLa destinée au bois",
+      "jingle":"",
+      "coupe": 3
+    },
+    "model":"francoralite_api.item",
+    "pk":4
+  },
+  {
+    "fields":{
+      "item":4,
+      "collector":8
+    },
+    "model":"francoralite_api.itemcollector",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":4,
+      "informer":9
+    },
+    "model":"francoralite_api.iteminformer",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":4,
+      "performance":4
+    },
+    "model":"francoralite_api.itemperformance",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":4,
+      "usefulness":1
+    },
+    "model":"francoralite_api.itemusefulness",
+    "pk":4
+  },
+  {
+    "fields":{
+      "item":4,
+      "thematic":1
+    },
+    "model":"francoralite_api.itemthematic",
+    "pk":4
+  },
+  {
+    "fields":{
+      "item":4,
+      "domain_music":2
+    },
+    "model":"francoralite_api.itemdomainmusic",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":4,
+      "domain_song":2
+    },
+    "model":"francoralite_api.itemdomainsong",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":4,
+      "domain_song":3
+    },
+    "model":"francoralite_api.itemdomainsong",
+    "pk":2
   }
 
 ]

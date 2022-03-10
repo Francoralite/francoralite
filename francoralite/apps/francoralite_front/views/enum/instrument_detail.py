@@ -5,13 +5,18 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
-from francoralite.apps.francoralite_front.forms.instrument import InstrumentForm
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.instrument import InstrumentForm
+from ... import tools as tools
 
 
 class InstrumentDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/instrument-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'instrument:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,6 +24,8 @@ class InstrumentDetail(FrancoraliteTemplateView):
             context['instrument'] = tools.request_api(
                 '/api/instrument/' + context['id'])
             context['form'] = InstrumentForm()
+        except Http404:
+            raise Http404(_('Cet instrument n’existe pas.'))
         except Exception as err:
             context['instrument'] = {}
             context['error'] = err

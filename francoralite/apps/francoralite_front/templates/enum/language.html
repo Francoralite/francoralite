@@ -23,7 +23,7 @@
 
 {% block title_buttons %}
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.language_add %}
   <a href="{% url "language-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une langue" %}
@@ -37,7 +37,7 @@
 
 <div class="fullpage">
 {% if languages|length > 0 %}
-  <!-- Table to display the languages --->
+  <!-- Table to display the languages -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Identificateur" %}</th>
@@ -52,24 +52,31 @@
       <td>{{ language.name|safe }}</td>
       <td>
         {% buttons %}
+        {% if perms.keycloak.language_update %}
         <a href="{% url "language-edit" id=language.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
+        {% endif %}
+        {% if perms.keycloak.language_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{language.title}}"
             data-url="{% url "language-delete" id=language.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
         {% endbuttons %}
       </td>
   </tr>
   {% endfor %}
 </table>
 
+{% if perms.keycloak.language_delete %}
 {% modal_delete %}
+{% endif %}
+
 
 {% else %}
     <p>{% trans "Il n'y a pas de langues" %}</p>

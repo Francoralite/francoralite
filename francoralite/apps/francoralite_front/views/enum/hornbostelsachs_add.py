@@ -6,14 +6,17 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.hornbostelsachs import HornbostelsachsForm
-import francoralite.apps.francoralite_front.tools as tools
-
+from ...forms.hornbostelsachs import HornbostelsachsForm
+from ... import tools as tools
 
 class HornbostelsachsAdd(FormView):
     template_name = "../templates/enum/hornbostelsachs-add.html"
     form_class = HornbostelsachsForm
     success_url = '/hornbostelsachs/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'hornbostelsachs:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

@@ -6,8 +6,8 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.usefulness import UsefulnessForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.usefulness import UsefulnessForm
+from ... import tools as tools
 
 
 class UsefulnessAdd(FormView):
@@ -15,6 +15,9 @@ class UsefulnessAdd(FormView):
     form_class = UsefulnessForm
     success_url = '/usefulness/'
 
+    keycloak_scopes = {
+        'DEFAULT': 'usefulness:add',
+    }
     def post(self, request, *args, **kwargs):
         return tools.post(
             'usefulness', UsefulnessForm, request, *args, **kwargs)

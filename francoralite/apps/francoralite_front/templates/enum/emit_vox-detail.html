@@ -23,7 +23,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.emit_vox_update %}
   <a href="{% url "emit_vox-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -37,11 +37,11 @@
 {% if not error|length %}
 {% if emit_vox %}
 
-  {% field_data form.name.label|safe emit_vox.name|safe %}
-  {% field_data form.notes.label|safe emit_vox.notes|markdown|safe %}
+  {% field_data_id form.name emit_vox.name|safe %}
+  {% field_data_id form.notes emit_vox.notes|markdown|safe %}
 
 {% else %}
-  <p>{% trans "Ce genre n'existe pas." %}</p>
+  <p>{% trans "Cette nature d'émission vocale n'existe pas." %}</p>
 {% endif %}
 
 

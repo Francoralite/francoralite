@@ -6,8 +6,8 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.dance import DanceForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.dance import DanceForm
+from ... import tools as tools
 
 
 class DanceAdd(FormView):

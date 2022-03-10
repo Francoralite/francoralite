@@ -16,14 +16,14 @@
 {% block title_name %}
   {{ block.super }}
     {% if coupe %}
-     : {{ coupe.value }}
+     : {{ coupe.name }}
     {% endif %}
 {% endblock %}
 
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.coupe_update %}
   <a href="{% url "coupe-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -37,8 +37,8 @@
 {% if not error|length %}
 {% if coupe %}
 
-  {% field_data form.name.label|safe coupe.name|safe %}
-  {% field_data form.notes.label|safe coupe.notes|markdown|safe %}
+  {% field_data_id form.name coupe.name|safe %}
+  {% field_data_id form.notes coupe.notes|markdown|safe %}
 
 {% else %}
   <p>{% trans "Cette coupe n'existe pas." %}</p>

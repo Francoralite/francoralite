@@ -5,44 +5,14 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.mediatype import MediaTypeForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteFormView
+from ...forms.mediatype import MediaTypeForm
 
 
-class MediaTypeEdit(FormView):
+class MediaTypeEdit(FrancoraliteFormView):
     template_name = "../templates/enum/mediatype-add.html"
+    api_url_prefix = '/api/mediatype/'
+    entity_name = 'mediatype'
     form_class = MediaTypeForm
+    template_variable_name = 'mediatype'
     success_url = '/mediatype/'
-
-    def get_context_data(self, **kwargs):
-        context = super(MediaTypeEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            settings.FRONT_HOST_URL + '/api/mediatype/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['mediatype'] = response.json
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        mediatype = requests.get(
-            settings.FRONT_HOST_URL + '/api/mediatype/' + str(id))
-        form = MediaTypeForm(initial=mediatype.json())
-
-        return render(request,
-                      '../templates/enum/mediatype-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch(
-            'mediatype', MediaTypeForm, request, *args, **kwargs)

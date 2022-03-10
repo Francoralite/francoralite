@@ -1,5 +1,5 @@
 
-{% extends "enum/domain_song.html" %}
+{% extends "enum/domain_tale.html" %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
@@ -23,7 +23,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.domain_tale_update %}
   <a href="{% url "domain_tale-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -37,8 +37,8 @@
 {% if not error|length %}
 {% if domain_tale %}
 
-  {% field_data form.name.label|safe domain_tale.name|safe %}
-  {% field_data form.notes.label|safe domain_tale.notes|markdown|safe %}
+  {% field_data_id form.name domain_tale.name|safe %}
+  {% field_data_id form.notes domain_tale.notes|markdown|safe %}
 
 {% else %}
   <p>{% trans "Ce genre n'existe pas." %}</p>

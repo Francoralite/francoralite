@@ -5,9 +5,11 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.views.generic.base import View
-import francoralite.apps.francoralite_front.tools as tools
-
+from ... import tools as tools
 
 class RecordingContextDelete(View):
+    keycloak_scopes = {
+        'DEFAULT': 'recording_context:delete',
+    }
     def get(self, request, *args, **kwargs):
         return tools.delete('recording_context', request, *args, **kwargs)

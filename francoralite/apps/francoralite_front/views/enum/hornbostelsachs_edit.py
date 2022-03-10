@@ -5,44 +5,14 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from django.views.generic.edit import FormView
-from rest_framework import status
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.hornbostelsachs import HornbostelsachsForm
-from django.shortcuts import render
-import francoralite.apps.francoralite_front.tools as tools
+from ...francoralite_template_view import FrancoraliteFormView
+from ...forms.hornbostelsachs import HornbostelsachsForm
 
 
-class HornbostelsachsEdit(FormView):
+class HornbostelsachsEdit(FrancoraliteFormView):
     template_name = "../templates/enum/hornbostelsachs-add.html"
+    api_url_prefix = '/api/hornbostelsachs/'
+    entity_name = 'hornbostelsachs'
     form_class = HornbostelsachsForm
+    template_variable_name = 'hornbostelsachs'
     success_url = '/hornbostelsachs/'
-
-    def get_context_data(self, **kwargs):
-        context = super(HornbostelsachsEdit, self).get_context_data(**kwargs)
-
-        id = kwargs.get('id')
-        # Obtain values of the record
-        response = requests.get(
-            settings.FRONT_HOST_URL + '/api/hornbostelsachs/' + str(id))
-        if response.status_code == status.HTTP_200_OK:
-            context['hornbostelsachs'] = response.json
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        id = kwargs.get('id')
-
-        # Obtain values of the record
-        hornbostelsachs = requests.get(
-            settings.FRONT_HOST_URL + '/api/hornbostelsachs/' + str(id))
-        form = HornbostelsachsForm(initial=hornbostelsachs.json())
-
-        return render(request,
-                      '../templates/enum/hornbostelsachs-add.html',
-                      {'form': form, 'id': id})
-
-    def post(self, request, *args, **kwargs):
-        return tools.patch(
-            'hornbostelsachs', HornbostelsachsForm, request, *args, **kwargs)

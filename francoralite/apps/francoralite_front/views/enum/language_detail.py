@@ -5,13 +5,18 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
-from francoralite.apps.francoralite_front.forms.language import LanguageForm
+from django.http import Http404
+from django.utils.translation import gettext as _
+from ...francoralite_template_view import FrancoraliteTemplateView
+from ...forms.language import LanguageForm
+from ... import tools as tools
 
 
 class LanguageDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/language-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'language:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:
@@ -19,6 +24,8 @@ class LanguageDetail(FrancoraliteTemplateView):
             context['language'] = tools.request_api(
                 '/api/language/' + context['id'])
             context['form'] = LanguageForm()
+        except Http404:
+            raise Http404(_('Cette langue n’existe pas.'))
         except Exception as err:
             context['language'] = {}
             context['error'] = err

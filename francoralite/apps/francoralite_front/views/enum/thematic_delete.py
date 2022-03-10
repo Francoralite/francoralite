@@ -5,9 +5,12 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django.views.generic.base import View
-import francoralite.apps.francoralite_front.tools as tools
+from ... import tools as tools
 
 
 class ThematicDelete(View):
+    keycloak_scopes = {
+        'DEFAULT': 'thematic:delete',
+    }
     def get(self, request, *args, **kwargs):
         return tools.delete('thematic', request, *args, **kwargs)

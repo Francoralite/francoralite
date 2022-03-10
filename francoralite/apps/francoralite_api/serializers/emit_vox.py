@@ -5,11 +5,15 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from ..models.emit_vox import EmitVox as EmitVoxModel
 
 
 class EmitVoxSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(required=True)
+    name = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=EmitVoxModel.objects.all())]
+        )
     notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:

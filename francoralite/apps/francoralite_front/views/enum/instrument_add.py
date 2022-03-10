@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.instrument import InstrumentForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.instrument import InstrumentForm
+from ... import tools as tools
 
 
 class InstrumentAdd(FormView):
     template_name = "../templates/enum/instrument-add.html"
     form_class = InstrumentForm
     success_url = '/instrument/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'instrument:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

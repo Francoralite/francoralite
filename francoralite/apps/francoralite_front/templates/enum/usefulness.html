@@ -24,7 +24,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.usefulness_add %}
   <a href="{% url "usefulness-add" %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une fonction" %}
@@ -39,12 +39,12 @@
 <div class="fullpage">
   <!-- If there is some usefulness (number of elements > 0 ) -->
 {% if usefulnesss|length > 0 %}
-  <!-- Table to display the usefulnesss --->
+  <!-- Table to display the usefulnesss -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.usefulness_update or perms.keycloak.usefulness_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -59,24 +59,26 @@
           {{ usefulness.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.usefulness_update %}
         <a href="{% url "usefulness-edit" id=usefulness.id %}" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
+        {% if perms.keycloak.usefulness_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{usefulness.title}}"
             data-url="{% url "usefulness-delete" id=usefulness.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.usefulness_delete %}
 	{% modal_delete %}
 {% endif %}
 

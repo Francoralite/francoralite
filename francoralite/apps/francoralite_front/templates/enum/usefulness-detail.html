@@ -25,7 +25,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.usefulness_update %}
   <a href="{% url "usefulness-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -39,8 +39,8 @@
 {% if not error|length %}
 {% if usefulness %}
 
-  {% field_data form.name.label|safe usefulness.name|safe %}
-  {% field_data form.notes.label|safe usefulness.notes|markdown|safe %}
+  {% field_data_id form.name usefulness.name|safe %}
+  {% field_data_id form.notes usefulness.notes|markdown|safe %}
 
 {% else %}
   <p>{% trans "Cette fonction n'existe pas." %}</p>

@@ -6,14 +6,18 @@
 
 
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.thematic import ThematicForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.thematic import ThematicForm
+from ... import tools as tools
 
 
 class ThematicAdd(FormView):
     template_name = "../templates/enum/thematic-add.html"
     form_class = ThematicForm
     success_url = '/thematic/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'thematic:add',
+    }
 
     def post(self, request, *args, **kwargs):
         return tools.post('thematic', ThematicForm, request, *args, **kwargs)

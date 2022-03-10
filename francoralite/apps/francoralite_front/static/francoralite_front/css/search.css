@@ -54,3 +54,30 @@ select[name*="start_bracket"] {
     text-align: right;
 }
 
+/* Accordion  ------------------------------------- */
+details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+    margin-bottom: 1em;
+  }
+  
+  summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+    color: white;
+    background-color: #AE8484;
+    cursor: pointer;
+    display: list-item;
+  }
+  
+  details[open] {
+    padding: .5em;
+  }
+  
+  details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+  }
+

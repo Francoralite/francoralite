@@ -4,16 +4,19 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-
 from django.views.generic.edit import FormView
-from francoralite.apps.francoralite_front.forms.domain_song import DomainSongForm
-import francoralite.apps.francoralite_front.tools as tools
+from ...forms.domain_song import DomainSongForm
+from ... import tools as tools
 
 
 class DomainSongAdd(FormView):
     template_name = "../templates/enum/domain_song-add.html"
     form_class = DomainSongForm
     success_url = '/domain_song/'
+    
+    keycloak_scopes = {
+        'DEFAULT': 'domain_song:add',
+        }
 
     def post(self, request, *args, **kwargs):
         return tools.post(

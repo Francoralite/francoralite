@@ -23,7 +23,7 @@
 {% block content %}
 
 {% block title_buttons %}
-  {% if user.is_authenticated %}
+  {% if perms.keycloak.hornbostelsachs_update %}
   <a href="{% url "hornbostelsachs-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
@@ -37,8 +37,8 @@
 {% if not error|length %}
 {% if hornbostelsachs %}
 
-  {% field_data form.number.label|safe hornbostelsachs.number|safe %}
-  {% field_data form.name.label|safe hornbostelsachs.name|safe %}
+  {% field_data_id form.number hornbostelsachs.number|safe %}
+  {% field_data_id form.name hornbostelsachs.name|safe %}
 
 {% else %}
   <p>{% trans "Ce genre n'existe pas." %}</p>

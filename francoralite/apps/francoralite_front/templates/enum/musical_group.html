@@ -22,7 +22,7 @@
 {% block content %}
 
 {% block title_buttons %}
-{% if user.is_authenticated %}
+{% if perms.keycloak.musical_group_add %}
   <a href="{% url "musical_group-add" %}"  class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer une formation" %}
@@ -37,12 +37,12 @@
 <div class="fullpage">
   <!-- If there is some musical_group (number of elements > 0 ) -->
 {% if musical_groups|length > 0 %}
-  <!-- Table to display the musical_groups --->
+  <!-- Table to display the musical_groups -->
   <table class="listing">
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.musical_group_update or perms.keycloak.musical_group_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -57,26 +57,28 @@
           {{ musical_group.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if user.is_authenticated %}
       <td>
+        {% if perms.keycloak.musical_group_update %}
         <a href="{% url "musical_group-edit" id=musical_group.id %}">
               <button type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
               </button>
         </a>
+        {% endif %}
+        {% if perms.keycloak.musical_group_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
             data-name="{{musical_group.title}}"
             data-url="{% url "musical_group-delete" id=musical_group.id %}">
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
+        {% endif %}
       </td>
-      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
-{% if user.is_authenticated %}
+{% if perms.keycloak.musical_group_delete %}
 	{% modal_delete %}
 {% endif %}
 {% else %}
