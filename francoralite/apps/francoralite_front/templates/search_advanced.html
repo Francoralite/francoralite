@@ -93,6 +93,17 @@
     </a>
   </details>
 
+  <details{% if parameters_json.domain_music %} open{% endif %}  id="details_music">
+    <summary>{% trans "Musique / Expression instrumentale" %}</summary>
+    <label for="domain_music">{% trans "Genre de musique" %}</label>
+    <br>
+    <francoralite-domain-music name="domain_music" data-values="{{ parameters_json.domain_music }}"{% if 'domain_music' in or_operators %} data-default-operator="checked"{% endif %}>
+    </francoralite-domain-music>
+    <a id="link_domain_music" href="/domain_music">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
+    </a>
+  </details>
+
   <button type="submit" id="btn" class="btn btn-default">
     <span class="glyphicon glyphicon-search">
     </span>

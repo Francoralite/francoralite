@@ -14,6 +14,7 @@ from ..models.collection import Collection
 from ..models.collection_location import CollectionLocation
 from ..models.dance import Dance
 from ..models.domain_song import DomainSong
+from ..models.domain_music import DomainMusic
 from ..models.instrument import Instrument
 from ..models.item import Item
 from ..models.location import Location
@@ -91,6 +92,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'collection__itemdomainmusic__domain_music',
                     'itemdomainmusic__domain_music'
                 ),
+                'parameter_model': DomainMusic,
             }, {
                 'name': 'domain_song',
                 'paths': (

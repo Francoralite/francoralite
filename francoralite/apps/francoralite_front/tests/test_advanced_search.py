@@ -60,6 +60,11 @@ def test_links_to_list(francoralite_context):
             'title':'Coupe'
         },
         {
+            'id_block':'details_music',
+            'id_link':'link_domain_music',
+            'title':'Genre de musique'
+        },
+        {
             'id_block':'details_what',
             'id_link':'link_dance',
             'title':'Genre de danse'
