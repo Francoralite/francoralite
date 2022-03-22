@@ -142,16 +142,16 @@
   </button>
 </form>
 
-{% if collections or items %}
+{% if show_results %}
 <hr/>
 
 <div>
   <h2>Résultats</h2>
 
-  {% if collections %}
   <div>
+    <h3>{% trans "Enquêtes" %}</h3>
+    {% if collections %}
     <table class="listing">
-      <caption>{% trans "Enquête(s)" %}</caption>
       <thead>
         <th class="highlight">{% trans "Cote" %}</th>
         <th>{% trans "Titre" %}</th>
@@ -165,17 +165,15 @@
       </tr>
       {% endfor %}
     </table>
+    {% else %}
+    <p>{% trans "Il n'y pas d'enquête qui correspond à ces critères." %}</p>
+    {% endif %}
   </div>
-  {% else %}
-  <div>
-    {% trans "Il n'y pas d'enquête qui correspond à ces critères." %}
-  </div>
-  {% endif %}
 
-  {% if items %}
   <div>
+    <h3>{% trans "Items" %}</h3>
+    {% if items %}
     <table class="listing">
-      <caption>{% trans "Item(s)" %}</caption>
       <thead>
         <th class="highlight">{% trans "Cote" %}</th>
         <th>{% trans "Titre" %}</th>
@@ -197,15 +195,14 @@
       </tr>
       {% endfor %}
     </table>
+    {% else %}
+    <p>{% trans "Il n'y pas d'item qui correspond à ces critères." %}</p>
+    {% endif %}
   </div>
-  {% else %}
-  <div>
-    {% trans "Il n'y pas d'item qui correspond à ces critères." %}
-  </div>
-  {% endif %}
 
   <div>
     <h3>{% trans "Lieux des enquêtes" %}</h3>
+    {% if locations %}
     <script  type="text/javascript">
       function map_init_basic (map, options) {
 
@@ -240,12 +237,13 @@
         {% endfor %}
         map.addLayer(markers);
       }
-
-
     </script>
 
     {% leaflet_map "id_map" callback="window.map_init_basic" %}
 
+    {% else %}
+    <p>{% trans "Il n'y pas de lieu qui correspond à ces critères." %}</p>
+    {% endif %}
   </div>
 
 </div>
