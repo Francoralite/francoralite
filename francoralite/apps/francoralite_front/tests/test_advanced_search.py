@@ -84,6 +84,11 @@ def test_links_to_list(francoralite_context):
             'id_link':'link_media_type',
             'title':'Type de média'
         },
+        {
+            'id_block':'details_what',
+            'id_link':'link_recording_context',
+            'title':"Contexte d’enregistrement"
+        },
     ]
     
     for link in links :

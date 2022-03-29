@@ -21,6 +21,7 @@ from ..models.instrument import Instrument
 from ..models.item import Item
 from ..models.location import Location
 from ..models.mediatype import MediaType
+from ..models.recording_context import RecordingContext
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
@@ -138,6 +139,11 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'name': 'media_type',
                 'paths': ('media_type', 'media_type'),
                 'parameter_model': MediaType,
+            },
+            {
+                'name': 'recording_context',
+                'paths': ('recording_context', 'collection__recording_context'),
+                'parameter_model': RecordingContext,
             },
         )
 

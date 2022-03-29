@@ -65,15 +65,24 @@
     </a>
   </details>
 
-  <details{% if parameters_json.media_type or parameters_json.dance %} open{% endif %}  id="details_what">
+  <details{% if parameters_json.media_type or parameters_json.recording_context or parameters_json.dance %} open{% endif %}  id="details_what">
     <summary>{% trans "Quoi ?" %}</summary>
-    <label for="dance">{% trans "Type de média" %}</label>
+    <label for="media_type">{% trans "Type de média" %}</label>
     <br>
     <francoralite-media-type name="media_type" data-values="{{ parameters_json.media_type }}"{% if 'media_type' in or_operators %} data-default-operator="checked"{% endif %}>
     </francoralite-media-type>
     <a id="link_media_type" href="/mediatype">
       <span class="glyphicon glyphicon-list"></span> {% trans "Types de média ..."%}
     </a>
+    <br><br>
+    <label for="recording_context">{% trans "Contexte d'enregistrement" %}</label>
+    <br>
+    <francoralite-recording-context name="recording_context" data-values="{{ parameters_json.recording_context }}"{% if 'recording_context' in or_operators %} data-default-operator="checked"{% endif %}>
+    </francoralite-recording-context>
+    <a id="link_recording_context" href="/recording_context">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Contextes d'enregistrement ..."%}
+    </a>
+    <br>
     <br><br>
     <label for="dance">{% trans "Danse" %}</label>
     <br>

@@ -329,6 +329,21 @@ class FrancoraliteMediaType extends FrancoraliteAutocomplete {
     }
 }
 
+class FrancoraliteRecordingContext extends FrancoraliteAutocomplete {
+    getDefaultUrl() {
+        return '/api/recordingcontext?limit=10&search=';
+    }
+
+    parseProposal(item) {
+        return {
+            'value': item.id,
+            'label': item.name,
+            'url': null,
+            'tooltip': null
+        };
+    }
+}
+
 customElements.define('francoralite-autocomplete', FrancoraliteAutocomplete);
 customElements.define('francoralite-informers', FrancoraliteInformers);
 customElements.define('francoralite-collectors', FrancoraliteCollectors);
@@ -340,3 +355,4 @@ customElements.define('francoralite-domain-vocal', FrancoraliteDomainVocal);
 customElements.define('francoralite-coupes', FrancoraliteCoupes);
 customElements.define('francoralite-dances', FrancoraliteDances);
 customElements.define('francoralite-media-type', FrancoraliteMediaType);
+customElements.define('francoralite-recording-context', FrancoraliteRecordingContext);
