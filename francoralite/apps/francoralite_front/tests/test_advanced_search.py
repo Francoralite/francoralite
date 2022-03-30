@@ -20,12 +20,14 @@ def test_search_dance(francoralite_context):
 #     francoralite_context.find_element(
 #         by_xpath="//p[contains(text(), 'valse')]", visibility_timeout=5)
 
+    #TODO ajouter des tests pour tous les critères
+
 def click_to_list(id_block, id_link, title, context):
-    
+
     # Go to advanced search page
     url_prefix = "/search_advanced/"
     context.open_url(url_prefix)
-    
+
     # Link to list
     context.scroll_to_element(by_id=id_block).click()
     context.find_element(by_id=id_link).click()
@@ -90,7 +92,7 @@ def test_links_to_list(francoralite_context):
             'title':"Contexte d’enregistrement"
         },
     ]
-    
+
     for link in links :
         click_to_list(
             id_block=link['id_block'],

@@ -219,6 +219,15 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Collecting the locations
         locations_qs = CollectionLocation.objects.filter(collection__in=query_sets[0])
 
+        # Collecting static parameters
+        parameters_instances = {}
+        parameters = {
+            'instances': parameters_instances,
+            'or_operators': or_operators,
+            'date_start': date_start,
+            'date_end': date_end,
+        }
+
         # Building a list of parameter names by model
         parameter_models = {}
         for field in fields:
@@ -227,7 +236,6 @@ class AdvancedSearchList(generics.GenericAPIView):
                 parameter_models.setdefault(model, []).append(field.get('name'))
 
         # Collecting parameter instances
-        parameters = {}
         for model, names in parameter_models.items():
             keys = set(
                 key
@@ -240,7 +248,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     serialized = serializer.to_representation(instance)
                     for name in names:
                         if str(instance.id) in self.request.query_params.getlist(name, []):
-                            parameters.setdefault(name, []).append(serialized)
+                            parameters_instances.setdefault(name, []).append(serialized)
 
         # Composing results
         collections = self.get_serializer(query_sets[0].distinct(), many=True).data
