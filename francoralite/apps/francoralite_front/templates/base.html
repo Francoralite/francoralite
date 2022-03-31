@@ -88,7 +88,10 @@
 <main id="content" role="main">
 {% block content %}
   {% block title %}
+    <header>
     <h1>{% block title_name %}{% endblock %}</h1>
+    {% block pagination %}{% include "inc/pagination.html" %}{% endblock %}
+    </header>
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
