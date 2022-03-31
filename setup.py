@@ -56,7 +56,6 @@ setup(
     'django-breadcrumbs==1.1.3', # Always useful ?
     'django-bootstrap3==14.2.0',
     'django-bootstrap-datepicker==1.4.0',
-    'django-bootstrap-pagination==1.7.1',
     'django-bower==5.2.0',
     'pyyaml==5.4.1',
     'Werkzeug==1.0.1',

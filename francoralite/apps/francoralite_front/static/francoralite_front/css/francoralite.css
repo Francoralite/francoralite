@@ -24,15 +24,6 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     height: auto;*/
 }
 
-/*a:link, a:visited {
-    color: #BB0000;
-    text-decoration:none;
-}
-a:link:hover, a:visited:hover {
-    background-color: transparent;
-    color: #BB0000;
-    text-decoration: underline;
-}*/
 a, a:visited {
     color: #BB0000;
     text-decoration:none;
@@ -747,21 +738,7 @@ dl.dublincore dd.caption {
 }
 
 /* Pagination */
-.pagination {
-    margin-top: 0em;
-    margin-bottom: 0em;
-    padding: .3em 0;
-    font-size: 0.7em;
-    background-color: #fff;
-    /*border-bottom: 1px solid #aaa;*/
-    color: #333;
-    font-weight: bold;
-}
-.pagination a {
-    background-color: #fff;
-    border-bottom: none;
-    padding: .3em;
-}
+
 
 /* Item instruments */
 div.instruments {

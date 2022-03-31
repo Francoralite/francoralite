@@ -86,7 +86,6 @@ INSTALLED_APPS = (
     'timezones',
     'bootstrap3',
     'bootstrap_datepicker',
-    'bootstrap_pagination',
     'registration',
     'rest_framework',
     'rest_framework_xml',
