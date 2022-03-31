@@ -40,7 +40,6 @@
 'django_extensions',
 'timezones',
 'bootstrap3',
-'bootstrap_datepicker',
 'registration',
 'rest_framework',
 'rest_framework_xml',
