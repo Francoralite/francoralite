@@ -40,6 +40,73 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Filtering ----------------------------------------------------
         fields = (
             {
+                'name': 'collector',
+                'paths': (
+                    'collectioncollectors__collector',
+                    'itemcollector__collector',
+                ),
+                'parameter_model': Authority,
+            }, {
+                'name': 'coupe',
+                'sub_model': Coupe,
+                'paths': ('items__collection', 'items'),
+                'parameter_model': Coupe,
+            }, {
+                'name': 'cultural_area',
+                'paths': (
+                    'cultural_area',
+                    'collection__cultural_area'
+                ),
+                'lookups': 'exact',
+                'parameter_model': Collection,
+                'parameter_field': 'cultural_area',
+            }, {
+                'name': 'dance',
+                'paths': (
+                    'collection__itemdance__dance',
+                    'itemdance__dance',
+                ),
+                'parameter_model': Dance,
+            }, {
+                'name': 'domain_music',
+                'paths': (
+                    'collection__itemdomainmusic__domain_music',
+                    'itemdomainmusic__domain_music',
+                ),
+                'parameter_model': DomainMusic,
+            }, {
+                'name': 'domain_song',
+                'paths': (
+                    'collection__itemdomainsong__domain_song',
+                    'itemdomainsong__domain_song',
+                ),
+                'parameter_model': DomainSong,
+            }, {
+                'name': 'domain_tale',
+                'paths': (
+                    'collection__itemdomaintale__domain_tale',
+                    'itemdomaintale__domain_tale',
+                ),
+                'parameter_model': DomainTale,
+            }, {
+                'name': 'domain_vocal',
+                'paths': (
+                    'collection__itemdomainvocal__domain_vocal',
+                    'itemdomainvocal__domain_vocal',
+                ),
+                'parameter_model': DomainVocal,
+            }, {
+                'name': 'incipit',
+                'paths': (None, 'incipit'),
+                'lookups': 'icontains',
+            }, {
+                'name': 'informer',
+                'paths': (
+                    'collectioninformer__informer',
+                    'iteminformer__informer',
+                ),
+                'parameter_model': Authority,
+            }, {
                 'name': 'instrument',
                 'sub_model': Instrument,
                 'paths': (
@@ -54,80 +121,24 @@ class AdvancedSearchList(generics.GenericAPIView):
                 ),
                 'parameter_model': Location,
             }, {
-                'name': 'dance',
-                'paths': (
-                    'collection__itemdance__dance',
-                    'itemdance__dance',
-                ),
-                'parameter_model': Dance,
+                'name': 'media_type',
+                'paths': ('media_type', 'media_type'),
+                'parameter_model': MediaType,
             }, {
-                'name': 'collector',
-                'paths': (
-                    'collectioncollectors__collector',
-                    'itemcollector__collector',
-                ),
-                'parameter_model': Authority,
-            }, {
-                'name': 'informer',
-                'paths': (
-                    'collectioninformer__informer',
-                    'iteminformer__informer',
-                ),
-                'parameter_model': Authority,
-            }, {
-                'name': 'coupe',
-                'sub_model': Coupe,
-                'paths': ('items__collection', 'items'),
-                'parameter_model': Coupe,
-            }, {
-                'name': 'usefulness',
-                'paths': (
-                    'collection__itemusefulness__usefulness',
-                    'itemusefulness__usefulness'
-                ),
-            }, {
-                'name': 'thematic',
-                'paths': (
-                    'collection__itemthematic__thematic',
-                    'itemthematic__thematic'
-                ),
-                'parameter_model': Thematic,
-            }, {
-                'name': 'domain_music',
-                'paths': (
-                    'collection__itemdomainmusic__domain_music',
-                    'itemdomainmusic__domain_music'
-                ),
-                'parameter_model': DomainMusic,
-            }, {
-                'name': 'domain_song',
-                'paths': (
-                    'collection__itemdomainsong__domain_song',
-                    'itemdomainsong__domain_song'
-                ),
-                'parameter_model': DomainSong,
-            }, {
-                'name': 'domain_tale',
-                'paths': (
-                    'collection__itemdomaintale__domain_tale',
-                    'itemdomaintale__domain_tale'
-                ),
-                'parameter_model': DomainTale,
-            }, {
-                'name': 'domain_vocal',
-                'paths': (
-                    'collection__itemdomainvocal__domain_vocal',
-                    'itemdomainvocal__domain_vocal'
-                ),
-                'parameter_model': DomainVocal,
+                'name': 'recording_context',
+                'paths': ('recording_context', 'collection__recording_context'),
+                'parameter_model': RecordingContext,
             }, {
                 'name': 'refrain',
                 'paths': (None, 'refrain'),
                 'lookups': 'icontains',
             }, {
-                'name': 'incipit',
-                'paths': (None, 'incipit'),
-                'lookups': 'icontains',
+                'name': 'thematic',
+                'paths': (
+                    'collection__itemthematic__thematic',
+                    'itemthematic__thematic',
+                ),
+                'parameter_model': Thematic,
             }, {
                 'name': 'timbre',
                 'paths': (None, 'timbre'),
@@ -136,26 +147,12 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'name': 'timbre_ref',
                 'paths': (None, 'timbre_ref'),
                 'lookups': 'icontains',
-            },
-            {
-                'name': 'media_type',
-                'paths': ('media_type', 'media_type'),
-                'parameter_model': MediaType,
-            },
-            {
-                'name': 'recording_context',
-                'paths': ('recording_context', 'collection__recording_context'),
-                'parameter_model': RecordingContext,
-            },
-            {
-                'name': 'cultural_area',
+            }, {
+                'name': 'usefulness',
                 'paths': (
-                    'cultural_area',
-                    'collection__cultural_area'
+                    'collection__itemusefulness__usefulness',
+                    'itemusefulness__usefulness',
                 ),
-                'lookups': 'exact',
-                'parameter_model': Collection,
-                'parameter_field': 'cultural_area',
             },
         )
 
