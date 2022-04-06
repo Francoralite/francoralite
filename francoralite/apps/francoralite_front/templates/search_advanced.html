@@ -59,7 +59,7 @@
     <input type="date" id="date_end" name="date_end" value="{{ parameters.date_end|default:'' }}">
   </details>
 
-  <details{% if parameters_instances_json.location %} open{% endif %} id="details_where">
+  <details{% if parameters_instances_json.location or parameters_instances_json.cultural_area %} open{% endif %} id="details_where">
     <summary>{% trans "Où ?" %}</summary>
     <label for="location">{% trans "Lieu" %}</label>
     <br>
@@ -67,6 +67,10 @@
     <a id="link_location" href="/location_gis/">
       <span class="glyphicon glyphicon-list"></span> {% trans "Lieux ..."%}
     </a>
+    <br><br>
+    <label for="cultural_area">{% trans "Aire culturelle" %}</label>
+    <br>
+    <francoralite-cultural-area name="cultural_area" data-values="{{ parameters_instances_json.cultural_area }}"{% if 'cultural_area' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-cultural-area>
   </details>
 
   <details{% if parameters_instances_json.media_type or parameters_instances_json.recording_context or parameters_instances_json.dance %} open{% endif %} id="details_what">

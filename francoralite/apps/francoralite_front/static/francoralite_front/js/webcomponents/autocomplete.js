@@ -224,6 +224,21 @@ class FrancoraliteCoupe extends FrancoraliteEnumAutocomplete {
     }
 }
 
+class FrancoraliteCulturalArea extends FrancoraliteAutocomplete {
+    getDefaultUrl() {
+        return '/api/cultural_area/?limit=10&search=';
+    }
+
+    parseProposal(item) {
+        return {
+            'value': item,
+            'label': item,
+            'url': null,
+            'tooltip': null,
+        };
+    }
+}
+
 class FrancoraliteDance extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
         return '/api/dance?limit=10&search=';
@@ -295,6 +310,7 @@ class FrancoraliteThematic extends FrancoraliteEnumAutocomplete {
 
 customElements.define('francoralite-collector', FrancoraliteCollector);
 customElements.define('francoralite-coupe', FrancoraliteCoupe);
+customElements.define('francoralite-cultural-area', FrancoraliteCulturalArea);
 customElements.define('francoralite-dance', FrancoraliteDance);
 customElements.define('francoralite-domain-music', FrancoraliteDomainMusic);
 customElements.define('francoralite-domain-song', FrancoraliteDomainSong);

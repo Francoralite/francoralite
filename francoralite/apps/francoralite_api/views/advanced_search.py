@@ -147,6 +147,16 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'paths': ('recording_context', 'collection__recording_context'),
                 'parameter_model': RecordingContext,
             },
+            {
+                'name': 'cultural_area',
+                'paths': (
+                    'cultural_area',
+                    'collection__cultural_area'
+                ),
+                'lookups': 'exact',
+                'parameter_model': Collection,
+                'parameter_field': 'cultural_area',
+            },
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])
@@ -245,6 +255,27 @@ class AdvancedSearchList(generics.GenericAPIView):
                 for key in self.request.query_params.getlist(name, [])
             )
             if keys:
+                # Case of a full text search field
+                if len(names) == 1:
+                    name = names[0]
+                    parameter_field = next(iter(
+                        f.get('parameter_field')
+                        for f in fields
+                        if f['name'] == name
+                    ), None)
+                    if parameter_field:
+                        for value in model.objects.filter(
+                            **{'%s__in' % parameter_field: keys},
+                        ).values_list(
+                            parameter_field,
+                            flat=True,
+                        ).order_by(
+                            parameter_field,
+                        ):
+                            parameters_instances.setdefault(name, []).append(value)
+                        continue
+
+                # Case of an enumeration model
                 serializer = self.get_serializer()
                 for instance in model.objects.filter(id__in=keys):
                     serialized = serializer.to_representation(instance)
