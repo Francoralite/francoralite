@@ -210,6 +210,17 @@ class FrancoraliteEnumAutocomplete extends FrancoraliteAutocomplete {
     }
 }
 
+class FrancoraliteFullTextAutocomplete extends FrancoraliteAutocomplete {
+    parseProposal(item) {
+        return {
+            'value': item,
+            'label': item,
+            'url': null,
+            'tooltip': null,
+        };
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 class FrancoraliteCollector extends FrancoraliteAuthoritiesAutocomplete {
@@ -224,18 +235,9 @@ class FrancoraliteCoupe extends FrancoraliteEnumAutocomplete {
     }
 }
 
-class FrancoraliteCulturalArea extends FrancoraliteAutocomplete {
+class FrancoraliteCulturalArea extends FrancoraliteFullTextAutocomplete {
     getDefaultUrl() {
         return '/api/cultural_area/?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item,
-            'label': item,
-            'url': null,
-            'tooltip': null,
-        };
     }
 }
 
