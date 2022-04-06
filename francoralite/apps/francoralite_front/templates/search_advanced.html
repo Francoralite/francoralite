@@ -38,14 +38,14 @@
     <summary>{% trans "Qui ?" %}</summary>
     <label for="informer">{% trans "Informateur" %}</label>
     <br>
-    <francoralite-informers name="informer" data-values="{{ parameters_instances_json.informer }}"{% if 'informer' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-informers>
+    <francoralite-informer name="informer" data-values="{{ parameters_instances_json.informer }}"{% if 'informer' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-informer>
     <a id="link_authority_informer" href="/authority_informer">
       <span class="glyphicon glyphicon-list"></span> {% trans "Informateurs ..."%}
     </a>
     <br><br>
     <label for="collector">{% trans "Enquêteur" %}</label>
     <br>
-    <francoralite-collectors name="collector" data-values="{{ parameters_instances_json.collector }}"{% if 'collector' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-collectors>
+    <francoralite-collector name="collector" data-values="{{ parameters_instances_json.collector }}"{% if 'collector' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-collector>
     <a id="link_authority_collector" href="/authority_collector">
       <span class="glyphicon glyphicon-list"></span> {% trans "Enquêteurs ..."%}
     </a>
@@ -63,7 +63,7 @@
     <summary>{% trans "Où ?" %}</summary>
     <label for="location">{% trans "Lieu" %}</label>
     <br>
-    <francoralite-locations name="location" data-values="{{ parameters_instances_json.location }}"{% if 'location' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-locations>
+    <francoralite-location name="location" data-values="{{ parameters_instances_json.location }}"{% if 'location' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-location>
     <a id="link_location" href="/location_gis/">
       <span class="glyphicon glyphicon-list"></span> {% trans "Lieux ..."%}
     </a>
@@ -73,16 +73,14 @@
     <summary>{% trans "Quoi ?" %}</summary>
     <label for="media_type">{% trans "Type de média" %}</label>
     <br>
-    <francoralite-media-type name="media_type" data-values="{{ parameters_instances_json.media_type }}"{% if 'media_type' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
-    </francoralite-media-type>
+    <francoralite-media-type name="media_type" data-values="{{ parameters_instances_json.media_type }}"{% if 'media_type' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-media-type>
     <a id="link_media_type" href="/mediatype">
       <span class="glyphicon glyphicon-list"></span> {% trans "Types de média ..."%}
     </a>
     <br><br>
     <label for="recording_context">{% trans "Contexte d'enregistrement" %}</label>
     <br>
-    <francoralite-recording-context name="recording_context" data-values="{{ parameters_instances_json.recording_context }}"{% if 'recording_context' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
-    </francoralite-recording-context>
+    <francoralite-recording-context name="recording_context" data-values="{{ parameters_instances_json.recording_context }}"{% if 'recording_context' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-recording-context>
     <a id="link_recording_context" href="/recording_context">
       <span class="glyphicon glyphicon-list"></span> {% trans "Contextes d'enregistrement ..."%}
     </a>
@@ -90,7 +88,7 @@
     <br><br>
     <label for="dance">{% trans "Danse" %}</label>
     <br>
-    <francoralite-dances name="dance" data-values="{{ parameters_instances_json.dance }}"{% if 'dance' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-dances>
+    <francoralite-dance name="dance" data-values="{{ parameters_instances_json.dance }}"{% if 'dance' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-dance>
     <a id="link_dance" href="/dance">
       <span class="glyphicon glyphicon-list"></span> {% trans "Danses ..."%}
     </a>
@@ -100,8 +98,7 @@
     <summary>{% trans "Témoignage" %}</summary>
     <label for="thematic">{% trans "Thématique" %}</label>
     <br>
-    <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}"{% if 'thematic' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
-    </francoralite-thematic>
+    <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}"{% if 'thematic' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-thematic>
     <a id="link_thematic" href="/thematic">
       <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
     </a>
@@ -111,8 +108,7 @@
     <summary>{% trans "Conte" %}</summary>
     <label for="domain_music">{% trans "Genre de conte" %}</label>
     <br>
-    <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}"{% if 'domain_tale' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
-    </francoralite-domain-tale>
+    <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}"{% if 'domain_tale' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-domain-tale>
     <a id="link_domain_tale" href="/domain_tale">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
     </a>
@@ -122,15 +118,14 @@
     <summary>{% trans "Chanson" %}</summary>
     <label for="domain_song">{% trans "Genre de chanson" %}</label>
     <br>
-    <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}"{% if 'domain_song' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
-    </francoralite-domain-song>
+    <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}"{% if 'domain_song' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-domain-song>
     <a id="link_domain_song" href="/domain_song">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
     </a>
     <br><br>
     <label for="coupe">{% trans "Coupe" %}</label>
     <br>
-    <francoralite-coupes name="coupe" data-values="{{ parameters_instances_json.coupe }}"{% if 'coupe' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-coupes>
+    <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}"{% if 'coupe' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-coupe>
     <a id="link_coupe" href="/coupe">
       <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
     </a>
@@ -140,8 +135,7 @@
     <summary>{% trans "Autre expression vocale" %}</summary>
     <label for="domain_vocal">{% trans "Genre d'autre expression vocale" %}</label>
     <br>
-    <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_instances_json.domain_vocal }}"{% if 'domain_vocal' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
-    </francoralite-domain-vocal>
+    <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_instances_json.domain_vocal }}"{% if 'domain_vocal' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-domain-vocal>
     <a id="link_domain_vocal" href="/domain_vocal">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
     </a>
@@ -151,8 +145,7 @@
     <summary>{% trans "Musique / Expression instrumentale" %}</summary>
     <label for="domain_music">{% trans "Genre de musique" %}</label>
     <br>
-    <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}"{% if 'domain_music' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
-    </francoralite-domain-music>
+    <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}"{% if 'domain_music' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-domain-music>
     <a id="link_domain_music" href="/domain_music">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
     </a>
