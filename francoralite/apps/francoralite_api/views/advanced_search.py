@@ -22,6 +22,7 @@ from ..models.item import Item
 from ..models.location import Location
 from ..models.mediatype import MediaType
 from ..models.recording_context import RecordingContext
+from ..models.thematic import Thematic
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
@@ -90,6 +91,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'collection__itemthematic__thematic',
                     'itemthematic__thematic'
                 ),
+                'parameter_model': Thematic,
             }, {
                 'name': 'domain_music',
                 'paths': (

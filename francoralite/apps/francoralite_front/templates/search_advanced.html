@@ -96,6 +96,17 @@
     </a>
   </details>
 
+  <details{% if parameters_instances_json.thematic %} open{% endif %} id="details_deposit">
+    <summary>{% trans "Témoignage" %}</summary>
+    <label for="thematic">{% trans "Thématique" %}</label>
+    <br>
+    <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}"{% if 'thematic' in parameters.or_operators %} data-default-operator="checked"{% endif %}>
+    </francoralite-thematic>
+    <a id="link_thematic" href="/thematic">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
+    </a>
+  </details>
+
   <details{% if parameters_instances_json.domain_tale %} open{% endif %} id="details_tale">
     <summary>{% trans "Conte" %}</summary>
     <label for="domain_music">{% trans "Genre de conte" %}</label>

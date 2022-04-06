@@ -91,6 +91,11 @@ def test_links_to_list(francoralite_context):
             'id_link':'link_recording_context',
             'title':"Contexte d’enregistrement"
         },
+        {
+            'id_block':'details_deposit',
+            'id_link':'link_thematic',
+            'title':"Thématique"
+        },
     ]
 
     for link in links :

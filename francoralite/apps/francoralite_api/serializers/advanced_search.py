@@ -19,6 +19,7 @@ from ..models.item import Item as ItemModel
 from ..models.location import Location as LocationModel
 from ..models.mediatype import MediaType as MediaTypeModel
 from ..models.recording_context import RecordingContext as RecordingContextModel
+from ..models.thematic import Thematic as ThematicModel
 from .authority import AuthoritySerializer
 from .collection import CollectionSerializer
 from .collection_location import CollectionLocationSerializer
@@ -32,6 +33,7 @@ from .item import ItemSerializer
 from .location_gis import LocationGisSerializer
 from .mediatype import MediaTypeSerializer
 from .recording_context import RecordingContextSerializer
+from .thematic import ThematicSerializer
 
 
 class AdvancedSearchSerializer(serializers.Serializer):
@@ -63,6 +65,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = MediaTypeSerializer(instance)
         elif isinstance(instance, RecordingContextModel):
             serializer = RecordingContextSerializer(instance)
+        elif isinstance(instance, ThematicModel):
+            serializer = ThematicSerializer(instance)
         else:
             raise Exception("Unknown instance type: %s" % type(instance))
         data = serializer.data
