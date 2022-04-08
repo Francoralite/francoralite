@@ -98,8 +98,32 @@
     </a>
   </details>
 
-  <details{% if parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters_instances_json.domain_song or parameters_instances_json.domain_vocal or parameters_instances_json.domain_music %} open{% endif %} id="details_genders">
+  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters_instances_json.domain_song or parameters_instances_json.domain_vocal or parameters_instances_json.domain_music %} open{% endif %} id="details_genders">
     <summary>{% trans "Genres" %}</summary>
+    <label>{% trans "Domaine(s) :" %}</label>
+    <ul>
+        <li>
+            <input type="checkbox" name="domain" value="T" id="domain_deposit"{% if 'T' in parameters.domain %} checked{% endif %}>
+            <label for="domain_deposit">{% trans "Témoignage" %}</label>
+        </li>
+        <li>
+            <input type="checkbox" name="domain" value="C" id="domain_song"{% if 'C' in parameters.domain %} checked{% endif %}>
+            <label for="domain_song">{% trans "Chanson" %}</label>
+        </li>
+        <li>
+            <input type="checkbox" name="domain" value="A" id="domain_vocal"{% if 'A' in parameters.domain %} checked{% endif %}>
+            <label for="domain_vocal">{% trans "Autre expression vocale" %}</label>
+        </li>
+        <li>
+            <input type="checkbox" name="domain" value="I" id="domain_music"{% if 'I' in parameters.domain %} checked{% endif %}>
+            <label for="domain_music">{% trans "Expression instrumentale" %}</label>
+        </li>
+        <li>
+            <input type="checkbox" name="domain" value="R" id="domain_tale"{% if 'R' in parameters.domain %} checked{% endif %}>
+            <label for="domain_tale">{% trans "Conte ou récit légendaire" %}</label>
+        </li>
+    </ul>
+    <br>
     <label for="thematic">{% trans "Thématique(s) du témoignage" %}</label>
     <br>
     <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}"{% if 'thematic' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-thematic>

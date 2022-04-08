@@ -223,6 +223,13 @@ class AdvancedSearchList(generics.GenericAPIView):
             query_sets[0] = query_sets[0].filter(date_filter)
             query_sets[1] = query_sets[1].filter(
                 collection__in=Collection.objects.filter(date_filter))
+
+        # Special domains filtering (domain AND domain AND ...)
+        domains = self.request.query_params.getlist('domain', None)
+        if domains:
+            for domain in domains:
+                query_sets[0] = query_sets[0].filter(collection__domain__icontains=domain)
+                query_sets[1] = query_sets[1].filter(domain__icontains=domain)
         # ---------------------------------------------------- end filtering
 
         # Collecting the locations
@@ -235,6 +242,7 @@ class AdvancedSearchList(generics.GenericAPIView):
             'or_operators': or_operators,
             'date_start': date_start,
             'date_end': date_end,
+            'domain': domains,
         }
 
         # Building a list of parameter names by model
