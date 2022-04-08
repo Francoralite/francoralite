@@ -160,8 +160,24 @@
     </a>
   </details>
 
-  <details{% if parameters_instances_json.coupe %} open{% endif %} id="details_texts">
+  <details{% if parameters.text or parameters.incipit or parameters.refrain or parameters.jingle or parameters_instances_json.coupe %} open{% endif %} id="details_texts">
     <summary>{% trans "Textes" %}</summary>
+    <label for="text">{% trans "Texte" %}</label>
+    <br>
+    <input name="text" id="text" value="{{ parameters.text | default:'' }}">
+    <br><br>
+    <label for="incipit">{% trans "Incipit" %}</label>
+    <br>
+    <input name="incipit" id="incipit" value="{{ parameters.incipit | default:'' }}">
+    <br><br>
+    <label for="refrain">{% trans "Refrain" %}</label>
+    <br>
+    <input name="refrain" id="refrain" value="{{ parameters.refrain | default:'' }}">
+    <br><br>
+    <label for="jingle">{% trans "Ritournelle" %}</label>
+    <br>
+    <input name="jingle" id="jingle" value="{{ parameters.jingle | default:'' }}">
+    <br><br>
     <label for="coupe">{% trans "Coupe(s)" %}</label>
     <br>
     <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}"{% if 'coupe' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-coupe>

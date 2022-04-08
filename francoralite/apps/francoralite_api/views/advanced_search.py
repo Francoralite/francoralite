@@ -100,6 +100,10 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'paths': (None, 'incipit'),
                 'lookups': 'icontains',
             }, {
+                'name': 'jingle',
+                'paths': (None, 'jingle'),
+                'lookups': 'icontains',
+            }, {
                 'name': 'informer',
                 'paths': (
                     'collectioninformer__informer',
@@ -131,6 +135,10 @@ class AdvancedSearchList(generics.GenericAPIView):
             }, {
                 'name': 'refrain',
                 'paths': (None, 'refrain'),
+                'lookups': 'icontains',
+            }, {
+                'name': 'text',
+                'paths': (None, 'text'),
                 'lookups': 'icontains',
             }, {
                 'name': 'thematic',
@@ -238,11 +246,17 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Collecting static parameters
         parameters_instances = {}
         parameters = {
+            # autocomplete fields
             'instances': parameters_instances,
             'or_operators': or_operators,
+            # other fields
             'date_start': date_start,
             'date_end': date_end,
             'domain': domains,
+            'incipit': self.request.query_params.get('incipit', None),
+            'jingle': self.request.query_params.get('jingle', None),
+            'refrain': self.request.query_params.get('refrain', None),
+            'text': self.request.query_params.get('text', None),
         }
 
         # Building a list of parameter names by model

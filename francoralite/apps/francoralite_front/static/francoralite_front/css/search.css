@@ -81,6 +81,13 @@ details[open] summary {
     margin-bottom: .5em;
 }
 
+details > input:not([type]) {
+    width: 558px;
+    margin: 2px 0;
+    border: 1px solid #6f0a08;
+    border-radius: 3px;
+}
+
 details ul {
     list-style: none;
 }
