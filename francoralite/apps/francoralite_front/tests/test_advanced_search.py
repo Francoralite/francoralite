@@ -37,68 +37,68 @@ def test_links_to_list(francoralite_context):
 
     links = [
         {
-            'id_block':'details_who',
-            'id_link':'link_authority_informer',
-            'title':'Informateurs'
+            'id_block': 'details_genders',
+            'id_link': 'link_domain_music',
+            'title': 'Genre de musique',
         },
         {
-            'id_block':'details_who',
-            'id_link':'link_authority_collector',
-            'title':'Enquêteurs'
+            'id_block': 'details_genders',
+            'id_link': 'link_domain_song',
+            'title': 'Genre de chanson',
         },
         {
-            'id_block':'details_where',
-            'id_link':'link_location',
-            'title':'Lieux'
+            'id_block': 'details_genders',
+            'id_link': 'link_domain_tale',
+            'title': 'Genre de conte',
         },
         {
-            'id_block':'details_tale',
-            'id_link':'link_domain_tale',
-            'title':'Genre de conte'
+            'id_block': 'details_genders',
+            'id_link': 'link_domain_vocal',
+            'title': 'Genre vocal',
         },
         {
-            'id_block':'details_song',
-            'id_link':'link_domain_song',
-            'title':'Genre de chanson'
+            'id_block': 'details_genders',
+            'id_link': 'link_thematic',
+            'title': 'Thématique',
         },
         {
-            'id_block':'details_song',
-            'id_link':'link_coupe',
-            'title':'Coupe'
+            'id_block': 'details_texts',
+            'id_link': 'link_coupe',
+            'title': 'Coupe',
         },
         {
-            'id_block':'details_vocal',
-            'id_link':'link_domain_vocal',
-            'title':'Genre vocal'
+            'id_block': 'details_what',
+            'id_link': 'link_dance',
+            'title': 'Genre de danse',
         },
         {
-            'id_block':'details_music',
-            'id_link':'link_domain_music',
-            'title':'Genre de musique'
+            'id_block': 'details_what',
+            'id_link': 'link_media_type',
+            'title': 'Type de média',
         },
         {
-            'id_block':'details_what',
-            'id_link':'link_dance',
-            'title':'Genre de danse'
+            'id_block': 'details_what',
+            'id_link': 'link_recording_context',
+            'title': 'Contexte d’enregistrement',
         },
         {
-            'id_block':'details_what',
-            'id_link':'link_media_type',
-            'title':'Type de média'
+            'id_block': 'details_where',
+            'id_link': 'link_location',
+            'title': 'Lieux',
         },
         {
-            'id_block':'details_what',
-            'id_link':'link_recording_context',
-            'title':"Contexte d’enregistrement"
+            'id_block': 'details_who',
+            'id_link': 'link_authority_collector',
+            'title': 'Enquêteurs',
         },
         {
-            'id_block':'details_deposit',
-            'id_link':'link_thematic',
-            'title':"Thématique"
+            'id_block': 'details_who',
+            'id_link': 'link_authority_informer',
+            'title': 'Informateurs',
         },
     ]
 
-    for link in links :
+    for link in links:
         click_to_list(
             id_block=link['id_block'],
             id_link=link['id_link'],
