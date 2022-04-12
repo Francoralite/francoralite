@@ -165,6 +165,9 @@ def post(entity, form_entity, request, *args, **kwargs):
             handle_message_from_exception(request, e)
             return HttpResponseRedirect('/' + entity_url + '/add')
 
+    messages.add_message(request, messages.SUCCESS,
+                         _('La fiche a bien été créée.'))
+
     return HttpResponseRedirect('/' + entity_url + '/add')
 
 
@@ -182,7 +185,8 @@ def post_api(endpoint, data, request, entity):
     )
 
     check_status_code(response.status_code,
-                      allowed_codes=(status.HTTP_200_OK, status.HTTP_201_CREATED))
+                      allowed_codes=(status.HTTP_200_OK,
+                                     status.HTTP_201_CREATED))
 
     entity_json = response.json()
     if entity == "fond":
@@ -241,6 +245,9 @@ def patch(entity, form_entity, request, *args, **kwargs):
         except RequestException as e:
             handle_message_from_exception(request, e)
             return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
+
+    messages.add_message(request, messages.SUCCESS,
+                         _('La fiche a bien été mise à jour.'))
 
     return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
@@ -302,6 +309,10 @@ def delete(entity, request, *args, **kwargs):
             settings.FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
             request=request,
         )
+
+        messages.add_message(request, messages.SUCCESS,
+                             _('La fiche a bien été supprimée.'))
+
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     except RequestException as e:
@@ -319,6 +330,8 @@ def delete_api(endpoint, request):
         headers=get_token_header(request=request),
     )
 
-    check_status_code(response.status_code)
+    check_status_code(response.status_code,
+                      allowed_codes=(status.HTTP_200_OK,
+                                     status.HTTP_204_NO_CONTENT))
 
     return response
