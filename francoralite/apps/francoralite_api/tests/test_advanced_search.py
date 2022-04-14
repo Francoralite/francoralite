@@ -417,6 +417,32 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 1)
         self.assertEqual(len(response.data['results']['locations']), 1)
+        
+    def test_recording_context(self):
+        url = "/advancedsearch/?recording_context=1"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+        
+        url = "/advancedsearch/?recording_context=3"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 1)
+        self.assertEqual(len(response.data['results']['items']), 1)
+        self.assertEqual(len(response.data['results']['locations']), 1)
+        
+        url = "/advancedsearch/?recording_context=6"
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 1)
+        self.assertEqual(len(response.data['results']['items']), 1)
+        self.assertEqual(len(response.data['results']['locations']), 1)
+        
 
     def test_multi_criteria(self):
         """

@@ -230,7 +230,7 @@ class FrancoraliteSeleniumContext():
             assert element.text == element_value
 
     def verify_title(self, value):
-        assert self.find_element(by_xpath='//main/h1').text == value
+        assert self.find_element(by_css_selector='main h1').text == value
 
     def save_screenshot(self, *args, **kwargs):
         return self.browser.save_screenshot(*args, **kwargs)

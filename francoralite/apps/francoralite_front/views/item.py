@@ -5,18 +5,13 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import requests
-from django.conf import settings
-from francoralite.apps.francoralite_front.forms.item import ItemForm
+from ..francoralite_template_view import FrancoralitePaginatedTemplateView
 
 
-class ItemView(FrancoraliteTemplateView):
-    template_name = "../templates/item.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(ItemView, self).get_context_data(**kwargs)
-        context['items'] = requests.get(
-            settings.FRONT_HOST_URL + '/api/item').json
-        context['form'] = ItemForm
-        return context
+class ItemView(FrancoralitePaginatedTemplateView):
+    api_url = '/api/item'
+    context_results_name = 'items'
+    template_name = '../templates/item.html'
+    keycloak_scopes = {
+        'GET': 'item:view',
+    }

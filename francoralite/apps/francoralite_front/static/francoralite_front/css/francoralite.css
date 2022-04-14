@@ -24,15 +24,6 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     height: auto;*/
 }
 
-/*a:link, a:visited {
-    color: #BB0000;
-    text-decoration:none;
-}
-a:link:hover, a:visited:hover {
-    background-color: transparent;
-    color: #BB0000;
-    text-decoration: underline;
-}*/
 a, a:visited {
     color: #BB0000;
     text-decoration:none;
@@ -347,9 +338,10 @@ input[type=reset][disabled] {
     border-style: solid;
     color: #999;
 }
-input[type=text], input[type=password], input.textwidget, textarea { border: 1px solid #ccc; }
+input[type=text], input[type=date], input[type=password], input.textwidget, textarea { border: 1px solid #ccc; }
 input[type=text], input[type=password], input.textwidget { padding: .25em .1em }
-input[type=text]:focus, input[type=password]:focus, input.textwidget:focus, textarea:focus {
+input[type=date] { padding: 0 .1em; caret-color: transparent; }
+input[type=text]:focus, input[type=date]:focus, input[type=password]:focus, input.textwidget:focus, textarea:focus {
     border-color: #aaa;
 }
 .infos input[type=text], .field input[type=text], .infos textarea{
@@ -747,20 +739,55 @@ dl.dublincore dd.caption {
 }
 
 /* Pagination */
-.pagination {
-    margin-top: 0em;
-    margin-bottom: 0em;
-    padding: .3em 0;
-    font-size: 0.7em;
-    background-color: #fff;
-    /*border-bottom: 1px solid #aaa;*/
-    color: #333;
-    font-weight: bold;
+main > header {
+    display: flex;
+    flex-flow: row wrap;
 }
-.pagination a {
-    background-color: #fff;
-    border-bottom: none;
-    padding: .3em;
+main > header h1 {
+    margin: 0;
+    flex-grow: 1;
+}
+.pagination,
+.pagination * {
+    margin: 0;
+    padding: 0;
+}
+.pagination p + p {
+    margin-top: 10px;
+}
+.pagination .rows {
+    text-align: right;
+    font-size: 16px;
+    color: #6a0307;
+}
+.pagination .pages {
+    text-align: right;
+    font-size: 0;
+}
+.pagination .pages a,
+.pagination .pages span {
+    display: inline-block;
+    height: 32px;
+    margin-left: -1px;
+    padding: .25em .75em;
+    border: 1px solid #ae8484;
+    font-size: 16px;
+    color: #6a0307;
+}
+.pagination .pages .arrow {
+    font-family: FontAwesome;
+}
+.pagination .pages a:hover {
+    background: #ae8484;
+    text-decoration: none;
+}
+.pagination .pages span:not(.current) {
+    background: #eeeeee;
+    cursor: not-allowed;
+}
+.pagination .pages span.current {
+    background: #6a0307;
+    color: white;
 }
 
 /* Item instruments */
@@ -1453,6 +1480,33 @@ label.melody {
 .list-group.search .list-group-item {
   list-style: none;
   margin-top: 5px;
+}
+
+/* messages d’information ou d’erreur */
+
+ul.messages {
+    margin: 0;
+    padding: 0;
+}
+
+ul.messages li {
+    margin: 15px 0;
+    padding: 10px;
+    border: solid 1px #6a0307;
+    border-radius: 8px;
+    list-style: none;
+    color: #6a0307;
+}
+
+ul.messages li.warning,
+ul.messages li.error {
+    border-color: #bb0000;
+    color: #bb0000;
+}
+
+ul.messages li.error {
+    border-width: 2px;
+    font-weight: bold;
 }
 
 /* menu reconstruit par Laurence */

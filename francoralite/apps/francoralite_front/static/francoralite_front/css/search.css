@@ -61,8 +61,8 @@ details {
     padding: .5em .5em 0;
     margin-bottom: 1em;
   }
-  
-  summary {
+
+summary {
     font-weight: bold;
     margin: -.5em -.5em 0;
     padding: .5em;
@@ -70,14 +70,30 @@ details {
     background-color: #AE8484;
     cursor: pointer;
     display: list-item;
-  }
-  
-  details[open] {
+}
+
+details[open] {
     padding: .5em;
-  }
-  
-  details[open] summary {
+}
+
+details[open] summary {
     border-bottom: 1px solid #aaa;
     margin-bottom: .5em;
-  }
+}
 
+details > input:not([type]) {
+    width: 558px;
+    margin: 2px 0;
+    border: 1px solid #6f0a08;
+    border-radius: 3px;
+}
+
+details ul {
+    list-style: none;
+}
+
+details ul input[type=checkbox],
+details ul input[type=checkbox] + label {
+    margin: 2px 0;
+    vertical-align: middle;
+}

@@ -5,7 +5,6 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django import forms
-from bootstrap_datepicker.widgets import DatePicker
 from django.utils.translation import gettext_lazy as _
 
 
@@ -23,13 +22,9 @@ class PersonneForm(forms.Form):
     is_editor = forms.BooleanField(label=_(u'Editeur'), required=False)
     birth_date = forms.DateField(label=_(u'Date de naissance'),
                                  required=False,
-                                 widget=DatePicker(
-                                      options={
-                                            "format": "yyyy-mm-dd",
-                                            "language": "fr",
-                                            "autoclose": True
-                                        }
-                                    ))
+                                 widget=forms.DateInput(
+                                     attrs={'type': 'date'},
+                                     format='%Y-%m-%d'))
     birth_location_name = forms.CharField(
         label=_(u'Lieu de naissance'),
         widget=forms.TextInput(
@@ -44,13 +39,9 @@ class PersonneForm(forms.Form):
         widget=forms.HiddenInput(),
         required=False)
     death_date = forms.DateField(label=_(u'Date de Décès'), required=False,
-                                 widget=DatePicker(
-                                    options={
-                                        "format": "yyyy-mm-dd",
-                                        "language": "fr",
-                                        "autoclose": True
-                                    }
-                                 ))
+                                 widget=forms.DateInput(
+                                     attrs={'type': 'date'},
+                                     format='%Y-%m-%d'))
     death_location_name = forms.CharField(
         label=_(u'Lieu de décès'),
         widget=forms.TextInput(

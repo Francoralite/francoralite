@@ -37,3 +37,49 @@ class FrancoraliteTemplateView(TemplateView):
         view = super(FrancoraliteTemplateView, cls).as_view(**initkwargs)
         view.cls = cls
         return view
+
+
+class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
+
+    PAGE_SIZE = 20
+
+    def get_context_data(self, **kwargs):
+        try:
+            context = super(FrancoralitePaginatedTemplateView, self).get_context_data(**kwargs)
+
+            try:
+                page = int(self.request.GET.get('page', None)) or 1
+                if page < 1:
+                    page = 1
+            except:
+                page = 1
+            offset = self.PAGE_SIZE * (page - 1)
+
+            api_response = tools.request_api('%s%slimit=%s&offset=%s' % (
+                self.api_url,
+                '&' if '?' in self.api_url else '?',
+                self.PAGE_SIZE,
+                offset,
+            ))
+
+            results_count = api_response.get('count') or 0
+            last_page = (results_count - 1) // self.PAGE_SIZE + 1
+
+            context[self.context_results_name] = api_response.get('results', ())
+            context['pagination'] = {
+                'count': results_count,
+                'page_size': self.PAGE_SIZE,
+                'current_page': page,
+                'has_previous': page > 1,
+                'has_next': page * self.PAGE_SIZE < results_count,
+                'first_item': min(self.PAGE_SIZE * (page - 1) + 1, results_count),
+                'last_item': min(self.PAGE_SIZE * page, results_count),
+                'last_page': last_page,
+                'pages': tuple(range(1, last_page + 1)),
+            }
+
+        except Exception as err:
+            context[self.context_results_name] = []
+            context['error'] = err
+
+        return context

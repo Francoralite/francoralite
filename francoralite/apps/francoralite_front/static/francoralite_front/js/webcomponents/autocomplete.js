@@ -186,7 +186,9 @@ class FrancoraliteAutocomplete extends HTMLElement {
     }
 }
 
-class FrancoraliteAuthorities extends FrancoraliteAutocomplete {
+////////////////////////////////////////////////////////////////////////////////
+
+class FrancoraliteAuthoritiesAutocomplete extends FrancoraliteAutocomplete {
     parseProposal(item) {
         return {
             'value': item.id,
@@ -197,19 +199,85 @@ class FrancoraliteAuthorities extends FrancoraliteAutocomplete {
     }
 }
 
-class FrancoraliteInformers extends FrancoraliteAuthorities {
-    getDefaultUrl() {
-        return '/api/authority?limit=10&is_informer=true&ordering=first_name+last_name&search=';
+class FrancoraliteEnumAutocomplete extends FrancoraliteAutocomplete {
+    parseProposal(item) {
+        return {
+            'value': item.id,
+            'label': item.name,
+            'url': null,
+            'tooltip': null
+        };
     }
 }
 
-class FrancoraliteCollectors extends FrancoraliteAuthorities {
+class FrancoraliteFullTextAutocomplete extends FrancoraliteAutocomplete {
+    parseProposal(item) {
+        return {
+            'value': item,
+            'label': item,
+            'url': null,
+            'tooltip': null,
+        };
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+class FrancoraliteCollector extends FrancoraliteAuthoritiesAutocomplete {
     getDefaultUrl() {
         return '/api/authority?limit=10&is_collector=true&ordering=first_name+last_name&search=';
     }
 }
 
-class FrancoraliteLocations extends FrancoraliteAutocomplete {
+class FrancoraliteCoupe extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/coupe?limit=10&search=';
+    }
+}
+
+class FrancoraliteCulturalArea extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/cultural_area/?limit=10&search=';
+    }
+}
+
+class FrancoraliteDance extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/dance?limit=10&search=';
+    }
+}
+
+class FrancoraliteDomainMusic extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/domain_music?limit=10&search=';
+    }
+}
+
+class FrancoraliteDomainSong extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/domain_song?limit=10&search=';
+    }
+}
+
+class FrancoraliteDomainTale extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/domain_tale?limit=10&search=';
+    }
+}
+
+class FrancoraliteDomainVocal extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/domain_vocal?limit=10&search=';
+    }
+}
+
+class FrancoraliteInformer extends FrancoraliteAuthoritiesAutocomplete {
+    getDefaultUrl() {
+        return '/api/authority?limit=10&is_informer=true&ordering=first_name+last_name&search=';
+    }
+}
+
+class FrancoraliteLocation extends FrancoraliteAutocomplete {
     getDefaultUrl() {
         return '/api/locationgis?limit=10&ordering=code&search=';
     }
@@ -224,119 +292,34 @@ class FrancoraliteLocations extends FrancoraliteAutocomplete {
     }
 }
 
-class FrancoraliteDomainSong extends FrancoraliteAutocomplete {
-    getDefaultUrl() {
-        return '/api/domain_song?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name,
-            'url': null,
-            'tooltip': null
-        };
-    }
-}
-
-class FrancoraliteCoupes extends FrancoraliteAutocomplete {
-    getDefaultUrl() {
-        return '/api/coupe?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name,
-            'url': null,
-            'tooltip': null
-        };
-    }
-}
-
-class FrancoraliteDomainMusic extends FrancoraliteAutocomplete {
-    getDefaultUrl() {
-        return '/api/domain_music?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name,
-            'url': null,
-            'tooltip': null
-        };
-    }
-}
-
-class FrancoraliteDomainVocal extends FrancoraliteAutocomplete {
-    getDefaultUrl() {
-        return '/api/domain_vocal?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name,
-            'url': null,
-            'tooltip': null
-        };
-    }
-}
-
-class FrancoraliteDomainTale extends FrancoraliteAutocomplete {
-    getDefaultUrl() {
-        return '/api/domain_tale?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name,
-            'url': null,
-            'tooltip': null
-        };
-    }
-}
-
-class FrancoraliteDances extends FrancoraliteAutocomplete {
-    getDefaultUrl() {
-        return '/api/dance?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name,
-            'url': null,
-            'tooltip': null
-        };
-    }
-}
-
-class FrancoraliteMediaType extends FrancoraliteAutocomplete {
+class FrancoraliteMediaType extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
         return '/api/mediatype?limit=10&search=';
     }
+}
 
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name,
-            'url': null,
-            'tooltip': null
-        };
+class FrancoraliteRecordingContext extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/recordingcontext?limit=10&search=';
     }
 }
 
-customElements.define('francoralite-autocomplete', FrancoraliteAutocomplete);
-customElements.define('francoralite-informers', FrancoraliteInformers);
-customElements.define('francoralite-collectors', FrancoraliteCollectors);
-customElements.define('francoralite-locations', FrancoraliteLocations);
-customElements.define('francoralite-domain-song', FrancoraliteDomainSong);
+class FrancoraliteThematic extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/thematic?limit=10&search=';
+    }
+}
+
+customElements.define('francoralite-collector', FrancoraliteCollector);
+customElements.define('francoralite-coupe', FrancoraliteCoupe);
+customElements.define('francoralite-cultural-area', FrancoraliteCulturalArea);
+customElements.define('francoralite-dance', FrancoraliteDance);
 customElements.define('francoralite-domain-music', FrancoraliteDomainMusic);
+customElements.define('francoralite-domain-song', FrancoraliteDomainSong);
 customElements.define('francoralite-domain-tale', FrancoraliteDomainTale);
 customElements.define('francoralite-domain-vocal', FrancoraliteDomainVocal);
-customElements.define('francoralite-coupes', FrancoraliteCoupes);
-customElements.define('francoralite-dances', FrancoraliteDances);
+customElements.define('francoralite-informer', FrancoraliteInformer);
+customElements.define('francoralite-location', FrancoraliteLocation);
 customElements.define('francoralite-media-type', FrancoraliteMediaType);
+customElements.define('francoralite-recording-context', FrancoraliteRecordingContext);
+customElements.define('francoralite-thematic', FrancoraliteThematic);

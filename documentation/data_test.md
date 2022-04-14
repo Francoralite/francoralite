@@ -5,25 +5,31 @@ Les données de test sont dans le fichier `francoralité/apps/francoralite_api/f
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
 graph RL
+    
     subgraph collections
     c1((c1))
     c1 <-- cinf1 --> a2
     c1 <-- ccol1 --> a3
     c1 <-- cloc3 --> l2
+    rec3 --> c1
     c2((c2))
     c2 <-- cloc1 --> l3
     c2 <-- ccol2 --> a6
     c2 <-- cinf2 --> a4
     c2 <-- cinf3 --> a5
+    rec1 --> c2
     c3((c3))
     c3 <-- cloc2 --> l3
     c3 <-- ccol3 --> a6
     c3 <-- cinf4 --> a4
     c3 <-- cinf5 --> a5
+    rec1 --> c3
     c4((c4))
     c4 <-- cloc4 --> l4
     c4 <-- ccol4 --> a8
     c4 <-- cinf6 --> a9
+    rec6 --> c4
+    
     classDef collection fill:#f9f;
     class c1,c2,c3,c4 collection;
     end
@@ -151,4 +157,11 @@ graph RL
     t_media3 --> c4
     t_media3 --> i4
     end
+
+    subgraph recording_context
+    rec1
+    rec3
+    rec6
+    end
+
 ```
