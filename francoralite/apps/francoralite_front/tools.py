@@ -147,23 +147,24 @@ def post(entity, form_entity, request, *args, **kwargs):
                      data=form.cleaned_data,
                      request=request,
                      entity=entity)
+
+            messages.add_message(request, messages.SUCCESS,
+                                 _('La fiche a bien été créée.'))
+
             if entity == 'fond':
                 return HttpResponseRedirect(
                     '/institution/' +
                     str(form.cleaned_data['institution']))
-            # Previous page ( not an edit page ... )
-            if len(request.session["referers"]) > 1:
-                try:
-                    for referer in request.session["referers"]:
-                        if 'add' not in referer.split('/'):
-                            return HttpResponseRedirect(referer)
-                except Exception:
-                    return HttpResponseRedirect('/' + entity)
+
+            # Previous page ( not an add page ... )
+            if len(request.session.get("referers", [])) > 1:
+                for referer in request.session["referers"]:
+                    if 'add' not in referer.split('/'):
+                        return HttpResponseRedirect(referer)
             return HttpResponseRedirect('/' + entity)
 
         except RequestException as e:
             handle_message_from_exception(request, e)
-            return HttpResponseRedirect('/' + entity_url + '/add')
 
     return HttpResponseRedirect('/' + entity_url + '/add')
 
@@ -182,7 +183,8 @@ def post_api(endpoint, data, request, entity):
     )
 
     check_status_code(response.status_code,
-                      allowed_codes=(status.HTTP_200_OK, status.HTTP_201_CREATED))
+                      allowed_codes=(status.HTTP_200_OK,
+                                     status.HTTP_201_CREATED))
 
     entity_json = response.json()
     if entity == "fond":
@@ -222,17 +224,18 @@ def patch(entity, form_entity, request, *args, **kwargs):
             # Concatenate domains
             form.cleaned_data['domain'] = ''.join(form.cleaned_data['domain'])
         try:
-            response = patch_api(
+            patch_api(
                 settings.FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
                 data=form.cleaned_data,
                 request=request,
                 entity=entity
             )
-            if(response.status_code != status.HTTP_200_OK):
-                return HttpResponseRedirect('/' + entity + '/edit/' +
-                                            str(id))
+
+            messages.add_message(request, messages.SUCCESS,
+                                 _('La fiche a bien été mise à jour.'))
+
             # Previous page ( not an edit page ... )
-            if len(request.session["referers"]) > 1:
+            if len(request.session.get("referers", [])) > 1:
                 for referer in request.session["referers"]:
                     if 'edit' not in referer.split('/'):
                         return HttpResponseRedirect(referer)
@@ -240,7 +243,6 @@ def patch(entity, form_entity, request, *args, **kwargs):
 
         except RequestException as e:
             handle_message_from_exception(request, e)
-            return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
     return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 
@@ -302,6 +304,10 @@ def delete(entity, request, *args, **kwargs):
             settings.FRONT_HOST_URL + '/api/' + entity_api + '/' + str(id),
             request=request,
         )
+
+        messages.add_message(request, messages.SUCCESS,
+                             _('La fiche a bien été supprimée.'))
+
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     except RequestException as e:
@@ -319,6 +325,8 @@ def delete_api(endpoint, request):
         headers=get_token_header(request=request),
     )
 
-    check_status_code(response.status_code)
+    check_status_code(response.status_code,
+                      allowed_codes=(status.HTTP_200_OK,
+                                     status.HTTP_204_NO_CONTENT))
 
     return response
