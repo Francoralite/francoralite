@@ -4,20 +4,14 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
+
+from ..francoralite_template_view import FrancoralitePaginatedTemplateView
 
 
-class FondView(FrancoraliteTemplateView):
-    template_name = "../templates/fond.html"
+class FondView(FrancoralitePaginatedTemplateView):
+    api_url = '/api/fond'
+    context_results_name = 'fonds'
+    template_name = '../templates/fond.html'
     keycloak_scopes = {
-        'GET': 'fond:view'}
-
-    def get_context_data(self, **kwargs):
-        try:
-            context = super(FondView, self).get_context_data(**kwargs)
-            context['fonds'] = tools.request_api('/api/fond')
-        except Exception as err:
-            context['fonds'] = []
-            context['error'] = err
-        return context
+        'GET': 'fond:view',
+    }

@@ -36,7 +36,7 @@ class GlobalSearchSerializer(serializers.Serializer):
         elif isinstance(instance, ItemModel):
             serializer = ItemSerializer(instance)
         else:
-            raise Exception("Not an known instance!")
+            raise Exception("Unknown instance type: %s" % type(instance))
         data = serializer.data
         data['entity'] = type(instance).__name__
         return data

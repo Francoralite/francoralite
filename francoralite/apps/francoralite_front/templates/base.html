@@ -39,7 +39,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"></link>
   <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
   <link type="text/css" rel="stylesheet" href="{% static "francoralite_front/css/abcjs-midi.css" %}" />
-  <link type="text/css" rel="stylesheet" href="{% static "francoralite_front/css/francoralite-more.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "francoralite_front/css/style.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "francoralite_front/css/player.css" %}" />
   <link type="text/css" rel="stylesheet" href="{% static "francoralite_front/css/search.css" %}" />
@@ -89,7 +88,10 @@
 <main id="content" role="main">
 {% block content %}
   {% block title %}
+    <header>
     <h1>{% block title_name %}{% endblock %}</h1>
+    {% block pagination %}{% include "inc/pagination.html" %}{% endblock %}
+    </header>
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}

@@ -16,18 +16,22 @@ class SearchAdvancedView(FrancoraliteTemplateView):
     template_name = "../templates/search_advanced.html"
 
     def get(self, request, *args, **kwargs):
-        url = '/advancedsearch/?' + urlencode(request.GET, doseq=True)
-        api_response = request_api(url)
+        if request.GET:
+            url = '/advancedsearch/?' + urlencode(request.GET, doseq=True)
+            api_response = request_api(url)
+        else:
+            api_response = {}
 
         context = self.get_context_data(**kwargs)
-        context['collections'] = api_response['results']['collections']
-        context['items'] = api_response['results']['items']
-        context['locations'] = api_response['results']['locations']
+        context['show_results'] = bool(api_response)
+        context['collections'] = api_response.get('results', {}).get('collections', ())
+        context['items'] = api_response.get('results', {}).get('items', ())
+        context['locations'] = api_response.get('results', {}).get('locations', ())
 
-        context['or_operators'] = request.GET.getlist('or_operators', [])
-        context['parameters_json'] = dict(
+        context['parameters'] = api_response.get('parameters', {})
+        context['parameters_instances_json'] = dict(
             (name, json.dumps(values))
-            for name, values in api_response['parameters'].items()
+            for name, values in api_response.get('parameters', {}).get('instances', {}).items()
         )
 
         return self.render_to_response(context)

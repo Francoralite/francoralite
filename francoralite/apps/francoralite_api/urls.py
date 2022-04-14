@@ -16,6 +16,7 @@ from .views import (
     collection_publisher,
     collection_location,
     collection_language,
+    cultural_area,
     location_gis,
     location_gis_collection,
     language,
@@ -72,6 +73,8 @@ urlpatterns = [
     re_path(r'^api/locationgiscollection/$',
         location_gis_collection.LocationGisCollectionList.as_view(),
         name="location_gis_collection"),
+    re_path(r'^api/cultural_area/$', cultural_area.CulturalAreaView.as_view(),
+        name="cultural_area" ),
 ]
 
 router = routers.SimpleRouter(trailing_slash=False)

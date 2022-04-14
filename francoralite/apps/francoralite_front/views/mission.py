@@ -5,23 +5,13 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from .. import tools
-from ..forms.mission import MissionForm
-from ..francoralite_template_view import FrancoraliteTemplateView
+from ..francoralite_template_view import FrancoralitePaginatedTemplateView
 
 
-class MissionView(FrancoraliteTemplateView):
+class MissionView(FrancoralitePaginatedTemplateView):
+    api_url = '/api/mission'
+    context_results_name = 'missions'
     template_name = '../templates/mission.html'
     keycloak_scopes = {
         'GET': 'mission:view',
     }
-
-    def get_context_data(self, **kwargs):
-        try:
-            context = super(MissionView, self).get_context_data(**kwargs)
-            context['missions'] = tools.request_api('/api/mission')
-            context['form'] = MissionForm
-        except Exception as err:
-            context['missions'] = []
-            context['error'] = err
-        return context

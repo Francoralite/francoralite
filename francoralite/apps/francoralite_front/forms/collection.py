@@ -5,9 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 from django import forms
-from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
-from bootstrap_datepicker.widgets import DatePicker
 from .core import Core
 
 
@@ -19,24 +17,12 @@ class CollectionForm(forms.Form):
     recorded_from_year = forms.DateField(
         label=_(u'Date d\'enregistrement (depuis)'),
         required=True,
-        widget=DatePicker(
-              options={
-                    "format": "yyyy-mm-dd",
-                    "language": "fr",
-                    "autoclose": True
-                }
-            )
+        widget=forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
     )
     recorded_to_year = forms.DateField(
         label=_(u'Date d\'enregistrement (jusqu\'à)'),
         required=True,
-        widget=DatePicker(
-              options={
-                    "format": "yyyy-mm-dd",
-                    "language": "fr",
-                    "autoclose": True
-                }
-            )
+        widget=forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
     )
     year_published = forms.IntegerField(
         label=_(u'Année de parution'),
