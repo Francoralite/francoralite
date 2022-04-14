@@ -1482,6 +1482,33 @@ label.melody {
   margin-top: 5px;
 }
 
+/* messages d’information ou d’erreur */
+
+ul.messages {
+    margin: 0;
+    padding: 0;
+}
+
+ul.messages li {
+    margin: 15px 0;
+    padding: 10px;
+    border: solid 1px #6a0307;
+    border-radius: 8px;
+    list-style: none;
+    color: #6a0307;
+}
+
+ul.messages li.warning,
+ul.messages li.error {
+    border-color: #bb0000;
+    color: #bb0000;
+}
+
+ul.messages li.error {
+    border-width: 2px;
+    font-weight: bold;
+}
+
 /* menu reconstruit par Laurence */
 
 #menu .menu {
