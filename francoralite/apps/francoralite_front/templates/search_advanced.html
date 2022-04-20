@@ -34,14 +34,22 @@
 
 <h2>Filtres de recherche</h2>
 <form>
-  <details{% if parameters_instances_json.informer or parameters_instances_json.collector %} open{% endif %} id="details_who">
+  <details{% if parameters_instances_json.informer_civility or parameters_instances_json.informer or parameters_instances_json.collector_civility or parameters_instances_json.collector %} open{% endif %} id="details_who">
     <summary>{% trans "Qui ?" %}</summary>
+    <label for="informer_civility">{% trans "Civilité informateur" %}</label>
+    <br>
+    <francoralite-civility name="informer_civility" data-values="{{ parameters_instances_json.informer_civility }}"{% if 'informer_civility' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-civility>
+    <br><br>
     <label for="informer">{% trans "Informateur" %}</label>
     <br>
     <francoralite-informer name="informer" data-values="{{ parameters_instances_json.informer }}"{% if 'informer' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-informer>
     <a id="link_authority_informer" href="/authority_informer">
       <span class="glyphicon glyphicon-list"></span> {% trans "Informateurs ..."%}
     </a>
+    <br><br>
+    <label for="collector_civility">{% trans "Civilité enquêteur" %}</label>
+    <br>
+    <francoralite-civility name="collector_civility" data-values="{{ parameters_instances_json.collector_civility }}"{% if 'collector_civility' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-civility>
     <br><br>
     <label for="collector">{% trans "Enquêteur" %}</label>
     <br>

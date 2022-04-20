@@ -47,6 +47,15 @@ class AdvancedSearchList(generics.GenericAPIView):
                 ),
                 'parameter_model': Authority,
             }, {
+                'name': 'collector_civility',
+                'paths': (
+                    'collectioncollectors__collector__civility',
+                    'itemcollector__collector__civility',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Authority,
+                'parameter_field': 'civility',
+            }, {
                 'name': 'coupe',
                 'sub_model': Coupe,
                 'paths': ('items__collection', 'items'),
@@ -110,6 +119,15 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'iteminformer__informer',
                 ),
                 'parameter_model': Authority,
+            }, {
+                'name': 'informer_civility',
+                'paths': (
+                    'collectioninformer__informer__civility',
+                    'iteminformer__informer__civility',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Authority,
+                'parameter_field': 'civility',
             }, {
                 'name': 'instrument',
                 'sub_model': Instrument,
@@ -259,44 +277,37 @@ class AdvancedSearchList(generics.GenericAPIView):
             'text': self.request.query_params.get('text', None),
         }
 
-        # Building a list of parameter names by model
-        parameter_models = {}
+        # Building a list of parameter names by model and optional field
+        parameter_names = {}
         for field in fields:
-            model = field.get('parameter_model')
-            if model:
-                parameter_models.setdefault(model, []).append(field.get('name'))
+            parameter_model = field.get('parameter_model')
+            parameter_field = field.get('parameter_field')
+            if parameter_model:
+                parameter_config = parameter_model, parameter_field
+                parameter_names.setdefault(parameter_config, []).append(field.get('name'))
 
         # Collecting parameter instances
-        for model, names in parameter_models.items():
-            keys = set(
-                key
+        for (model, field), names in parameter_names.items():
+            values = set(
+                value
                 for name in names
-                for key in self.request.query_params.getlist(name, [])
+                for value in self.request.query_params.getlist(name, [])
             )
-            if keys:
+            if values:
                 # Case of a full text search field
-                if len(names) == 1:
-                    name = names[0]
-                    parameter_field = next(iter(
-                        f.get('parameter_field')
-                        for f in fields
-                        if f['name'] == name
-                    ), None)
-                    if parameter_field:
-                        for value in model.objects.filter(
-                            **{'%s__in' % parameter_field: keys},
-                        ).values_list(
-                            parameter_field,
-                            flat=True,
-                        ).order_by(
-                            parameter_field,
-                        ):
-                            parameters_instances.setdefault(name, []).append(value)
-                        continue
+                if field:
+                    values_qs = model.objects.filter(**{'%s__in' % field: values})
+                    values_qs = values_qs.values_list(field, flat=True)
+                    values_qs = values_qs.order_by(field)
+                    for value in values_qs:
+                        for name in names:
+                            if value in self.request.query_params.getlist(name, []):
+                                parameters_instances.setdefault(name, []).append(value)
+                    continue
 
                 # Case of an enumeration model
                 serializer = self.get_serializer()
-                for instance in model.objects.filter(id__in=keys):
+                for instance in model.objects.filter(id__in=values):
                     serialized = serializer.to_representation(instance)
                     for name in names:
                         if str(instance.id) in self.request.query_params.getlist(name, []):
