@@ -5,9 +5,11 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework import viewsets
-from ..models.domain_music import (
-    DomainMusic as DomainMusicModel)
+
+from ..models.domain_music import DomainMusic as DomainMusicModel
 from ..serializers.domain_music import DomainMusicSerializer
 
 
@@ -19,10 +21,13 @@ class DomainMusicViewSet(viewsets.ModelViewSet):
     queryset = DomainMusicModel.objects.all()
     serializer_class = DomainMusicSerializer
 
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ('name',)
+
     keycloak_scopes = {
         'GET': 'domain_music:view',
         'POST': 'domain_music:add',
         'PATCH': 'domain_music:update',
         'PUT': 'domain_music:update',
-        'DELETE': 'domain_music:delete'
+        'DELETE': 'domain_music:delete',
     }
