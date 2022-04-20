@@ -298,7 +298,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                 if field:
                     values_qs = model.objects.filter(**{'%s__in' % field: values})
                     values_qs = values_qs.values_list(field, flat=True)
-                    values_qs = values_qs.order_by(field)
+                    values_qs = values_qs.order_by(field).distinct()
                     for value in values_qs:
                         for name in names:
                             if value in self.request.query_params.getlist(name, []):
