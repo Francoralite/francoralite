@@ -229,6 +229,18 @@ class FrancoraliteCivility extends FrancoraliteFullTextAutocomplete {
     }
 }
 
+class FrancoraliteCodeExternal extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/code_external/?limit=10&search=';
+    }
+}
+
+class FrancoraliteCodeInternal extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/code_internal/?limit=10&search=';
+    }
+}
+
 class FrancoraliteCollector extends FrancoraliteAuthoritiesAutocomplete {
     getDefaultUrl() {
         return '/api/authority?limit=10&is_collector=true&ordering=first_name+last_name&search=';
@@ -317,6 +329,8 @@ class FrancoraliteThematic extends FrancoraliteEnumAutocomplete {
 }
 
 customElements.define('francoralite-civility', FrancoraliteCivility);
+customElements.define('francoralite-code-external', FrancoraliteCodeExternal);
+customElements.define('francoralite-code-internal', FrancoraliteCodeInternal);
 customElements.define('francoralite-collector', FrancoraliteCollector);
 customElements.define('francoralite-coupe', FrancoraliteCoupe);
 customElements.define('francoralite-cultural-area', FrancoraliteCulturalArea);

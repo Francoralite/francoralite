@@ -40,6 +40,26 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Filtering ----------------------------------------------------
         fields = (
             {
+                'name': 'code_external',
+                'paths': (
+                    'code_partner',
+                    'code_partner',
+                ),
+                'lookups': 'icontains',
+                'parameter_field': 'code_external_fulltext',
+            }, {
+                'name': 'code_internal',
+                'paths': (
+                    'code',
+                    'code',
+                ),
+                'parsers': (
+                    lambda code: code[:18],
+                    None,
+                ),
+                'lookups': 'istartswith',
+                'parameter_field': 'code_internal_fulltext',
+            }, {
                 'name': 'collector',
                 'paths': (
                     'collectioncollectors__collector',
@@ -64,7 +84,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'name': 'cultural_area',
                 'paths': (
                     'cultural_area',
-                    'collection__cultural_area'
+                    'collection__cultural_area',
                 ),
                 'lookups': 'exact',
                 'parameter_model': Collection,
@@ -185,18 +205,26 @@ class AdvancedSearchList(generics.GenericAPIView):
         or_operators = self.request.query_params.getlist('or_operators', [])
 
         for field in fields:
-            values = self.request.query_params.getlist(field['name'], [])
+            raw_values = self.request.query_params.getlist(field['name'], [])
 
-            if not values:
+            if not raw_values:
                 continue
 
             paths = field['paths']
+            parsers = field.get('parsers')
             sub_model = field.get('sub_model')
             lookups = field.get('lookups')
 
             if field['name'] in or_operators:
                 # Filter : value OR value OR ...
                 for index, path in enumerate(paths):
+                    # Parse values when parser is defined
+                    values = filter(None, tuple(
+                        parsers[index](value) for value in raw_values
+                    ) if parsers and parsers[index] else raw_values)
+                    if not values:
+                        continue
+                    # Add filter to the queryset
                     if path is None:
                         query_sets[index] = query_sets[index].none()
                     elif lookups:
@@ -219,8 +247,14 @@ class AdvancedSearchList(generics.GenericAPIView):
                             **{'%s__in' % path: values})
             else:
                 # Filter : value AND value AND ...
-                for value in values:
+                for raw_value in raw_values:
                     for index, path in enumerate(paths):
+                        # Parse value when parser is defined
+                        value = parsers[index](raw_value) \
+                            if parsers and parsers[index] else raw_value
+                        if not value:
+                            continue
+                        # Add filter to the queryset
                         if path is None:
                             query_sets[index] = query_sets[index].none()
                         elif sub_model is not None:
@@ -282,7 +316,7 @@ class AdvancedSearchList(generics.GenericAPIView):
         for field in fields:
             parameter_model = field.get('parameter_model')
             parameter_field = field.get('parameter_field')
-            if parameter_model:
+            if parameter_model or parameter_field:
                 parameter_config = parameter_model, parameter_field
                 parameter_names.setdefault(parameter_config, []).append(field.get('name'))
 
@@ -294,8 +328,8 @@ class AdvancedSearchList(generics.GenericAPIView):
                 for value in self.request.query_params.getlist(name, [])
             )
             if values:
-                # Case of a full text search field
-                if field:
+                # Case of a full text search field from model
+                if model and field:
                     values_qs = model.objects.filter(**{'%s__in' % field: values})
                     values_qs = values_qs.values_list(field, flat=True)
                     values_qs = values_qs.order_by(field).distinct()
@@ -303,6 +337,15 @@ class AdvancedSearchList(generics.GenericAPIView):
                         for name in names:
                             if value in self.request.query_params.getlist(name, []):
                                 parameters_instances.setdefault(name, []).append(value)
+                    continue
+
+                # Case of a full text search field from full text
+                if field:
+                    for name in names:
+                        parameters_instances[name] = sorted(set(
+                            value for value in values
+                            if value in self.request.query_params.getlist(name, [])
+                        ))
                     continue
 
                 # Case of an enumeration model
