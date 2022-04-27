@@ -501,6 +501,39 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['items']), 1)
         self.assertEqual(len(response.data['results']['locations']), 1)
 
+    def test_coirault(self):
+        url = "/advancedsearch/?coirault=1"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+        url = "/advancedsearch/?coirault=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+        url = "/advancedsearch/?coirault=1&coirault=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 1)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+        url = "/advancedsearch/?coirault=1&coirault=2&or_operators=coirault"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 3)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
     # ------------------------------------------------------------------------
 
     def test_multi_criteria(self):

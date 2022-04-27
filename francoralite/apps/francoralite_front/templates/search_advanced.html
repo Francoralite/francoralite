@@ -179,7 +179,7 @@
     </a>
   </details>
 
-  <details{% if parameters.text or parameters.incipit or parameters.refrain or parameters.jingle or parameters_instances_json.coupe %} open{% endif %} id="details_texts">
+  <details{% if parameters.text or parameters.incipit or parameters.refrain or parameters.jingle or parameters_instances_json.coupe or parameters_instances_json.coirault %} open{% endif %} id="details_texts">
     <summary>{% trans "Textes" %}</summary>
     <label for="text">{% trans "Texte" %}</label>
     <br>
@@ -203,6 +203,10 @@
     <a id="link_coupe" href="/coupe">
       <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
     </a>
+    <br><br>
+    <label for="coirault">{% trans "Coirault" %}</label>
+    <br>
+    <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}"{% if 'coirault' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-coirault>
   </details>
 
   <button type="submit" id="btn" class="btn btn-default">
