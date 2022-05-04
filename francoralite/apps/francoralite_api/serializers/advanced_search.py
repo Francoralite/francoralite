@@ -21,6 +21,7 @@ from ..models.mediatype import MediaType as MediaTypeModel
 from ..models.recording_context import RecordingContext as RecordingContextModel
 from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..models.thematic import Thematic as ThematicModel
+from ..models.usefulness import Usefulness as UsefulnessModel
 from .authority import AuthoritySerializer
 from .collection import CollectionSerializer
 from .collection_location import CollectionLocationSerializer
@@ -36,6 +37,7 @@ from .mediatype import MediaTypeSerializer
 from .recording_context import RecordingContextSerializer
 from .skos_concept import SkosConceptSerializer
 from .thematic import ThematicSerializer
+from .usefulness import UsefulnessSerializer
 
 
 class AdvancedSearchSerializer(serializers.Serializer):
@@ -71,6 +73,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = SkosConceptSerializer(instance)
         elif isinstance(instance, ThematicModel):
             serializer = ThematicSerializer(instance)
+        elif isinstance(instance, UsefulnessModel):
+            serializer = UsefulnessSerializer(instance)
         else:
             raise Exception("Unknown instance type: %s" % type(instance))
         data = serializer.data

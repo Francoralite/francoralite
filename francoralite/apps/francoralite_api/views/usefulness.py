@@ -5,9 +5,9 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-from rest_framework import viewsets
-from ..models.usefulness import (
-    Usefulness as UsefulnessModel)
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, filters
+from ..models.usefulness import Usefulness as UsefulnessModel
 from ..serializers.usefulness import UsefulnessSerializer
 
 
@@ -18,6 +18,9 @@ class UsefulnessViewSet(viewsets.ModelViewSet):
 
     queryset = UsefulnessModel.objects.all()
     serializer_class = UsefulnessSerializer
+
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ('name',)
 
     keycloak_scopes = {
         'GET': 'usefulness:view',

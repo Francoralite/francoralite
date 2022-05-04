@@ -92,7 +92,7 @@
     <francoralite-cultural-area name="cultural_area" data-values="{{ parameters_instances_json.cultural_area }}"{% if 'cultural_area' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-cultural-area>
   </details>
 
-  <details{% if parameters_instances_json.media_type or parameters_instances_json.recording_context or parameters_instances_json.dance %} open{% endif %} id="details_what">
+  <details{% if parameters_instances_json.media_type or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance %} open{% endif %} id="details_what">
     <summary>{% trans "Quoi ?" %}</summary>
     <label for="media_type">{% trans "Type de média" %}</label>
     <br>
@@ -107,7 +107,13 @@
     <a id="link_recording_context" href="/recording_context">
       <span class="glyphicon glyphicon-list"></span> {% trans "Contextes d'enregistrement ..."%}
     </a>
+    <br><br>
+    <label for="usefulness">{% trans "Fonction" %}</label>
     <br>
+    <francoralite-usefulness name="usefulness" data-values="{{ parameters_instances_json.usefulness }}"{% if 'usefulness' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-usefulness>
+    <a id="link_usefulness" href="/usefulness">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Fonctions ..."%}
+    </a>
     <br><br>
     <label for="dance">{% trans "Danse" %}</label>
     <br>

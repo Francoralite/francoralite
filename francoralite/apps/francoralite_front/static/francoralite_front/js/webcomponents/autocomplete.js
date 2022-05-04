@@ -355,6 +355,12 @@ class FrancoraliteTimbreRef extends FrancoraliteFullTextAutocomplete {
     }
 }
 
+class FrancoraliteUsefulness extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/usefulness?limit=10&search=';
+    }
+}
+
 customElements.define('francoralite-civility', FrancoraliteCivility);
 customElements.define('francoralite-code-external', FrancoraliteCodeExternal);
 customElements.define('francoralite-code-internal', FrancoraliteCodeInternal);
@@ -374,3 +380,4 @@ customElements.define('francoralite-recording-context', FrancoraliteRecordingCon
 customElements.define('francoralite-thematic', FrancoraliteThematic);
 customElements.define('francoralite-timbre', FrancoraliteTimbre);
 customElements.define('francoralite-timbre-ref', FrancoraliteTimbreRef);
+customElements.define('francoralite-usefulness', FrancoraliteUsefulness);

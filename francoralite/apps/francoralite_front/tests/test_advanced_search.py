@@ -6,11 +6,11 @@ URL_PREFIX = "/search_advanced/"
 def select_search_criteria(id_block, id_field, value, option, context):
     # Go to advanced search page
     context.open_url(URL_PREFIX)
-    
+
     # Verify the label of the page
     context.verify_title(_('Recherche avancée'))
-    
-    # Select the block "details_what" 
+
+    # Select the block "details_what"
     context.scroll_to_element(
         by_id=id_block).click()
 
@@ -20,7 +20,7 @@ def select_search_criteria(id_block, id_field, value, option, context):
 
     # There is an option named "valse"
     context.find_element(
-        by_xpath=f"//francoralite-{id_field}/ul/li[contains(text(), '{option}')]", visibility_timeout=5)   
+        by_xpath=f"//francoralite-{id_field}/ul/li[contains(text(), '{option}')]", visibility_timeout=5)
 
 def test_search(francoralite_context):
     criteria = [
@@ -31,9 +31,9 @@ def test_search(francoralite_context):
             'option':"valse",
         },
     ]
-    
+
     #TODO ajouter des tests pour tous les critères
-    
+
     for crit in criteria:
         select_search_criteria(
             id_block=crit['id_block'],
@@ -101,6 +101,11 @@ def test_links_to_list(francoralite_context):
             'id_block': 'details_what',
             'id_link': 'link_recording_context',
             'title': 'Contexte d’enregistrement',
+        },
+        {
+            'id_block': 'details_what',
+            'id_link': 'link_usefulness',
+            'title': 'Fonction',
         },
         {
             'id_block': 'details_where',

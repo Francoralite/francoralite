@@ -24,6 +24,7 @@ from ..models.mediatype import MediaType
 from ..models.recording_context import RecordingContext
 from ..models.skos_concept import SkosConcept
 from ..models.thematic import Thematic
+from ..models.usefulness import Usefulness
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
@@ -217,6 +218,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'collection__itemusefulness__usefulness',
                     'itemusefulness__usefulness',
                 ),
+                'parameter_model': Usefulness,
             },
         )
 
