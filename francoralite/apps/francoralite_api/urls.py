@@ -1,96 +1,98 @@
 from rest_framework_nested import routers
 from django.conf.urls import re_path
 from .views import (
-    authority,
-    coupe,
-    institution,
-    fond,
-    document_fond,
     acquisition_mode,
-    mission,
-    document_mission,
+    advanced_search,
+    authority,
     civility,
     code_external,
     code_internal,
     collection,
-    document_collection,
-    collectioncollectors,
     collection_informer,
-    collection_publisher,
-    collection_location,
     collection_language,
+    collection_location,
+    collection_publisher,
+    collectioncollectors,
+    coupe,
     cultural_area,
+    dance,
+    document_collection,
+    document_fond,
+    document_item,
+    document_mission,
+    domain_music,
+    domain_song,
+    domain_tale,
+    domain_vocal,
+    emit_vox,
+    fond,
+    global_search,
+    hornbostelsachs,
+    institution,
+    instrument,
+    item,
+    item_author,
+    item_coirault,
+    item_collector,
+    item_compositor,
+    item_dance,
+    item_domain_music,
+    item_domain_song,
+    item_domain_tale,
+    item_domain_vocal,
+    item_informer,
+    item_language,
+    item_musical_group,
+    item_musical_organization,
+    item_performance,
+    item_thematic,
+    item_usefulness,
+    language,
+    legal_rights,
     location_gis,
     location_gis_collection,
-    language,
-    item,
-    document_item,
-    item_collector,
-    item_informer,
-    item_author,
-    item_compositor,
-    item_domain_song,
-    item_domain_music,
-    item_domain_vocal,
-    item_domain_tale,
-    item_usefulness,
-    item_dance,
-    item_language,
-    item_thematic,
-    item_coirault,
-    item_musical_organization,
-    item_musical_group,
-    item_performance,
     mediatype,
     metadata_author,
-    publisher,
-    legal_rights,
-    recording_context,
-    emit_vox,
-    hornbostelsachs,
-    instrument,
+    mission,
+    musical_group,
+    musical_organization,
     performance_collection,
     performance_collection_musician,
-    musical_organization,
-    musical_group,
-    thematic,
-    dance,
-    domain_tale,
-    domain_music,
-    domain_vocal,
-    domain_song,
-    usefulness,
-    versions,
-    global_search,
-    advanced_search,
+    publisher,
+    recording_context,
     skos_collection,
     skos_concept,
+    thematic,
     timbre,
     timbre_ref,
+    usefulness,
+    versions,
 )
 
+
 urlpatterns = [
-    re_path(r'^versions/$',versions.VersionsView.as_view(), name="versions" ),
-    re_path(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
-        name="search"),
     re_path(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
-        name="search_advanced"),
+        name='search_advanced'),
+    re_path(r'^api/civility/$', civility.CivilityView.as_view(),
+        name='civility'),
+    re_path(r'^api/code_external/$', code_external.CodeExternalView.as_view(),
+        name='code_external'),
+    re_path(r'^api/code_internal/$', code_internal.CodeInternalView.as_view(),
+        name='code_internal'),
+    re_path(r'^api/cultural_area/$', cultural_area.CulturalAreaView.as_view(),
+        name='cultural_area'),
     re_path(r'^api/locationgiscollection/$',
         location_gis_collection.LocationGisCollectionList.as_view(),
-        name="location_gis_collection"),
-    re_path(r'^api/civility/$', civility.CivilityView.as_view(),
-        name="civility"),
-    re_path(r'^api/code_external/$', code_external.CodeExternalView.as_view(),
-        name="code_external"),
-    re_path(r'^api/code_internal/$', code_internal.CodeInternalView.as_view(),
-        name="code_internal"),
-    re_path(r'^api/cultural_area/$', cultural_area.CulturalAreaView.as_view(),
-        name="cultural_area"),
+        name='location_gis_collection'),
     re_path(r'^api/timbre/$', timbre.TimbreView.as_view(),
-        name="timbre"),
+        name='timbre'),
     re_path(r'^api/timbre_ref/$', timbre_ref.TimbreRefView.as_view(),
-        name="timbre_ref"),
+        name='timbre_ref'),
+    re_path(r'^globalsearch/$', global_search.GlobalSearchList.as_view(),
+        name='search'),
+    re_path(r'^versions/$', versions.VersionsView.as_view(), name='versions'),
 ]
+
 
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'institution',
@@ -170,7 +172,6 @@ router.register(r'usefulness',
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 basename='performance_collection_musician')
-
 router.register(r'skos_collection',
                 skos_collection.SkosCollectionViewSet,
                 basename='coirault')
@@ -178,81 +179,85 @@ router.register(r'skos_concept',
                 skos_concept.SkosConceptViewSet,
                 basename='coirault')
 
+
 # Nested routers
 
 # Fond's nested ------------------------------------
-Fond_router = routers.NestedSimpleRouter(
+fond_router = routers.NestedSimpleRouter(
     router, r'fond', lookup='fond', trailing_slash=False)
-Fond_router.register(
+fond_router.register(
     r'document', document_fond.DocumentFondViewSet)
 
+
 # Mission's nested ------------------------------------
-Mission_router = routers.NestedSimpleRouter(
+mission_router = routers.NestedSimpleRouter(
     router, r'mission', lookup='mission', trailing_slash=False)
-Mission_router.register(
+mission_router.register(
     r'document', document_mission.DocumentMissionViewSet)
 
+
 # Collection's nested ------------------------------------
-Collection_router = routers.NestedSimpleRouter(
+collection_router = routers.NestedSimpleRouter(
     router, r'collection', lookup='collection', trailing_slash=False)
-Collection_router.register(
+collection_router.register(
     r'collectors', collectioncollectors.CollectionCollectorsViewSet)
-Collection_router.register(
+collection_router.register(
     r'informer', collection_informer.CollectionInformerViewSet)
-Collection_router.register(
+collection_router.register(
     r'publisher', collection_publisher.CollectionPublisherViewSet)
-Collection_router.register(
+collection_router.register(
     r'location', collection_location.CollectionLocationViewSet)
-Collection_router.register(
+collection_router.register(
     r'language', collection_language.CollectionLanguageViewSet)
-Collection_router.register(
+collection_router.register(
     r'performance', performance_collection.PerformanceCollectionViewSet)
-Performance_router = routers.NestedSimpleRouter(
-    Collection_router, r'performance', lookup='performance',
+performance_router = routers.NestedSimpleRouter(
+    collection_router, r'performance', lookup='performance',
     trailing_slash=False)
-Performance_router.register(
+performance_router.register(
     r'musician',
     performance_collection_musician.PerformanceCollectionMusicianViewSet)
-Collection_router.register(
+collection_router.register(
     r'document', document_collection.DocumentCollectionViewSet)
 
+
 # Item's nested ------------------------------------
-Item_router = routers.NestedSimpleRouter(
+item_router = routers.NestedSimpleRouter(
      router, r'item', lookup='item', trailing_slash=False)
-Item_router.register(
+item_router.register(
     r'collector', item_collector.ItemCollectorViewSet)
-Item_router.register(
+item_router.register(
     r'informer', item_informer.ItemInformerViewSet)
-Item_router.register(
+item_router.register(
     r'author', item_author.ItemAuthorViewSet)
-Item_router.register(
+item_router.register(
     r'compositor', item_compositor.ItemCompositorViewSet)
-Item_router.register(
+item_router.register(
     r'domain_song', item_domain_song.ItemDomainSongViewSet)
-Item_router.register(
+item_router.register(
     r'domain_music', item_domain_music.ItemDomainMusicViewSet)
-Item_router.register(
+item_router.register(
     r'domain_vocal', item_domain_vocal.ItemDomainVocalViewSet)
-Item_router.register(
+item_router.register(
     r'domain_tale', item_domain_tale.ItemDomainTaleViewSet)
-Item_router.register(
+item_router.register(
     r'usefulness', item_usefulness.ItemUsefulnessViewSet)
-Item_router.register(
+item_router.register(
     r'dance', item_dance.ItemDanceViewSet)
-Item_router.register(
+item_router.register(
     r'language', item_language.ItemLanguageViewSet)
-Item_router.register(
+item_router.register(
     r'thematic', item_thematic.ItemThematicViewSet)
-Item_router.register(
+item_router.register(
     r'musical_organization',
     item_musical_organization.ItemMusicalOrganizationViewSet)
-Item_router.register(
+item_router.register(
     r'coirault', item_coirault.ItemCoiraultViewSet
 )
-Item_router.register(
+item_router.register(
     r'document', document_item.DocumentItemViewSet)
-Item_router.register(
+item_router.register(
     r'musical_group',
     item_musical_group.ItemMusicalGroupViewSet)
-Item_router.register(
+item_router.register(
     r'performance', item_performance.ItemPerformanceViewSet)
