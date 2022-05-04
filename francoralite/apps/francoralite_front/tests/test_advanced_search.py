@@ -79,6 +79,11 @@ def test_links_to_list(francoralite_context):
         },
         {
             'id_block': 'details_genders',
+            'id_link': 'link_instrument',
+            'title': 'Voix/Instruments',
+        },
+        {
+            'id_block': 'details_genders',
             'id_link': 'link_thematic',
             'title': 'Thématique',
         },

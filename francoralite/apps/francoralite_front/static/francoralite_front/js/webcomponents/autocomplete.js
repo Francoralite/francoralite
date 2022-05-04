@@ -310,6 +310,12 @@ class FrancoraliteInformer extends FrancoraliteAuthoritiesAutocomplete {
     }
 }
 
+class FrancoraliteInstrument extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/instrument?limit=10&search=';
+    }
+}
+
 class FrancoraliteLocation extends FrancoraliteAutocomplete {
     getDefaultUrl() {
         return '/api/locationgis?limit=10&ordering=code&search=';
@@ -374,6 +380,7 @@ customElements.define('francoralite-domain-song', FrancoraliteDomainSong);
 customElements.define('francoralite-domain-tale', FrancoraliteDomainTale);
 customElements.define('francoralite-domain-vocal', FrancoraliteDomainVocal);
 customElements.define('francoralite-informer', FrancoraliteInformer);
+customElements.define('francoralite-instrument', FrancoraliteInstrument);
 customElements.define('francoralite-location', FrancoraliteLocation);
 customElements.define('francoralite-media-type', FrancoraliteMediaType);
 customElements.define('francoralite-recording-context', FrancoraliteRecordingContext);

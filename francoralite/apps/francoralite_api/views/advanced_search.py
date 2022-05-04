@@ -164,6 +164,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'performancecollection__collection',
                     'performancecollection__itemperformance__item',
                 ),
+                'parameter_model': Instrument,
             }, {
                 'name': 'location',
                 'paths': (

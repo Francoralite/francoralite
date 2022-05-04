@@ -15,6 +15,7 @@ from ..models.domain_song import DomainSong as DomainSongModel
 from ..models.domain_music import DomainMusic as DomainMusicModel
 from ..models.domain_tale import DomainTale as DomainTaleModel
 from ..models.domain_vocal import DomainVocal as DomainVocalModel
+from ..models.instrument import Instrument as InstrumentModel
 from ..models.item import Item as ItemModel
 from ..models.location import Location as LocationModel
 from ..models.mediatype import MediaType as MediaTypeModel
@@ -31,6 +32,7 @@ from .domain_song import DomainSongSerializer
 from .domain_music import DomainMusicSerializer
 from .domain_tale import DomainTaleSerializer
 from .domain_vocal import DomainVocalSerializer
+from .instrument import InstrumentSerializer
 from .item import ItemSerializer
 from .location_gis import LocationGisSerializer
 from .mediatype import MediaTypeSerializer
@@ -61,6 +63,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = DomainTaleSerializer(instance)
         elif isinstance(instance, DomainVocalModel):
             serializer = DomainVocalSerializer(instance)
+        elif isinstance(instance, InstrumentModel):
+            serializer = InstrumentSerializer(instance)
         elif isinstance(instance, ItemModel):
             serializer = ItemSerializer(instance)
         elif isinstance(instance, LocationModel):
