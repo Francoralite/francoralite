@@ -343,6 +343,18 @@ class FrancoraliteThematic extends FrancoraliteEnumAutocomplete {
     }
 }
 
+class FrancoraliteTimbre extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/timbre/?limit=10&search=';
+    }
+}
+
+class FrancoraliteTimbreRef extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/timbre_ref/?limit=10&search=';
+    }
+}
+
 customElements.define('francoralite-civility', FrancoraliteCivility);
 customElements.define('francoralite-code-external', FrancoraliteCodeExternal);
 customElements.define('francoralite-code-internal', FrancoraliteCodeInternal);
@@ -360,3 +372,5 @@ customElements.define('francoralite-location', FrancoraliteLocation);
 customElements.define('francoralite-media-type', FrancoraliteMediaType);
 customElements.define('francoralite-recording-context', FrancoraliteRecordingContext);
 customElements.define('francoralite-thematic', FrancoraliteThematic);
+customElements.define('francoralite-timbre', FrancoraliteTimbre);
+customElements.define('francoralite-timbre-ref', FrancoraliteTimbreRef);

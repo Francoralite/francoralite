@@ -195,12 +195,22 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'parameter_model': Thematic,
             }, {
                 'name': 'timbre',
-                'paths': (None, 'timbre'),
-                'lookups': 'icontains',
+                'paths': (
+                    'collection__timbre',
+                    'timbre',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Item,
+                'parameter_field': 'timbre',
             }, {
                 'name': 'timbre_ref',
-                'paths': (None, 'timbre_ref'),
-                'lookups': 'icontains',
+                'paths': (
+                    'collection__timbre_ref',
+                    'timbre_ref',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Item,
+                'parameter_field': 'timbre_ref',
             }, {
                 'name': 'usefulness',
                 'paths': (

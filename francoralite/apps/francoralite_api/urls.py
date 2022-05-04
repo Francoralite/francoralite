@@ -64,8 +64,10 @@ from .views import (
     global_search,
     advanced_search,
     skos_collection,
-    skos_concept
-    )
+    skos_concept,
+    timbre,
+    timbre_ref,
+)
 
 urlpatterns = [
     re_path(r'^versions/$',versions.VersionsView.as_view(), name="versions" ),
@@ -84,6 +86,10 @@ urlpatterns = [
         name="code_internal"),
     re_path(r'^api/cultural_area/$', cultural_area.CulturalAreaView.as_view(),
         name="cultural_area"),
+    re_path(r'^api/timbre/$', timbre.TimbreView.as_view(),
+        name="timbre"),
+    re_path(r'^api/timbre_ref/$', timbre_ref.TimbreRefView.as_view(),
+        name="timbre_ref"),
 ]
 
 router = routers.SimpleRouter(trailing_slash=False)

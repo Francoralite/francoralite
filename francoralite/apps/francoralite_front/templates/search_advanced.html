@@ -117,7 +117,7 @@
     </a>
   </details>
 
-  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters_instances_json.domain_song or parameters_instances_json.domain_vocal or parameters_instances_json.domain_music %} open{% endif %} id="details_genders">
+  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters_instances_json.domain_song or parameters_instances_json.domain_vocal or parameters_instances_json.domain_music or parameters_instances_json.timbre or parameters_instances_json.timbre_ref %} open{% endif %} id="details_genders">
     <summary>{% trans "Genres" %}</summary>
     <label>{% trans "Domaine(s) :" %}</label>
     <ul>
@@ -177,6 +177,14 @@
     <a id="link_domain_tale" href="/domain_tale">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
     </a>
+    <br><br>
+    <label for="timbre">{% trans "Timbre de l’air" %}</label>
+    <br>
+    <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}"{% if 'timbre' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-timbre>
+    <br><br>
+    <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
+    <br>
+    <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}"{% if 'timbre_ref' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-timbre-ref>
   </details>
 
   <details{% if parameters.text or parameters.incipit or parameters.refrain or parameters.jingle or parameters_instances_json.coupe or parameters_instances_json.coirault %} open{% endif %} id="details_texts">
