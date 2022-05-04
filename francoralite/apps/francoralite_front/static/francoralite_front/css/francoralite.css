@@ -761,6 +761,8 @@ main > header h1 {
     color: #6a0307;
 }
 .pagination .pages {
+    display: flex;
+    flex-flow: row wrap;
     text-align: right;
     font-size: 0;
 }
