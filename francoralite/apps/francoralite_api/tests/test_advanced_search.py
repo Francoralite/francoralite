@@ -192,9 +192,9 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']['collections']), 0)
+        self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 2)
-        self.assertEqual(len(response.data['results']['locations']), 0)
+        self.assertEqual(len(response.data['results']['locations']), 1)
         self.assertEqual(response.data['results']['items'][0]['entity'], 'Item')
         self.assertEqual(response.data['results']['items'][0]['id'], 1)  # item 1
         self.assertEqual(response.data['results']['items'][1]['entity'], 'Item')
@@ -204,9 +204,9 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']['collections']), 0)
+        self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 1)
-        self.assertEqual(len(response.data['results']['locations']), 0)
+        self.assertEqual(len(response.data['results']['locations']), 1)
         self.assertEqual(response.data['results']['items'][0]['entity'], 'Item')
         self.assertEqual(response.data['results']['items'][0]['id'], 4)  # item 4
 
@@ -215,9 +215,9 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']['collections']), 0)
+        self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 2)
-        self.assertEqual(len(response.data['results']['locations']), 0)
+        self.assertEqual(len(response.data['results']['locations']), 1)
         self.assertEqual(response.data['results']['items'][0]['entity'], 'Item')
         self.assertEqual(response.data['results']['items'][0]['id'], 1)  # item 1
         self.assertEqual(response.data['results']['items'][1]['entity'], 'Item')
@@ -227,9 +227,9 @@ class TestAdvancedSearch(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']['collections']), 0)
+        self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 1)
-        self.assertEqual(len(response.data['results']['locations']), 0)
+        self.assertEqual(len(response.data['results']['locations']), 1)
         self.assertEqual(response.data['results']['items'][0]['entity'], 'Item')
         self.assertEqual(response.data['results']['items'][0]['id'], 4)  # item 4
 
@@ -391,7 +391,7 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['locations']), 3)
         self.assertEqual(response.data['results']['collections'][0]['entity'], 'Collection')
         self.assertEqual(response.data['results']['collections'][0]['id'], 1)  # collection 1
-        
+
     def test_media_type(self):
         url = "/advancedsearch/?media_type=1"
         response = self.client.get(url)
@@ -400,8 +400,8 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['collections']), 0)
         self.assertEqual(len(response.data['results']['items']), 0)
         self.assertEqual(len(response.data['results']['locations']), 0)
-        
-        
+
+
         url = "/advancedsearch/?media_type=2"
         response = self.client.get(url)
 
@@ -409,7 +409,7 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['collections']), 3)
         self.assertEqual(len(response.data['results']['items']), 3)
         self.assertEqual(len(response.data['results']['locations']), 3)
-        
+
         url = "/advancedsearch/?media_type=3"
         response = self.client.get(url)
 
@@ -417,32 +417,124 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 1)
         self.assertEqual(len(response.data['results']['locations']), 1)
-        
+
     def test_recording_context(self):
         url = "/advancedsearch/?recording_context=1"
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']['collections']), 2)
         self.assertEqual(len(response.data['results']['items']), 2)
         self.assertEqual(len(response.data['results']['locations']), 2)
-        
+
         url = "/advancedsearch/?recording_context=3"
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 1)
         self.assertEqual(len(response.data['results']['locations']), 1)
-        
+
         url = "/advancedsearch/?recording_context=6"
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']['collections']), 1)
         self.assertEqual(len(response.data['results']['items']), 1)
         self.assertEqual(len(response.data['results']['locations']), 1)
-        
+
+    def test_code_external(self):
+        url = "/advancedsearch/?code_external=56-10-138"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 1)
+        self.assertEqual(len(response.data['results']['items']), 1)
+        self.assertEqual(len(response.data['results']['locations']), 1)
+
+        url = "/advancedsearch/?code_external=MUS1969.33.2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 0)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 0)
+
+    def test_code_internal(self):
+        url = "/advancedsearch/?code_internal=UPOI"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 4)
+        self.assertEqual(len(response.data['results']['items']), 4)
+        self.assertEqual(len(response.data['results']['locations']), 4)
+
+        url = "/advancedsearch/?code_internal=UPOI_ATP"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 3)
+        self.assertEqual(len(response.data['results']['items']), 3)
+        self.assertEqual(len(response.data['results']['locations']), 3)
+
+        url = "/advancedsearch/?code_internal=UPOI_ATP_0001"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+        url = "/advancedsearch/?code_internal=UPOI_ATP_0001_0001"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 1)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 1)
+
+        url = "/advancedsearch/?code_internal=UPOI_ATP_0001_0001_002"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 1)
+        self.assertEqual(len(response.data['results']['items']), 1)
+        self.assertEqual(len(response.data['results']['locations']), 1)
+
+    def test_coirault(self):
+        url = "/advancedsearch/?coirault=1"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+        url = "/advancedsearch/?coirault=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+        url = "/advancedsearch/?coirault=1&coirault=2"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 1)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+        url = "/advancedsearch/?coirault=1&coirault=2&or_operators=coirault"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 2)
+        self.assertEqual(len(response.data['results']['items']), 3)
+        self.assertEqual(len(response.data['results']['locations']), 2)
+
+    # ------------------------------------------------------------------------
 
     def test_multi_criteria(self):
         """
@@ -788,3 +880,15 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(response.data['results']['items'][1]['id'], 1)  # item 1
         self.assertEqual(response.data['results']['items'][2]['entity'], 'Item')
         self.assertEqual(response.data['results']['items'][2]['id'], 2)  # item 2
+
+        """
+        - collection : UPOI_ATP_0001_0001
+        """
+
+        url = "/advancedsearch/?code_internal=UPOI_ATP_0001_0001&text="
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']['collections']), 1)
+        self.assertEqual(len(response.data['results']['items']), 2)
+        self.assertEqual(len(response.data['results']['locations']), 1)

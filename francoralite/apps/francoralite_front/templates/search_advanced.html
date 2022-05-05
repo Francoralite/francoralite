@@ -34,14 +34,33 @@
 
 <h2>Filtres de recherche</h2>
 <form>
-  <details{% if parameters_instances_json.informer or parameters_instances_json.collector %} open{% endif %} id="details_who">
+  <details{% if parameters_instances_json.code_internal or parameters_instances_json.code_external %} open{% endif %} id="details_references">
+    <summary>{% trans "Références" %}</summary>
+    <label for="code_internal">{% trans "Cote" %}</label>
+    <br>
+    <francoralite-code-internal name="code_internal" data-values="{{ parameters_instances_json.code_internal }}"{% if 'code_internal' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-code-internal>
+    <br><br>
+    <label for="code_external">{% trans "Référence partenaire" %}</label>
+    <br>
+    <francoralite-code-external name="code_external" data-values="{{ parameters_instances_json.code_external }}"{% if 'code_external' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-code-external>
+  </details>
+
+  <details{% if parameters_instances_json.informer_civility or parameters_instances_json.informer or parameters_instances_json.collector_civility or parameters_instances_json.collector %} open{% endif %} id="details_who">
     <summary>{% trans "Qui ?" %}</summary>
+    <label for="informer_civility">{% trans "Civilité informateur" %}</label>
+    <br>
+    <francoralite-civility name="informer_civility" data-values="{{ parameters_instances_json.informer_civility }}"{% if 'informer_civility' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-civility>
+    <br><br>
     <label for="informer">{% trans "Informateur" %}</label>
     <br>
     <francoralite-informer name="informer" data-values="{{ parameters_instances_json.informer }}"{% if 'informer' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-informer>
     <a id="link_authority_informer" href="/authority_informer">
       <span class="glyphicon glyphicon-list"></span> {% trans "Informateurs ..."%}
     </a>
+    <br><br>
+    <label for="collector_civility">{% trans "Civilité enquêteur" %}</label>
+    <br>
+    <francoralite-civility name="collector_civility" data-values="{{ parameters_instances_json.collector_civility }}"{% if 'collector_civility' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-civility>
     <br><br>
     <label for="collector">{% trans "Enquêteur" %}</label>
     <br>
@@ -73,7 +92,7 @@
     <francoralite-cultural-area name="cultural_area" data-values="{{ parameters_instances_json.cultural_area }}"{% if 'cultural_area' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-cultural-area>
   </details>
 
-  <details{% if parameters_instances_json.media_type or parameters_instances_json.recording_context or parameters_instances_json.dance %} open{% endif %} id="details_what">
+  <details{% if parameters_instances_json.media_type or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance %} open{% endif %} id="details_what">
     <summary>{% trans "Quoi ?" %}</summary>
     <label for="media_type">{% trans "Type de média" %}</label>
     <br>
@@ -88,7 +107,13 @@
     <a id="link_recording_context" href="/recording_context">
       <span class="glyphicon glyphicon-list"></span> {% trans "Contextes d'enregistrement ..."%}
     </a>
+    <br><br>
+    <label for="usefulness">{% trans "Fonction" %}</label>
     <br>
+    <francoralite-usefulness name="usefulness" data-values="{{ parameters_instances_json.usefulness }}"{% if 'usefulness' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-usefulness>
+    <a id="link_usefulness" href="/usefulness">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Fonctions ..."%}
+    </a>
     <br><br>
     <label for="dance">{% trans "Danse" %}</label>
     <br>
@@ -98,7 +123,7 @@
     </a>
   </details>
 
-  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters_instances_json.domain_song or parameters_instances_json.domain_vocal or parameters_instances_json.domain_music %} open{% endif %} id="details_genders">
+  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters_instances_json.domain_song or parameters_instances_json.domain_vocal or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.timbre or parameters_instances_json.timbre_ref %} open{% endif %} id="details_genders">
     <summary>{% trans "Genres" %}</summary>
     <label>{% trans "Domaine(s) :" %}</label>
     <ul>
@@ -158,9 +183,24 @@
     <a id="link_domain_tale" href="/domain_tale">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
     </a>
+    <br><br>
+    <label for="instrument">{% trans "Voix/Instrument(s)" %}</label>
+    <br>
+    <francoralite-instrument name="instrument" data-values="{{ parameters_instances_json.instrument }}"{% if 'instrument' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-instrument>
+    <a id="link_instrument" href="/instrument">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Voix/Instruments ..."%}
+    </a>
+    <br><br>
+    <label for="timbre">{% trans "Timbre de l’air" %}</label>
+    <br>
+    <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}"{% if 'timbre' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-timbre>
+    <br><br>
+    <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
+    <br>
+    <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}"{% if 'timbre_ref' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-timbre-ref>
   </details>
 
-  <details{% if parameters.text or parameters.incipit or parameters.refrain or parameters.jingle or parameters_instances_json.coupe %} open{% endif %} id="details_texts">
+  <details{% if parameters.text or parameters.incipit or parameters.refrain or parameters.jingle or parameters_instances_json.coupe or parameters_instances_json.coirault %} open{% endif %} id="details_texts">
     <summary>{% trans "Textes" %}</summary>
     <label for="text">{% trans "Texte" %}</label>
     <br>
@@ -184,6 +224,10 @@
     <a id="link_coupe" href="/coupe">
       <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
     </a>
+    <br><br>
+    <label for="coirault">{% trans "Coirault" %}</label>
+    <br>
+    <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}"{% if 'coirault' in parameters.or_operators %} data-default-operator="checked"{% endif %}></francoralite-coirault>
   </details>
 
   <button type="submit" id="btn" class="btn btn-default">

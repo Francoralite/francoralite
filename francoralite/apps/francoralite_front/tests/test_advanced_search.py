@@ -1,26 +1,47 @@
 from django.utils.translation import gettext as _
 
 
-def test_search_dance(francoralite_context):
-    francoralite_context.open_homepage(auth_username="")
+URL_PREFIX = "/search_advanced/"
 
-    url_prefix = "/search_advanced/"
-
+def select_search_criteria(id_block, id_field, value, option, context):
     # Go to advanced search page
-    francoralite_context.open_url(url_prefix)
+    context.open_url(URL_PREFIX)
 
     # Verify the label of the page
-    francoralite_context.verify_title(_('Recherche avancée'))
+    context.verify_title(_('Recherche avancée'))
 
-#     # Write first characters of the content
-#     francoralite_context.scroll_to_element(
-#         by_xpath="//input[@placeholder='" + _("Recherche sur danse") + " ...']").send_keys('va')
+    # Select the block "details_what"
+    context.scroll_to_element(
+        by_id=id_block).click()
 
-#     # There is an option named "valse"
-#     francoralite_context.find_element(
-#         by_xpath="//p[contains(text(), 'valse')]", visibility_timeout=5)
+    # Write first characters of the content
+    context.scroll_to_element(
+        by_id=id_field).send_keys(value)
+
+    # There is an option named "valse"
+    context.find_element(
+        by_xpath=f"//francoralite-{id_field}/ul/li[contains(text(), '{option}')]", visibility_timeout=5)
+
+def test_search(francoralite_context):
+    criteria = [
+        {
+            'id_block':"details_what",
+            'id_field':"dance",
+            'value':"va",
+            'option':"valse",
+        },
+    ]
 
     #TODO ajouter des tests pour tous les critères
+
+    for crit in criteria:
+        select_search_criteria(
+            id_block=crit['id_block'],
+            id_field=crit['id_field'],
+            value=crit['value'],
+            option=crit['option'],
+            context=francoralite_context
+        )
 
 def click_to_list(id_block, id_link, title, context):
 
@@ -58,6 +79,11 @@ def test_links_to_list(francoralite_context):
         },
         {
             'id_block': 'details_genders',
+            'id_link': 'link_instrument',
+            'title': 'Voix/Instruments',
+        },
+        {
+            'id_block': 'details_genders',
             'id_link': 'link_thematic',
             'title': 'Thématique',
         },
@@ -80,6 +106,11 @@ def test_links_to_list(francoralite_context):
             'id_block': 'details_what',
             'id_link': 'link_recording_context',
             'title': 'Contexte d’enregistrement',
+        },
+        {
+            'id_block': 'details_what',
+            'id_link': 'link_usefulness',
+            'title': 'Fonction',
         },
         {
             'id_block': 'details_where',

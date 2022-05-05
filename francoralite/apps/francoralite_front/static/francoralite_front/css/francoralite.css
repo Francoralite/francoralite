@@ -761,6 +761,8 @@ main > header h1 {
     color: #6a0307;
 }
 .pagination .pages {
+    display: flex;
+    flex-flow: row wrap;
     text-align: right;
     font-size: 0;
 }
@@ -818,12 +820,12 @@ table.instruments tbody td {
 /* Styles for tabular listings (stolen from trac) */
 table.listing {
     border-spacing: 0;
-    margin-top: 3em;
     width: 100%;
 }
 
 .fullpage table.listing {
     width: 100%;
+    margin-top: 3em;
     font-size: 105%;
 }
 

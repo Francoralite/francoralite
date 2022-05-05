@@ -7,10 +7,10 @@
 from rest_framework import serializers
 
 
-class CulturalAreaSerializer(serializers.Serializer):
+class SimpleSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         if isinstance(instance, str):
             return instance
         else:
-            raise Exception("Unknown instance type: %s" % type(instance))
+            raise Exception('Unknown instance type: %s' % type(instance))

@@ -22,7 +22,9 @@ from ..models.item import Item
 from ..models.location import Location
 from ..models.mediatype import MediaType
 from ..models.recording_context import RecordingContext
+from ..models.skos_concept import SkosConcept
 from ..models.thematic import Thematic
+from ..models.usefulness import Usefulness
 from ..serializers.advanced_search import AdvancedSearchSerializer
 
 
@@ -40,12 +42,48 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Filtering ----------------------------------------------------
         fields = (
             {
+                'name': 'code_external',
+                'paths': (
+                    'code_partner',
+                    'code_partner',
+                ),
+                'lookups': 'icontains',
+                'parameter_field': 'code_external_fulltext',
+            }, {
+                'name': 'code_internal',
+                'paths': (
+                    'code',
+                    'code',
+                ),
+                'parsers': (
+                    lambda code: code[:18],
+                    None,
+                ),
+                'lookups': 'istartswith',
+                'parameter_field': 'code_internal_fulltext',
+            }, {
+                'name': 'coirault',
+                'paths': (
+                    'collection__itemcoirault__coirault',
+                    'itemcoirault__coirault',
+                ),
+                'parameter_model': SkosConcept,
+            }, {
                 'name': 'collector',
                 'paths': (
                     'collectioncollectors__collector',
                     'itemcollector__collector',
                 ),
                 'parameter_model': Authority,
+            }, {
+                'name': 'collector_civility',
+                'paths': (
+                    'collectioncollectors__collector__civility',
+                    'itemcollector__collector__civility',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Authority,
+                'parameter_field': 'civility',
             }, {
                 'name': 'coupe',
                 'sub_model': Coupe,
@@ -55,7 +93,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'name': 'cultural_area',
                 'paths': (
                     'cultural_area',
-                    'collection__cultural_area'
+                    'collection__cultural_area',
                 ),
                 'lookups': 'exact',
                 'parameter_model': Collection,
@@ -111,12 +149,22 @@ class AdvancedSearchList(generics.GenericAPIView):
                 ),
                 'parameter_model': Authority,
             }, {
+                'name': 'informer_civility',
+                'paths': (
+                    'collectioninformer__informer__civility',
+                    'iteminformer__informer__civility',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Authority,
+                'parameter_field': 'civility',
+            }, {
                 'name': 'instrument',
                 'sub_model': Instrument,
                 'paths': (
                     'performancecollection__collection',
                     'performancecollection__itemperformance__item',
                 ),
+                'parameter_model': Instrument,
             }, {
                 'name': 'location',
                 'paths': (
@@ -149,36 +197,55 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'parameter_model': Thematic,
             }, {
                 'name': 'timbre',
-                'paths': (None, 'timbre'),
-                'lookups': 'icontains',
+                'paths': (
+                    'collection__timbre',
+                    'timbre',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Item,
+                'parameter_field': 'timbre',
             }, {
                 'name': 'timbre_ref',
-                'paths': (None, 'timbre_ref'),
-                'lookups': 'icontains',
+                'paths': (
+                    'collection__timbre_ref',
+                    'timbre_ref',
+                ),
+                'lookups': 'exact',
+                'parameter_model': Item,
+                'parameter_field': 'timbre_ref',
             }, {
                 'name': 'usefulness',
                 'paths': (
                     'collection__itemusefulness__usefulness',
                     'itemusefulness__usefulness',
                 ),
+                'parameter_model': Usefulness,
             },
         )
 
         or_operators = self.request.query_params.getlist('or_operators', [])
 
         for field in fields:
-            values = self.request.query_params.getlist(field['name'], [])
+            raw_values = self.request.query_params.getlist(field['name'], [])
 
-            if not values:
+            if not raw_values:
                 continue
 
             paths = field['paths']
+            parsers = field.get('parsers')
             sub_model = field.get('sub_model')
             lookups = field.get('lookups')
 
             if field['name'] in or_operators:
                 # Filter : value OR value OR ...
                 for index, path in enumerate(paths):
+                    # Parse values when parser is defined
+                    values = filter(None, tuple(
+                        parsers[index](value) for value in raw_values
+                    ) if parsers and parsers[index] else raw_values)
+                    if not values:
+                        continue
+                    # Add filter to the queryset
                     if path is None:
                         query_sets[index] = query_sets[index].none()
                     elif lookups:
@@ -201,8 +268,14 @@ class AdvancedSearchList(generics.GenericAPIView):
                             **{'%s__in' % path: values})
             else:
                 # Filter : value AND value AND ...
-                for value in values:
+                for raw_value in raw_values:
                     for index, path in enumerate(paths):
+                        # Parse value when parser is defined
+                        value = parsers[index](raw_value) \
+                            if parsers and parsers[index] else raw_value
+                        if not value:
+                            continue
+                        # Add filter to the queryset
                         if path is None:
                             query_sets[index] = query_sets[index].none()
                         elif sub_model is not None:
@@ -259,44 +332,46 @@ class AdvancedSearchList(generics.GenericAPIView):
             'text': self.request.query_params.get('text', None),
         }
 
-        # Building a list of parameter names by model
-        parameter_models = {}
+        # Building a list of parameter names by model and optional field
+        parameter_names = {}
         for field in fields:
-            model = field.get('parameter_model')
-            if model:
-                parameter_models.setdefault(model, []).append(field.get('name'))
+            parameter_model = field.get('parameter_model')
+            parameter_field = field.get('parameter_field')
+            if parameter_model or parameter_field:
+                parameter_config = parameter_model, parameter_field
+                parameter_names.setdefault(parameter_config, []).append(field.get('name'))
 
         # Collecting parameter instances
-        for model, names in parameter_models.items():
-            keys = set(
-                key
+        for (model, field), names in parameter_names.items():
+            values = set(
+                value
                 for name in names
-                for key in self.request.query_params.getlist(name, [])
+                for value in self.request.query_params.getlist(name, [])
             )
-            if keys:
-                # Case of a full text search field
-                if len(names) == 1:
-                    name = names[0]
-                    parameter_field = next(iter(
-                        f.get('parameter_field')
-                        for f in fields
-                        if f['name'] == name
-                    ), None)
-                    if parameter_field:
-                        for value in model.objects.filter(
-                            **{'%s__in' % parameter_field: keys},
-                        ).values_list(
-                            parameter_field,
-                            flat=True,
-                        ).order_by(
-                            parameter_field,
-                        ):
-                            parameters_instances.setdefault(name, []).append(value)
-                        continue
+            if values:
+                # Case of a full text search field from model
+                if model and field:
+                    values_qs = model.objects.filter(**{'%s__in' % field: values})
+                    values_qs = values_qs.values_list(field, flat=True)
+                    values_qs = values_qs.order_by(field).distinct()
+                    for value in values_qs:
+                        for name in names:
+                            if value in self.request.query_params.getlist(name, []):
+                                parameters_instances.setdefault(name, []).append(value)
+                    continue
+
+                # Case of a full text search field from full text
+                if field:
+                    for name in names:
+                        parameters_instances[name] = sorted(set(
+                            value for value in values
+                            if value in self.request.query_params.getlist(name, [])
+                        ))
+                    continue
 
                 # Case of an enumeration model
                 serializer = self.get_serializer()
-                for instance in model.objects.filter(id__in=keys):
+                for instance in model.objects.filter(id__in=values):
                     serialized = serializer.to_representation(instance)
                     for name in names:
                         if str(instance.id) in self.request.query_params.getlist(name, []):
