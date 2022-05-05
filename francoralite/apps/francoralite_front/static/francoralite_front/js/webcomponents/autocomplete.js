@@ -223,6 +223,39 @@ class FrancoraliteFullTextAutocomplete extends FrancoraliteAutocomplete {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+class FrancoraliteCivility extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/civility/?limit=10&search=';
+    }
+}
+
+class FrancoraliteCodeExternal extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/code_external/?limit=10&search=';
+    }
+}
+
+class FrancoraliteCodeInternal extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/code_internal/?limit=10&search=';
+    }
+}
+
+class FrancoraliteCoirault extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/skos_concept?limit=10&search=';
+    }
+
+    parseProposal(item) {
+        return {
+            'value': item.id,
+            'label': item.number + ' : ' + item.name,
+            'url': null,
+            'tooltip': null
+        };
+    }
+}
+
 class FrancoraliteCollector extends FrancoraliteAuthoritiesAutocomplete {
     getDefaultUrl() {
         return '/api/authority?limit=10&is_collector=true&ordering=first_name+last_name&search=';
@@ -277,6 +310,12 @@ class FrancoraliteInformer extends FrancoraliteAuthoritiesAutocomplete {
     }
 }
 
+class FrancoraliteInstrument extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/instrument?limit=10&search=';
+    }
+}
+
 class FrancoraliteLocation extends FrancoraliteAutocomplete {
     getDefaultUrl() {
         return '/api/locationgis?limit=10&ordering=code&search=';
@@ -310,6 +349,28 @@ class FrancoraliteThematic extends FrancoraliteEnumAutocomplete {
     }
 }
 
+class FrancoraliteTimbre extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/timbre/?limit=10&search=';
+    }
+}
+
+class FrancoraliteTimbreRef extends FrancoraliteFullTextAutocomplete {
+    getDefaultUrl() {
+        return '/api/timbre_ref/?limit=10&search=';
+    }
+}
+
+class FrancoraliteUsefulness extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/usefulness?limit=10&search=';
+    }
+}
+
+customElements.define('francoralite-civility', FrancoraliteCivility);
+customElements.define('francoralite-code-external', FrancoraliteCodeExternal);
+customElements.define('francoralite-code-internal', FrancoraliteCodeInternal);
+customElements.define('francoralite-coirault', FrancoraliteCoirault);
 customElements.define('francoralite-collector', FrancoraliteCollector);
 customElements.define('francoralite-coupe', FrancoraliteCoupe);
 customElements.define('francoralite-cultural-area', FrancoraliteCulturalArea);
@@ -319,7 +380,11 @@ customElements.define('francoralite-domain-song', FrancoraliteDomainSong);
 customElements.define('francoralite-domain-tale', FrancoraliteDomainTale);
 customElements.define('francoralite-domain-vocal', FrancoraliteDomainVocal);
 customElements.define('francoralite-informer', FrancoraliteInformer);
+customElements.define('francoralite-instrument', FrancoraliteInstrument);
 customElements.define('francoralite-location', FrancoraliteLocation);
 customElements.define('francoralite-media-type', FrancoraliteMediaType);
 customElements.define('francoralite-recording-context', FrancoraliteRecordingContext);
 customElements.define('francoralite-thematic', FrancoraliteThematic);
+customElements.define('francoralite-timbre', FrancoraliteTimbre);
+customElements.define('francoralite-timbre-ref', FrancoraliteTimbreRef);
+customElements.define('francoralite-usefulness', FrancoraliteUsefulness);

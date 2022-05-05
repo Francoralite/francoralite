@@ -6,26 +6,26 @@
 
 from rest_framework import generics
 
-from ..models.collection import Collection
+from ..models.authority import Authority
 from ..serializers.core import SimpleSerializer
 
 
-class CulturalAreaView(generics.ListAPIView):
+class CivilityView(generics.ListAPIView):
     serializer_class = SimpleSerializer
 
     keycloak_scopes = {
-        'GET': 'collection:view',
+        'GET': 'authority:view',
     }
 
     def get_queryset(self):
         search = self.request.query_params.get('search', None)
 
-        qs = Collection.objects.values_list('cultural_area', flat=True)
-        qs = qs.exclude(cultural_area=None).exclude(cultural_area='')
+        qs = Authority.objects.values_list('civility', flat=True)
+        qs = qs.exclude(civility=None).exclude(civility='')
 
         if search:
-            qs = qs.filter(cultural_area__icontains=search)
+            qs = qs.filter(civility__icontains=search)
 
-        qs = qs.order_by('cultural_area').distinct()
+        qs = qs.order_by('civility').distinct()
 
         return qs

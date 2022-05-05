@@ -1,6 +1,38 @@
 [
   {
     "fields": {
+      "name": "QUÊTES DE MAI, DE PRINTEMPS",
+      "uri": "http://sha.univ-poitiers.fr/musicologie/vocabulaires/coirault/collection_90",
+      "number": "X.90",
+      "type": "topic"
+    },
+    "model": "francoralite_api.skoscollection",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "À l’arrivée du doux printemps",
+      "uri": "http://sha.univ-poitiers.fr/musicologie/vocabulaires/coirault/concept_9003",
+      "number": "9003",
+      "abstract": "",
+      "collection": 1
+    },
+    "model": "francoralite_api.skosconcept",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "Joli mois de mai, que tu es agréable",
+      "uri": "http://sha.univ-poitiers.fr/musicologie/vocabulaires/coirault/concept_9018",
+      "number": "9018",
+      "abstract": "",
+      "collection": 1
+    },
+    "model": "francoralite_api.skosconcept",
+    "pk": 2
+  },
+  {
+    "fields": {
       "latitude": 46.5802596,
       "notes": "",
       "code": "poitiers",
@@ -774,14 +806,14 @@
 
   {"fields": {"notes": "Musique avec un instrument", "name": "musique"}, "model": "francoralite_api.emitvox", "pk": 1},
   {"fields": {"notes": "", "name": "chanté"}, "model": "francoralite_api.emitvox", "pk": 2},
-  
+
   {"fields": {"number": "321.322", "name": "Violon"}, "model": "francoralite_api.hornbostelsachs", "pk": 1},
   {"fields": {"number": "4", "name": "Voix"}, "model": "francoralite_api.hornbostelsachs", "pk": 2},
-  
+
   {"fields": {"notes": "", "name": "Violon", "typology": 1}, "model": "francoralite_api.instrument", "pk": 1},
   {"fields": {"notes": "", "name": "Voix d'homme", "typology": 2}, "model": "francoralite_api.instrument", "pk": 2},
   {"fields": {"notes": "", "name": "Voix de fille", "typology": 2}, "model": "francoralite_api.instrument", "pk": 3},
-  
+
   {"fields": {"notes": "", "name": "ecouter"}, "model": "francoralite_api.usefulness", "pk": 1},
   {"fields": {"notes": "", "name": "danser"}, "model": "francoralite_api.usefulness", "pk": 2},
 
@@ -803,6 +835,14 @@
     },
       "model":"francoralite_api.item",
       "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
+      "coirault":1
+    },
+    "model":"francoralite_api.itemcoirault",
+    "pk":1
   },
   {
     "fields":{
@@ -878,6 +918,14 @@
     },
       "model":"francoralite_api.item",
       "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "coirault":2
+    },
+    "model":"francoralite_api.itemcoirault",
+    "pk":2
   },
   {
     "fields":{
@@ -961,6 +1009,22 @@
     },
       "model":"francoralite_api.item",
       "pk":3
+  },
+  {
+    "fields":{
+      "item":3,
+      "coirault":1
+    },
+    "model":"francoralite_api.itemcoirault",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":3,
+      "coirault":2
+    },
+    "model":"francoralite_api.itemcoirault",
+    "pk":4
   },
   {
     "fields":{

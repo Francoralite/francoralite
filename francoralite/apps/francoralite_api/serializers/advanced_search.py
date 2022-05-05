@@ -15,11 +15,14 @@ from ..models.domain_song import DomainSong as DomainSongModel
 from ..models.domain_music import DomainMusic as DomainMusicModel
 from ..models.domain_tale import DomainTale as DomainTaleModel
 from ..models.domain_vocal import DomainVocal as DomainVocalModel
+from ..models.instrument import Instrument as InstrumentModel
 from ..models.item import Item as ItemModel
 from ..models.location import Location as LocationModel
 from ..models.mediatype import MediaType as MediaTypeModel
 from ..models.recording_context import RecordingContext as RecordingContextModel
+from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..models.thematic import Thematic as ThematicModel
+from ..models.usefulness import Usefulness as UsefulnessModel
 from .authority import AuthoritySerializer
 from .collection import CollectionSerializer
 from .collection_location import CollectionLocationSerializer
@@ -29,11 +32,14 @@ from .domain_song import DomainSongSerializer
 from .domain_music import DomainMusicSerializer
 from .domain_tale import DomainTaleSerializer
 from .domain_vocal import DomainVocalSerializer
+from .instrument import InstrumentSerializer
 from .item import ItemSerializer
 from .location_gis import LocationGisSerializer
 from .mediatype import MediaTypeSerializer
 from .recording_context import RecordingContextSerializer
+from .skos_concept import SkosConceptSerializer
 from .thematic import ThematicSerializer
+from .usefulness import UsefulnessSerializer
 
 
 class AdvancedSearchSerializer(serializers.Serializer):
@@ -57,6 +63,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = DomainTaleSerializer(instance)
         elif isinstance(instance, DomainVocalModel):
             serializer = DomainVocalSerializer(instance)
+        elif isinstance(instance, InstrumentModel):
+            serializer = InstrumentSerializer(instance)
         elif isinstance(instance, ItemModel):
             serializer = ItemSerializer(instance)
         elif isinstance(instance, LocationModel):
@@ -65,8 +73,12 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = MediaTypeSerializer(instance)
         elif isinstance(instance, RecordingContextModel):
             serializer = RecordingContextSerializer(instance)
+        elif isinstance(instance, SkosConceptModel):
+            serializer = SkosConceptSerializer(instance)
         elif isinstance(instance, ThematicModel):
             serializer = ThematicSerializer(instance)
+        elif isinstance(instance, UsefulnessModel):
+            serializer = UsefulnessSerializer(instance)
         else:
             raise Exception("Unknown instance type: %s" % type(instance))
         data = serializer.data
