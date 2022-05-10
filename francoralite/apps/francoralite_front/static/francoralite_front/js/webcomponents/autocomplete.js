@@ -23,28 +23,31 @@ class FrancoraliteAutocomplete extends HTMLElement {
         this.proposalsList.setAttribute('class', 'proposals');
         this.appendChild(this.proposalsList);
 
-        const operator = this.getOperator();
-        if (operator && operator.name) {
-            this.classList.add('with-operator');
+        const operators = this.getOperators();
+        if (operators) {
+            this.classList.add('with-operators');
 
-            this.operatorCheckedText = operator['checked-label'];
-            this.operatorUncheckedText = operator.label || 'operator';
+            const operatorsDiv = document.createElement('div');
+            operatorsDiv.setAttribute('class', 'operators');
+            this.appendChild(operatorsDiv);
 
-            this.operatorCheckbox = document.createElement('input');
-            this.operatorCheckbox.setAttribute('id', componentName + '_operator');
-            this.operatorCheckbox.setAttribute('type', 'checkbox');
-            this.operatorCheckbox.setAttribute('class', 'operator');
-            this.operatorCheckbox.setAttribute('name', operator.name);
-            this.operatorCheckbox.setAttribute('value', componentName);
-            this.operatorCheckbox.setAttribute('title', operator.tooltip || '');
-            this.appendChild(this.operatorCheckbox);
+            operators.forEach(operator => {
+                const operatorInput = document.createElement('input');
+                operatorInput.setAttribute('id', componentName + '_operator_' + operator.value);
+                operatorInput.setAttribute('type', 'radio');
+                operatorInput.setAttribute('class', 'operator');
+                operatorInput.setAttribute('name', componentName + '_operator');
+                operatorInput.setAttribute('value', operator.value);
+                operatorInput.setAttribute('title', operator.tooltip || '');
+                operatorsDiv.appendChild(operatorInput);
 
-            this.operatorLabel = document.createElement('label');
-            this.operatorLabel.setAttribute('for', componentName + '_operator');
-            this.operatorLabel.setAttribute('class', 'operator-label');
-            this.operatorLabel.setAttribute('title', operator.tooltip || '');
-            this.operatorLabel.innerHTML = this.operatorUncheckedText;
-            this.appendChild(this.operatorLabel);
+                const operatorLabel = document.createElement('label');
+                operatorLabel.setAttribute('for', componentName + '_operator_' + operator.value);
+                operatorLabel.setAttribute('class', 'operator-label');
+                operatorLabel.setAttribute('title', operator.tooltip || '');
+                operatorLabel.innerHTML = operator.label || '';
+                operatorsDiv.appendChild(operatorLabel);
+            });
         }
 
         JSON.parse(this.getAttribute('data-values') || '[]').forEach(
@@ -59,17 +62,16 @@ class FrancoraliteAutocomplete extends HTMLElement {
 
         this.proposalsList.addEventListener('click', (event) => this.proposalClick(event));
 
-        if (this.operatorCheckedText) {
-            this.operatorCheckbox.addEventListener('change', (event) => {
-                this.operatorLabel.innerHTML = event.target.checked ?
-                    this.operatorCheckedText : this.operatorUncheckedText;
-            });
-        }
-        if (this.getAttribute('data-default-operator') === 'checked') {
-            this.operatorCheckbox.checked = true;
-            if (this.operatorCheckedText) {
-                this.operatorLabel.innerHTML = this.operatorCheckedText;
+        const defaultOperator = this.getAttribute('data-default-operator');
+        let operatorFound = false;
+        this.querySelectorAll('.operator').forEach(operator => {
+            if (defaultOperator === operator.value) {
+                operator.checked = true;
+                operatorFound = true;
             }
+        });
+        if (! operatorFound) {
+            this.querySelector('.operator').checked = true;
         }
 
         this.addEventListener('click', (event) => {
@@ -79,23 +81,24 @@ class FrancoraliteAutocomplete extends HTMLElement {
         });
     }
 
-    getOperator() {
-        const defaultOperator = this.getDefaultOperator() || {};
-        return {
-            'name': this.getAttribute('data-operator-name') || defaultOperator.name,
-            'label': this.getAttribute('data-operator-label') || defaultOperator.label,
-            'checked-label': this.getAttribute('data-operator-checked-label') || defaultOperator['checked-label'],
-            'tooltip': this.getAttribute('data-operator-tooltip') || defaultOperator.tooltip
-        };
+    getOperators() {
+        return JSON.parse(this.getAttribute('data-operators') || 'null') || this.getDefaultOperators() || [];
     }
 
-    getDefaultOperator() {
-        return {
-            'name': 'or_operators',
+    getDefaultOperators() {
+        return [{
+            'value': 'and',
             'label': 'et',
-            'checked-label': 'ou',
-            'tooltip': 'cochez la case pour changer l’opérateur de requêtage'
-        };
+            'tooltip': 'toutes les valeurs sélectionnées doivent correspondre',
+        }, {
+            'value': 'or',
+            'label': 'ou',
+            'tooltip': 'au moins une valeur sélectionnée doit correspondre',
+        }, {
+            'value': 'nor',
+            'label': 'sauf',
+            'tooltip': 'aucune des valeurs sélectionnées ne doit correspondre',
+        }];
     }
 
     getUrl() {

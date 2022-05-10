@@ -223,10 +223,11 @@ class AdvancedSearchList(generics.GenericAPIView):
             },
         )
 
-        or_operators = self.request.query_params.getlist('or_operators', [])
+        operators = {}
 
         for field in fields:
             raw_values = self.request.query_params.getlist(field['name'], [])
+            operator = (self.request.query_params.get(field['name'] + '_operator', None) or '').lower()
 
             if not raw_values:
                 continue
@@ -236,7 +237,7 @@ class AdvancedSearchList(generics.GenericAPIView):
             sub_model = field.get('sub_model')
             lookups = field.get('lookups')
 
-            if field['name'] in or_operators:
+            if operator in ('or', 'nor'):
                 # Filter : value OR value OR ...
                 for index, path in enumerate(paths):
                     # Parse values when parser is defined
@@ -248,25 +249,30 @@ class AdvancedSearchList(generics.GenericAPIView):
                     # Add filter to the queryset
                     if path is None:
                         query_sets[index] = query_sets[index].none()
-                    elif lookups:
-                        if sub_model:
-                            raise NotImplementedError
-                        # Use many joins
-                        path = '%s__%s' % (path, lookups)
-                        sub_filter = models.Q()
-                        for value in values:
-                            sub_filter |= models.Q(**{path: value})
-                        query_sets[index] = query_sets[index].filter(sub_filter)
-                    elif sub_model is not None:
-                        # Use a sub-query
-                        query_sets[index] = query_sets[index].filter(
-                            id__in=sub_model.objects.filter(
-                                id__in=values).values_list(path))
                     else:
-                        # Use joins
-                        query_sets[index] = query_sets[index].filter(
-                            **{'%s__in' % path: values})
-            else:
+                        if lookups:
+                            if sub_model:
+                                raise NotImplementedError
+                            # Use many joins
+                            path = '%s__%s' % (path, lookups)
+                            sub_filter = models.Q()
+                            for value in values:
+                                sub_filter |= models.Q(**{path: value})
+                        elif sub_model is not None:
+                            # Use a sub-query
+                            sub_filter = models.Q(
+                                id__in=sub_model.objects.filter(
+                                    id__in=values).values_list(path))
+                        else:
+                            # Use joins
+                            sub_filter = models.Q(**{'%s__in' % path: values})
+                        if operator == 'nor':
+                            # Invert filter in case of NOR operator
+                            sub_filter = ~ sub_filter
+                        query_sets[index] = query_sets[index].filter(sub_filter)
+
+            elif operator in ('and', ''):
+                operator = 'and'
                 # Filter : value AND value AND ...
                 for raw_value in raw_values:
                     for index, path in enumerate(paths):
@@ -291,6 +297,11 @@ class AdvancedSearchList(generics.GenericAPIView):
                                 path = '%s__%s' % (path, lookups)
                             query_sets[index] = query_sets[index].filter(
                                 **{path: value})
+
+            else:
+                raise NotImplementedError('Opérateur inconnu : ' + operator)
+
+            operators[field['name']] = operator
 
         # Special dates filtering
         date_filter = models.Q()
@@ -321,7 +332,7 @@ class AdvancedSearchList(generics.GenericAPIView):
         parameters = {
             # autocomplete fields
             'instances': parameters_instances,
-            'or_operators': or_operators,
+            'operators': operators,
             # other fields
             'date_start': date_start,
             'date_end': date_end,

@@ -83,6 +83,7 @@ details[open] summary {
 
 details > input:not([type]) {
     width: 558px;
+    max-width: calc(100% - 6px);
     margin: 2px 0;
     border: 1px solid #6f0a08;
     border-radius: 3px;

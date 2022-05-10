@@ -526,7 +526,7 @@ class TestAdvancedSearch(APITestCase):
         self.assertEqual(len(response.data['results']['items']), 1)
         self.assertEqual(len(response.data['results']['locations']), 2)
 
-        url = "/advancedsearch/?coirault=1&coirault=2&or_operators=coirault"
+        url = "/advancedsearch/?coirault=1&coirault=2&coirault_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -741,7 +741,7 @@ class TestAdvancedSearch(APITestCase):
         - instrument : 2 - voix d'homme
         - instrument : 1 - violon
         """
-        url = "/advancedsearch/?instrument=2&instrument=1&or_operators=instrument"
+        url = "/advancedsearch/?instrument=2&instrument=1&instrument_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -759,7 +759,7 @@ class TestAdvancedSearch(APITestCase):
         - dance : 2 - valse
         - dance : 1 - polka
         """
-        url = "/advancedsearch/?dance=2&dance=1&or_operators=dance"
+        url = "/advancedsearch/?dance=2&dance=1&dance_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -777,7 +777,7 @@ class TestAdvancedSearch(APITestCase):
         - collector : 3 - Jeanne d'Arc Lortie
         - collector : 6 - Jeanne-Marie Bourreau
         """
-        url = "/advancedsearch/?collector=3&collector=6&or_operators=collector"
+        url = "/advancedsearch/?collector=3&collector=6&collector_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -795,7 +795,7 @@ class TestAdvancedSearch(APITestCase):
         - informer : 4 - Charles Aubrière
         - informer : 2 - Cecilia Mc Graw
         """
-        url = "/advancedsearch/?informer=2&informer=4&or_operators=informer"
+        url = "/advancedsearch/?informer=2&informer=4&informer_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -817,7 +817,7 @@ class TestAdvancedSearch(APITestCase):
         - coupe : 1 - Charles Aubrière
         - coupe : 2 - Cecilia Mc Graw
         """
-        url = "/advancedsearch/?coupe=1&coupe=2&or_operators=coupe"
+        url = "/advancedsearch/?coupe=1&coupe=2&coupe_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -839,7 +839,7 @@ class TestAdvancedSearch(APITestCase):
         - fonction : 1 - ecouter
         - fonction : 2 - danser
         """
-        url = "/advancedsearch/?usefulness=1&usefulness=2&or_operators=usefulness"
+        url = "/advancedsearch/?usefulness=1&usefulness=2&usefulness_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -863,7 +863,7 @@ class TestAdvancedSearch(APITestCase):
         - thématique : 1 - danse
         - thématique : 2 - récit
         """
-        url = "/advancedsearch/?thematic=1&thematic=2&or_operators=thematic"
+        url = "/advancedsearch/?thematic=1&thematic=2&thematic_operator=or"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
