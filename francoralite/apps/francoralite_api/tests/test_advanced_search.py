@@ -474,6 +474,15 @@ class TestAdvancedSearch(APITestCase):
 
     def test_instrument(self):
         """
+        - instrument : 1 - violon
+        """
+        self._test_advanced_search(
+            params='instrument=1',
+            collections={3},
+            items={},
+        )
+
+        """
         - instrument : 2 - voix d'homme
         """
         self._test_advanced_search(
@@ -483,26 +492,163 @@ class TestAdvancedSearch(APITestCase):
         )
 
         """
-        - instrument : 2 - voix d'homme
-        - instrument : 1 - violon
+        - instrument : 3 - voix de fille
         """
         self._test_advanced_search(
-            params='instrument=2&instrument=1',
+            params='instrument=3',
+            collections={4},
+            items={4},
+        )
+
+        """
+        - instrument : 1 - violon
+        - instrument : 2 - voix d'homme
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=2',
             collections={3},
             items={},
         )
 
         """
-        - instrument : 2 - voix d'homme
         - instrument : 1 - violon
+        - instrument : 3 - voix de fille
         """
         self._test_advanced_search(
-            params='instrument=2&instrument=1&instrument_operator=or',
+            params='instrument=1&instrument=3',
+            collections={},
+            items={},
+        )
+
+        """
+        - instrument : 2 - voix d'homme
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=2&instrument=3',
+            collections={},
+            items={},
+        )
+
+        """
+        - instrument : 1 - violon
+        - instrument : 2 - voix d'homme
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=2&instrument=3',
+            collections={},
+            items={},
+        )
+
+        """
+        - instrument : 1 - violon
+        - instrument : 2 - voix d'homme
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=2&instrument_operator=or',
             collections={2, 3},
             items={2},
         )
 
-        #TODO opérateur NOR
+        """
+        - instrument : 1 - violon
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=3&instrument_operator=or',
+            collections={3, 4},
+            items={4},
+        )
+
+        """
+        - instrument : 2 - voix d'homme
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=2&instrument=3&instrument_operator=or',
+            collections={2, 3, 4},
+            items={2, 4},
+        )
+
+        """
+        - instrument : 1 - violon
+        - instrument : 2 - voix d'homme
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=2&instrument=3&instrument_operator=or',
+            collections={2, 3, 4},
+            items={2, 4},
+        )
+
+        """
+        - instrument : 1 - violon
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument_operator=nor',
+            collections={1, 2, 4},
+            items={1, 2, 3, 4},
+        )
+
+        """
+        - instrument : 2 - voix d'homme
+        """
+        self._test_advanced_search(
+            params='instrument=2&instrument_operator=nor',
+            collections={1, 4},
+            items={1, 3, 4},
+        )
+
+        """
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=3&instrument_operator=nor',
+            collections={1, 2, 3},
+            items={1, 2, 3},
+        )
+
+        """
+        - instrument : 1 - violon
+        - instrument : 2 - voix d'homme
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=2&instrument_operator=nor',
+            collections={1, 4},
+            items={1, 3, 4},
+        )
+
+        """
+        - instrument : 1 - violon
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=3&instrument_operator=nor',
+            collections={1, 2},
+            items={1, 2, 3},
+        )
+
+        """
+        - instrument : 2 - voix d'homme
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=2&instrument=3&instrument_operator=nor',
+            collections={1},
+            items={1, 3},
+        )
+
+        """
+        - instrument : 1 - violon
+        - instrument : 2 - voix d'homme
+        - instrument : 3 - voix de fille
+        """
+        self._test_advanced_search(
+            params='instrument=1&instrument=2&instrument=3&instrument_operator=nor',
+            collections={1},
+            items={1, 3},
+        )
 
     def test_jingle(self):
         pass

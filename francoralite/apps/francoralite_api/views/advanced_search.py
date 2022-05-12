@@ -260,15 +260,19 @@ class AdvancedSearchList(generics.GenericAPIView):
                                 sub_filter |= models.Q(**{path: value})
                         elif sub_model is not None:
                             # Use a sub-query
-                            sub_filter = models.Q(
-                                id__in=sub_model.objects.filter(
-                                    id__in=values).values_list(path))
+                            sub_query = sub_model.objects.filter(
+                                id__in=values,
+                                **{'%s__isnull' % path: False},
+                            ).values_list(path)
+                            sub_filter = models.Q(id__in=sub_query)
                         else:
                             # Use joins
                             sub_filter = models.Q(**{'%s__in' % path: values})
+
                         if operator == 'nor':
                             # Invert filter in case of NOR operator
                             sub_filter = ~ sub_filter
+
                         query_sets[index] = query_sets[index].filter(sub_filter)
 
             elif operator in ('and', ''):
@@ -288,9 +292,13 @@ class AdvancedSearchList(generics.GenericAPIView):
                             # Use a sub-query
                             if lookups:
                                 raise NotImplementedError
+                            sub_query = sub_model.objects.filter(
+                                id=value,
+                                **{'%s__isnull' % path: False},
+                            ).values_list(path)
                             query_sets[index] = query_sets[index].filter(
-                                id__in=sub_model.objects.filter(
-                                    id=value).values_list(path))
+                                id__in=sub_query,
+                            )
                         else:
                             # Use joins
                             if lookups:
