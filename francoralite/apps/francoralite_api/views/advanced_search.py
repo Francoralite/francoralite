@@ -138,10 +138,6 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'paths': (None, 'incipit'),
                 'lookups': 'icontains',
             }, {
-                'name': 'jingle',
-                'paths': (None, 'jingle'),
-                'lookups': 'icontains',
-            }, {
                 'name': 'informer',
                 'paths': (
                     'collectioninformer__informer',
@@ -165,6 +161,10 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'performancecollection__itemperformance__item',
                 ),
                 'parameter_model': Instrument,
+            }, {
+                'name': 'jingle',
+                'paths': (None, 'jingle'),
+                'lookups': 'icontains',
             }, {
                 'name': 'location',
                 'paths': (
