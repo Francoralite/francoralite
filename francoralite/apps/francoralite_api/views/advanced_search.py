@@ -19,6 +19,7 @@ from ..models.domain_tale import DomainTale
 from ..models.domain_vocal import DomainVocal
 from ..models.instrument import Instrument
 from ..models.item import Item
+from ..models.language import Language
 from ..models.location import Location
 from ..models.mediatype import MediaType
 from ..models.recording_context import RecordingContext
@@ -165,6 +166,13 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'name': 'jingle',
                 'paths': (None, 'jingle'),
                 'lookups': 'icontains',
+            }, {
+                'name': 'language',
+                'paths': (
+                    'collectionlanguage__language',
+                    'itemlanguage__language',
+                ),
+                'parameter_model': Language,
             }, {
                 'name': 'location',
                 'paths': (

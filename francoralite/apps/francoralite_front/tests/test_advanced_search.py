@@ -99,6 +99,11 @@ def test_links_to_list(francoralite_context):
         },
         {
             'id_block': 'details_what',
+            'id_link': 'link_language',
+            'title': 'Langue',
+        },
+        {
+            'id_block': 'details_what',
             'id_link': 'link_media_type',
             'title': 'Type de média',
         },

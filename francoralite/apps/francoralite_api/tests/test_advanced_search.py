@@ -315,6 +315,22 @@ class TestAdvancedSearch(APITestCase):
     def test_jingle(self):
         pass  #TODO critère unique : textes différents (cf incipit)
 
+    def test_language(self):
+        """
+        - language : 1 - Anglais
+        - language : 2 - Créoles et pidgins basés sur l'anglais
+        - language : 3 - Créoles et pidgins basés sur le français
+        - language : 4 - Français
+        - language : 5 - Poitevin-saintongeais
+        """
+        self._test_all_combinations('language', {
+            1: {'items': {4}},
+            2: {},
+            3: {'collections': {4}, 'items': {2}},
+            4: {'collections': {1, 2, 4}, 'items': {1, 4}},
+            5: {'collections': {2}},
+        })
+
     def test_location(self):
         """
         - location : 1 - Poitiers

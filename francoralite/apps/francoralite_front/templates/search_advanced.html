@@ -92,13 +92,20 @@
     <francoralite-cultural-area name="cultural_area" data-values="{{ parameters_instances_json.cultural_area }}" data-default-operator="{{ parameters.operators.cultural_area|default:'or' }}"></francoralite-cultural-area>
   </details>
 
-  <details{% if parameters_instances_json.media_type or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance %} open{% endif %} id="details_what">
+  <details{% if parameters_instances_json.media_type or parameters_instances_json.language or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance %} open{% endif %} id="details_what">
     <summary>{% trans "Quoi ?" %}</summary>
     <label for="media_type">{% trans "Type de média" %}</label>
     <br>
     <francoralite-media-type name="media_type" data-values="{{ parameters_instances_json.media_type }}" data-default-operator="{{ parameters.operators.media_type|default:'or' }}"></francoralite-media-type>
     <a id="link_media_type" href="/mediatype">
       <span class="glyphicon glyphicon-list"></span> {% trans "Types de média ..."%}
+    </a>
+    <br><br>
+    <label for="language">{% trans "Langue(s)" %}</label>
+    <br>
+    <francoralite-language name="language" data-values="{{ parameters_instances_json.language }}" data-default-operator="{{ parameters.operators.language|default:'or' }}"></francoralite-language>
+    <a id="link_language" href="/language">
+      <span class="glyphicon glyphicon-list"></span> {% trans "Langues ..."%}
     </a>
     <br><br>
     <label for="recording_context">{% trans "Contexte d'enregistrement" %}</label>
