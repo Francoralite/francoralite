@@ -7,6 +7,7 @@
 {% block javascript %}
   {{ block.super }}
   <script src="{% static "francoralite_front/js/webcomponents/autocomplete.js" %}" defer></script>
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
   {% leaflet_js %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
 {% endblock %}
@@ -254,31 +255,33 @@
     {% if collections %}
     <table class="listing">
       <thead>
-        <th class="highlight">{% trans "Cote" %}</th>
-        <th>{% trans "Titre" %}</th>
-        <th>{% trans "Aire culturelle" %}</th>
+        <th class="sortable">{% trans "Cote" %}</th>
+        <th class="sortable">{% trans "Titre" %}</th>
+        <th class="sortable">{% trans "Aire culturelle" %}</th>
         <th>{% trans "Informateurs" %}</th>
       </thead>
-      {% for collection in collections %}
-      <tr>
-        <td class="highlight">
-          <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
-        </td>
-        <td>{{ collection.title }}</td>
-        <td>{{ collection.cultural_area }}</td>
-        <td>
-          <ul>
-            {% for informer in collection.informers %}
-            <li>
-              <a href="{% url "personne-detail" id=informer.id %}">
-              {{informer.first_name}} {{informer.last_name}}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </td>
-      </tr>
-      {% endfor %}
+      <tbody>
+        {% for collection in collections %}
+        <tr>
+          <td>
+            <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
+          </td>
+          <td>{{ collection.title }}</td>
+          <td>{{ collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for informer in collection.informers %}
+              <li>
+                <a href="{% url "personne-detail" id=informer.id %}">
+                {{informer.first_name}} {{informer.last_name}}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
     {% else %}
     <p>{% trans "Il n'y pas d'enquête qui correspond à ces critères." %}</p>
@@ -290,40 +293,42 @@
     {% if items %}
     <table class="listing">
       <thead>
-        <th class="highlight">{% trans "Cote" %}</th>
-        <th>{% trans "Titre" %}</th>
-        <th>{% trans "Aire culturelle" %}</th>
+        <th class="sortable">{% trans "Cote" %}</th>
+        <th class="sortable">{% trans "Titre" %}</th>
+        <th class="sortable">{% trans "Aire culturelle" %}</th>
         <th>{% trans "Informateurs" %}</th>
         <th>{% trans "Piste son" %}</th>
       </thead>
-      {% for item in items %}
-      <tr>
-        <td class="highlight">
-          <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
-        </td>
-        <td>{{ item.title }}</td>
-        <td>{{ item.collection.cultural_area }}</td>
-        <td>
-          <ul>
-            {% for informer in item.informers %}
-            <li>
-              <a href="{% url "personne-detail" id=informer.id %}">
-              {{informer.first_name}} {{informer.last_name}}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </td>
-        <td>
-          <audio
-            controls
-            preload="metadata"
-            src="/api/item/{{item.id}}/download">
-            Votre navigateur Internet ne prend pas en charge cet élément audio
-          </audio>
-        </td>
-      </tr>
-      {% endfor %}
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
+          </td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for informer in item.informers %}
+              <li>
+                <a href="{% url "personne-detail" id=informer.id %}">
+                {{informer.first_name}} {{informer.last_name}}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>
+            <audio
+              controls
+              preload="metadata"
+              src="/api/item/{{item.id}}/download">
+              Votre navigateur Internet ne prend pas en charge cet élément audio
+            </audio>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
     {% else %}
     <p>{% trans "Il n'y pas d'item qui correspond à ces critères." %}</p>

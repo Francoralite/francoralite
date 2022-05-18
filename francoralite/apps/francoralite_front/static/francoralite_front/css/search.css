@@ -54,6 +54,39 @@ select[name*="start_bracket"] {
     text-align: right;
 }
 
+/* Tableaux de résultats  ------------------------------------- */
+
+table th.sortable.active_sort,
+table th.sortable.active_sort::after {
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+table th.sortable.active_sort::after {
+    display: inline-block;
+    width: 8px;
+    height: 12px;
+    margin-left: 8px;
+    overflow: hidden;
+    content: '';
+    background-image: url(../images/table_sort.png);
+    background-position: 0 0;
+}
+
+table th.sortable.active_sort.asc::after,
+table th.sortable.active_sort:hover::after {
+    background-position: -16px 0;
+}
+
+table th.sortable.active_sort.desc::after {
+    background-position: -24px 0;
+}
+
+table th.sortable.active_sort.asc:hover::after,
+table th.sortable.active_sort.desc:hover::after {
+    background-position: -8px 0;
+}
+
 table ul, table li {
     margin: 0;
     padding: 0;
