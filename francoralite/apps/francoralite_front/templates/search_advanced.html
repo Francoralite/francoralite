@@ -356,19 +356,17 @@
         } );
 
         locate_collections(map, markers);
-
       }
 
       function locate_collections (map, markers) {
         {% for location in locations %}
-            markers.addLayer( L.marker([{{location.location.latitude|virgule}},
-             {{location.location.longitude|virgule}} ]).bindPopup(
-              "<h5><a target="_blank" href=\"/collection/{{location.collection.id}}\">"+
-              "{{location.collection.code}} - {{location.collection.title|safe|escape}}</a></h5>"+
-              "<p>{{location.collection.descriptions|safe}}</p>"+
-              "<hr />"+
-              "Lieu : <a target="_blank" href=\"/location_gis/{{location.location.id}}\"><b>{{location.location.code}}"+
-              "</b></a><p>{{location.location.name|safe}}</p><hr/><i>{{location.location.notes|safe}}</i>" ) );
+            markers.addLayer(L.marker([{{location.location.latitude|virgule}}, {{location.location.longitude|virgule}}]).bindPopup(
+              '<h5><a target="_blank" href="/collection/{{location.collection.id}}">' +
+              '{{location.collection.code}} - {{location.collection.title}}</a></h5>' +
+              '<p>{{location.collection.descriptions}}</p>' +
+              '<hr />' +
+              'Lieu : <a target="_blank" href="/location_gis/{{location.location.id}}"><b>{{location.location.code}}' +
+              '</b></a><p>{{location.location.name}}</p><hr/><i>{{location.location.notes}}</i>'));
         {% endfor %}
         map.addLayer(markers);
       }
