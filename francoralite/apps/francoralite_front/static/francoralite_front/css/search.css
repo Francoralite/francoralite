@@ -54,6 +54,11 @@ select[name*="start_bracket"] {
     text-align: right;
 }
 
+table ul, table li {
+    margin: 0;
+    padding: 0;
+}
+
 /* Accordion  ------------------------------------- */
 details {
     border: 1px solid #aaa;
