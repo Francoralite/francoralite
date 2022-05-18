@@ -54,7 +54,7 @@
     <label for="informer">{% trans "Informateur" %}</label>
     <br>
     <francoralite-informer name="informer" data-values="{{ parameters_instances_json.informer }}" data-default-operator="{{ parameters.operators.informer|default:'or' }}"></francoralite-informer>
-    <a id="link_authority_informer" href="/authority_informer">
+    <a target="_blank" id="link_authority_informer" href="/authority_informer">
       <span class="glyphicon glyphicon-list"></span> {% trans "Informateurs ..."%}
     </a>
     <br><br>
@@ -65,7 +65,7 @@
     <label for="collector">{% trans "Enquêteur" %}</label>
     <br>
     <francoralite-collector name="collector" data-values="{{ parameters_instances_json.collector }}" data-default-operator="{{ parameters.operators.collector|default:'or' }}"></francoralite-collector>
-    <a id="link_authority_collector" href="/authority_collector">
+    <a target="_blank" id="link_authority_collector" href="/authority_collector">
       <span class="glyphicon glyphicon-list"></span> {% trans "Enquêteurs ..."%}
     </a>
   </details>
@@ -83,7 +83,7 @@
     <label for="location">{% trans "Lieu" %}</label>
     <br>
     <francoralite-location name="location" data-values="{{ parameters_instances_json.location }}" data-default-operator="{{ parameters.operators.location|default:'or' }}"></francoralite-location>
-    <a id="link_location" href="/location_gis/">
+    <a target="_blank" id="link_location" href="/location_gis/">
       <span class="glyphicon glyphicon-list"></span> {% trans "Lieux ..."%}
     </a>
     <br><br>
@@ -97,35 +97,35 @@
     <label for="media_type">{% trans "Type de média" %}</label>
     <br>
     <francoralite-media-type name="media_type" data-values="{{ parameters_instances_json.media_type }}" data-default-operator="{{ parameters.operators.media_type|default:'or' }}"></francoralite-media-type>
-    <a id="link_media_type" href="/mediatype">
+    <a target="_blank" id="link_media_type" href="/mediatype">
       <span class="glyphicon glyphicon-list"></span> {% trans "Types de média ..."%}
     </a>
     <br><br>
     <label for="language">{% trans "Langue(s)" %}</label>
     <br>
     <francoralite-language name="language" data-values="{{ parameters_instances_json.language }}" data-default-operator="{{ parameters.operators.language|default:'or' }}"></francoralite-language>
-    <a id="link_language" href="/language">
+    <a target="_blank" id="link_language" href="/language">
       <span class="glyphicon glyphicon-list"></span> {% trans "Langues ..."%}
     </a>
     <br><br>
     <label for="recording_context">{% trans "Contexte d'enregistrement" %}</label>
     <br>
     <francoralite-recording-context name="recording_context" data-values="{{ parameters_instances_json.recording_context }}" data-default-operator="{{ parameters.operators.recording_context|default:'or' }}"></francoralite-recording-context>
-    <a id="link_recording_context" href="/recording_context">
+    <a target="_blank" id="link_recording_context" href="/recording_context">
       <span class="glyphicon glyphicon-list"></span> {% trans "Contextes d'enregistrement ..."%}
     </a>
     <br><br>
     <label for="usefulness">{% trans "Fonction" %}</label>
     <br>
     <francoralite-usefulness name="usefulness" data-values="{{ parameters_instances_json.usefulness }}" data-default-operator="{{ parameters.operators.usefulness|default:'or' }}"></francoralite-usefulness>
-    <a id="link_usefulness" href="/usefulness">
+    <a target="_blank" id="link_usefulness" href="/usefulness">
       <span class="glyphicon glyphicon-list"></span> {% trans "Fonctions ..."%}
     </a>
     <br><br>
     <label for="dance">{% trans "Danse" %}</label>
     <br>
     <francoralite-dance name="dance" data-values="{{ parameters_instances_json.dance }}" data-default-operator="{{ parameters.operators.dance|default:'or' }}"></francoralite-dance>
-    <a id="link_dance" href="/dance">
+    <a target="_blank" id="link_dance" href="/dance">
       <span class="glyphicon glyphicon-list"></span> {% trans "Danses ..."%}
     </a>
   </details>
@@ -159,42 +159,42 @@
     <label for="thematic">{% trans "Thématique(s) du témoignage" %}</label>
     <br>
     <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}" data-default-operator="{{ parameters.operators.thematic|default:'or' }}"></francoralite-thematic>
-    <a id="link_thematic" href="/thematic">
+    <a target="_blank" id="link_thematic" href="/thematic">
       <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
     </a>
     <br><br>
     <label for="domain_song">{% trans "Genre(s) de la chanson" %}</label>
     <br>
     <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}" data-default-operator="{{ parameters.operators.domain_song|default:'or' }}"></francoralite-domain-song>
-    <a id="link_domain_song" href="/domain_song">
+    <a target="_blank" id="link_domain_song" href="/domain_song">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
     </a>
     <br><br>
     <label for="domain_vocal">{% trans "Genre(s) de l’autre expression vocale" %}</label>
     <br>
     <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_instances_json.domain_vocal }}" data-default-operator="{{ parameters.operators.domain_vocal|default:'or' }}"></francoralite-domain-vocal>
-    <a id="link_domain_vocal" href="/domain_vocal">
+    <a target="_blank" id="link_domain_vocal" href="/domain_vocal">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
     </a>
     <br><br>
     <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
     <br>
     <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}" data-default-operator="{{ parameters.operators.domain_music|default:'or' }}"></francoralite-domain-music>
-    <a id="link_domain_music" href="/domain_music">
+    <a target="_blank" id="link_domain_music" href="/domain_music">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
     </a>
     <br><br>
     <label for="domain_music">{% trans "Genre(s) du conte" %}</label>
     <br>
     <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}" data-default-operator="{{ parameters.operators.domain_tale|default:'or' }}"></francoralite-domain-tale>
-    <a id="link_domain_tale" href="/domain_tale">
+    <a target="_blank" id="link_domain_tale" href="/domain_tale">
       <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
     </a>
     <br><br>
     <label for="instrument">{% trans "Voix/Instrument(s)" %}</label>
     <br>
     <francoralite-instrument name="instrument" data-values="{{ parameters_instances_json.instrument }}" data-default-operator="{{ parameters.operators.instrument|default:'or' }}"></francoralite-instrument>
-    <a id="link_instrument" href="/instrument">
+    <a target="_blank" id="link_instrument" href="/instrument">
       <span class="glyphicon glyphicon-list"></span> {% trans "Voix/Instruments ..."%}
     </a>
     <br><br>
@@ -228,7 +228,7 @@
     <label for="coupe">{% trans "Coupe(s)" %}</label>
     <br>
     <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.coupe|default:'or' }}"></francoralite-coupe>
-    <a id="link_coupe" href="/coupe">
+    <a target="_blank" id="link_coupe" href="/coupe">
       <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
     </a>
     <br><br>
@@ -260,7 +260,7 @@
       {% for collection in collections %}
       <tr>
         <td class="highlight">
-          <a href="/collection/{{ collection.id }}">{{ collection.code }}</a>
+          <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
         </td>
         <td>{{ collection.title }}</td>
       </tr>
@@ -283,7 +283,7 @@
       {% for item in items %}
       <tr>
         <td class="highlight">
-          <a href="/item/{{ item.id }}">{{ item.code }}</a>
+          <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
         </td>
         <td>{{ item.title }}</td>
         <td>
@@ -330,11 +330,11 @@
         {% for location in locations %}
             markers.addLayer( L.marker([{{location.location.latitude|virgule}},
              {{location.location.longitude|virgule}} ]).bindPopup(
-              "<h5><a href=\"/collection/{{location.collection.id}}\">"+
+              "<h5><a target="_blank" href=\"/collection/{{location.collection.id}}\">"+
               "{{location.collection.code}} - {{location.collection.title|safe|escape}}</a></h5>"+
               "<p>{{location.collection.descriptions|safe}}</p>"+
               "<hr />"+
-              "Lieu : <a href=\"/location_gis/{{location.location.id}}\"><b>{{location.location.code}}"+
+              "Lieu : <a target="_blank" href=\"/location_gis/{{location.location.id}}\"><b>{{location.location.code}}"+
               "</b></a><p>{{location.location.name|safe}}</p><hr/><i>{{location.location.notes|safe}}</i>" ) );
         {% endfor %}
         map.addLayer(markers);

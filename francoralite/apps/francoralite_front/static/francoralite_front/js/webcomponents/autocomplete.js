@@ -228,7 +228,7 @@ class FrancoraliteFullTextAutocomplete extends FrancoraliteAutocomplete {
 
 class FrancoraliteCivility extends FrancoraliteFullTextAutocomplete {
     getDefaultUrl() {
-        return '/api/civility/?limit=10&search=';
+        return '/api/civility/?limit=50&search=';
     }
 }
 
@@ -267,43 +267,43 @@ class FrancoraliteCollector extends FrancoraliteAuthoritiesAutocomplete {
 
 class FrancoraliteCoupe extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/coupe?limit=10&search=';
+        return '/api/coupe?limit=50&search=';
     }
 }
 
 class FrancoraliteCulturalArea extends FrancoraliteFullTextAutocomplete {
     getDefaultUrl() {
-        return '/api/cultural_area/?limit=10&search=';
+        return '/api/cultural_area/?limit=50&search=';
     }
 }
 
 class FrancoraliteDance extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/dance?limit=10&search=';
+        return '/api/dance?limit=50&search=';
     }
 }
 
 class FrancoraliteDomainMusic extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/domain_music?limit=10&search=';
+        return '/api/domain_music?limit=50&search=';
     }
 }
 
 class FrancoraliteDomainSong extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/domain_song?limit=10&search=';
+        return '/api/domain_song?limit=50&search=';
     }
 }
 
 class FrancoraliteDomainTale extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/domain_tale?limit=10&search=';
+        return '/api/domain_tale?limit=50&search=';
     }
 }
 
 class FrancoraliteDomainVocal extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/domain_vocal?limit=10&search=';
+        return '/api/domain_vocal?limit=50&search=';
     }
 }
 
@@ -315,13 +315,13 @@ class FrancoraliteInformer extends FrancoraliteAuthoritiesAutocomplete {
 
 class FrancoraliteInstrument extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/instrument?limit=10&search=';
+        return '/api/instrument?limit=50&search=';
     }
 }
 
 class FrancoraliteLanguage extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/language?limit=10&search=';
+        return '/api/language?limit=50&search=';
     }
 }
 
@@ -342,37 +342,37 @@ class FrancoraliteLocation extends FrancoraliteAutocomplete {
 
 class FrancoraliteMediaType extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/mediatype?limit=10&search=';
+        return '/api/mediatype?limit=50&search=';
     }
 }
 
 class FrancoraliteRecordingContext extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/recordingcontext?limit=10&search=';
+        return '/api/recordingcontext?limit=50&search=';
     }
 }
 
 class FrancoraliteThematic extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/thematic?limit=10&search=';
+        return '/api/thematic?limit=50&search=';
     }
 }
 
 class FrancoraliteTimbre extends FrancoraliteFullTextAutocomplete {
     getDefaultUrl() {
-        return '/api/timbre/?limit=10&search=';
+        return '/api/timbre/?limit=50&search=';
     }
 }
 
 class FrancoraliteTimbreRef extends FrancoraliteFullTextAutocomplete {
     getDefaultUrl() {
-        return '/api/timbre_ref/?limit=10&search=';
+        return '/api/timbre_ref/?limit=50&search=';
     }
 }
 
 class FrancoraliteUsefulness extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/usefulness?limit=10&search=';
+        return '/api/usefulness?limit=50&search=';
     }
 }
 

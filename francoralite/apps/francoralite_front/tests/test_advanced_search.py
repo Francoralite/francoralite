@@ -51,8 +51,12 @@ def click_to_list(id_block, id_link, title, context):
 
     # Link to list
     context.scroll_to_element(by_id=id_block).click()
-    context.find_element(by_id=id_link).click()
+    link = context.find_element(by_id=id_link)
+    new_tab = context.click_and_switch_to_new_tab(link)
+
+    # Verify the title and close the new tab
     context.verify_title(title)
+    context.close_tab(new_tab)
 
 def test_links_to_list(francoralite_context):
 
