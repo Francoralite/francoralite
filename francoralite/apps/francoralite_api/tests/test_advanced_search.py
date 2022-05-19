@@ -15,8 +15,6 @@ class TestAdvancedSearch(APITestCase):
     fixtures = ['francoralite.json']
 
     def _test_advanced_search(self, params, collections, items):
-        from icecream import ic
-        ic(params, collections, items)
 
         response = self.client.get('/advancedsearch/?' + params)
         self.assertEqual(response.status_code, HTTP_200_OK)
