@@ -131,111 +131,115 @@
     </a>
   </details>
 
-  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters_instances_json.domain_song or parameters_instances_json.domain_vocal or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.timbre or parameters_instances_json.timbre_ref %} open{% endif %} id="details_genders">
+  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_song or parameters_instances_json.timbre or parameters_instances_json.timbre_ref or parameters_instances_json.coupe or parameters_instances_json.domain_vocal or parameters_instances_json.coirault or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.domain_tale or parameters.text or parameters.incipit or parameters.refrain or parameters.jingle %} open{% endif %} id="details_genders">
     <summary>{% trans "Genres" %}</summary>
     <label>{% trans "Domaine(s) :" %}</label>
-    <ul>
-        <li>
-            <input type="checkbox" name="domain" value="T" id="domain_deposit"{% if 'T' in parameters.domain %} checked{% endif %}>
-            <label for="domain_deposit">{% trans "Témoignage" %}</label>
-        </li>
-        <li>
-            <input type="checkbox" name="domain" value="C" id="domain_song"{% if 'C' in parameters.domain %} checked{% endif %}>
-            <label for="domain_song">{% trans "Chanson" %}</label>
-        </li>
-        <li>
-            <input type="checkbox" name="domain" value="A" id="domain_vocal"{% if 'A' in parameters.domain %} checked{% endif %}>
-            <label for="domain_vocal">{% trans "Autre expression vocale" %}</label>
-        </li>
-        <li>
-            <input type="checkbox" name="domain" value="I" id="domain_music"{% if 'I' in parameters.domain %} checked{% endif %}>
-            <label for="domain_music">{% trans "Expression instrumentale" %}</label>
-        </li>
-        <li>
-            <input type="checkbox" name="domain" value="R" id="domain_tale"{% if 'R' in parameters.domain %} checked{% endif %}>
-            <label for="domain_tale">{% trans "Conte ou récit légendaire" %}</label>
-        </li>
-    </ul>
     <br>
-    <label for="thematic">{% trans "Thématique(s) du témoignage" %}</label>
+    <input type="checkbox" name="domain" value="T" id="domains_deposit"{% if 'T' in parameters.domain %} checked{% endif %}>
+    <label for="domains_deposit">{% trans "Témoignage" %}</label>
     <br>
-    <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}" data-default-operator="{{ parameters.operators.thematic|default:'or' }}"></francoralite-thematic>
-    <a target="_blank" id="link_thematic" href="/thematic">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
-    </a>
-    <br><br>
-    <label for="domain_song">{% trans "Genre(s) de la chanson" %}</label>
+    <input type="checkbox" name="domain" value="C" id="domains_song"{% if 'C' in parameters.domain %} checked{% endif %}>
+    <label for="domains_song">{% trans "Chanson" %}</label>
     <br>
-    <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}" data-default-operator="{{ parameters.operators.domain_song|default:'or' }}"></francoralite-domain-song>
-    <a target="_blank" id="link_domain_song" href="/domain_song">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
-    </a>
-    <br><br>
-    <label for="domain_vocal">{% trans "Genre(s) de l’autre expression vocale" %}</label>
+    <input type="checkbox" name="domain" value="A" id="domains_vocal"{% if 'A' in parameters.domain %} checked{% endif %}>
+    <label for="domains_vocal">{% trans "Autre expression vocale" %}</label>
     <br>
-    <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_instances_json.domain_vocal }}" data-default-operator="{{ parameters.operators.domain_vocal|default:'or' }}"></francoralite-domain-vocal>
-    <a target="_blank" id="link_domain_vocal" href="/domain_vocal">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
-    </a>
-    <br><br>
-    <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
+    <input type="checkbox" name="domain" value="I" id="domains_music"{% if 'I' in parameters.domain %} checked{% endif %}>
+    <label for="domains_music">{% trans "Expression instrumentale" %}</label>
     <br>
-    <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}" data-default-operator="{{ parameters.operators.domain_music|default:'or' }}"></francoralite-domain-music>
-    <a target="_blank" id="link_domain_music" href="/domain_music">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
-    </a>
-    <br><br>
-    <label for="domain_music">{% trans "Genre(s) du conte" %}</label>
-    <br>
-    <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}" data-default-operator="{{ parameters.operators.domain_tale|default:'or' }}"></francoralite-domain-tale>
-    <a target="_blank" id="link_domain_tale" href="/domain_tale">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
-    </a>
-    <br><br>
-    <label for="instrument">{% trans "Voix/Instrument(s)" %}</label>
-    <br>
-    <francoralite-instrument name="instrument" data-values="{{ parameters_instances_json.instrument }}" data-default-operator="{{ parameters.operators.instrument|default:'or' }}"></francoralite-instrument>
-    <a target="_blank" id="link_instrument" href="/instrument">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Voix/Instruments ..."%}
-    </a>
-    <br><br>
-    <label for="timbre">{% trans "Timbre de l’air" %}</label>
-    <br>
-    <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}" data-default-operator="{{ parameters.operators.timbre|default:'or' }}"></francoralite-timbre>
-    <br><br>
-    <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
-    <br>
-    <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}" data-default-operator="{{ parameters.operators.timbre_ref|default:'or' }}"></francoralite-timbre-ref>
-  </details>
-
-  <details{% if parameters.text or parameters.incipit or parameters.refrain or parameters.jingle or parameters_instances_json.coupe or parameters_instances_json.coirault %} open{% endif %} id="details_texts">
-    <summary>{% trans "Textes" %}</summary>
-    <label for="text">{% trans "Texte" %}</label>
-    <br>
-    <input name="text" id="text" value="{{ parameters.text | default:'' }}">
-    <br><br>
-    <label for="incipit">{% trans "Incipit" %}</label>
-    <br>
-    <input name="incipit" id="incipit" value="{{ parameters.incipit | default:'' }}">
-    <br><br>
-    <label for="refrain">{% trans "Refrain" %}</label>
-    <br>
-    <input name="refrain" id="refrain" value="{{ parameters.refrain | default:'' }}">
-    <br><br>
-    <label for="jingle">{% trans "Ritournelle" %}</label>
-    <br>
-    <input name="jingle" id="jingle" value="{{ parameters.jingle | default:'' }}">
-    <br><br>
-    <label for="coupe">{% trans "Coupe(s)" %}</label>
-    <br>
-    <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.coupe|default:'or' }}"></francoralite-coupe>
-    <a target="_blank" id="link_coupe" href="/coupe">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
-    </a>
-    <br><br>
-    <label for="coirault">{% trans "Coirault" %}</label>
-    <br>
-    <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.coirault|default:'or' }}"></francoralite-coirault>
+    <input type="checkbox" name="domain" value="R" id="domains_tale"{% if 'R' in parameters.domain %} checked{% endif %}>
+    <label for="domains_tale">{% trans "Conte ou récit légendaire" %}</label>
+    <p class="domains_deposit">
+      <label for="thematic">{% trans "Thématique(s) du témoignage" %}</label>
+      <br>
+      <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}" data-default-operator="{{ parameters.operators.thematic|default:'or' }}"></francoralite-thematic>
+      <a target="_blank" id="link_thematic" href="/thematic">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
+      </a>
+    </p>
+    <p class="domains_song">
+      <label for="domain_song">{% trans "Genre(s) de la chanson" %}</label>
+      <br>
+      <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}" data-default-operator="{{ parameters.operators.domain_song|default:'or' }}"></francoralite-domain-song>
+      <a target="_blank" id="link_domain_song" href="/domain_song">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
+      </a>
+    </p>
+    <p class="domains_song">
+      <label for="timbre">{% trans "Timbre de l’air" %}</label>
+      <br>
+      <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}" data-default-operator="{{ parameters.operators.timbre|default:'or' }}"></francoralite-timbre>
+    </p>
+    <p class="domains_song">
+      <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
+      <br>
+      <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}" data-default-operator="{{ parameters.operators.timbre_ref|default:'or' }}"></francoralite-timbre-ref>
+    </p>
+    <p class="domains_song">
+      <label for="coupe">{% trans "Coupe(s)" %}</label>
+      <br>
+      <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.coupe|default:'or' }}"></francoralite-coupe>
+      <a target="_blank" id="link_coupe" href="/coupe">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
+      </a>
+    </p>
+    <p class="domains_vocal">
+      <label for="domain_vocal">{% trans "Genre(s) de l’autre expression vocale" %}</label>
+      <br>
+      <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_instances_json.domain_vocal }}" data-default-operator="{{ parameters.operators.domain_vocal|default:'or' }}"></francoralite-domain-vocal>
+      <a target="_blank" id="link_domain_vocal" href="/domain_vocal">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
+      </a>
+    </p>
+    <p class="domains_song domains_vocal">
+      <label for="coirault">{% trans "Coirault" %}</label>
+      <br>
+      <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.coirault|default:'or' }}"></francoralite-coirault>
+    </p>
+    <p class="domains_music">
+      <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
+      <br>
+      <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}" data-default-operator="{{ parameters.operators.domain_music|default:'or' }}"></francoralite-domain-music>
+      <a target="_blank" id="link_domain_music" href="/domain_music">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
+      </a>
+    </p>
+    <p class="domains_music">
+      <label for="instrument">{% trans "Voix/Instrument(s)" %}</label>
+      <br>
+      <francoralite-instrument name="instrument" data-values="{{ parameters_instances_json.instrument }}" data-default-operator="{{ parameters.operators.instrument|default:'or' }}"></francoralite-instrument>
+      <a target="_blank" id="link_instrument" href="/instrument">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Voix/Instruments ..."%}
+      </a>
+    </p>
+    <p class="domains_tale">
+      <label for="domain_tale">{% trans "Genre(s) du conte" %}</label>
+      <br>
+      <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}" data-default-operator="{{ parameters.operators.domain_tale|default:'or' }}"></francoralite-domain-tale>
+      <a target="_blank" id="link_domain_tale" href="/domain_tale">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
+      </a>
+    </p>
+    <p class="domains_song domains_tale domains_vocal">
+      <label for="text">{% trans "Texte" %}</label>
+      <br>
+      <input name="text" id="text" value="{{ parameters.text | default:'' }}">
+    </p>
+    <p class="domains_song domains_tale domains_vocal">
+      <label for="incipit">{% trans "Incipit" %}</label>
+      <br>
+      <input name="incipit" id="incipit" value="{{ parameters.incipit | default:'' }}">
+    </p>
+    <p class="domains_song domains_vocal">
+      <label for="refrain">{% trans "Refrain" %}</label>
+      <br>
+      <input name="refrain" id="refrain" value="{{ parameters.refrain | default:'' }}">
+    </p>
+    <p class="domains_tale">
+      <label for="jingle">{% trans "Ritournelle" %}</label>
+      <br>
+      <input name="jingle" id="jingle" value="{{ parameters.jingle | default:'' }}">
+    </p>
   </details>
 
   <button type="submit" id="btn" class="btn btn-default">

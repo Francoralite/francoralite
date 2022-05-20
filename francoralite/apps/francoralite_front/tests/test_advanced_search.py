@@ -43,58 +43,50 @@ def test_search(francoralite_context):
             context=francoralite_context
         )
 
-def click_to_list(id_block, id_link, title, context):
-
-    # Go to advanced search page
-    url_prefix = "/search_advanced/"
-    context.open_url(url_prefix)
-
-    # Link to list
-    context.scroll_to_element(by_id=id_block).click()
-    link = context.find_element(by_id=id_link)
-    new_tab = context.click_and_switch_to_new_tab(link)
-
-    # Verify the title and close the new tab
-    context.verify_title(title, visibility_timeout=5)
-    context.close_tab(new_tab)
-
 def test_links_to_list(francoralite_context):
 
     links = [
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_song',
+            'id_link': 'link_coupe',
+            'title': 'Coupe',
+        },
+        {
+            'id_block': 'details_genders',
+            'id_checkbox': 'domains_music',
             'id_link': 'link_domain_music',
             'title': 'Genre de musique',
         },
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_song',
             'id_link': 'link_domain_song',
             'title': 'Genre de chanson',
         },
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_tale',
             'id_link': 'link_domain_tale',
             'title': 'Genre de conte',
         },
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_vocal',
             'id_link': 'link_domain_vocal',
             'title': 'Genre vocal',
         },
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_music',
             'id_link': 'link_instrument',
             'title': 'Voix/Instruments',
         },
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_deposit',
             'id_link': 'link_thematic',
             'title': 'Thématique',
-        },
-        {
-            'id_block': 'details_texts',
-            'id_link': 'link_coupe',
-            'title': 'Coupe',
         },
         {
             'id_block': 'details_what',
@@ -139,9 +131,21 @@ def test_links_to_list(francoralite_context):
     ]
 
     for link in links:
-        click_to_list(
-            id_block=link['id_block'],
-            id_link=link['id_link'],
-            title=link['title'],
-            context=francoralite_context,
-        )
+
+        # Go to advanced search page
+        francoralite_context.open_url(URL_PREFIX)
+
+        # Scroll to block
+        francoralite_context.scroll_to_element(by_id=link['id_block']).click()
+
+        # Click on checkbox if required
+        if 'id_checkbox' in link:
+            francoralite_context.scroll_to_element(by_id=link['id_checkbox']).click()
+
+        # Click on link to open list in a new tab
+        element = francoralite_context.scroll_to_element(by_id=link['id_link'])
+        new_tab = francoralite_context.click_and_switch_to_new_tab(element)
+
+        # Verify the title and close the new tab
+        francoralite_context.verify_title(link['title'], visibility_timeout=5)
+        francoralite_context.close_tab(new_tab)
