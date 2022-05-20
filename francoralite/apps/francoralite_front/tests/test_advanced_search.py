@@ -11,16 +11,16 @@ def select_search_criteria(id_block, id_field, value, option, context):
     context.verify_title(_('Recherche avancée'))
 
     # Select the block "details_what"
-    context.scroll_to_element(
-        by_id=id_block).click()
+    context.scroll_to_element(by_id=id_block).click()
 
     # Write first characters of the content
-    context.scroll_to_element(
-        by_id=id_field).send_keys(value)
+    context.scroll_to_element(by_id=id_field).send_keys(value)
 
-    # There is an option named "valse"
+    # There is an option named "{option}"
     context.find_element(
-        by_xpath=f"//francoralite-{id_field}/ul/li[contains(text(), '{option}')]", visibility_timeout=5)
+        by_xpath=f"//francoralite-{id_field}/ul/li[contains(text(), '{option}')]",
+        visibility_timeout=5,
+    )
 
 def test_search(francoralite_context):
     criteria = [
@@ -55,7 +55,7 @@ def click_to_list(id_block, id_link, title, context):
     new_tab = context.click_and_switch_to_new_tab(link)
 
     # Verify the title and close the new tab
-    context.verify_title(title)
+    context.verify_title(title, visibility_timeout=5)
     context.close_tab(new_tab)
 
 def test_links_to_list(francoralite_context):
@@ -143,5 +143,5 @@ def test_links_to_list(francoralite_context):
             id_block=link['id_block'],
             id_link=link['id_link'],
             title=link['title'],
-            context=francoralite_context
+            context=francoralite_context,
         )

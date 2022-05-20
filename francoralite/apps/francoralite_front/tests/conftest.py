@@ -132,7 +132,7 @@ class FrancoraliteSeleniumContext():
         else:
             return parent.find_element(*criteria)
 
-    def click_and_switch_to_new_tab(self, element):
+    def click_and_switch_to_new_tab(self, element, visibility_timeout=10):
 
         # Store the ID of the original window
         original_window = self.browser.current_window_handle
@@ -144,7 +144,7 @@ class FrancoraliteSeleniumContext():
         element.click()
 
         # Wait for the new tab's opening
-        wait = WebDriverWait(self.browser, 10)
+        wait = WebDriverWait(self.browser, timeout=visibility_timeout)
         wait.until(EC.number_of_windows_to_be(2))
 
         # Loop through until we find a new tab handle
@@ -263,8 +263,9 @@ class FrancoraliteSeleniumContext():
             element = self.find_element(by_class_name=element_id)
             assert element.text == element_value
 
-    def verify_title(self, value):
-        assert self.find_element(by_css_selector='main h1').text == value
+    def verify_title(self, value, visibility_timeout=None):
+        assert self.find_element(by_css_selector='main h1',
+            visibility_timeout=visibility_timeout).text == value
 
     def save_screenshot(self, *args, **kwargs):
         page = self.find_element(by_css_selector='html')
