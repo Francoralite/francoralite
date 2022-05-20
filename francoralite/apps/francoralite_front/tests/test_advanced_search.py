@@ -1,47 +1,71 @@
 from django.utils.translation import gettext as _
 
 
-URL_PREFIX = "/search_advanced/"
+URL_PREFIX = '/search_advanced/'
 
-def select_search_criteria(id_block, id_field, value, option, context):
-    # Go to advanced search page
-    context.open_url(URL_PREFIX)
-
-    # Verify the label of the page
-    context.verify_title(_('Recherche avancée'))
-
-    # Select the block "details_what"
-    context.scroll_to_element(by_id=id_block).click()
-
-    # Write first characters of the content
-    context.scroll_to_element(by_id=id_field).send_keys(value)
-
-    # There is an option named "{option}"
-    context.find_element(
-        by_xpath=f"//francoralite-{id_field}/ul/li[contains(text(), '{option}')]",
-        visibility_timeout=5,
-    )
 
 def test_search(francoralite_context):
     criteria = [
         {
-            'id_block':"details_what",
-            'id_field':"dance",
-            'value':"va",
-            'option':"valse",
+            'id_block': 'details_what',
+            'id_field': 'dance',
+            'value': 'va',
+            'option': 'valse',
         },
+        {
+            'id_block': 'details_what',
+            'id_field': 'language',
+            'value': 'fr',
+            'option': 'Créoles et pidgins basés sur le français',
+        },
+        {
+            'id_block': 'details_what',
+            'id_field': 'media_type',
+            'value': 'au',
+            'option': 'cassette audio',
+        },
+        {
+            'id_block': 'details_what',
+            'id_field': 'recording_context',
+            'value': 'en',
+            'option': 'enquête',
+        },
+        {
+            'id_block': 'details_what',
+            'id_field': 'usefulness',
+            'value': 'da',
+            'option': 'danser',
+        },
+        #TODO ajouter des tests pour tous les critères
     ]
 
-    #TODO ajouter des tests pour tous les critères
-
     for crit in criteria:
-        select_search_criteria(
-            id_block=crit['id_block'],
-            id_field=crit['id_field'],
-            value=crit['value'],
-            option=crit['option'],
-            context=francoralite_context
+        from icecream import ic
+        ic(crit)
+
+        # Go to advanced search page
+        francoralite_context.open_url(URL_PREFIX)
+
+        # Verify the label of the page
+        francoralite_context.verify_title(_('Recherche avancée'))
+
+        # Open the block
+        francoralite_context.scroll_to_element(by_id=crit['id_block']).click()
+
+        # Click on checkbox if required
+        if 'id_checkbox' in crit:
+            francoralite_context.scroll_to_element(by_id=crit['id_checkbox']).click()
+
+        # Write first characters of the content
+        francoralite_context.scroll_to_element(by_id=crit['id_field']).send_keys(crit['value'])
+
+        # There is an option named "{option}"
+        component_name = 'francoralite-' + crit['id_field'].replace('_', '-')
+        francoralite_context.find_element(
+            by_xpath=f"//{component_name}/ul/li[contains(text(), '{crit['value']}')]",
+            visibility_timeout=5,
         )
+
 
 def test_links_to_list(francoralite_context):
 
@@ -131,6 +155,8 @@ def test_links_to_list(francoralite_context):
     ]
 
     for link in links:
+        from icecream import ic
+        ic(link)
 
         # Go to advanced search page
         francoralite_context.open_url(URL_PREFIX)
