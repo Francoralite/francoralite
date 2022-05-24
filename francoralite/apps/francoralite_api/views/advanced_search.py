@@ -356,6 +356,7 @@ class AdvancedSearchList(generics.GenericAPIView):
             # other fields
             'date_start': date_start,
             'date_end': date_end,
+            'description': self.request.query_params.get('description', None),
             'domain': domains,
             'incipit': self.request.query_params.get('incipit', None),
             'jingle': self.request.query_params.get('jingle', None),
