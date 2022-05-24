@@ -220,6 +220,14 @@ class TestAdvancedSearch(APITestCase):
             items={1, 2, 3, 4},
         )
 
+    def test_description(self):
+        self._test_all_combinations('description', {
+            'violon': {'collections': {2, 3}, 'items': {2, 3}},
+            'extrait': {'collections': {1, 4}},
+            'chanson': {'items': {4}},
+            'raconte': {'items': {1}},
+        })
+
     def test_domain_music(self):
         """
         - domain music : 1 - air de musique

@@ -35,7 +35,7 @@
 
 <h2>Filtres de recherche</h2>
 <form>
-  <details{% if parameters_instances_json.code_internal or parameters_instances_json.code_external %} open{% endif %} id="details_references">
+  <details{% if parameters_instances_json.code_internal or parameters_instances_json.code_external or parameters.description %} open{% endif %} id="details_references">
     <summary>{% trans "Références" %}</summary>
     <label for="code_internal">{% trans "Cote" %}</label>
     <br>
@@ -44,6 +44,10 @@
     <label for="code_external">{% trans "Référence partenaire" %}</label>
     <br>
     <francoralite-code-external name="code_external" data-values="{{ parameters_instances_json.code_external }}" data-default-operator="{{ parameters.operators.code_external|default:'or' }}"></francoralite-code-external>
+    <br><br>
+    <label for="description">{% trans "Description" %}</label>
+    <br>
+    <input name="description" id="description" value="{{ parameters.description | default:'' }}">
   </details>
 
   <details{% if parameters_instances_json.informer_civility or parameters_instances_json.informer or parameters_instances_json.collector_civility or parameters_instances_json.collector %} open{% endif %} id="details_who">

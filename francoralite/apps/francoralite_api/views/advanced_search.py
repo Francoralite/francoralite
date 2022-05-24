@@ -107,6 +107,10 @@ class AdvancedSearchList(generics.GenericAPIView):
                 ),
                 'parameter_model': Dance,
             }, {
+                'name': 'description',
+                'paths': ('description', 'description'),
+                'lookups': 'icontains',
+            }, {
                 'name': 'domain_music',
                 'paths': (
                     'collection__itemdomainmusic__domain_music',
