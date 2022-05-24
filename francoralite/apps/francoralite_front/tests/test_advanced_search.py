@@ -36,6 +36,18 @@ def test_search(francoralite_context):
             'value': 'da',
             'option': 'danser',
         },
+        {
+            'id_block': 'details_who',
+            'id_field': 'informer_civility',
+            'value': 'mo',
+            'option': 'Monsieur',
+        },
+        {
+            'id_block': 'details_who',
+            'id_field': 'informer',
+            'value': 'aub',
+            'option': 'Charles Aubrière',
+        },
         #TODO ajouter des tests pour tous les critères
     ]
 
@@ -60,9 +72,9 @@ def test_search(francoralite_context):
         francoralite_context.scroll_to_element(by_id=crit['id_field']).send_keys(crit['value'])
 
         # There is an option named "{option}"
-        component_name = 'francoralite-' + crit['id_field'].replace('_', '-')
+        component = '*[starts-with(local-name(), "francoralite-")][@name="' + crit['id_field'] + '"]'
         francoralite_context.find_element(
-            by_xpath=f"//{component_name}/ul/li[contains(text(), '{crit['value']}')]",
+            by_xpath=f"//{component}/ul/li[contains(text(), '{crit['option']}')]",
             visibility_timeout=5,
         )
 
