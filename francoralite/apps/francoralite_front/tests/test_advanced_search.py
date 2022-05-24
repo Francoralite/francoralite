@@ -53,6 +53,7 @@ def test_search(francoralite_context):
 
     for crit in criteria:
         from icecream import ic
+        ic.configureOutput(includeContext=True)
         ic(crit)
 
         # Go to advanced search page
@@ -168,6 +169,7 @@ def test_links_to_list(francoralite_context):
 
     for link in links:
         from icecream import ic
+        ic.configureOutput(includeContext=True)
         ic(link)
 
         # Go to advanced search page

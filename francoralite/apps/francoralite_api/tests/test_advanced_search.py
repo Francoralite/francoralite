@@ -16,6 +16,7 @@ class TestAdvancedSearch(APITestCase):
 
     def _test_advanced_search(self, params, collections, items):
         from icecream import ic
+        ic.configureOutput(includeContext=True)
         ic(params, collections, items)
 
         response = self.client.get('/advancedsearch/?' + params)
