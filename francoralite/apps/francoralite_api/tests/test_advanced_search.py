@@ -421,6 +421,14 @@ class TestAdvancedSearch(APITestCase):
             'timbre_ref_2': {'collections': {4}, 'items': {4}},
         })
 
+    def test_title(self):
+        self._test_all_combinations('title', {
+            'Charles': {'collections': {2, 3}, 'items': {2, 3}},
+            'roi': {'collections': {2, 3}, 'items': {4}},
+            'violon': {'collections': {3}, 'items': {1}},
+            'rose': {'items': {4}},
+        })
+
     def test_usefulness(self):
         """
         - fonction : 1 - écouter
