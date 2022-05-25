@@ -7,6 +7,97 @@ URL_PREFIX = '/search_advanced/'
 def test_search(francoralite_context):
     criteria = [
         {
+            'id_block': 'details_genders',
+            'id_field': 'thematic',
+            'value': 'r',
+            'option': "récit",
+            'id_checkbox' : 'domains_deposit'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'domain_song',
+            'value': 'm',
+            'option': "mariage",
+            'id_checkbox' : 'domains_song'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'timbre_ref',
+            'value': 'ti',
+            'option': "timbre_ref_1",
+            'id_checkbox' : 'domains_song'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'timbre',
+            'value': 'ti',
+            'option': "timbre_1",
+            'id_checkbox' : 'domains_song'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'coupe',
+            'value': 'a',
+            'option': "AABB",
+            'id_checkbox' : 'domains_song'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'coirault',
+            'value': '9',
+            'option': "9003 : À l’arrivée du doux printemps",
+            'id_checkbox' : 'domains_song'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'domain_vocal',
+            'value': 'c',
+            'option': "comptine",
+            'id_checkbox' : 'domains_vocal'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'coirault',
+            'value': '9',
+            'option': "9003 : À l’arrivée du doux printemps",
+            'id_checkbox' : 'domains_vocal'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'domain_music',
+            'value': 'ai',
+            'option': "air de chanson",
+            'id_checkbox' : 'domains_music'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'instrument',
+            'value': 'v',
+            'option': "Violon",
+            'id_checkbox' : 'domains_music'
+        },
+        {
+            'id_block': 'details_genders',
+            'id_field': 'domain_tale',
+            'value': 'c',
+            'option': "conte facétieux",
+            'id_checkbox' : 'domains_tale'
+        },
+        # FIXME : code et référence partenaire
+        # {
+        #     'id_block': 'details_references',
+        #     'id_field': 'code_internal',
+        #     'value': 'upoi',
+        #     'option': 'UPOI_AFE',
+        # },
+
+        # {
+        #     'id_block': 'details_references',
+        #     'id_field': 'code_external',
+        #     'value': '56',
+        #     'option': '56-10-199 OU 56-10-138 -714-15',
+        # },
+        {
             'id_block': 'details_what',
             'id_field': 'dance',
             'value': 'va',
@@ -37,6 +128,18 @@ def test_search(francoralite_context):
             'option': 'danser',
         },
         {
+            'id_block': 'details_where',
+            'id_field': 'location',
+            'value': 'poi',
+            'option': "Poitiers, Vienne, Nouvelle-Aquitaine, France métropolitaine, 86000, France",
+        },
+        {
+            'id_block': 'details_where',
+            'id_field': 'cultural_area',
+            'value': 'poi',
+            'option': "Saintonge, Poitou",
+        },
+        {
             'id_block': 'details_who',
             'id_field': 'informer_civility',
             'value': 'mo',
@@ -48,7 +151,18 @@ def test_search(francoralite_context):
             'value': 'aub',
             'option': 'Charles Aubrière',
         },
-        #TODO ajouter des tests pour tous les critères
+        {
+            'id_block': 'details_who',
+            'id_field': 'collector_civility',
+            'value': 'ml',
+            'option': 'Mlle',
+        },
+        {
+            'id_block': 'details_who',
+            'id_field': 'collector',
+            'value': 'cl',
+            'option': 'Claudie Marcel-Dubois',
+        },
     ]
 
     for crit in criteria:
