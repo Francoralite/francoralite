@@ -8,10 +8,11 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from ..models.collection import Collection as CollectionModel
-from .mission import MissionSerializer
-from .mediatype import MediaTypeSerializer
-from .legal_rights import LegalRightsSerializer
 from .asymetric_related_field import AsymetricRelatedField
+from .authority import AuthoritySerializer
+from .legal_rights import LegalRightsSerializer
+from .mediatype import MediaTypeSerializer
+from .mission import MissionSerializer
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -52,3 +53,14 @@ class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CollectionModel
         fields = '__all__'
+
+
+class AdvancedSearchCollectionSerializer(CollectionSerializer):
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result['informers'] = tuple(
+            AuthoritySerializer(collectioninformer.informer).data
+            for collectioninformer in instance.collectioninformer_set.select_related('informer')
+        )
+        return result

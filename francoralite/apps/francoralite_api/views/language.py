@@ -5,7 +5,10 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework import viewsets
+
 from ..models.language import Language as LanguageModel
 from ..serializers.language import LanguageSerializer
 
@@ -17,6 +20,9 @@ class LanguageViewSet(viewsets.ModelViewSet):
 
     queryset = LanguageModel.objects.all()
     serializer_class = LanguageSerializer
+
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ('name',)
 
     keycloak_scopes = {
         'GET': 'language:view',

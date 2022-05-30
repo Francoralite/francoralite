@@ -132,6 +132,40 @@ class FrancoraliteSeleniumContext():
         else:
             return parent.find_element(*criteria)
 
+    def click_and_switch_to_new_tab(self, element, visibility_timeout=10):
+
+        # Store the ID of the original window
+        original_window = self.browser.current_window_handle
+
+        # Check we don't have other windows open already
+        assert len(self.browser.window_handles) == 1
+
+        # Click on the element
+        element.click()
+
+        # Wait for the new tab's opening
+        wait = WebDriverWait(self.browser, timeout=visibility_timeout)
+        wait.until(EC.number_of_windows_to_be(2))
+
+        # Loop through until we find a new tab handle
+        for window_handle in self.browser.window_handles:
+            if window_handle != original_window:
+                self.browser.switch_to.window(window_handle)
+                return window_handle
+
+    def close_tab(self, tab_handle):
+        # Close the tab
+        self.browser.switch_to.window(tab_handle)
+        self.browser.close()
+
+        # Verify there is only 1 tab left
+        assert len(self.browser.window_handles) == 1
+
+        # Select the previous/unique tab
+        for window_handle in self.browser.window_handles:
+            self.browser.switch_to.window(window_handle)
+            return window_handle
+
     def _get_find_elements_criteria(self,
         by_id=None, by_xpath=None, by_css_selector=None,
         by_class_name=None, by_link_text=None, by_link_url=None,
@@ -229,11 +263,13 @@ class FrancoraliteSeleniumContext():
             element = self.find_element(by_class_name=element_id)
             assert element.text == element_value
 
-    def verify_title(self, value):
-        assert self.find_element(by_css_selector='main h1').text == value
+    def verify_title(self, value, visibility_timeout=None):
+        assert self.find_element(by_css_selector='main h1',
+            visibility_timeout=visibility_timeout).text == value
 
     def save_screenshot(self, *args, **kwargs):
-        return self.browser.save_screenshot(*args, **kwargs)
+        page = self.find_element(by_css_selector='html')
+        return page.screenshot(*args, **kwargs)
 
     def save_source(self):
         return self.browser.page_source

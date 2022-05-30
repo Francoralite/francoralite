@@ -54,6 +54,44 @@ select[name*="start_bracket"] {
     text-align: right;
 }
 
+/* Tableaux de résultats  ------------------------------------- */
+
+table th.sortable.active_sort,
+table th.sortable.active_sort::after {
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+table th.sortable.active_sort::after {
+    display: inline-block;
+    width: 8px;
+    height: 12px;
+    margin-left: 8px;
+    overflow: hidden;
+    content: '';
+    background-image: url(../images/table_sort.png);
+    background-position: 0 0;
+}
+
+table th.sortable.active_sort.asc::after,
+table th.sortable.active_sort:hover::after {
+    background-position: -16px 0;
+}
+
+table th.sortable.active_sort.desc::after {
+    background-position: -24px 0;
+}
+
+table th.sortable.active_sort.asc:hover::after,
+table th.sortable.active_sort.desc:hover::after {
+    background-position: -8px 0;
+}
+
+table ul, table li {
+    margin: 0;
+    padding: 0;
+}
+
 /* Accordion  ------------------------------------- */
 details {
     border: 1px solid #aaa;
@@ -81,19 +119,38 @@ details[open] summary {
     margin-bottom: .5em;
 }
 
-details > input:not([type]) {
+details > input:not([type]),
+details > p > input:not([type]) {
     width: 558px;
+    max-width: calc(100% - 6px);
     margin: 2px 0;
     border: 1px solid #6f0a08;
     border-radius: 3px;
 }
 
-details ul {
-    list-style: none;
-}
-
-details ul input[type=checkbox],
-details ul input[type=checkbox] + label {
+details input[type=checkbox],
+details input[type=checkbox] + label {
     margin: 2px 0;
     vertical-align: middle;
+}
+
+details input[type=checkbox] {
+    margin-left: 40px;
+}
+
+details p.domains_deposit,
+details p.domains_music,
+details p.domains_song,
+details p.domains_tale,
+details p.domains_vocal {
+    display: none;
+}
+
+details input#domains_deposit:checked ~ p.domains_deposit,
+details input#domains_music:checked ~ p.domains_music,
+details input#domains_song:checked ~ p.domains_song,
+details input#domains_tale:checked ~ p.domains_tale,
+details input#domains_vocal:checked ~ p.domains_vocal {
+    display: block;
+    margin: 20px 0 0 0;
 }

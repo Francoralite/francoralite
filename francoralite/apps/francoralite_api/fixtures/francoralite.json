@@ -269,11 +269,73 @@
   },
   {
     "fields": {
-      "identifier": "fra",
-      "name": "Français"
+      "identifier": "Eng",
+      "part2B": "eng",
+      "part2T": "eng",
+      "part1": "e",
+      "scope": "I",
+      "type": "L",
+      "name": "Anglais",
+      "comment": ""
     },
     "model": "francoralite_api.language",
     "pk": 1
+  },
+  {
+    "fields": {
+      "identifier": "Cpe",
+      "part2B": "cpe",
+      "part2T": "cpe",
+      "part1": "c",
+      "scope": "I",
+      "type": "L",
+      "name": "Créoles et pidgins basés sur l'anglais",
+      "comment": ""
+    },
+    "model": "francoralite_api.language",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "identifier": "cpf",
+      "part2B": "cpf",
+      "part2T": "cpf",
+      "part1": "c",
+      "scope": "I",
+      "type": "L",
+      "name": "Créoles et pidgins basés sur le français",
+      "comment": "Comprend les langues régionales basées sur le français : poitevin-saintongeais,..."
+    },
+    "model": "francoralite_api.language",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "identifier": "Fra",
+      "part2B": "Fra",
+      "part2T": "Fra",
+      "part1": "f",
+      "scope": "I",
+      "type": "L",
+      "name": "Français",
+      "comment": ""
+    },
+    "model": "francoralite_api.language",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "identifier": "psa",
+      "part2B": "cpf",
+      "part2T": "cpf",
+      "part1": "c",
+      "scope": "I",
+      "type": "L",
+      "name": "Poitevin-saintongeais",
+      "comment": ""
+    },
+    "model": "francoralite_api.language",
+    "pk": 5
   },
   {
     "fields": {
@@ -610,6 +672,14 @@
     "pk":3
   },
   {
+    "fields":{
+      "collection":1,
+      "language":4
+    },
+    "model":"francoralite_api.collectionlanguage",
+    "pk":1
+  },
+  {
     "fields": {
       "mission": 3,
       "title": "Témoignage de M. Charles Aubrière - La Biroire, île d'Oléron, septembre 1969",
@@ -672,6 +742,22 @@
     },
     "model":"francoralite_api.performancecollection",
     "pk":1
+  },
+  {
+    "fields":{
+      "collection":2,
+      "language":4
+    },
+    "model":"francoralite_api.collectionlanguage",
+    "pk":2
+  },
+  {
+    "fields":{
+      "collection":2,
+      "language":5
+    },
+    "model":"francoralite_api.collectionlanguage",
+    "pk":3
   },
   {
     "fields": {
@@ -753,15 +839,15 @@
       "alt_title":"",
       "description":"Extrait d'enquête à L'Épine, île de Noirmoutier (Vendée) auprès de Michelle Bouchereau, agée d'une dizaine d'années.",
       "code":"UPOI_ATP_0000_0009",
-		  "code_partner":"56-10-138",
+      "code_partner":"56-10-138",
       "recording_context":6,
-		  "recorded_from_year":"1956-06-11",
-		  "recorded_to_year":"1956-06-11",
+      "recorded_from_year":"1956-06-11",
+      "recorded_to_year":"1956-06-11",
       "booklet_description":"Carnets d'enquête, photographies.",
-		  "comment":"",
-		  "media_type": 3,
+      "comment":"",
+      "media_type": 3,
       "location_details":"",
-		  "cultural_area":"Vendée"
+      "cultural_area":"Vendée"
     },
     "model":"francoralite_api.collection",
     "pk":4
@@ -798,6 +884,22 @@
     },
     "model":"francoralite_api.performancecollection",
     "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "language":4
+    },
+    "model":"francoralite_api.collectionlanguage",
+    "pk":4
+  },
+  {
+    "fields":{
+      "collection":4,
+      "language":3
+    },
+    "model":"francoralite_api.collectionlanguage",
+    "pk":5
   },
 
   {"fields": {"notes": "Notes de polka", "name": "polka"}, "model": "francoralite_api.dance", "pk": 1},
@@ -901,6 +1003,14 @@
     "pk":1
   },
   {
+    "fields":{
+      "item":1,
+      "language":4
+    },
+    "model":"francoralite_api.itemlanguage",
+    "pk":1
+  },
+  {
     "fields": {
       "collection": 2,
       "title": "Information autobiographique de Monsieur Charles Aubrière",
@@ -989,6 +1099,14 @@
       "domain_tale":2
     },
     "model":"francoralite_api.itemdomaintale",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "language":3
+    },
+    "model":"francoralite_api.itemlanguage",
     "pk":2
   },
   {
@@ -1138,6 +1256,21 @@
     },
     "model":"francoralite_api.itemdomainsong",
     "pk":2
+  },
+  {
+    "fields":{
+      "item":4,
+      "language":1
+    },
+    "model":"francoralite_api.itemlanguage",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":4,
+      "language":4
+    },
+    "model":"francoralite_api.itemlanguage",
+    "pk":4
   }
-
 ]
