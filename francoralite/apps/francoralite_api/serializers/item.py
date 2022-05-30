@@ -11,10 +11,11 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from ..models.item import Item as ItemModel
-from .collection import CollectionSerializer
-from .mediatype import MediaTypeSerializer
-from .coupe import CoupeSerializer
 from .asymetric_related_field import AsymetricRelatedField
+from .authority import AuthoritySerializer
+from .collection import CollectionSerializer
+from .coupe import CoupeSerializer
+from .mediatype import MediaTypeSerializer
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -94,6 +95,16 @@ class ItemSerializer(serializers.ModelSerializer):
         if "file" in value :
             correct_name = ''.join(c for c in unicodedata.normalize('NFKD', value["file"]._name) if c in string.printable)
             value["file"]._name = correct_name
-        
+
         return super().to_internal_value(value)
 
+
+class AdvancedSearchItemSerializer(ItemSerializer):
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result['informers'] = tuple(
+            AuthoritySerializer(iteminformer.informer).data
+            for iteminformer in instance.iteminformer_set.select_related('informer')
+        )
+        return result

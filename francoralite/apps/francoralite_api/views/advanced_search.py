@@ -19,6 +19,7 @@ from ..models.domain_tale import DomainTale
 from ..models.domain_vocal import DomainVocal
 from ..models.instrument import Instrument
 from ..models.item import Item
+from ..models.language import Language
 from ..models.location import Location
 from ..models.mediatype import MediaType
 from ..models.recording_context import RecordingContext
@@ -40,7 +41,7 @@ class AdvancedSearchList(generics.GenericAPIView):
         ]
 
         # Filtering ----------------------------------------------------
-        fields = (
+        criteria = (
             {
                 'name': 'code_external',
                 'paths': (
@@ -106,6 +107,10 @@ class AdvancedSearchList(generics.GenericAPIView):
                 ),
                 'parameter_model': Dance,
             }, {
+                'name': 'description',
+                'paths': ('description', 'description'),
+                'lookups': 'icontains',
+            }, {
                 'name': 'domain_music',
                 'paths': (
                     'collection__itemdomainmusic__domain_music',
@@ -138,10 +143,6 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'paths': (None, 'incipit'),
                 'lookups': 'icontains',
             }, {
-                'name': 'jingle',
-                'paths': (None, 'jingle'),
-                'lookups': 'icontains',
-            }, {
                 'name': 'informer',
                 'paths': (
                     'collectioninformer__informer',
@@ -165,6 +166,17 @@ class AdvancedSearchList(generics.GenericAPIView):
                     'performancecollection__itemperformance__item',
                 ),
                 'parameter_model': Instrument,
+            }, {
+                'name': 'jingle',
+                'paths': (None, 'jingle'),
+                'lookups': 'icontains',
+            }, {
+                'name': 'language',
+                'paths': (
+                    'collectionlanguage__language',
+                    'itemlanguage__language',
+                ),
+                'parameter_model': Language,
             }, {
                 'name': 'location',
                 'paths': (
@@ -214,6 +226,13 @@ class AdvancedSearchList(generics.GenericAPIView):
                 'parameter_model': Item,
                 'parameter_field': 'timbre_ref',
             }, {
+                'name': 'title',
+                'paths': (
+                    ('title', 'alt_title'),
+                    ('title', 'alt_title', 'trans_title'),
+                ),
+                'lookups': 'icontains',
+            }, {
                 'name': 'usefulness',
                 'paths': (
                     'collection__itemusefulness__usefulness',
@@ -223,53 +242,68 @@ class AdvancedSearchList(generics.GenericAPIView):
             },
         )
 
-        or_operators = self.request.query_params.getlist('or_operators', [])
+        operators = {}
 
-        for field in fields:
-            raw_values = self.request.query_params.getlist(field['name'], [])
+        for criterion in criteria:
+            raw_values = self.request.query_params.getlist(criterion['name'], [])
+            operator = (self.request.query_params.get(criterion['name'] + '_operator', None) or '').lower()
 
             if not raw_values:
                 continue
 
-            paths = field['paths']
-            parsers = field.get('parsers')
-            sub_model = field.get('sub_model')
-            lookups = field.get('lookups')
+            all_paths = criterion['paths']
+            parsers = criterion.get('parsers')
+            sub_model = criterion.get('sub_model')
+            lookups = criterion.get('lookups')
 
-            if field['name'] in or_operators:
+            if operator in ('or', 'nor'):
                 # Filter : value OR value OR ...
-                for index, path in enumerate(paths):
+                for index, path in enumerate(all_paths):
                     # Parse values when parser is defined
-                    values = filter(None, tuple(
+                    values = tuple(filter(None, tuple(
                         parsers[index](value) for value in raw_values
-                    ) if parsers and parsers[index] else raw_values)
+                    ) if parsers and parsers[index] else raw_values))
                     if not values:
                         continue
                     # Add filter to the queryset
                     if path is None:
                         query_sets[index] = query_sets[index].none()
-                    elif lookups:
-                        if sub_model:
-                            raise NotImplementedError
-                        # Use many joins
-                        path = '%s__%s' % (path, lookups)
-                        sub_filter = models.Q()
-                        for value in values:
-                            sub_filter |= models.Q(**{path: value})
-                        query_sets[index] = query_sets[index].filter(sub_filter)
-                    elif sub_model is not None:
-                        # Use a sub-query
-                        query_sets[index] = query_sets[index].filter(
-                            id__in=sub_model.objects.filter(
-                                id__in=values).values_list(path))
                     else:
-                        # Use joins
-                        query_sets[index] = query_sets[index].filter(
-                            **{'%s__in' % path: values})
-            else:
+                        if lookups:
+                            if sub_model:
+                                raise NotImplementedError
+                            # Use many joins
+                            paths = [path] if isinstance(path, str) else path
+                            sub_filter = models.Q()
+                            for path in paths:
+                                path = '%s__%s' % (path, lookups)
+                                for value in values:
+                                    sub_filter |= models.Q(**{path: value})
+                        elif sub_model is not None:
+                            if not isinstance(path, str):
+                                raise NotImplementedError
+                            # Use a sub-query
+                            sub_query = sub_model.objects.filter(
+                                id__in=values,
+                                **{'%s__isnull' % path: False},
+                            ).values_list(path)
+                            sub_filter = models.Q(id__in=sub_query)
+                        else:
+                            # Use joins
+                            paths = [path] if isinstance(path, str) else path
+                            sub_filter = models.Q()
+                            for path in paths:
+                                sub_filter |= models.Q(**{'%s__in' % path: values})
+                        if operator == 'nor':
+                            # Invert filter in case of NOR operator
+                            sub_filter = ~ sub_filter
+                        query_sets[index] = query_sets[index].filter(sub_filter)
+
+            elif operator in ('and', ''):
+                operator = 'and'
                 # Filter : value AND value AND ...
                 for raw_value in raw_values:
-                    for index, path in enumerate(paths):
+                    for index, path in enumerate(all_paths):
                         # Parse value when parser is defined
                         value = parsers[index](raw_value) \
                             if parsers and parsers[index] else raw_value
@@ -279,18 +313,30 @@ class AdvancedSearchList(generics.GenericAPIView):
                         if path is None:
                             query_sets[index] = query_sets[index].none()
                         elif sub_model is not None:
-                            # Use a sub-query
-                            if lookups:
+                            if lookups or not isinstance(path, str):
                                 raise NotImplementedError
+                            # Use a sub-query
+                            sub_query = sub_model.objects.filter(
+                                id=value,
+                                **{'%s__isnull' % path: False},
+                            ).values_list(path)
                             query_sets[index] = query_sets[index].filter(
-                                id__in=sub_model.objects.filter(
-                                    id=value).values_list(path))
+                                id__in=sub_query,
+                            )
                         else:
                             # Use joins
-                            if lookups:
-                                path = '%s__%s' % (path, lookups)
-                            query_sets[index] = query_sets[index].filter(
-                                **{path: value})
+                            paths = [path] if isinstance(path, str) else path
+                            sub_filter = models.Q()
+                            for path in paths:
+                                if lookups:
+                                    path = '%s__%s' % (path, lookups)
+                                sub_filter |= models.Q(**{path: value})
+                            query_sets[index] = query_sets[index].filter(sub_filter)
+
+            else:
+                raise NotImplementedError('Opérateur inconnu : ' + operator)
+
+            operators[criterion['name']] = operator
 
         # Special dates filtering
         date_filter = models.Q()
@@ -319,27 +365,29 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Collecting static parameters
         parameters_instances = {}
         parameters = {
-            # autocomplete fields
+            # autocomplete criteria
             'instances': parameters_instances,
-            'or_operators': or_operators,
-            # other fields
+            'operators': operators,
+            # other criteria
             'date_start': date_start,
             'date_end': date_end,
+            'description': self.request.query_params.get('description', None),
             'domain': domains,
             'incipit': self.request.query_params.get('incipit', None),
             'jingle': self.request.query_params.get('jingle', None),
             'refrain': self.request.query_params.get('refrain', None),
             'text': self.request.query_params.get('text', None),
+            'title': self.request.query_params.get('title', None),
         }
 
-        # Building a list of parameter names by model and optional field
+        # Building a list of parameter names by optional model and/or field
         parameter_names = {}
-        for field in fields:
-            parameter_model = field.get('parameter_model')
-            parameter_field = field.get('parameter_field')
+        for criterion in criteria:
+            parameter_model = criterion.get('parameter_model')
+            parameter_field = criterion.get('parameter_field')
             if parameter_model or parameter_field:
                 parameter_config = parameter_model, parameter_field
-                parameter_names.setdefault(parameter_config, []).append(field.get('name'))
+                parameter_names.setdefault(parameter_config, []).append(criterion.get('name'))
 
         # Collecting parameter instances
         for (model, field), names in parameter_names.items():
