@@ -372,27 +372,28 @@
 
       function locate_collections (map, markers) {
         {% for location in locations %}
-            markers.addLayer(
-              L.marker(
-                  [
-                    {{location.location.latitude|virgule}},
-                    {{location.location.longitude|virgule}}
-                  ]
-                ).bindPopup(
-                  "<h6><a target=\"_blank\" href=\"/collection/{{location.collection.id}}\">"+
-                    "{{location.collection.code}} - {{location.collection.title}}</a></h6>"+
-                    "<p>{{location.collection.descriptions}}</p>"+
-                    "<hr />"+
-                    "Lieu : <a target=\"_blank\" href=\"/location_gis/{{location.location.id}}\"><b>{{location.location.code}}"+
-                    "</b></a><p>{{location.location.name}}</p><hr/><i>{{location.location.notes}}</i>"
-                )
-                .on('mouseover', function (e) {
-                  this.openPopup();
-                })
-                .on('mouseout', function (e) {
-                  this.closePopup();
-                })
-              );
+        markers.addLayer(
+          L.marker(
+            [
+              {{location.location.latitude|virgule}},
+              {{location.location.longitude|virgule}}
+            ]
+          ).bindTooltip(
+            "Code : {{location.collection.code}}<br>" +
+            "Titre : {{location.collection.title}}<br>" +
+            "Lieu : {{location.location.code}}"
+          ).bindPopup(
+            "<h6><a target=\"_blank\" href=\"/collection/{{location.collection.id}}\">" +
+            "{{location.collection.code}} - {{location.collection.title}}</a></h6>" +
+            "<p>{{location.collection.descriptions}}</p>" +
+            "<hr />" +
+            "Lieu : <a target=\"_blank\" href=\"/location_gis/{{location.location.id}}\">" +
+            "<b>{{location.location.code}}</b></a>" +
+            "<p>{{location.location.name}}</p>" +
+            "<hr/>" +
+            "<i>{{location.location.notes}}</i>"
+          )
+        );
         {% endfor %}
         map.addLayer(markers);
       }

@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
+from django.db import connections
 from rest_framework import generics
 
 from ..models.collection import Collection
@@ -33,4 +34,10 @@ class CodeInternalView(generics.ListAPIView):
         if search:
             querysets = tuple(qs.filter(code__istartswith=search) for qs in querysets)
 
-        return querysets[0].union(*querysets[1:]).order_by('code').distinct()
+        if getattr(connections['default'], 'mysql_version', None):
+            # MySQL only → pagination in the unique SQL query with LIMIT parameter → good perfs
+            return querysets[0].union(*querysets[1:]).order_by('code').distinct()
+
+        else:
+            # MySQL + SQLite → 1 SQL query for each model + pagination by Python on all results in memory → bad perfs
+            return sorted(set(code for qs in querysets for code in qs.distinct()))  #FIXME : to be removed when unit tests switched to MySQL

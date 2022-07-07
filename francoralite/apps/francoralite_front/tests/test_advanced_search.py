@@ -83,20 +83,18 @@ def test_search(francoralite_context):
             'option': "conte facétieux",
             'id_checkbox' : 'domains_tale'
         },
-        # FIXME : code et référence partenaire
-        # {
-        #     'id_block': 'details_references',
-        #     'id_field': 'code_internal',
-        #     'value': 'upoi',
-        #     'option': 'UPOI_AFE',
-        # },
-
-        # {
-        #     'id_block': 'details_references',
-        #     'id_field': 'code_external',
-        #     'value': '56',
-        #     'option': '56-10-199 OU 56-10-138 -714-15',
-        # },
+        {
+            'id_block': 'details_references',
+            'id_field': 'code_internal',
+            'value': 'upoi',
+            'option': 'UPOI_AFE',
+        },
+        {
+            'id_block': 'details_references',
+            'id_field': 'code_external',
+            'value': '56',
+            'option': '56-10-199 OU 56-10-138 -714-15',
+        },
         {
             'id_block': 'details_what',
             'id_field': 'dance',
