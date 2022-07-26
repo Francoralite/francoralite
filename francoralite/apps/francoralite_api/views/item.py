@@ -153,7 +153,7 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    
+
     filterset_fields = ('collection', 'media_type', 'code', 'media_type',)
     ordering = ('code', 'title',)
     search_fields = ('title',)
@@ -188,7 +188,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         data = serializer.data
-       
+
         # Retrieve most of the entities
         for entity in entities:
             self.collect(instance.id, data, entity)
@@ -254,12 +254,16 @@ class ItemViewSet(viewsets.ModelViewSet):
     def download(self, request, pk=None):
         instance = self.get_object()
         media = str(instance.file)
-        filename = ""
-        if media.find(settings.MEDIA_ROOT) == 0 :
-            filename = media
-        else:
-            filename = settings.MEDIA_ROOT + media
-        document = open( filename, 'rb')
-        response = HttpResponse(FileWrapper(document), content_type="audio/mpeg")
-        response['Content-Disposition'] = f'attachement; filename="{media}"'
+
+        if media!='' :
+            filename = ""
+            if media.find(settings.MEDIA_ROOT) == 0 :
+                filename = media
+            else:
+                filename = settings.MEDIA_ROOT + media
+            document = open( filename, 'rb')
+            response = HttpResponse(FileWrapper(document), content_type="audio/mpeg")
+            response['Content-Disposition'] = f'attachement; filename="{media}"'
+        else :
+            response = HttpResponse('')
         return response

@@ -18,6 +18,7 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from .factories.item import ItemFactory
 from .factories.mission import MissionFactory, MissionCollectionFactory
 from .fake_data.fake_sound import CleanMediaMixin
 from ..models.mission import Mission
@@ -52,7 +53,8 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        
+
+        ItemFactory.reset_sequence()
         # Create a set of sample data
         MissionCollectionFactory.create_batch(6, collections__nb_collections=4)
 
@@ -79,7 +81,7 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         Ensure related collections exist
         """
         url = reverse('collection-list')
-        
+
         # ORM side
         collections = Collection.objects.all()
         self.assertEqual(len(collections), 24)
@@ -115,9 +117,9 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.data, list) 
-    
-    
+        self.assertIsInstance(response.data, list)
+
+
     def test_mission_collectors(self):
         """
         Collectors from the related collections of a mission
@@ -129,8 +131,8 @@ class TestMissionList(CleanMediaMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
-    
-    
+
+
     def test_mission_locations(self):
         """
         Locations from the related collections of a mission
@@ -151,7 +153,7 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         item = Mission.objects.first()
         url = '/api/mission/' + str(item.id) + "/duration"
         response = self.client.get(url)
-    
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, str)
         self.assertNotEqual(response.data, "0:00:00")

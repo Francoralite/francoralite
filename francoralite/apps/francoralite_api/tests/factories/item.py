@@ -35,17 +35,16 @@ from ..fake_data.fake_sound import create_tmp_sound
 from django.conf import settings
 
 
-
 class ItemFactory(factory.django.DjangoModelFactory):
     """
     Item factory
     """
-    
+
     class Meta:
         model = Item
 
-      # General -----------
-    code = factory.Sequence(lambda n: 'code{0}'.format(n))
+    # General -----------
+    code = factory.Sequence(lambda n: 'TEST_TST_0000_0000_{0:0>3}'.format(n))
     collection = factory.SubFactory('francoralite.apps.francoralite_api.tests.factories.collection.CollectionFactory')
     title = factory.Faker('word')
     alt_title = factory.Faker('word')
@@ -57,9 +56,8 @@ class ItemFactory(factory.django.DjangoModelFactory):
     date_edit = factory.LazyFunction(datetime.datetime.now)
     media_type = factory.SubFactory(MediaTypeFactory)
     approx_duration = datetime.timedelta(minutes = 1)
-    file = factory.LazyAttribute(
-        lambda obj: create_tmp_sound( obj.code )
-    )
+    file = ''
+    url_file = factory.Faker('url')
 
     # Description -----------------------
     timbre = factory.Faker('word')
@@ -105,7 +103,7 @@ class ItemCompleteFactory(ItemFactory):
 
         for n in range(nb_perfomances):
            performance = PerformanceCollectionFactory(collection = self.collection)
-           musician = PerformanceCollectionMusicianFactory(performance_collection = performance)   
+           musician = PerformanceCollectionMusicianFactory(performance_collection = performance)
 
     @factory.post_generation
     def complete( self, create, extracted, **kwargs):

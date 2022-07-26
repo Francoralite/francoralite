@@ -46,6 +46,7 @@ ITEM_STRUCTURE = [
     ('media_type', dict),
     ('approx_duration', str),
     ('file', str),
+    ('url_file', str),
     ('timbre', str),
     ('timbre_ref', str),
     ('melody', str),
@@ -77,7 +78,9 @@ class TestItemList(CleanMediaMixin, APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        
+
+        ItemFactory.reset_sequence()
+
         # Create a set of sample data
         ItemCompleteFactory.create_batch(6)
         PerformanceCollectionMusicianFactory.create_batch(3)
@@ -125,7 +128,8 @@ class TestItemList(CleanMediaMixin, APITestCase):
                     self.assertIsInstance(item[attribute], type(None))
             else:
                 self.assertIsInstance(item[attribute], attribute_type)
-            self.assertIsNot(item[attribute], '')
+            if attribute not in ['url_file']:
+                self.assertIsNot(item[attribute], '')
 
     def test_get_an_item(self):
         """
@@ -154,46 +158,65 @@ class TestItemList(CleanMediaMixin, APITestCase):
         Ensure we can create an Item object
         """
 
-        data = factory.build(
-            dict,
-            FACTORY_CLASS=ItemFactory)
-
-        collection = Collection.objects.first()
-        # Write the Collection object in the item data object.
-        data['collection'] = collection.id
-
-        mediatype = MediaType.objects.first()
-        # Write the MediaType object in the item data object.
-        data['media_type'] = mediatype.id
-
-        coupe = Coupe.objects.first()
-        # Write the Coupe object in the item data object.
-        data['coupe'] = coupe.id
-
         # Create a fake file.
-        data['file'] = create_tmp_sound("c'est déjà l'été")
-      
+        fake_sound = create_tmp_sound("c'est déjà l'été")
+        fake_url = 'https://api.nakala.fr/data/10.34847/nkl.a03a235m/f6e600e2c798959f9c4a6dafb9139f71b26ab5e9'
 
-        url = reverse('item-list')
-        response = self.client.post(url, data, format='multipart')
+        # Tests data for fake file
+        files_data = [
+            ('', '', status.HTTP_400_BAD_REQUEST),
+            (fake_sound, '', status.HTTP_201_CREATED),
+            ('', fake_url, status.HTTP_201_CREATED),
+            (fake_sound, fake_url, status.HTTP_400_BAD_REQUEST),
+        ]
 
-        # Check only expected attributes returned
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIsInstance(response.data, dict)
-        self.assertEqual(
-            sorted(response.data.keys()),
-            ITEM_FIELDS)
+        i = 0
+        for file_data in files_data :
 
-        url = reverse(
-            'item-detail',
-            kwargs={'pk': response.data['id']}
-        )
-        response_get = self.client.get(url)
+            data = factory.build(
+                dict,
+                FACTORY_CLASS=ItemFactory)
+            i = i + 1
+            data['code'] = data['code'][0:-3] + str(500+i)
 
-        self.assertEqual(response_get.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response_get.data, dict)
-        data = response_get.data
-        assert "cest_deja_lete" in  data['file']
+            collection = Collection.objects.first()
+            # Write the Collection object in the item data object.
+            data['collection'] = collection.id
+
+            mediatype = MediaType.objects.first()
+            # Write the MediaType object in the item data object.
+            data['media_type'] = mediatype.id
+
+            coupe = Coupe.objects.first()
+            # Write the Coupe object in the item data object.
+            data['coupe'] = coupe.id
+
+            # Retrieve data for file
+            (audio_file, data['url_file'], status_response) = file_data
+            data['file'] = audio_file
+
+            url = reverse('item-list')
+            response = self.client.post(url, data, format='multipart')
+            #ic(response.json())
+            # Check only expected attributes returned
+            self.assertEqual(response.status_code, status_response)
+            if status_response == status.HTTP_201_CREATED :
+                self.assertIsInstance(response.data, dict)
+                self.assertEqual(
+                    sorted(response.data.keys()),
+                    ITEM_FIELDS)
+
+                url = reverse(
+                    'item-detail',
+                    kwargs={'pk': response.data['id']}
+                )
+                response_get = self.client.get(url)
+
+                self.assertEqual(response_get.status_code, status.HTTP_200_OK)
+                self.assertIsInstance(response_get.data, dict)
+                data_response = response_get.data
+                if data_response['file'] != None :
+                    assert "cest_deja_lete" in  data_response['file']
 
     def test_complete(self):
         item = Item.objects.first()
@@ -227,7 +250,7 @@ class TestItemList(CleanMediaMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, dict)
         self.assertEqual(len(response.data["performances"]), 1)
-        
+
     def test_update_an_item(self):
         """
         Ensure we can update an Item object
@@ -248,6 +271,7 @@ class TestItemList(CleanMediaMixin, APITestCase):
         data['coupe'] = data['coupe']['id']
         # Create a fake file.
         data['file'] = create_tmp_sound(data['code'])
+        data['url_file'] = ''
 
         data['approx_duration'] = '00:20'
 
@@ -344,7 +368,7 @@ class TestItemList(CleanMediaMixin, APITestCase):
         Ensure we can obtain an item with its code (via the API call)
         refer issue #203
         """
-        
+
         item = Item.objects.first()
         code = item.code
         description = item.description
