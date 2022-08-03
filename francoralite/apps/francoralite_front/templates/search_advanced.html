@@ -334,7 +334,11 @@
             <audio
               controls
               preload="metadata"
+              {% if item.file %}
               src="/api/item/{{item.id}}/download">
+              {% else %}
+              src="{{item.url_file}}"
+              {% endif %}
               Votre navigateur Internet ne prend pas en charge cet élément audio
             </audio>
           </td>

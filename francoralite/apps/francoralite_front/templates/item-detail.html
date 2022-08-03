@@ -10,7 +10,7 @@
 
       {% if item.file or item.url %}
 
-              
+
       {% endif %}
   </script>
 {% endblock %}
@@ -49,11 +49,21 @@
 {% if not error|length %}
   {% if item %}
   <figure>
-    <figcaption>{{item.file}}</figcaption>
+    <figcaption>
+      {%if item.file%}
+      {{item.file}}
+      {% else %}
+      {{item.url_file}}
+      {% endif %}
+    </figcaption>
     <audio
         controls
         preload="metadata"
+        {%if item.file%}
         src="/api/item/{{item.id}}/download">
+        {% else %}
+        src="{{item.url_file}}">
+        {% endif %}
             Votre navigateur Internet ne prend pas en charge cet élément audio
     </audio>.
  </figure>
@@ -109,7 +119,7 @@
         {% field_data_id form.code item.code|upper|safe %}
         {% field_data_id form.code_partner item.code_partner|safe empty=False %}
       </div>
-      
+
       <div class="block-grey">
         <h2>{% trans "Données techniques" %}</h2>
         {% field_data_id form.approx_duration item.approx_duration|safe empty=False %}

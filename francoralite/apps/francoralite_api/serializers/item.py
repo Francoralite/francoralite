@@ -46,7 +46,8 @@ class ItemSerializer(serializers.ModelSerializer):
     media_type = AsymetricRelatedField.from_serializer(
         MediaTypeSerializer, kwargs={'required': False})
     approx_duration = serializers.DurationField(required=False)
-    file = serializers.FileField(max_length=1024, allow_empty_file=True)
+    file = serializers.FileField(max_length=1024, required=False, allow_null = True, allow_empty_file=True)
+    url_file = serializers.URLField(max_length=1024, required=False, allow_blank=True)
 
     # Description -----------------------
     timbre = serializers.CharField(
@@ -93,8 +94,9 @@ class ItemSerializer(serializers.ModelSerializer):
     def to_internal_value(self, value):
         # Convert the file name to a correct format.
         if "file" in value :
-            correct_name = ''.join(c for c in unicodedata.normalize('NFKD', value["file"]._name) if c in string.printable)
-            value["file"]._name = correct_name
+            if not isinstance(value['file'],str) :
+                correct_name = ''.join(c for c in unicodedata.normalize('NFKD', value["file"]._name) if c in string.printable)
+                value["file"]._name = correct_name
 
         return super().to_internal_value(value)
 

@@ -46,7 +46,13 @@ class ItemForm(forms.Form):
     file = forms.FileField(
         label=_(u'Fichier audio'),
         widget=forms.FileInput(),
-        required=True
+        required=False
+    )
+    url_file = forms.URLField(
+        label=_(u'URL Nakala de la ressource audio'),
+        widget=forms.URLInput(),
+        help_text=_(u'Coller ici l\'URL de la ressource se trouvant sur le site Nakala. URL de la forme : https://api.nakala.fr/data/ ...'),
+        required=False
     )
     approx_duration = forms.DurationField(
         label=_(u"Durée estimée"),

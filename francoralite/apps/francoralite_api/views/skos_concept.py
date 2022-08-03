@@ -21,7 +21,7 @@ class SkosConceptViewSet(viewsets.ReadOnlyModelViewSet):
 
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter)
-    filter_fields = ('collection', 'number')
+    filterset_fields = ('collection', 'number')
     ordering = ('name', 'number', 'collection')
     search_fields = ('name', 'number', 'uri', 'abstract')
 

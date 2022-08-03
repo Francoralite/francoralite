@@ -14,6 +14,7 @@ class CleanMediaMixin(object):
     FILES_TO_REMOVE = (
         ('/srv/media/items/', 'cest_deja_lete', '.mp3'),
         ('/srv/media/items/', 'code', '.mp3'),
+        ('/srv/media/items/', 'TEST_TST', '.mp3'),
     )
 
     @classmethod
