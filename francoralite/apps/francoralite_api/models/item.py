@@ -8,6 +8,7 @@ import os
 import mimetypes
 
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
@@ -55,7 +56,8 @@ class Item(models.Model):
     approx_duration = models.DurationField(
         _(u'durée estimée'),  null=True, blank=True)
     file = models.FileField(_('fichier son'), upload_to='items',
-                            db_column="filename", max_length=1024)
+                            db_column="filename", max_length=1024, blank=True, null=True)
+    url_file = models.URLField(max_length=1024, null=True, blank=True)
 
     # Description -----------------------
 
@@ -135,6 +137,23 @@ class Item(models.Model):
     def __unicode__(self):
         # FIXIT------------------
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def clean(self, *args, **kwargs):
+        if self.file and self.url_file :
+            raise ValidationError({
+                'file': [ValidationError(_('Un fichier sonore a été chargé, en plus d\'une référence sonore Nakala'))],
+                'url_file': [ValidationError(_('Une référence sonore Nakala a été saisie, en plus d\'un fichier sonore'))],
+            })
+
+        if not self.file and not self.url_file :
+            raise ValidationError({
+                'file': [ValidationError(_('Il n\'y a pas de fichier sonore, ni une référence sonore Nakala'))],
+                'url_file': [ValidationError(_('Il n\'y a pas de référence sonore Nakala, ni de fichier sonore'))],
+            })
 
     def get_source(self):
         source = None

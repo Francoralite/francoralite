@@ -1,0 +1,45 @@
+name: "UIX enhance"
+description: "Améliorer l'UI/UX"
+title: "[UIX] "
+labels: [UIX]
+body:
+- type: checkboxes
+  attributes:
+    label: Mode
+    description: "Pour quels modes s'applique l'amélioration de l'application"
+    options:
+      - label: Consultation
+      - label: Saisie
+        required: true
+- type: dropdown
+  attributes:
+    label: Type
+    description: "Quel type d'amélioration, ça concerne quoi ?"
+    multiple: false
+    options:
+      - label: Renommage
+      - label: Fonctionnel
+      - label: Place des informations
+      - label: Esthétique
+      - label: Création de champs
+      - label: Création de pavé/bloc
+      - label: Ajout de terme
+  validations:
+    required: true
+- type: input
+  id: libelle
+  attributes:
+    label: Amélioration / Problème
+    description: "Phrase très courte qui énonce l'amélioration à effectuer ou le problème à résoudre"
+    placeholder: ""
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Description
+    description: "Description détaillée de l'amelioration ou du problème"
+    placeholder: ""
+    value: ""
+  validations:
+    required: false
+

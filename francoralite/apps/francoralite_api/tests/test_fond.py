@@ -18,6 +18,7 @@ from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from .factories.item import ItemFactory
 from .factories.fond import FondFactory, FondFactoryMission
 from ..models.fond import Fond
 from ..models.mission import Mission
@@ -55,7 +56,8 @@ class TestFondList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        
+
+        ItemFactory.reset_sequence()
         # Create a set of sample data
         FondFactoryMission.create_batch(6, missions__nb_missions=4)
 
@@ -82,7 +84,7 @@ class TestFondList(APITestCase):
         Ensure related missions exist
         """
         url = reverse('mission-list')
-        
+
         # ORM side
         missions = Mission.objects.all()
         self.assertEqual(len(missions), 24)
@@ -132,8 +134,8 @@ class TestFondList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
-        
-        
+
+
     def test_fond_duration(self):
         """
         Total duration of a fond : sum of mission/collection/items durations of this fond
@@ -141,7 +143,7 @@ class TestFondList(APITestCase):
         item = Fond.objects.first()
         url = '/api/fond/' + str(item.id) + "/duration"
         response = self.client.get(url)
-    
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, str)
         self.assertNotEqual(response.data, "0:00:00")
@@ -271,7 +273,7 @@ class TestFondList(APITestCase):
             sorted(response.data.keys()),
             FOND_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
-        
+
     def test_uniq_code_fond(self):
         """
         Ensure we don't validate a non-uniq fond code

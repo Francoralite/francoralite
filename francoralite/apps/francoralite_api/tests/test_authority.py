@@ -13,6 +13,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.authority import AuthorityFactory, AuthorityContribsFactory
+from .factories.item import ItemFactory
 from ..models.authority import Authority
 from ..models.location import Location
 
@@ -53,7 +54,9 @@ class TestAuthorityList(APITestCase):
         Run needed commands to have a fully working project
         """
         get_token(self)
-        
+
+
+        ItemFactory.reset_sequence()
         AuthorityContribsFactory.create_batch(6)
 
     def test_can_get_authority_list(self):
