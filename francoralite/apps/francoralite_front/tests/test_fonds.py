@@ -46,7 +46,7 @@ def test_fonds_details(francoralite_context):
             'id_conservation_site': 'Poitiers',
         }
         francoralite_context.verify_data(data)
-        
+
         # Verify duration
         francoralite_context.open_url('/fond/2')
         data = {
@@ -64,8 +64,11 @@ def test_fonds_add(francoralite_context):
     # Go to the home page
     francoralite_context.open_homepage(auth_username='contributeur')
 
+    francoralite_context.move_to_element(by_css_selector='img')
+    # Move pointer to open the sub-menu
+    francoralite_context.move_to_element(by_link_text=_('Archives sonores'))
     # Click on the institution menu
-    francoralite_context.find_element(by_link_text=_('Institutions')).click()
+    francoralite_context.scroll_to_element(by_link_text=_('Institutions')).click()
 
     # Verify the label "Institutions"
     francoralite_context.verify_title(_('Institutions'))
