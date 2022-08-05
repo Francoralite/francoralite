@@ -32,8 +32,12 @@ def test_authority_add(francoralite_context):
     # Go to the home page
     francoralite_context.open_homepage(auth_username='contributeur')
 
+    francoralite_context.move_to_element(by_css_selector='img')
+    # Move pointer to open the sub-menu
+    francoralite_context.move_to_element(by_link_text=_('Thésaurus'))
+
     # Click on authority menu
-    francoralite_context.find_element(by_link_text=_('Personnes')).click()
+    francoralite_context.scroll_to_element(by_link_text=_('Personnes')).click()
 
     # On authority list
     francoralite_context.verify_title(_('Personnes'))
