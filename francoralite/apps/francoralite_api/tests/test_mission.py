@@ -149,7 +149,7 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         """
         Count every item's domains of this mission
         """
-        item = Fond.objects.first()
+        item = Mission.objects.first()
         url = '/api/mission/' + str(item.id) + "/items_domains"
         response = self.client.get(url)
 
