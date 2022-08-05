@@ -14,6 +14,7 @@ from ..models.collection_informer import CollectionInformer
 from ..models.collection_location import CollectionLocation
 from ..models.collection_language import CollectionLanguage
 from ..models.collection_publisher import CollectionPublisher
+from ..models.item import Item as ItemModel
 from ..models.performance_collection import PerformanceCollection
 from ..models.performance_collection_musician import (
     PerformanceCollectionMusician)
@@ -93,7 +94,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
             collection=id_main)
         data[entity["names"]] = []
         for item in items:
-            serializer_item = entity["serializer"](item)          
+            serializer_item = entity["serializer"](item)
             data[entity["names"]].append(serializer_item.data[entity["name"]])
 
     @action(detail=True)
@@ -112,7 +113,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
             data["duration"] = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )
         else:
             data["duration"] = ""
-    
+
         # Retrieve the performances
         performances = PerformanceCollection.objects.filter(
             collection=instance.id)
@@ -136,6 +137,35 @@ class CollectionViewSet(viewsets.ModelViewSet):
             data["performances"].append(data_performance)
 
         return Response(data)
+
+    @action(detail=True)
+    def items_domains(self, request, pk=None):
+        """
+        Determine the number of domains in the related items
+        """
+        instance = self.get_object()
+
+        # items in this collection
+        items = ItemModel.objects.filter(collection__id=instance.id)
+
+        # Init counters to 0
+        dict_domains = {
+            "T": 0,
+            "C": 0,
+            "A": 0,
+            "I": 0,
+            "R": 0,
+        }
+
+        # Crawling the items
+        for item in items :
+            for key,value in dict_domains.items() :
+                # If this domain is used
+                if key in item.domain :
+                    # Increment counter of this domain
+                    dict_domains[key] = value + 1
+
+        return Response(dict_domains)
 
     def perform_destroy(self, instance):
 
