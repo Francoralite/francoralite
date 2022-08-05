@@ -145,6 +145,16 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
 
+    def test_items_domains(self):
+        """
+        Count every item's domains of this mission
+        """
+        item = Fond.objects.first()
+        url = '/api/mission/' + str(item.id) + "/items_domains"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
 
     def test_mission_duration(self):
         """
