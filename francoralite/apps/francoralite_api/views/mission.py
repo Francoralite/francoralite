@@ -169,11 +169,9 @@ class MissionViewSet(viewsets.ModelViewSet):
         """
         instance = self.get_object()
 
-         # Collections in this mission
-        collections = CollectionModel.objects.filter(mission__id=instance.id)
-
-        # items in these collections
-        items = ItemModel.objects.filter(collection__in=collections)
+        item_domains = ItemModel.objects.filter(
+            collection__mission_id=instance.id,
+        ).values_list('domain', flat=True)
 
         # Init counters to 0
         dict_domains = {
@@ -185,13 +183,11 @@ class MissionViewSet(viewsets.ModelViewSet):
         }
 
         # Crawling the items
-        for item in items :
-            for key,value in dict_domains.items() :
+        for item_domain in item_domains:
+            for key, value in dict_domains.items():
                 # If this domain is used
-                if key in item.domain :
+                if key in item_domain:
                     # Increment counter of this domain
                     dict_domains[key] = value + 1
-
-
 
         return Response(dict_domains)

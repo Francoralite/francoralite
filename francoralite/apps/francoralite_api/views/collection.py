@@ -145,8 +145,9 @@ class CollectionViewSet(viewsets.ModelViewSet):
         """
         instance = self.get_object()
 
-        # items in this collection
-        items = ItemModel.objects.filter(collection__id=instance.id)
+        item_domains = ItemModel.objects.filter(
+            collection_id=instance.id,
+        ).values_list('domain', flat=True)
 
         # Init counters to 0
         dict_domains = {
@@ -158,10 +159,10 @@ class CollectionViewSet(viewsets.ModelViewSet):
         }
 
         # Crawling the items
-        for item in items :
-            for key,value in dict_domains.items() :
+        for item_domain in item_domains:
+            for key, value in dict_domains.items():
                 # If this domain is used
-                if key in item.domain :
+                if key in item_domain:
                     # Increment counter of this domain
                     dict_domains[key] = value + 1
 
