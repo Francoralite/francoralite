@@ -40,7 +40,7 @@
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if perms.keycloak.institution_update %}
+      {% if perms.keycloak.institution_update or perms.keycloak.institution_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -50,6 +50,7 @@
           <a href="/institution/{{ institution.id }}">{{ institution.name }}</a>
       </td>
       <td>{{ institution.notes|markdown|safe }}</td>
+      {% if perms.keycloak.institution_update or perms.keycloak.institution_delete %}
       <td>
         {% if perms.keycloak.institution_update %}
           <a href="{% url "institution-edit" id=institution.id %}"  class="btn btn-default">
@@ -65,13 +66,13 @@
             </button>
         {% endif %}
       </td>
-      
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.institution_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

@@ -47,6 +47,7 @@
       </td>
       <td>{{ fond.title|safe }}</td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=fond.domains %}</td>
+      {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <td>
         {% if perms.keycloak.fond_update %}
         <a href="{% url "fond-edit" id=fond.id %}" class="btn btn-default">
@@ -62,12 +63,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.fond_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

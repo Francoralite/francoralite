@@ -37,7 +37,7 @@
   <tr>
       <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
-      {% if perms.keycloak.item_update %}
+      {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -48,6 +48,7 @@
             {{ item.code|upper }}</a>
       </td>
       <td>{{ item.title|safe }}</td>
+      {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
       <td>
       {% if perms.keycloak.item_update %}
         <a href="{% url "item-edit" id=item.id %}" class="btn btn-default">
@@ -63,6 +64,7 @@
         </button>
       {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
@@ -70,7 +72,7 @@
 
 
 {% if perms.keycloak.item_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

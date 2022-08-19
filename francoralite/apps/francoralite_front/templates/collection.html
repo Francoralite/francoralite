@@ -38,7 +38,7 @@
       <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
       <th>{% trans "Domaines" %}</th>
-      {% if perms.keycloak.collection_update %}
+      {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -50,8 +50,9 @@
       </td>
       <td>{{ collection.title|safe }}</td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=collection.domains %}</td>
+      {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
       <td>
-      {% if perms.keycloak.collection_update %} 
+      {% if perms.keycloak.collection_update %}
         <a href="{% url "collection-edit" id=collection.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
@@ -65,12 +66,13 @@
         </button>
       {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.collection_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}
