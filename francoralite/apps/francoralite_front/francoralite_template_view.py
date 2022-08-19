@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
-import francoralite.apps.francoralite_front.tools as tools
+from francoralite.apps.francoralite_front import tools
 
 
 class FrancoraliteFormView(FormView):
@@ -77,6 +77,12 @@ class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
                 'last_page': last_page,
                 'pages': tuple(range(1, last_page + 1)),
             }
+
+            complementary_data_loaders = getattr(self, 'complementary_data_loaders', None)
+            if complementary_data_loaders:
+                for item in context[self.context_results_name]:
+                    for loader in complementary_data_loaders:
+                        loader.complete(item)
 
         except Exception as err:
             context[self.context_results_name] = []

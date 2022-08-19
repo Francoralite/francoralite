@@ -34,6 +34,7 @@
   <tr>
       <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
+      <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
@@ -45,6 +46,7 @@
             {{ fond.code|upper }}</a>
       </td>
       <td>{{ fond.title|safe }}</td>
+      <td>{% include 'inc/proportional_colored_bar.html' with items=fond.domains %}</td>
       <td>
         {% if perms.keycloak.fond_update %}
         <a href="{% url "fond-edit" id=fond.id %}" class="btn btn-default">

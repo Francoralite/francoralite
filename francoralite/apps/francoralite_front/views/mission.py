@@ -6,10 +6,14 @@
 
 
 from ..francoralite_template_view import FrancoralitePaginatedTemplateView
+from ..widgets import DomainsBarLoader
 
 
 class MissionView(FrancoralitePaginatedTemplateView):
     api_url = '/api/mission'
+    complementary_data_loaders = (
+        DomainsBarLoader(api_url + '/{id}/items_domains'),
+    )
     context_results_name = 'missions'
     template_name = '../templates/mission.html'
     keycloak_scopes = {

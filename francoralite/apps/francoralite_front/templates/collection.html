@@ -37,6 +37,7 @@
   <tr>
       <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
+      <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.collection_update %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
@@ -48,6 +49,7 @@
             {{ collection.code|upper }}</a>
       </td>
       <td>{{ collection.title|safe }}</td>
+      <td>{% include 'inc/proportional_colored_bar.html' with items=collection.domains %}</td>
       <td>
       {% if perms.keycloak.collection_update %} 
         <a href="{% url "collection-edit" id=collection.id %}" class="btn btn-default">

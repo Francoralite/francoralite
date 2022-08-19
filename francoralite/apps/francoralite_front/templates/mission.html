@@ -37,6 +37,7 @@
   <tr>
       <th class="highlight">{% trans "cote" %}</th>
       <th>{% trans "Nom" %}</th>
+      <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.mission_update %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
@@ -48,6 +49,7 @@
             {{ mission.code|upper }}</a>
       </td>
       <td>{{ mission.title|safe }}</td>
+      <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
       <td>
         {% if perms.keycloak.mission_update %}
         <a href="{% url "mission-edit" id=mission.id %}"  class="btn btn-default">
