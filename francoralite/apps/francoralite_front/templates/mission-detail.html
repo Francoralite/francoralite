@@ -159,6 +159,7 @@
             <th class="highlight">{% trans "cote" %}</th>
             <th>{% trans "Nom" %}</th>
             <th>{% trans "Description" %}</th>
+            <th>{% trans "Domaines" %}</th>
             {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
             <th>{% trans "Modifier" %}</th>
             {% endif %}
@@ -171,6 +172,7 @@
             </td>
             <td>{{ collection.title|safe }}</td>
             <td>{{ collection.description|truncatechars:50|markdown|safe }}</td>
+            <td>{% include 'inc/proportional_colored_bar.html' with items=collection.domains %}</td>
             {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
             <td>
               {% if perms.keycloak.collection_update %}
