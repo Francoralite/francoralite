@@ -144,6 +144,7 @@
             <th id="mission_code" class="highlight">{% trans "Cote" %}</th>
             <th id="mission_name">{% trans "Nom" %}</th>
             <th id="mission_desc">{% trans "Description" %}</th>
+            <th id="mission_domains">{% trans "Domaines" %}</th>
             <th id="mission_action"></th>
         </thead>
         {% for mission in missions %}
@@ -154,6 +155,7 @@
             </td>
             <td>{{ mission.title|safe }}</td>
             <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
+            <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
             <td>
               {% if perms.keycloak.mission_update %}
               <a href="{% url "mission-edit" id=mission.id %}">
