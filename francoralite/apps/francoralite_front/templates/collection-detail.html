@@ -244,7 +244,9 @@
             <th class="highlight">{% trans "Cote" %}</th>
             <th>{% trans "Nom" %}</th>
             <th>{% trans "Description" %}</th>
-            <th></th>
+            {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
+            <th>{% trans "Modifier" %}</th>
+            {% endif %}
         </thead>
         {% for item in items %}
         <tr>
@@ -254,8 +256,9 @@
             </td>
             <td>{{ item.title|safe }}</td>
             <td>{{ item.description|truncatechars:50|markdown|safe}}</td>
+            {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
             <td>
-             {% if perms.keycloak.item_update %}
+              {% if perms.keycloak.item_update %}
               <a href="{% url "item-edit" id=item.id %}">
                     <button type="button" class="btn btn-default">
                       <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
@@ -271,11 +274,12 @@
               </button>
               {% endif %}
             </td>
+            {% endif %}
           </tr>
           {% endfor %}
         </table>
         {% if perms.keycloak.collection_delete %}
-        	{% modal_delete %}
+            {% modal_delete %}
         {% endif %}
       {% else %}
         <div class="block-grey">

@@ -159,7 +159,9 @@
             <th class="highlight">{% trans "cote" %}</th>
             <th>{% trans "Nom" %}</th>
             <th>{% trans "Description" %}</th>
-            <th></th>
+            {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
+            <th>{% trans "Modifier" %}</th>
+            {% endif %}
         </thead>
         {% for collection in collections %}
         <tr>
@@ -169,6 +171,7 @@
             </td>
             <td>{{ collection.title|safe }}</td>
             <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+            {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
             <td>
               {% if perms.keycloak.collection_update %}
               <a href="{% url "collection-edit" id=collection.id %}">
@@ -186,11 +189,12 @@
               </button>
               {% endif %}
             </td>
+            {% endif %}
         </tr>
         {% endfor %}
         </table>
         {% if perms.keycloak.collection_delete %}
-        	{% modal_delete %}
+            {% modal_delete %}
         {% endif %}
       {% else %}
         <div class="block-grey">
