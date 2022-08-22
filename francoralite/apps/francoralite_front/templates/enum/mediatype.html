@@ -57,6 +57,7 @@
           {{ mediatype.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.mediatype_update or perms.keycloak.mediatype_delete %}
       <td>
         {% if perms.keycloak.mediatype_update %}
         <a href="{% url "mediatype-edit" id=mediatype.id %}" class="btn btn-default">
@@ -72,12 +73,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.mediatype_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

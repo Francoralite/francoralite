@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 <div class="fullpage">
@@ -58,11 +58,13 @@
           {{ dance.notes|markdown|safe }}
         {% endif %}
       </td>
-      {% if perms.keycloak.dance_update %}
+      {% if perms.keycloak.dance_update or perms.keycloak.dance_delete %}
       <td>
+        {% if perms.keycloak.dance_update %}
         <a href="{% url "dance-edit" id=dance.id %}" class="btn btn-default">
           <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
         </a>
+        {% endif %}
         {% if perms.keycloak.dance_delete %}
         <button type="button" class="btn btn-default"
             data-toggle="modal" data-target="#modalDelete"
@@ -78,7 +80,7 @@
 </table>
 
 {% if perms.keycloak.dance_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

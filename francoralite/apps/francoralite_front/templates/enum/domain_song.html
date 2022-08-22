@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 <div class="fullpage">
@@ -43,7 +43,7 @@
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if user.is_authenticated %}
+      {% if perms.keycloak.domain_song_update or perms.keycloak.domain_song_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,6 +58,7 @@
           {{ domain_song.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.domain_song_update or perms.keycloak.domain_song_delete %}
       <td>
         {% if perms.keycloak.domain_song_update %}
         <a href="{% url "domain_song-edit" id=domain_song.id %}" class="btn btn-default">
@@ -73,12 +74,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.domain_song_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

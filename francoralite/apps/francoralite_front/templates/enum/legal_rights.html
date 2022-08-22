@@ -57,6 +57,7 @@
           {{ legal_rights.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.legal_rights_update or perms.keycloak.legal_rights_delete %}
       <td>
         {% if perms.keycloak.legal_rights_update %}
         <a href="{% url "legal_rights-edit" id=legal_rights.id %}" class="btn btn-default">
@@ -72,12 +73,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.legal_rights_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

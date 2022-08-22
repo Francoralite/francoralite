@@ -58,6 +58,7 @@
           {{ musical_organization.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.musical_organization_update or perms.keycloak.musical_organization_delete %}
       <td>
         {% if perms.keycloak.musical_organization_update %}
         <a href="{% url "musical_organization-edit" id=musical_organization.id %}">
@@ -75,12 +76,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.musical_organization_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 {% else %}
   {% if error|length %}

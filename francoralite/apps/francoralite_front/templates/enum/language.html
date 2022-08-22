@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 <div class="fullpage">
@@ -42,6 +42,9 @@
   <tr>
       <th class="highlight">{% trans "Identificateur" %}</th>
       <th>{% trans "Nom" %}</th>
+      {% if perms.keycloak.language_update or perms.keycloak.language_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
   </tr>
   {% for language in languages %}
   <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -50,6 +53,7 @@
             {{ language.identifier|upper }}</a>
       </td>
       <td>{{ language.name|safe }}</td>
+      {% if perms.keycloak.language_update or perms.keycloak.language_delete %}
       <td>
         {% buttons %}
         {% if perms.keycloak.language_update %}
@@ -69,6 +73,7 @@
         {% endif %}
         {% endbuttons %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

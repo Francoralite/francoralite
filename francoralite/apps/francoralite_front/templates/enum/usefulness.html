@@ -59,6 +59,7 @@
           {{ usefulness.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.usefulness_update or perms.keycloak.usefulness_delete %}
       <td>
         {% if perms.keycloak.usefulness_update %}
         <a href="{% url "usefulness-edit" id=usefulness.id %}" class="btn btn-default">
@@ -74,12 +75,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.usefulness_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

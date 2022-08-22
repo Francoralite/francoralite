@@ -57,6 +57,7 @@
           {{ thematic.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.thematic_update or perms.keycloak.thematic_delete %}
       <td>
         {% if perms.keycloak.thematic_update %}
         <a href="{% url "thematic-edit" id=thematic.id %}" class="btn btn-default">
@@ -72,12 +73,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.thematic_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}
