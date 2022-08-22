@@ -153,7 +153,7 @@
                   {{ mission.code|upper }}</a>
             </td>
             <td>{{ mission.title|safe }}</td>
-            <td>{{ mission.descriptions|truncatechars:50|markdown|safe}}</td>
+            <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
             <td>
               {% if perms.keycloak.mission_update %}
               <a href="{% url "mission-edit" id=mission.id %}">
@@ -175,7 +175,7 @@
           {% endfor %}
         </table>
         {% if perms.keycloak.mission_delete %}
-        	{% modal_delete %}
+            {% modal_delete %}
         {% endif %}
       {% else %}
         <div class="block-grey">
