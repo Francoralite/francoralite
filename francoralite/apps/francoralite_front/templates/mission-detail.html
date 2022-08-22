@@ -170,7 +170,7 @@
                 {{ collection.code|upper }}</a>
             </td>
             <td>{{ collection.title|safe }}</td>
-            <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+            <td>{{ collection.description|truncatechars:50|markdown|safe }}</td>
             {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
             <td>
               {% if perms.keycloak.collection_update %}

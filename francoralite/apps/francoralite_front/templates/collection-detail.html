@@ -255,7 +255,7 @@
                 {{ item.code|upper }}</a>
             </td>
             <td>{{ item.title|safe }}</td>
-            <td>{{ item.description|truncatechars:50|markdown|safe}}</td>
+            <td>{{ item.description|truncatechars:50|markdown|safe }}</td>
             {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
             <td>
               {% if perms.keycloak.item_update %}
