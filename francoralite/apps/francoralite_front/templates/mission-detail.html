@@ -175,7 +175,7 @@
             </td>
             <td>{{ collection.title|safe }}</td>
             <td>{{ collection.description|truncatechars:50|markdown|safe }}</td>
-            <td>{{ collection.subelements_count.items }}</td>
+            <td><a href="/collection/{{ collection.id }}#items">{{ collection.subelements_count.items }}</a></td>
             <td>{% include 'inc/proportional_colored_bar.html' with items=collection.domains %}</td>
             {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
             <td>
@@ -209,6 +209,7 @@
       {% endif %}
     </section>
   </div>
+  <script type="text/javascript">if (document.location.hash === '#collections') { $('.nav-tabs li:nth-child(2) a').tab('show'); }</script>
 
   {% else %}
     <p>{% trans "Cette mission n'existe pas." %}</p>

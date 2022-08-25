@@ -58,8 +58,8 @@
       </td>
       <td>{{ mission.title|safe }}</td>
       <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
-      <td>{{ mission.subelements_count.collections }}</td>
-      <td>{{ mission.subelements_count.items }}</td>
+      <td><a href="/mission/{{ mission.id }}#collections">{{ mission.subelements_count.collections }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ mission.code }}">{{ mission.subelements_count.items }}</a></td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
       {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
       <td>
