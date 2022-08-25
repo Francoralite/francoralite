@@ -1,11 +1,13 @@
 
 {% extends "collection.html" %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 {% endblock %}
 
 
@@ -241,9 +243,9 @@
         <!-- Table to display the collections -->
         <table class="listing">
         <thead>
-            <th class="highlight">{% trans "Cote" %}</th>
-            <th>{% trans "Nom" %}</th>
-            <th>{% trans "Description" %}</th>
+            <th class="sortable highlight">{% trans "Cote" %}</th>
+            <th class="sortable">{% trans "Nom" %}</th>
+            <th class="sortable">{% trans "Description" %}</th>
             {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
             <th>{% trans "Modifier" %}</th>
             {% endif %}

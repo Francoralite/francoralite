@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 
 {% block javascript %}
   {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 {% endblock %}
 
 
@@ -31,18 +33,21 @@
 {% if fonds|length > 0 %}
   <!-- Table to display the institutions -->
   <table class="listing">
+  <thead>
   <tr>
-      <th class="highlight">{% trans "Cote" %}</th>
-      <th>{% trans "Nom" %}</th>
-      <th>{% trans "Description" %}</th>
-      <th>{% trans "Missions" %}</th>
-      <th>{% trans "Enquêtes" %}</th>
-      <th>{% trans "Items" %}</th>
+      <th class="sortable highlight">{% trans "Cote" %}</th>
+      <th class="sortable">{% trans "Nom" %}</th>
+      <th class="sortable">{% trans "Description" %}</th>
+      <th class="sortable number">{% trans "Missions" %}</th>
+      <th class="sortable number">{% trans "Enquêtes" %}</th>
+      <th class="sortable number">{% trans "Items" %}</th>
       <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
+  </thead>
+  <tbody>
   {% for fond in fonds %}
   <tr class="alterne">
       <td class="highlight">
@@ -74,6 +79,7 @@
       {% endif %}
   </tr>
   {% endfor %}
+  </tbody>
 </table>
 
 {% if perms.keycloak.fond_delete %}

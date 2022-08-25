@@ -2,13 +2,15 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 
 {% block javascript %}
   {{ block.super }}
-  <script src="{{ STATIC_URL }}francoralite_front/js/locale.js" type="text/javascript"></script>
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
+  <script src="{% static "francoralite_front/js/locale.js" %}" type="text/javascript"></script>
 {% endblock %}
 
 
@@ -34,13 +36,16 @@
 {% if items|length > 0 %}
   <!-- Table to display the items -->
   <table class="listing">
+  <thead>
   <tr>
-      <th class="highlight">{% trans "Cote" %}</th>
-      <th>{% trans "Nom" %}</th>
+      <th class="sortable highlight">{% trans "Cote" %}</th>
+      <th class="sortable">{% trans "Nom" %}</th>
       {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
+  </thead>
+  <tbody>
   {% for item in items %}
   <tr>
       <td class="highlight">
@@ -67,6 +72,7 @@
       {% endif %}
   </tr>
   {% endfor %}
+  </tbody>
 </table>
 
 
