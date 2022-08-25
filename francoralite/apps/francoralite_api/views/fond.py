@@ -8,7 +8,7 @@
 import datetime
 from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -166,6 +166,19 @@ class FondViewSet(viewsets.ModelViewSet):
             )
 
         return Response(data)
+
+    @action(detail=True)
+    def subelements_count(self, request, pk=None):
+        """
+        Determine the number of missions, collections and items
+        """
+        instance = self.get_object()
+
+        return Response({
+            'missions': MissionModel.objects.filter(fonds=instance).count(),
+            'collections': CollectionModel.objects.filter(mission__fonds=instance).count(),
+            'items': ItemModel.objects.filter(collection__mission__fonds=instance).count(),
+        })
 
     @action(detail=True)
     def items_domains(self, request, pk=None):

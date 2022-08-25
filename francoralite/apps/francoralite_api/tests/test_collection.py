@@ -255,6 +255,18 @@ class TestCollectionList(CleanMediaMixin, APITestCase):
             COLLECTION_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
 
+    def test_subelements_count(self):
+        """
+        Count every subelements of this collection
+        """
+        item = Collection.objects.first()
+        url = '/api/collection/' + str(item.id) + "/subelements_count"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(response.data.keys(), set(('items',)))
+
     def test_items_domains(self):
         """
         Count every item's domains of this collection

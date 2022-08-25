@@ -145,6 +145,18 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
 
+    def test_subelements_count(self):
+        """
+        Count every subelements of this mission
+        """
+        item = Mission.objects.first()
+        url = '/api/mission/' + str(item.id) + "/subelements_count"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(response.data.keys(), set(('collections', 'items')))
+
     def test_items_domains(self):
         """
         Count every item's domains of this mission

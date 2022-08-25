@@ -163,6 +163,18 @@ class MissionViewSet(viewsets.ModelViewSet):
         return Response(data)
 
     @action(detail=True)
+    def subelements_count(self, request, pk=None):
+        """
+        Determine the number of collections and items
+        """
+        instance = self.get_object()
+
+        return Response({
+            'collections': CollectionModel.objects.filter(mission=instance).count(),
+            'items': ItemModel.objects.filter(collection__mission=instance).count(),
+        })
+
+    @action(detail=True)
     def items_domains(self, request, pk=None):
         """
         Determine the number of domains in the related items

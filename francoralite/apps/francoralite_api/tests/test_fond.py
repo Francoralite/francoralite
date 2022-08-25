@@ -135,6 +135,18 @@ class TestFondList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
 
+    def test_subelements_count(self):
+        """
+        Count every subelements of this fond
+        """
+        item = Fond.objects.first()
+        url = '/api/fond/' + str(item.id) + "/subelements_count"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(response.data.keys(), set(('missions', 'collections', 'items')))
+
     def test_items_domains(self):
         """
         Count every item's domains of this fond
