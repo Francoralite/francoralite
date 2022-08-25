@@ -41,6 +41,7 @@
       <th class="sortable highlight">{% trans "Cote" %}</th>
       <th class="sortable">{% trans "Nom" %}</th>
       <th>{% trans "Domaines" %}</th>
+      <th>{% trans "Piste son" %}</th>
       {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
@@ -64,6 +65,18 @@
           {% if 'R' in item.domain %}<li>Conte ou récit légendaire</li>{% endif %}
         </ul>
         {% endif %}
+      </td>
+      <td>
+        <audio
+          controls
+          preload="metadata"
+          {% if item.file %}
+          src="/api/item/{{ item.id }}/download">
+          {% else %}
+          src="{{item.url_file}}"
+          {% endif %}
+          Votre navigateur Internet ne prend pas en charge cet élément audio
+        </audio>
       </td>
       {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
       <td>
