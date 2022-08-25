@@ -40,6 +40,7 @@
   <tr>
       <th class="sortable highlight">{% trans "Cote" %}</th>
       <th class="sortable">{% trans "Nom" %}</th>
+      <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
@@ -53,6 +54,17 @@
             {{ item.code|upper }}</a>
       </td>
       <td>{{ item.title|safe }}</td>
+      <td>
+        {% if item.domain %}
+        <ul>
+          {% if 'T' in item.domain %}<li>Témoignage</li>{% endif %}
+          {% if 'C' in item.domain %}<li>Chanson</li>{% endif %}
+          {% if 'A' in item.domain %}<li>Autre expression vocale'</li>{% endif %}
+          {% if 'I' in item.domain %}<li>Expression instrumentale</li>{% endif %}
+          {% if 'R' in item.domain %}<li>Conte ou récit légendaire</li>{% endif %}
+        </ul>
+        {% endif %}
+      </td>
       {% if perms.keycloak.item_update or perms.keycloak.item_delete %}
       <td>
       {% if perms.keycloak.item_update %}
