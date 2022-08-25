@@ -38,6 +38,8 @@
       <th class="highlight">{% trans "cote" %}</th>
       <th>{% trans "Nom" %}</th>
       <th>{% trans "Description" %}</th>
+      <th>{% trans "Enquêtes" %}</th>
+      <th>{% trans "Items" %}</th>
       <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
       <th>{% trans "Modifier" %}</th>
@@ -51,6 +53,8 @@
       </td>
       <td>{{ mission.title|safe }}</td>
       <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
+      <td>{{ mission.subelements_count.collections }}</td>
+      <td>{{ mission.subelements_count.items }}</td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
       {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
       <td>

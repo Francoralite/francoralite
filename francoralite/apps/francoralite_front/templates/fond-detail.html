@@ -144,6 +144,8 @@
             <th id="mission_code" class="highlight">{% trans "Cote" %}</th>
             <th id="mission_name">{% trans "Nom" %}</th>
             <th id="mission_desc">{% trans "Description" %}</th>
+            <th id="mission_collections">{% trans "Enquêtes" %}</th>
+            <th id="mission_items">{% trans "Items" %}</th>
             <th id="mission_domains">{% trans "Domaines" %}</th>
             {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
             <th id="mission_action">{% trans "Modifier" %}</th>
@@ -157,6 +159,8 @@
             </td>
             <td>{{ mission.title|safe }}</td>
             <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
+            <td>{{ mission.subelements_count.collections }}</td>
+            <td>{{ mission.subelements_count.items }}</td>
             <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
             {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
             <td>

@@ -35,6 +35,9 @@
       <th class="highlight">{% trans "Cote" %}</th>
       <th>{% trans "Nom" %}</th>
       <th>{% trans "Description" %}</th>
+      <th>{% trans "Missions" %}</th>
+      <th>{% trans "Enquêtes" %}</th>
+      <th>{% trans "Items" %}</th>
       <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <th>{% trans "Modifier" %}</th>
@@ -48,6 +51,9 @@
       </td>
       <td>{{ fond.title|safe }}</td>
       <td>{{ fond.description|truncatechars:50|markdown|safe }}</td>
+      <td>{{ fond.subelements_count.missions }}</td>
+      <td>{{ fond.subelements_count.collections }}</td>
+      <td>{{ fond.subelements_count.items }}</td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=fond.domains %}</td>
       {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <td>

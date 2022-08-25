@@ -9,22 +9,33 @@ from django.utils.translation import gettext_lazy as _
 from francoralite.apps.francoralite_front import tools
 
 
-class ProportionalColoredBarLoader(object):
+class DefaultLoader(object):
     url_pattern = NotImplemented
     attribute_name = NotImplemented
-    available_values = NotImplemented
 
-    def __init__(self, url_pattern=None):
+    def __init__(self, url_pattern=None, attribute_name=None):
         if url_pattern:
             self.url_pattern = url_pattern
+        if attribute_name:
+            self.attribute_name = attribute_name
 
     def complete(self, item):
         url = self.url_pattern.format(**item)
         api_response = tools.request_api(url)
+        item[self.attribute_name] = self.format_value(item, api_response)
+
+    def format_value(self, item, api_response):
+        return api_response
+
+
+class ProportionalColoredBarLoader(DefaultLoader):
+    available_values = NotImplemented
+
+    def format_value(self, item, api_response):
 
         total_count = float(sum(api_response.values())) if api_response else 0
 
-        item[self.attribute_name] = colored_bar = []
+        colored_bar = []
 
         for code, color, label in self.available_values:
             count = api_response.get(code, 0)
@@ -40,6 +51,8 @@ class ProportionalColoredBarLoader(object):
                 'ratio': ratio,
                 'percent': ratio * 100,
             })
+
+        return colored_bar
 
 
 class DomainsBarLoader(ProportionalColoredBarLoader):

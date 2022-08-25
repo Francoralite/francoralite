@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ..forms.fond import FondForm
 from ..francoralite_template_view import FrancoraliteTemplateView
-from ..widgets import DomainsBarLoader
+from ..widgets import DefaultLoader, DomainsBarLoader
 from .. import tools as tools
 
 
@@ -27,13 +27,15 @@ class FondDetail(FrancoraliteTemplateView):
             # Obtain values of the record fond
             context['form'] = FondForm()
             context['fond'] = tools.request_api(self.api_url_prefix + context['id'])
-            # Obtain values of related mission
+            # Obtain values of related missions
             context['missions'] = tools.request_api(
                 '/api/mission?fonds=' + context['id'])
-            # Obtain values of related items domains for each mission
-            domains_bar = DomainsBarLoader('/api/mission/{id}/items_domains')
+            # Obtain values of subelements count and items domains for each related mission
+            subelements_count_loader = DefaultLoader('/api/mission/{id}/subelements_count', 'subelements_count')
+            domains_bar_loader = DomainsBarLoader('/api/mission/{id}/items_domains')
             for mission in context['missions']:
-                domains_bar.complete(mission)
+                subelements_count_loader.complete(mission)
+                domains_bar_loader.complete(mission)
             # Obtain values of related informers
             context['informers'] = tools.request_api(
                 self.api_url_prefix + context['id'] + '/informers')
