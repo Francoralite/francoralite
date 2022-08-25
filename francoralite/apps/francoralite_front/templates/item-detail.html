@@ -28,6 +28,38 @@
     {% endif %}
 {% endblock %}
 
+
+{% block pagination %}
+{% if siblings %}
+<nav class="pagination">
+    <p class="pages">
+    {% if siblings.first_id %}
+    <a class="arrow first" href="/item/{{ siblings.first_id }}" title="{% trans 'Afficher le premier item de cette enquête.' %}"></a>
+    {% else %}
+    <span class="arrow first"></span>
+    {% endif %}
+    {% if siblings.previous_id %}
+    <a class="arrow previous" href="/item/{{ siblings.previous_id }}" title="{% trans 'Afficher l’item précédent pour cette enquête.' %}"></a>
+    {% else %}
+    <span class="arrow previous"></span>
+    {% endif %}
+    <span class="number current">{{ siblings.current_index|add:1 }} / {{ siblings.count }}</span>
+    {% if siblings.next_id %}
+    <a class="arrow next" href="/item/{{ siblings.next_id }}" title="{% trans 'Afficher l’item suivant pour cette enquête.' %}"></a>
+    {% else %}
+    <span class="arrow next"></span>
+    {% endif %}
+    {% if siblings.last_id %}
+    <a class="arrow last" href="/item/{{ siblings.last_id }}" title="{% trans 'Afficher le dernier item de cette enquête.' %}"></a>
+    {% else %}
+    <span class="arrow last"></span>
+    {% endif %}
+    </p>
+</nav>
+{% endif %}
+{% endblock %}
+
+
 {% block content %}
 
 {% block title_buttons %}
