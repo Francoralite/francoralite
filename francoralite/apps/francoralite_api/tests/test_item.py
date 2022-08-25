@@ -251,6 +251,18 @@ class TestItemList(CleanMediaMixin, APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(len(response.data["performances"]), 1)
 
+    def test_siblings(self):
+        item = Item.objects.first()
+        url = '/api/item/' + str(item.id) + '/siblings'
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(response.data.keys(), set((
+            'count', 'current_index',
+            'first_id', 'previous_id', 'next_id', 'last_id',
+        )))
+
     def test_update_an_item(self):
         """
         Ensure we can update an Item object
