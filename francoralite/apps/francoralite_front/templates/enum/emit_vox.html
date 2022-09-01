@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 <div class="fullpage">
@@ -58,10 +58,11 @@
           {{ emit_vox.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.emit_vox_update or perms.keycloak.emit_vox_delete %}
       <td>
         {% if perms.keycloak.emit_vox_update %}
         <a href="{% url "emit_vox-edit" id=emit_vox.id %}" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
         </a>
         {% endif %}
         {% if perms.keycloak.emit_vox_delete %}
@@ -73,12 +74,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.emit_vox_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

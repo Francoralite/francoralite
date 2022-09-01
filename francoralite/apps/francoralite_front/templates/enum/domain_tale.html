@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 <div class="fullpage">
@@ -58,11 +58,12 @@
           {{ domain_tale.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.domain_tale_update or perms.keycloak.domain_tale_delete %}
       <td>
         {% if perms.keycloak.domain_tale_update %}
         <a href="{% url "domain_tale-edit" id=domain_tale.id %}">
               <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
               </button>
         </a>
         {% endif %}
@@ -75,12 +76,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.domain_tale_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

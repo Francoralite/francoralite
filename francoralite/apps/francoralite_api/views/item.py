@@ -267,3 +267,23 @@ class ItemViewSet(viewsets.ModelViewSet):
         else :
             response = HttpResponse('')
         return response
+
+    @action(detail=True)
+    def siblings(self, request, pk=None):
+        instance = self.get_object()
+
+        items_ids = tuple(ItemModel.objects.filter(
+            collection_id=instance.collection_id,
+        ).order_by('code').values_list('id', flat=True))
+
+        items_count = len(items_ids)
+        current_index = items_ids.index(instance.id)
+
+        return Response({
+            'count': items_count,
+            'current_index': current_index,
+            'first_id': items_ids[0] if current_index > 0 else None,
+            'previous_id': items_ids[current_index - 1] if current_index > 0 else None,
+            'next_id': items_ids[current_index + 1] if current_index < items_count - 1 else None,
+            'last_id': items_ids[-1] if current_index < items_count - 1 else None,
+        })

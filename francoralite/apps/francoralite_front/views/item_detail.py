@@ -15,7 +15,7 @@ from ..forms.collection import CollectionForm
 
 class ItemDetail(FrancoraliteTemplateView):
     template_name = "../templates/item-detail.html"
-    
+
     keycloak_scopes = {
         'DEFAULT': 'item:view',
     }
@@ -28,6 +28,8 @@ class ItemDetail(FrancoraliteTemplateView):
                 '/api/item/' + context['id'] + '/complete')
             context['form'] = ItemForm()
             context['form_collection'] = CollectionForm()
+            context['siblings'] = tools.request_api(
+                '/api/item/' + context['id'] + '/siblings')
             # Obtain values of related documents
             context['documents'] = tools.request_api(
                 '/api/item/' + context['id'] + '/document')

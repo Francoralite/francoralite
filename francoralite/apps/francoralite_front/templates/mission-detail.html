@@ -1,11 +1,13 @@
 
 {% extends "mission.html" %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 {% endblock %}
 
 
@@ -156,10 +158,14 @@
         <!-- Table to display the collections -->
         <table class="listing" aria-describedby="Collections">
         <thead>
-            <th class="highlight">{% trans "cote" %}</th>
-            <th>{% trans "Nom" %}</th>
-            <th>{% trans "Description" %}</th>
-            <th></th>
+            <th class="sortable highlight">{% trans "Cote" %}</th>
+            <th class="sortable">{% trans "Nom" %}</th>
+            <th class="sortable">{% trans "Description" %}</th>
+            <th class="sortable number">{% trans "Items" %}</th>
+            <th>{% trans "Domaines" %}</th>
+            {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
+            <th>{% trans "Modifier" %}</th>
+            {% endif %}
         </thead>
         {% for collection in collections %}
         <tr>
@@ -168,12 +174,15 @@
                 {{ collection.code|upper }}</a>
             </td>
             <td>{{ collection.title|safe }}</td>
-            <td>{{ collection.descriptions|truncatechars:50|markdown|safe}}          </td>
+            <td>{{ collection.description|truncatechars:50|markdown|safe }}</td>
+            <td><a href="/collection/{{ collection.id }}#items">{{ collection.subelements_count.items }}</a></td>
+            <td>{% include 'inc/proportional_colored_bar.html' with items=collection.domains %}</td>
+            {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
             <td>
               {% if perms.keycloak.collection_update %}
               <a href="{% url "collection-edit" id=collection.id %}">
                     <button type="button" class="btn btn-default">
-                      <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
                     </button>
               </a>
               {% endif %}
@@ -186,11 +195,12 @@
               </button>
               {% endif %}
             </td>
+            {% endif %}
         </tr>
         {% endfor %}
         </table>
         {% if perms.keycloak.collection_delete %}
-        	{% modal_delete %}
+            {% modal_delete %}
         {% endif %}
       {% else %}
         <div class="block-grey">
@@ -199,6 +209,7 @@
       {% endif %}
     </section>
   </div>
+  <script type="text/javascript">if (document.location.hash === '#collections') { $('.nav-tabs li:nth-child(2) a').tab('show'); }</script>
 
   {% else %}
     <p>{% trans "Cette mission n'existe pas." %}</p>

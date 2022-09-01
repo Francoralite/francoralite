@@ -107,7 +107,7 @@ class MissionViewSet(viewsets.ModelViewSet):
             date_end = max(to_years)
 
         return Response((date_start, date_end))
-    
+
     @action(detail=True)
     def duration(self, request, pk=None):
         """
@@ -123,7 +123,7 @@ class MissionViewSet(viewsets.ModelViewSet):
             duration = str( datetime.timedelta( seconds=global_duration["approx_duration__sum"].total_seconds() ) )
         else:
             duration = ""
-        
+
         return Response(duration)
 
     @action(detail=True)
@@ -161,3 +161,45 @@ class MissionViewSet(viewsets.ModelViewSet):
             serializer=LocationGisSerializer
             )
         return Response(data)
+
+    @action(detail=True)
+    def subelements_count(self, request, pk=None):
+        """
+        Determine the number of collections and items
+        """
+        instance = self.get_object()
+
+        return Response({
+            'collections': CollectionModel.objects.filter(mission=instance).count(),
+            'items': ItemModel.objects.filter(collection__mission=instance).count(),
+        })
+
+    @action(detail=True)
+    def items_domains(self, request, pk=None):
+        """
+        Determine the number of domains in the related items
+        """
+        instance = self.get_object()
+
+        item_domains = ItemModel.objects.filter(
+            collection__mission_id=instance.id,
+        ).values_list('domain', flat=True)
+
+        # Init counters to 0
+        dict_domains = {
+            "T": 0,
+            "C": 0,
+            "A": 0,
+            "I": 0,
+            "R": 0,
+        }
+
+        # Crawling the items
+        for item_domain in item_domains:
+            for key, value in dict_domains.items():
+                # If this domain is used
+                if key in item_domain:
+                    # Increment counter of this domain
+                    dict_domains[key] = value + 1
+
+        return Response(dict_domains)

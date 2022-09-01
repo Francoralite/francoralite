@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 <div class="fullpage">
@@ -62,10 +62,11 @@
       <td>
         {{ instrument.typology.number|safe}} : {{ instrument.typology.name|safe}}
       </td>
+      {% if perms.keycloak.instrument_update or perms.keycloak.instrument_delete %}
       <td>
         {% if perms.keycloak.instrument_update %}
         <a href="{% url "instrument-edit" id=instrument.id %}" class="btn btn-default">
-          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
         </a>
         {% endif %}
         {% if perms.keycloak.instrument_delete %}
@@ -77,12 +78,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.instrument_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 {% else %}
   {% if error|length %}

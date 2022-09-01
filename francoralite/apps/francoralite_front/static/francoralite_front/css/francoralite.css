@@ -1693,3 +1693,33 @@ ul.messages li.error {
 	min-width: 200px;
 	width: auto;
 }
+
+
+/* *************** les composants de data-visualisation *************** */
+
+ul.proportional-colored-bar,
+ul.proportional-colored-bar li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    list-style: none;
+    font-size: 0;
+    overflow: hidden;
+}
+
+ul.proportional-colored-bar {
+    display: flex;
+    flex-flow: row nowrap;
+    min-width: 150px;
+    max-width: 300px;
+    border: 1px solid #cecece;
+    border-radius: 5px;
+}
+
+ul.proportional-colored-bar li {
+    height: 20px;
+    width: calc(var(--item-ratio) * 100%);
+    background: var(--item-color);
+}

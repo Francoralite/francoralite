@@ -43,7 +43,7 @@
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if perms.keycloak.recording_context_update  or perms.keycloak.recording_context_delete %}
+      {% if perms.keycloak.recording_context_update or perms.keycloak.recording_context_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,10 +58,11 @@
           {{ recording_context.notes|markdown|safe }}
         {% endif %}
       </td>
+      {% if perms.keycloak.recording_context_update or perms.keycloak.recording_context_delete %}
       <td>
         {% if perms.keycloak.recording_context_update %}
         <a href="{% url "recording_context-edit" id=recording_context.id %}" class="btn btn-default">
-          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
         </a>
         {% endif %}
         {% if perms.keycloak.recording_context_delete %}
@@ -73,6 +74,7 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>

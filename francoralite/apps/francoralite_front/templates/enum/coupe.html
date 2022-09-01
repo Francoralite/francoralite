@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 <div class="fullpage">
@@ -43,7 +43,7 @@
   <tr>
       <th class="highlight">{% trans "Nom" %}</th>
       <th>{% trans "Notes" %}</th>
-      {% if perms.keycloak.coupe_update %}
+      {% if perms.keycloak.coupe_update or perms.keycloak.coupe_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
@@ -58,11 +58,11 @@
           {{ coupe.notes|markdown|safe }}
         {% endif %}
       </td>
-      
+      {% if perms.keycloak.coupe_update or perms.keycloak.coupe_delete %}
       <td>
         {% if perms.keycloak.coupe_update %}
         <a href="{% url "coupe-edit" id=coupe.id %}" class="btn btn-default">
-          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
         </a>
         {% endif %}
         {% if perms.keycloak.coupe_delete %}
@@ -74,13 +74,13 @@
         </button>
         {% endif %}
       </td>
-     
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.coupe_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}
