@@ -308,7 +308,10 @@ class TestItemList(CleanMediaMixin, APITestCase):
         item = Item.objects.first()
         self.assertNotEqual(item.title, 'foobar_test_patch')
 
-        data = {'title': 'foobar_test_patch'}
+        data = {
+            'title': 'foobar_test_patch',
+            'domain': 'TC'
+            }
         url = reverse(
             'item-detail',
             kwargs={'pk': item.id})
