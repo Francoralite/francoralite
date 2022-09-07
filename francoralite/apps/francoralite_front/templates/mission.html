@@ -2,12 +2,14 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 
 {% block javascript %}
   {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 {% endblock %}
 
 
@@ -34,13 +36,20 @@
 {% if missions|length > 0 %}
   <!-- Table to display the missions -->
   <table class="listing">
+  <thead>
   <tr>
-      <th class="highlight">{% trans "cote" %}</th>
-      <th>{% trans "Nom" %}</th>
-      {% if perms.keycloak.mission_update %}
+      <th class="sortable highlight">{% trans "Cote" %}</th>
+      <th class="sortable">{% trans "Nom" %}</th>
+      <th class="sortable">{% trans "Description" %}</th>
+      <th class="sortable number">{% trans "Enquêtes" %}</th>
+      <th class="sortable number">{% trans "Items" %}</th>
+      <th>{% trans "Domaines" %}</th>
+      {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
+  </thead>
+  <tbody>
   {% for mission in missions %}
   <tr>
       <td class="highlight">
@@ -48,10 +57,15 @@
             {{ mission.code|upper }}</a>
       </td>
       <td>{{ mission.title|safe }}</td>
+      <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
+      <td><a href="/mission/{{ mission.id }}#collections">{{ mission.subelements_count.collections }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ mission.code }}">{{ mission.subelements_count.items }}</a></td>
+      <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
+      {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
       <td>
         {% if perms.keycloak.mission_update %}
         <a href="{% url "mission-edit" id=mission.id %}"  class="btn btn-default">
-          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
         </a>
         {% endif %}
         {% if perms.keycloak.mission_delete %}
@@ -63,12 +77,14 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
+  </tbody>
 </table>
 
 {% if perms.keycloak.mission_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

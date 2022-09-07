@@ -1,10 +1,12 @@
 {% extends "fond.html" %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 {% endblock %}
 
 
@@ -141,10 +143,15 @@
         <!-- Table to display the missions -->
         <table aria-describedby="missions" class="listing">
         <thead>
-            <th id="mission_code" class="highlight">{% trans "Cote" %}</th>
-            <th id="mission_name">{% trans "Nom" %}</th>
-            <th id="mission_desc">{% trans "Description" %}</th>
-            <th id="mission_action"></th>
+            <th class="sortable highlight" id="mission_code">{% trans "Cote" %}</th>
+            <th class="sortable" id="mission_name">{% trans "Nom" %}</th>
+            <th class="sortable" id="mission_desc">{% trans "Description" %}</th>
+            <th class="sortable number" id="mission_collections">{% trans "Enquêtes" %}</th>
+            <th class="sortable number" id="mission_items">{% trans "Items" %}</th>
+            <th id="mission_domains">{% trans "Domaines" %}</th>
+            {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
+            <th id="mission_action">{% trans "Modifier" %}</th>
+            {% endif %}
         </thead>
         {% for mission in missions %}
         <tr>
@@ -153,12 +160,16 @@
                   {{ mission.code|upper }}</a>
             </td>
             <td>{{ mission.title|safe }}</td>
-            <td>{{ mission.descriptions|truncatechars:50|markdown|safe}}</td>
+            <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
+            <td><a href="/mission/{{ mission.id }}#collections">{{ mission.subelements_count.collections }}</a></td>
+            <td><a href="/search_advanced/?code_internal={{ mission.code }}">{{ mission.subelements_count.items }}</a></td>
+            <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
+            {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
             <td>
               {% if perms.keycloak.mission_update %}
               <a href="{% url "mission-edit" id=mission.id %}">
                     <button type="button" class="btn btn-default">
-                      <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
                     </button>
               </a>
               {% endif %}
@@ -171,11 +182,12 @@
               </button>
               {% endif %}
             </td>
+            {% endif %}
           </tr>
           {% endfor %}
         </table>
         {% if perms.keycloak.mission_delete %}
-        	{% modal_delete %}
+            {% modal_delete %}
         {% endif %}
       {% else %}
         <div class="block-grey">
@@ -184,6 +196,7 @@
       {% endif %}
 
     </div>
+    <script type="text/javascript">if (document.location.hash === '#missions') { $('.nav-tabs li:nth-child(2) a').tab('show'); }</script>
   </section>
 
 

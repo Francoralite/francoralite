@@ -5,10 +5,10 @@ def test_institution_list(francoralite_context):
         # Open the locations list page for each profile
         francoralite_context.open_homepage(auth_username=username)
         francoralite_context.open_url('/institution')
-               
+
          # Verify the label of the institution page
         francoralite_context.verify_title(_('Institutions'))
-        
+
         # links to the institutions
         link_view_1 = francoralite_context.find_element(by_link_url='/institution/1')
         assert link_view_1.text == 'Université de Poitiers'
@@ -21,13 +21,13 @@ def test_institution_list(francoralite_context):
         # And, then logout (if authenticated user)
         if username:
             francoralite_context.logout(username)
-            
+
 def test_institution_details(francoralite_context):
     for username in francoralite_context.USERNAMES:
         # Open the first fond page for each profile
         francoralite_context.open_homepage(auth_username=username)
         francoralite_context.open_url('/institution/1')
-        
+
         # Verify the label of the institution page
         francoralite_context.verify_title("Institution : Université de Poitiers")
 
@@ -36,11 +36,11 @@ def test_institution_details(francoralite_context):
             'id_notes': '',
         }
         francoralite_context.verify_data(data)
-        
+
         # Verify buttons
         has_buttons = username in francoralite_context.ADMINS
         assert has_buttons == francoralite_context.exists_element(by_link_url='/institution/edit/1')
-        
+
         has_buttons = username in francoralite_context.WRITERS
         assert has_buttons == francoralite_context.exists_element(by_link_url='/institution/1/fond/add')
         assert has_buttons == francoralite_context.exists_element(by_link_url='/fond/edit/1')
@@ -55,6 +55,10 @@ def test_institution_details(francoralite_context):
 def test_institution_add(francoralite_context):
     # Go to the home page
     francoralite_context.open_homepage(auth_username='administrateur')
+
+    francoralite_context.move_to_element(by_css_selector='img')
+    # Move pointer to open the sub-menu
+    francoralite_context.move_to_element(by_link_text=_('Archives sonores'))
 
     # Click on the institution menu
     francoralite_context.find_element(by_link_text=_('Institutions')).click()

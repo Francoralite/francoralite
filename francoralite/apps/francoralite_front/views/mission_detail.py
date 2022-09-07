@@ -7,14 +7,15 @@
 from django.http import Http404
 from django.utils.translation import gettext as _
 
-from ..francoralite_template_view import FrancoraliteTemplateView
-from .. import tools as tools
 from ..forms.mission import MissionForm
+from ..francoralite_template_view import FrancoraliteTemplateView
+from ..widgets import DefaultLoader, DomainsBarLoader
+from .. import tools as tools
 
 
 class MissionDetail(FrancoraliteTemplateView):
     template_name = "../templates/mission-detail.html"
-    
+
     keycloak_scopes = {
         'DEFAULT': 'collection:view',
     }
@@ -28,6 +29,12 @@ class MissionDetail(FrancoraliteTemplateView):
             # Obtain values of related collections
             context['collections'] = tools.request_api(
                 '/api/collection?mission=' + context['id'])
+            # Obtain values of subelements count and items domains for each related collection
+            subelements_count_loader = DefaultLoader('/api/collection/{id}/subelements_count', 'subelements_count')
+            domains_bar_loader = DomainsBarLoader('/api/collection/{id}/items_domains')
+            for collection in context['collections']:
+                subelements_count_loader.complete(collection)
+                domains_bar_loader.complete(collection)
             # Obtain values of related informers
             context['informers'] = tools.request_api(
                 '/api/mission/' + context['id'] + '/informers')

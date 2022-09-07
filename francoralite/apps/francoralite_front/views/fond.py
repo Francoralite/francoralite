@@ -6,10 +6,15 @@
 
 
 from ..francoralite_template_view import FrancoralitePaginatedTemplateView
+from ..widgets import DefaultLoader, DomainsBarLoader
 
 
 class FondView(FrancoralitePaginatedTemplateView):
     api_url = '/api/fond'
+    complementary_data_loaders = (
+        DefaultLoader(api_url + '/{id}/subelements_count', 'subelements_count'),
+        DomainsBarLoader(api_url + '/{id}/items_domains'),
+    )
     context_results_name = 'fonds'
     template_name = '../templates/fond.html'
     keycloak_scopes = {

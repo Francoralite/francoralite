@@ -10,21 +10,22 @@ def test_homepage(francoralite_context):
     # Define the hierarchy of all menus
     all_menus = [
         [_('Accueil'), False, []],
-        [_('Institutions'), None, []],
-        [_('Archives'), False, [
+        [_('Archives sonores'), False, [
+            [_('Institutions'), None, []],
             [_('Fonds'), None, []],
             [_('Missions'), None, []],
             [_('Enquêtes'), None, []],
             [_('Items'), None, []],
         ]],
-        [_('Personnes'), None, [
-            [_('Enquêteurs'), None, []],
-            [_('Informateurs'), None, []],
-            [_('Auteurs'), None, []],
-            [_('Compositeurs'), None, []],
-            [_('Éditeurs'), None, []],
-        ]],
-        [_('Énumérations'), False, [
+        [_('Thésaurus'), False, [
+            [_('Personnes'), None, [
+                [_('Enquêteurs'), None, []],
+                [_('Informateurs'), None, []],
+                [_('Auteurs'), None, []],
+                [_('Compositeurs'), None, []],
+                [_('Éditeurs'), None, []],
+            ]],
+            [_('Aires culturelles'), None, []],
             [_('Musique'), False, [
                 [_('Coupe'), None, []],
                 [_('Formation (musicale)'), _('Formation'), []],
@@ -83,14 +84,14 @@ def test_homepage_partners(francoralite_context):
 
 def browse_menu(francoralite_context, children, pointer_path=[]):
     for link, target, subchildren in children:
-        if target is not False:
+        if target is not False and link is not _('Aires culturelles'):
             # Move pointer to the top-left logo
             francoralite_context.move_to_element(by_css_selector='img')
             # Move pointer to open the sub-menu
             for label in pointer_path:
                 francoralite_context.move_to_element(by_link_text=label)
             # Goto to the linked page
-            francoralite_context.move_to_element(by_link_text=link).click()
+            francoralite_context.scroll_to_element(by_link_text=link).click()
             # Test the right label
             francoralite_context.verify_title(target or link)
         if subchildren:

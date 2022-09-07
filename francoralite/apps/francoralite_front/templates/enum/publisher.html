@@ -58,10 +58,12 @@
         {% if publisher.notes %}
           {{ publisher.notes|markdown|safe }}
         {% endif %}
+      </td>
+      {% if perms.keycloak.publisher_update or perms.keycloak.publisher_delete %}
       <td>
         {% if perms.keycloak.publisher_update %}
         <a href="{% url "publisher-edit" id=publisher.id %}" class="btn btn-default">
-          <span class="glyphicon glyphicon-edit"></span> {% trans "Editer" %}
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
         </a>
         {% endif %}
         {% if perms.keycloak.publisher_delete %}
@@ -73,12 +75,13 @@
         </button>
         {% endif %}
       </td>
+      {% endif %}
   </tr>
   {% endfor %}
 </table>
 
 {% if perms.keycloak.publisher_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

@@ -7,14 +7,14 @@
 from django.http import Http404
 from django.utils.translation import gettext as _
 
+from ..forms.collection import CollectionForm
 from ..francoralite_template_view import FrancoraliteTemplateView
 from .. import tools as tools
-from ..forms.collection import CollectionForm
 
 
 class CollectionDetail(FrancoraliteTemplateView):
     template_name = "../templates/collection-detail.html"
-    
+
     keycloak_scopes = {
         'DEFAULT': 'collection:view',
     }
