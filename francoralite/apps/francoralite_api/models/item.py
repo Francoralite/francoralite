@@ -77,7 +77,7 @@ class Item(models.Model):
         ('R', 'Conte ou récit légendaire')
     )
     domain = models.CharField(
-        _('Domaine'), blank=True, choices=DOMAINS, max_length=5)
+        _('Domaine'), blank=True, max_length=5)
 
     # Description / deposit  ---------
     deposit_digest = models.TextField(
