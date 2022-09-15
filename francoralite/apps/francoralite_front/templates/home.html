@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
 
 {% block content %}
+<link rel="import" href="">
 
 <div class="home-content">
 <div id="module-set">
@@ -13,8 +25,6 @@
 {% with "Last changes" as title %}
 {% endwith %}
 -->
-
-
 
 {% endblock %}
 </div>
@@ -74,7 +84,7 @@
       <h2>Géo-Navigateur</h2>
 
       <div class="home-block-content">
-
+        <francoralite-map></francoralite-map>
       </div>
     </div>
 

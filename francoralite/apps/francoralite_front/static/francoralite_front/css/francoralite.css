@@ -1060,6 +1060,11 @@ a.image-link {
     padding: 1rem;
 }
 
+#block-geonav .home-block-content {
+    height: 600px;
+    width: 100%;
+}
+
 #block-partners .home-block-content {
     display: flex;
     flex-direction: row;
