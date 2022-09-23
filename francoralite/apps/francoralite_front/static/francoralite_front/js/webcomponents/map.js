@@ -3,9 +3,16 @@
 /* jshint esversion: 6 */
 /* globals customElements */
 
+// Settings
+const API_REQUEST_URL = "/api/locationgiscollection/";
+const DEFAULT_BOUNDS = [ [50, -85], [30, 0] ];
+const DEFAULT_LAT = 46.56920;
+const DEFAULT_LNG = 0.38523;
+const DEFAULT_ZOOM = 19;
+
 // CSS
 const LEAFLET_CSS_URL= "/static/francoralite_front/css/leaflet/leaflet.css";
-const MARKER_CLUSTER_CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css"
+const MARKER_CLUSTER_CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css";
 const MARKER_CLUSTER_DEFAULT_CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css";
 const CONTROL_GEOCODER_CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/perliedman-leaflet-control-geocoder/2.4.0/Control.Geocoder.min.css";
 
@@ -67,24 +74,23 @@ const STYLESHEET = `
 class FrancoraliteMap extends HTMLElement {
 
   static get observedAttribtues() {
-    return ["lat", "lng", "zoom"];
+    return ["lat", "lng", "zoom", "bounds"];
   }
 
   get lat() {
-    return this.getAttribute("lat") || 51;
+    return this.getAttribute("lat");
   }
+
   get lng() {
-    return this.getAttribute("lng") || 0;
+    return this.getAttribute("lng");
   }
+
   get zoom() {
-    return this.getAttribute("zoom") || -1;
+    return this.getAttribute("zoom");
   }
 
   get bounds() {
-    return this.getAttribute("bounds") || L.bounds(
-      L.point( 50, -85 ),
-      L.point( 30, 0 )
-  );
+    return JSON.parse(this.getAttribute("bounds") || "null");
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -101,7 +107,7 @@ class FrancoraliteMap extends HTMLElement {
         break;
 
       case "bounds":
-        this.map && this.map.fitBounds([ [50, -85], [30, 0] ]);
+        this.map && this.map.fitBounds(this.bounds);
         break;
     }
   }
@@ -206,12 +212,12 @@ class FrancoraliteMap extends HTMLElement {
   }
 
   initView() {
-    this.map.setView([this.lat, this.lng], this.zoom);
-    if (this.zoom == -1) {
-      this.map.fitWorld({ animate: false });
-    }
-    if(this.bounds) {
-      this.map.fitBounds([ [50, -85], [30, 0] ]);
+    if (this.zoom === -1) {
+      this.map.fitWorld({animate: false});
+    } else if (this.lat && this.lng || this.zoom) {
+      this.map.setView([this.lat || DEFAULT_LAT, this.lng || DEFAULT_LNG], this.zoom || DEFAULT_ZOOM);
+    } else {
+      this.map.fitBounds(this.bounds || DEFAULT_BOUNDS);
     }
   }
 
@@ -242,7 +248,7 @@ class FrancoraliteMap extends HTMLElement {
       const data = JSON.parse(event.target.response);
       this.collection_marker(data.results !== undefined ? data.results : data, markers);
     });
-    xhr.open('GET', '/api/locationgiscollection/', true);
+    xhr.open('GET', API_REQUEST_URL, true);
     xhr.send(null);
   }
 
