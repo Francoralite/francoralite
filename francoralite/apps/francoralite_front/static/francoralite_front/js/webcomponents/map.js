@@ -4,7 +4,7 @@
 /* globals customElements */
 
 // Settings
-const API_REQUEST_URL = "/api/locationgiscollection/";
+const DEFAULT_MARKERS_URL = "/api/locationgiscollection/";
 const DEFAULT_BOUNDS = [ [50, -85], [30, 0] ];
 const DEFAULT_LAT = 46.56920;
 const DEFAULT_LNG = 0.38523;
@@ -36,7 +36,7 @@ const STYLESHEET = `
 class FrancoraliteMap extends HTMLElement {
 
   static get observedAttribtues() {
-    return ["lat", "lng", "zoom", "bounds"];
+    return ["lat", "lng", "zoom", "bounds", "markers-url", "markers-list"];
   }
 
   get lat() {
@@ -53,6 +53,14 @@ class FrancoraliteMap extends HTMLElement {
 
   get bounds() {
     return JSON.parse(this.getAttribute("bounds") || "null");
+  }
+
+  get markersUrl() {
+    return this.getAttribute("markers-url");
+  }
+
+  get markersList() {
+    return JSON.parse(this.getAttribute("markers-list") || "null");
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -160,15 +168,20 @@ class FrancoraliteMap extends HTMLElement {
     })
     .addTo(this.map);
 
-
-    // Locations of collections
-    let markers = L.markerClusterGroup( {
+    // Markers layer
+    let markersLayer = L.markerClusterGroup( {
       showCoverageOnHover: true,
       zoomToBoundsOnClick: true,
       removeOutsideVisibleBounds: true
     } );
 
-    this.request_location(markers);
+    if (this.markersList) {
+      // There's a markers list !
+      this.addMarkers(this.markersList, markersLayer);
+    } else {
+      // ... using the API request
+      this.requestMarkers(markersLayer);
+    }
   }
 
   initView() {
@@ -181,35 +194,61 @@ class FrancoraliteMap extends HTMLElement {
     }
   }
 
-  request_location(markers) {
+  requestMarkers(markersLayer) {
     // Request the locations of the collections
 
     let xhr = new XMLHttpRequest();
     xhr.addEventListener('load', (event) => {
       const data = JSON.parse(event.target.response);
-      this.collection_marker(data.results !== undefined ? data.results : data, markers);
+      this.addMarkers(data.results !== undefined ? data.results : data, markersLayer);
     });
-    xhr.open('GET', API_REQUEST_URL, true);
+    xhr.open('GET', this.markersUrl || DEFAULT_MARKERS_URL, true);
     xhr.send(null);
   }
 
-  collection_marker(locations, markers) {
+  addMarkers(locations, markersLayer) {
     // Create the markers and the popup
 
     for( let loc of locations ) {
-      let marker = L.marker([loc.location.latitude,loc.location.longitude]).bindPopup(
-        '<h3><a href="/collection/'+loc.collection.id+'">'+
-        loc.collection.code+' - '+loc.collection.title+'</a></h3>'+
-        '<p>'+loc.collection.descriptions+'</p>'+
-        '<hr />'+
-        'Lieu : <a href="/location_gis/'+
-        loc.location.id+'"><b>'+loc.location.code+
-        '</b></a><p>'+loc.location.name+'</p><hr/><i>'+
-        loc.location.notes+'</i>' );
-        markers.addLayer(marker);
+      if(loc.collection && loc.location) {
+        markersLayer.addLayer(
+          L.marker(
+            [loc.location.latitude,loc.location.longitude]
+          ).bindTooltip(
+            "Code : " + loc.collection.code + "<br>" +
+            "Titre : " + loc.collection.title + "<br>" +
+            "Lieu : " + loc.location.code
+          ).bindPopup(
+            '<h4><a href="/collection/' + loc.collection.id + '">' +
+            loc.collection.code + ' - ' + loc.collection.title + '</a></h4>' +
+            '<p>' + loc.collection.descriptions + '</p>' +
+            '<hr />' +
+            'Lieu : <a href="/location_gis/' +
+            loc.location.id + '"><b>' + loc.location.code +
+            '</b></a><p>' + loc.location.name + '</p><hr/><i>' +
+            loc.location.notes + '</i>'
+          )
+        );
+      } else {
+        markersLayer.addLayer(
+          L.marker(
+            [loc.latitude,loc.longitude]
+          ).bindTooltip(
+            "Code : " + loc.code + "<br>" +
+            "Nom : " + loc.name + "<br>"
+          ).bindPopup(
+            'Lieu : <a href="/location_gis/' +
+            loc.id + '"><b>' + loc.code +
+            '</b></a><p>' + loc.name + '</p><hr/><i>' +
+            loc.notes + '</i>'
+          )
+        );
+      }
     }
-    this.map.addLayer(markers);
+
+    this.map.addLayer(markersLayer);
   }
+
 
 }
 

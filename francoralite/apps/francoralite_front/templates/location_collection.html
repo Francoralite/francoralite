@@ -1,56 +1,11 @@
 {% extends "location.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
-{% load markdown_extra %}
-{% load data_display %}
-{% load leaflet_tags %}
-
-{% block javascript %}
-  {{ block.super }}
-{% endblock %}
-
-
-{% block stylesheets %}
-  {{ block.super }}
-{% endblock %}
 
 
 {% block title_name %}
 {% trans "Lieux, par enquêtes" %}
 {% endblock %}
 
-
-{% block content %}
-
-  {% block title_buttons %}
-  {% endblock %}
-  {{ block.super }}
-
-  {% block request_location %}
-  <script type="text/javascript">
-   function request_location(map, markers) {
-     axios.get(
-       `/api/locationgiscollection/`
-     ).then(
-       res => {
-         locs = res.data;
-         for( let loc of locs ) {
-           var marker = L.marker([loc.location.latitude,loc.location.longitude]).bindPopup(
-
-             '<h2><a href="/collection/'+loc.collection.id+'">'+
-             loc.collection.code+' - '+loc.collection.title+'</a></h2>'+
-             '<p>'+loc.collection.descriptions+'</p>'+
-             '<hr />'+
-             'Lieu : <a href="/location_gis/'+
-             loc.location.id+'"><b>'+loc.location.code+
-             '</b></a><p>'+loc.location.name+'</p><hr/><i>'+
-             loc.location.notes+'</i>' );
-             markers.addLayer(marker);
-           }
-           map.addLayer(markers);
-         });
-     }
-  </script>
-  {% endblock request_location %}
-
-{% endblock %}
+{% block request_location %}
+<francoralite-map markers-url="/api/locationgiscollection/"></francoralite-map>
+{% endblock request_location %}
