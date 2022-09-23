@@ -68,18 +68,24 @@
         </dl>
         {% field_data_id form.code_partner fond.code_partner|safe  empty=False %}
         {% field_data_id form.code fond.code|upper|safe %}
-        {% field_data_id form.title fond.title|safe %}
       </div>
 
       <div class="container_line">
         {% field_data_id form.description fond.description|markdown|safe %}
       </div>
 
+      <div class="container_line">
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+          <dd id="id_duration" class="donnee">{{duration}}</dd>
+        </dl>
+      </div>
+
+
       {% display_documents %}
 
       <div class="block-grey">
-        <h2>{% trans "Période" %}</h2>
-        <h3>{% trans "Années d'enregistrement" %}</h3>
+        <h2>{% trans "Période d'enregistrement" %}</h2>
         <div class="container_line">
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Depuis' %}</dt>
@@ -89,10 +95,6 @@
             <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
             <dd id="id_dates1" class="donnee">{{dates.1}}</dd>
           </dl>
-          <dl class="container_data">
-            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
-            <dd id="id_duration" class="donnee">{{duration}}</dd>
-          </dl>
         </div>
       </div>
 
@@ -101,29 +103,28 @@
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
           <dd class="donnee">
-            <ul>
-              {% for collector in collectors %}
-              <li>
+            {% for collector in collectors %}
                 <a href="{% url "personne-detail" id=collector.id %}"
-                target="_blank">
-                {{collector.first_name}} {{collector.last_name}}
-              </a>
-              </li>
-              {% endfor %}
-            </ul>
+                  target="_blank">
+                  {{collector.first_name}} {{collector.last_name}}
+                </a>
+                {% if not loop.last %}
+                  ,
+                {% endif %}
+            {% endfor %}
           </dd>
         </dl>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Informateurs' %}</dt>
           <dd class="donnee">
-            <ul>
               {% for informer in informers %}
-              <li>
                 <a href="{% url "personne-detail" id=informer.id %}"
-                target="_blank">
-                {{informer.first_name}} {{informer.last_name}}
-              </a>
-              </li>
+                  target="_blank">
+                  {{informer.first_name}} {{informer.last_name}}
+                </a>
+                {% if not loop.last %}
+                  ,
+                {% endif %}
               {% endfor %}
             </ul>
           </dd>
