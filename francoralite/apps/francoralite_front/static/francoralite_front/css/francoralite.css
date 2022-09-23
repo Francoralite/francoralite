@@ -1060,7 +1060,12 @@ a.image-link {
     padding: 1rem;
 }
 
+#block-geonav h2 {
+    margin-bottom: 0px;
+}
+
 #block-geonav .home-block-content {
+    padding: 0px;
     height: 600px;
     width: 100%;
 }
