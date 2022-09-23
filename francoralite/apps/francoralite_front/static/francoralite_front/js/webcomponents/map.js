@@ -27,45 +27,7 @@ const STYLESHEET = `
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
-.leaflet-top .leaflet-control {
-  margin-top: 2em;
-}
-.leaflet-left .leaflet-control {
-  margin-left: 2em;
-}
-.leaflet-bottom .leaflet-control {
-  margin-bottom: 2em;
-}
-.leaflet-right .leaflet-control {
-  margin-right: 2em;
-}
-.leaflet-control.leaflet-control-attribution {
-  margin: 0;
-  margin-top: -1.5em; /* make this "transparent" to other controls margins  */
-}
-.leaflet-control-zoom,
-.leaflet-touch .leaflet-control-zoom {
-  box-shadow: none;
-  border: none;
-}
-.leaflet-control-zoom > a.leaflet-control-zoom-in,
-.leaflet-control-zoom > a.leaflet-control-zoom-out,
-.leaflet-touch .leaflet-control-zoom > a.leaflet-control-zoom-in,
-.leaflet-touch .leaflet-control-zoom > a.leaflet-control-zoom-out {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5em;
-  height: 1.5em;
-  font-size: 26px;
-  font-weight: normal;
-  color: #E16246;
-  border-radius: 50%;
-  box-shadow: 0 1px 5px rgb(0 0 0 / 10%);
-}
-.leaflet-control-zoom > a:first-child {
-  margin-bottom: .25em;
+  font-size: 14px;
 }
 `;
 
@@ -122,7 +84,6 @@ class FrancoraliteMap extends HTMLElement {
     setTimeout(() => {
       this.initMap();
       this.initView();
-      this.initChildren();
     });
   }
 
@@ -165,14 +126,13 @@ class FrancoraliteMap extends HTMLElement {
     // Control for the zoom
     L.control
       .zoom({
-        position: "bottomright",
+        position: "topleft",
       })
       .addTo(this.map);
 
     // Tile layer and OSM Contributors
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18,
     }).addTo(this.map);
 
@@ -219,25 +179,6 @@ class FrancoraliteMap extends HTMLElement {
     } else {
       this.map.fitBounds(this.bounds || DEFAULT_BOUNDS);
     }
-  }
-
-  initChildren() {
-    for (let child of this.children) {
-      child.container = this.map;
-    }
-
-    this.mutationObserver = new MutationObserver((mutations) =>
-      mutations.forEach((mutation) => {
-        for (let child of mutation.addedNodes) {
-          child.container = this.map;
-        }
-
-        for (let child of mutation.removedNodes) {
-          child.container = null;
-        }
-      })
-    );
-    this.mutationObserver.observe(this, { childList: true });
   }
 
   request_location(markers) {
