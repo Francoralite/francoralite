@@ -166,6 +166,14 @@ class FrancoraliteMap extends HTMLElement {
         showResultIcons:true,
         geocoder: geocoder,
     })
+    .on('markgeocode', (e) => {
+      console.log(e);
+      // When a geocoding is performed
+      //  a marker with the new geocoded data is updated
+      $("#id_latitude").val( e.geocode.center.lat );
+      $("#id_longitude").val( e.geocode.center.lng );
+      $("#id_name").val( e.geocode.properties.display_name );
+    })
     .addTo(this.map);
 
     // Markers layer
@@ -178,7 +186,7 @@ class FrancoraliteMap extends HTMLElement {
     if (this.markersList) {
       // There's a markers list !
       this.addMarkers(this.markersList, markersLayer);
-    } else {
+    } else if( this.markersUrl != "" ){
       // ... using the API request
       this.requestMarkers(markersLayer);
     }
@@ -196,21 +204,24 @@ class FrancoraliteMap extends HTMLElement {
 
   requestMarkers(markersLayer) {
     // Request the locations of the collections
-
-    let xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', (event) => {
-      const data = JSON.parse(event.target.response);
-      this.addMarkers(data.results !== undefined ? data.results : data, markersLayer);
-    });
-    xhr.open('GET', this.markersUrl || DEFAULT_MARKERS_URL, true);
-    xhr.send(null);
+    if(this.markersUrl != ""){
+      let xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', (event) => {
+        const data = JSON.parse(event.target.response);
+        this.addMarkers(data.results !== undefined ? data.results : data, markersLayer);
+      });
+      xhr.open('GET', this.markersUrl || DEFAULT_MARKERS_URL, true);
+      xhr.send(null);
+    }
   }
 
   addMarkers(locations, markersLayer) {
     // Create the markers and the popup
 
-    for( let loc of locations ) {
+    // A function to create the markers
+    let markersCreate = (loc, markersLayer, dragIt=false) => {
       if(loc.collection && loc.location) {
+         // It's a Collection-Location
         markersLayer.addLayer(
           L.marker(
             [loc.location.latitude,loc.location.longitude]
@@ -230,9 +241,10 @@ class FrancoraliteMap extends HTMLElement {
           )
         );
       } else {
+        // It's a Location, only
         markersLayer.addLayer(
           L.marker(
-            [loc.latitude,loc.longitude]
+            [loc.latitude,loc.longitude],{ draggable:dragIt }
           ).bindTooltip(
             "Code : " + loc.code + "<br>" +
             "Nom : " + loc.name + "<br>"
@@ -241,11 +253,24 @@ class FrancoraliteMap extends HTMLElement {
             loc.id + '"><b>' + loc.code +
             '</b></a><p>' + loc.name + '</p><hr/><i>' +
             loc.notes + '</i>'
+          ).on("dragend", (e) => {
+            let changedPos = e.target.getLatLng();
+           $("#id_latitude").val( changedPos.lat );
+           $("#id_longitude").val( changedPos.lng );
+            }
           )
         );
       }
+    };
+
+    // Test the type of the locations
+    if (Array.isArray(locations)) {
+      locations.forEach(loc => markersCreate(loc, markersLayer));
+    } else {
+      markersCreate(locations, markersLayer, true);
     }
 
+    // Add on the map this new layer
     this.map.addLayer(markersLayer);
   }
 

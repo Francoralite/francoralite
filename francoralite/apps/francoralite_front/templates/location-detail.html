@@ -3,25 +3,24 @@
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
-{% load leaflet_tags %}
+{% load static %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
 {% endblock %}
 
 
 {% block stylesheets %}
   {{ block.super }}
 <style>
-  #mapid {
+  francoralite-map  {
     height: 500px;
     width: 100%;
-   }
-   .leaflet-container {
-     justify-content: center;
+    display: inline-block;
+    justify-content: center;
    }
 </style>
-{% leaflet_css %}
 {% endblock %}
 
 {% block title_name %}
@@ -70,17 +69,13 @@
   {% field_data_id form.longitude location.longitude %}
   </div>
 
-  <script type="text/javascript">
-  function map_init_basic (map, options) {
-        L.marker([{{location.latitude|virgule}},
-          {{location.longitude|virgule}} ]).addTo(map);
-        map.setView([{{location.latitude|virgule}},
-          {{location.longitude|virgule}}], 15);
-    };
-  </script>
-  {% leaflet_map "mapid" callback="window.map_init_basic"%}
-
-  {% leaflet_js %}
+  <francoralite-map
+    markers-url="/api/locationgis/{{location.id}}"
+    lat="{{location.latitude|virgule}}"
+    lng="{{location.longitude|virgule}}"
+    zoom="15"
+    >
+  </francoralite-map>
 
   <div class="block-grey">
   <h2>{% trans "Enquêtes" %}</h2>
