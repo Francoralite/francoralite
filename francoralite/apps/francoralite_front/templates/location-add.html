@@ -43,9 +43,6 @@
   {{ block.super }}
 {% endblock %}
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
-  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-  crossorigin=""/>
 {{ form.media }}
 <div class="container">
   {% if id %}
@@ -59,13 +56,9 @@
         <label class="" for="id_name">{% trans "Carte" %}:</label>
       </div>
       <!-- The map -->
-      {% if id %}
-      <francoralite-map
-      markers-url="/api/locationgis/{{id}}"
-      ></francoralite-map>
-      {% else %}
-      <francoralite-map markers-url=""></francoralite-map>
-      {% endif %}
+      <francoralite-map markers-drag="yes"
+      {% if id %}markers-url="/api/locationgis/{{id}}"{% endif %}>
+      </francoralite-map>
     </div>
     <div class="block-grey">
       <h2>{% trans "Coordonnées" %}</h2>

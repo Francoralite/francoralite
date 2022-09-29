@@ -1,11 +1,11 @@
 "use strict";
 /* jslint node: true */
 /* jshint esversion: 6 */
-/* globals customElements */
+/* globals customElements, L */
+
 
 // Settings
-const DEFAULT_MARKERS_URL = "/api/locationgiscollection/";
-const DEFAULT_BOUNDS = [ [50, -85], [30, 0] ];
+const DEFAULT_BOUNDS = [[50, -85], [30, 0]];
 const DEFAULT_LAT = 46.56920;
 const DEFAULT_LNG = 0.38523;
 const DEFAULT_ZOOM = 19;
@@ -63,21 +63,31 @@ class FrancoraliteMap extends HTMLElement {
     return JSON.parse(this.getAttribute("markers-list") || "null");
   }
 
+  get markersDrag() {
+    return this.getAttribute("markers-drag") === 'yes';
+  }
+
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
 
     switch (name) {
       case "lat":
       case "lng":
-        this.map && this.map.setView([this.lat, this.lng]);
+        if (this.map) {
+          this.map.setView([this.lat, this.lng]);
+        }
         break;
 
       case "zoom":
-        this.map && this.map.setZoom(this.zoom);
+        if (this.map) {
+          this.map.setZoom(this.zoom);
+        }
         break;
 
       case "bounds":
-        this.map && this.map.fitBounds(this.bounds);
+        if (this.map) {
+          this.map.fitBounds(this.bounds);
+        }
         break;
     }
   }
@@ -107,11 +117,11 @@ class FrancoraliteMap extends HTMLElement {
     controlGeocoderStyleEL.setAttribute("rel", "stylesheet");
     controlGeocoderStyleEL.setAttribute("href", CONTROL_GEOCODER_CSS_URL);
     const markerClusterStyleEL = document.createElement("link");
-    markerClusterStyleEL.setAttribute("rel","stylesheet");
-    markerClusterStyleEL.setAttribute("href",MARKER_CLUSTER_CSS_URL);
+    markerClusterStyleEL.setAttribute("rel", "stylesheet");
+    markerClusterStyleEL.setAttribute("href", MARKER_CLUSTER_CSS_URL);
     const markerClusterDefaultStyleEL = document.createElement("link");
-    markerClusterDefaultStyleEL.setAttribute("rel","stylesheet");
-    markerClusterDefaultStyleEL.setAttribute("href",MARKER_CLUSTER_DEFAULT_CSS_URL);
+    markerClusterDefaultStyleEL.setAttribute("rel", "stylesheet");
+    markerClusterDefaultStyleEL.setAttribute("href", MARKER_CLUSTER_DEFAULT_CSS_URL);
 
     this.mapEl = document.createElement("div");
     this.mapEl.setAttribute("id", "map");
@@ -125,18 +135,19 @@ class FrancoraliteMap extends HTMLElement {
     // Directory of leaflet's icons
     L.Icon.Default.imagePath='/static/francoralite_front/css/leaflet/images/';
 
-    if (this.map) this.map.remove();
+    if (this.map) {
+      this.map.remove();
+    }
 
     this.map = L.map(this.mapEl, {
       zoomControl: false,
     });
 
     // Control for the zoom
-    L.control
-      .zoom({
-        position: "topleft",
-      })
-      .addTo(this.map);
+    L.control.zoom({
+      position: "topleft",
+    })
+    .addTo(this.map);
 
     // Tile layer and OSM Contributors
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -145,48 +156,63 @@ class FrancoraliteMap extends HTMLElement {
     }).addTo(this.map);
 
     // Scale Bar
-    L.control.scale(
-      {
-        metric: true,
-        imperial: false
-      }
-    ).addTo(this.map);
-
+    L.control.scale({
+      metric: true,
+      imperial: false,
+    })
+    .addTo(this.map);
 
     // Add a search control on the map
     // Type of geocoder to use
-
     let geocoder = L.Control.Geocoder.nominatim({
-      geocodingQueryParams:{limit:10,},
+      geocodingQueryParams: {limit: 10,},
     });
     // Create a search control
     L.Control.geocoder({
-        collapsed:false,
-        placeholder:"Rechercher une localité ...",
-        showResultIcons:true,
-        geocoder: geocoder,
+      collapsed: false,
+      placeholder: "Rechercher une localité ...",
+      showResultIcons: true,
+      geocoder: geocoder,
+      defaultMarkGeocode: false,
     })
     .on('markgeocode', (e) => {
-      console.log(e);
       // When a geocoding is performed
       //  a marker with the new geocoded data is updated
-      $("#id_latitude").val( e.geocode.center.lat );
-      $("#id_longitude").val( e.geocode.center.lng );
-      $("#id_name").val( e.geocode.properties.display_name );
+      this.setNodeValue("#id_latitude",  e.geocode.center.lat);
+      this.setNodeValue("#id_longitude", e.geocode.center.lng);
+      this.setNodeValue("#id_name", e.geocode.properties.display_name);
+
+      // Create the marker with "dragend" listener
+      this.map.fitBounds(e.geocode.bbox);
+      if (this._previousGeocodeMarker) {
+        this.map.removeLayer(this._previousGeocodeMarker);
+      }
+      this._previousGeocodeMarker = L.marker(
+        e.geocode.center,
+        {draggable: this.markersDrag}
+      )
+      .addTo(this.map)
+      .bindPopup(e.geocode.html || e.geocode.name)
+      .openPopup()
+      .on("dragend", (e) => {
+        let changedPos = e.target.getLatLng();
+        this.setNodeValue("#id_latitude", changedPos.lat);
+        this.setNodeValue("#id_longitude", changedPos.lng);
+      });
     })
     .addTo(this.map);
 
     // Markers layer
-    let markersLayer = L.markerClusterGroup( {
+    let markersLayer = L.markerClusterGroup({
       showCoverageOnHover: true,
       zoomToBoundsOnClick: true,
-      removeOutsideVisibleBounds: true
-    } );
+      removeOutsideVisibleBounds: true,
+    });
 
     if (this.markersList) {
       // There's a markers list !
       this.addMarkers(this.markersList, markersLayer);
-    } else if( this.markersUrl != "" ){
+    } else {
       // ... using the API request
       this.requestMarkers(markersLayer);
     }
@@ -204,13 +230,13 @@ class FrancoraliteMap extends HTMLElement {
 
   requestMarkers(markersLayer) {
     // Request the locations of the collections
-    if(this.markersUrl != ""){
+    if (this.markersUrl) {
       let xhr = new XMLHttpRequest();
       xhr.addEventListener('load', (event) => {
         const data = JSON.parse(event.target.response);
         this.addMarkers(data.results !== undefined ? data.results : data, markersLayer);
       });
-      xhr.open('GET', this.markersUrl || DEFAULT_MARKERS_URL, true);
+      xhr.open('GET', this.markersUrl, true);
       xhr.send(null);
     }
   }
@@ -219,12 +245,13 @@ class FrancoraliteMap extends HTMLElement {
     // Create the markers and the popup
 
     // A function to create the markers
-    let markersCreate = (loc, markersLayer, dragIt=false) => {
-      if(loc.collection && loc.location) {
+    let createMarker = (loc) => {
+      if (loc.collection && loc.location) {
          // It's a Collection-Location
         markersLayer.addLayer(
           L.marker(
-            [loc.location.latitude,loc.location.longitude]
+            [loc.location.latitude, loc.location.longitude],
+            {draggable: this.markersDrag}
           ).bindTooltip(
             "Code : " + loc.collection.code + "<br>" +
             "Titre : " + loc.collection.title + "<br>" +
@@ -238,13 +265,18 @@ class FrancoraliteMap extends HTMLElement {
             loc.location.id + '"><b>' + loc.location.code +
             '</b></a><p>' + loc.location.name + '</p><hr/><i>' +
             loc.location.notes + '</i>'
-          )
+          ).on("dragend", (e) => {
+            let changedPos = e.target.getLatLng();
+            this.setNodeValue("#id_latitude", changedPos.lat);
+            this.setNodeValue("#id_longitude", changedPos.lng);
+          })
         );
       } else {
         // It's a Location, only
         markersLayer.addLayer(
           L.marker(
-            [loc.latitude,loc.longitude],{ draggable:dragIt }
+            [loc.latitude, loc.longitude],
+            {draggable: this.markersDrag}
           ).bindTooltip(
             "Code : " + loc.code + "<br>" +
             "Nom : " + loc.name + "<br>"
@@ -255,26 +287,32 @@ class FrancoraliteMap extends HTMLElement {
             loc.notes + '</i>'
           ).on("dragend", (e) => {
             let changedPos = e.target.getLatLng();
-           $("#id_latitude").val( changedPos.lat );
-           $("#id_longitude").val( changedPos.lng );
-            }
-          )
+            this.setNodeValue("#id_latitude", changedPos.lat);
+            this.setNodeValue("#id_longitude", changedPos.lng);
+          })
         );
       }
     };
 
     // Test the type of the locations
     if (Array.isArray(locations)) {
-      locations.forEach(loc => markersCreate(loc, markersLayer));
+      locations.forEach(loc => createMarker(loc));
     } else {
-      markersCreate(locations, markersLayer, true);
+      createMarker(locations);
     }
 
     // Add on the map this new layer
     this.map.addLayer(markersLayer);
   }
 
-
+  setNodeValue(nodeSelector, value) {
+    const node = document.querySelector(nodeSelector);
+    if (node instanceof HTMLInputElement) {
+      node.value = value;
+    } else if (node) {
+      node.innerHTML = value;
+    }
+  }
 }
 
-window.customElements.define("francoralite-map", FrancoraliteMap);
+customElements.define("francoralite-map", FrancoraliteMap);
