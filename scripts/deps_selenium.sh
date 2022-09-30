@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Reactivation of the main buster depot via snapshot.debian.org for firefox-esr 78.14
-sed -e '/snapshot.* buster /s/^# //' -i /etc/apt/sources.list
+# Reactivation of the main buster depot via snapshot.debian.org for firefox-esr 78.14 (with the worst priority to maintain a better overall download speed)
+grep '^deb .*snapshot.* buster ' /etc/apt/sources.list >/dev/null 2>&1 || echo -e '\ndeb http://snapshot.debian.org/archive/debian/20220228T000000Z buster main' >> /etc/apt/sources.list
 
 apt update
 
