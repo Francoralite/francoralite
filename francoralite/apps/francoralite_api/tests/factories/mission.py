@@ -24,7 +24,7 @@ class MissionFactory(factory.django.DjangoModelFactory):
     description = factory.Faker('word')
     code = factory.Faker('uuid4')
     fonds = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.fond.FondFactory")
-    code_partner = factory.Faker('word')
+    code_partner = factory.Faker('uuid4')
     public_access = factory.Iterator(['metadata', 'full'])
 
 

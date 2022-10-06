@@ -53,7 +53,7 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     publisher_collection = factory.Faker('word')
     booklet_author = factory.Faker('word')
     metadata_author = factory.Faker('word')
-    code_partner = factory.Faker('word')
+    code_partner = factory.Faker('uuid4')
     booklet_description = factory.Faker('paragraph', nb_sentences=3)
     comment = factory.Faker('paragraph', nb_sentences=5)
     media_type = factory.SubFactory(MediaTypeFactory)
@@ -83,7 +83,7 @@ class CollectionCompleteFactory(CollectionFactory):
             PerformanceCollectionMusicianFactory.create_batch(
                 2, performance_collection = perf)
         ItemCollectionFactory.create_batch(3, collection = self)
-            
+
 class CollectionItemsFactory(CollectionFactory):
     """
     Collection with items related

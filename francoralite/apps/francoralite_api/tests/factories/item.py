@@ -50,7 +50,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
     alt_title = factory.Faker('word')
     trans_title = factory.Faker('word')
     description = factory.Faker('paragraph', nb_sentences=5)
-    code_partner = factory.Faker('word')
+    code_partner = factory.Faker('uuid4')
     auto_period_access = factory.Faker('boolean')
     remarks = factory.Faker('paragraph', nb_sentences=5)
     date_edit = factory.LazyFunction(datetime.datetime.now)
