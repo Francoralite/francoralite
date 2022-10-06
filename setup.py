@@ -83,7 +83,7 @@ setup(
       'pytest-env==0.6.2',
       'pytest-pythonpath==0.7.3',
       'coveralls==3.0.1',
-      'selenium==4.1.0',
+      'selenium==4.5.0',
       'coverage==5.5',
       'coveragepy-lcov==0.1.1',
       'icecream==2.1.1',
