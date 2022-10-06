@@ -41,7 +41,6 @@ def test_fonds_details(francoralite_context):
         # Verify data
         data = {
             'id_code': 'UPOI_AFE',
-            'id_title': "Fonds issus des Archives de Folklore et d'Ethnologie [Exemple]",
             'id_description': "Les Archives de Folklore et d'Ethnologie sont constituées des fonds et des collections, privés ou publics, concernant la culture des francophones en Amérique du Nord. Cette documentation reflète les manifestations tant esthétiques que pragmatiques de cette culture, soit les us et coutumes, les légendes, les contes, les chansons, les métiers, le costume, la religion, la musique, les histoires de vie, etc. Elle se base principalement sur des enquêtes sur le terrain mais aussi sur des dépouillements bibliographiques et des travaux de recherche.",
             'id_conservation_site': 'Poitiers',
         }
@@ -113,6 +112,7 @@ def test_fonds_add(francoralite_context):
     francoralite_context.open_url('/fond/3')
 
     # Verify content
+    del content['id_title']
     francoralite_context.verify_data(content)
 
 
