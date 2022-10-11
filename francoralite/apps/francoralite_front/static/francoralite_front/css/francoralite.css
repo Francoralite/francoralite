@@ -966,12 +966,10 @@ img.align-left {
 
 .module {
     border: 1px solid #000;
-    background-image: url(../images/grid_bg.png);
-    padding: 0.2em;
     margin: 0 0 1.5em 1.5em;
-    -moz-border-radius: 8px 0px 11px 11px;
-    -webkit-border-radius: 8px 0px 11px 11px;
-    border-radius: 11px 0px 11px 11px;
+    -moz-border-radius: 0px 0px 11px 11px;
+    -webkit-border-radius: 0px 0px 11px 11px;
+    border-radius: 0px 0px 11px 11px;
 }
 
 .module h3 {
@@ -1030,7 +1028,6 @@ a.image-link {
 }
 
 .home-description {
-    padding-right: 33%;
     display: block;
     margin: 3em;
 }
@@ -1038,6 +1035,45 @@ a.image-link {
 #content .home-description h1::before{
   content: "";
   padding:0;
+}
+
+.home-block{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0.5rem;
+}
+
+.home-block-detail{
+    border: 2px solid;
+    border-color: #6a0307;
+    border-radius: 0.5rem;
+}
+
+.home-block-detail h2{
+    padding: 0.5rem;
+    background: #6a0307;
+    color:white;
+    margin-top: 0px;
+}
+
+.home-block-content {
+    padding: 1rem;
+}
+
+#block-geonav h2 {
+    margin-bottom: 0px;
+}
+
+#block-geonav .home-block-content {
+    padding: 0px;
+    height: 600px;
+    width: 100%;
+}
+
+#block-partners .home-block-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 #content ul.playlist {

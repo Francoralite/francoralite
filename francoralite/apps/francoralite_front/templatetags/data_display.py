@@ -9,6 +9,8 @@ from django.utils.translation import gettext_lazy as _
 from francoralite_front.errors import APPLICATION_ERRORS
 from django.utils.safestring import mark_safe
 
+import json
+
 register = template.Library()
 
 
@@ -190,3 +192,8 @@ def display_documents(context):
 @register.inclusion_tag('inc/nakala_button.html')
 def nakala_button(*args, **kwargs):
     return{}
+
+
+@register.filter(name='json')
+def json_dumps(data):
+    return json.dumps(data)

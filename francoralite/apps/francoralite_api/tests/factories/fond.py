@@ -28,7 +28,7 @@ class FondFactory(factory.django.DjangoModelFactory):
     # descriptions = factory.Faker('word')
     code = factory.Faker('uuid4')
     institution = factory.SubFactory(InstitutionFactory)
-    code_partner = factory.Faker('word')
+    code_partner = factory.Faker('uuid4')
     # public_access = factory.Iterator(['metadata', 'full'])
     acquisition_mode = factory.SubFactory(AcquisitionModeFactory)
     conservation_site = factory.Faker('word')

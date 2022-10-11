@@ -20,18 +20,18 @@ class TestCodeList(APITestCase):
         """
         get_token(self, username="administrateur")
 
-        FondFactory.create_batch(3)
+        FondFactory.create_batch(300)
 
     def test_get_codes_external(self):
         response = self.client.get("/api/code_external/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 300)
 
     def test_get_codes_internal(self):
         response = self.client.get("/api/code_internal/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data), 300)
