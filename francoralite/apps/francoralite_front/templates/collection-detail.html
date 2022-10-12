@@ -50,6 +50,9 @@
        <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
      </li>
      <li>
+       <a href="#tab_media" role="tab" data-toggle="tab">{% trans "Médias associés" %}</a>
+     </li>
+     <li>
        <a href="#tab_item" role="tab" data-toggle="tab">{% trans "Items" %}</a>
      </li>
   </ul>
@@ -68,19 +71,21 @@
         </dl>
         {% field_data_id form.code_partner collection.code_partner|safe  empty=False %}
         {% field_data_id form.code collection.code|upper|safe %}
-        {% field_data_id form.title collection.title|safe %}
         {% field_data_id form.alt_title collection.alt_title|safe empty=False %}
         {% field_data_id form.legal_rights collection.legal_rights.name|safe %}
       </div>
 
       <div class="container_line">
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+          <dd class="donnee" id="id_duration">{{collection.duration}}</dd>
+        </dl>
         {% field_data_id form.description collection.description|markdown|safe %}
       </div>
 
       <div class="block-grey">
-        <h2>{% trans "Période" %}</h2>
+        <h2>{% trans "Période d'enregistrements" %}</h2>
         {% field_data_id form.year_published collection.year_published|safe %}
-        <h3>{% trans "Années d'enregistrement" %}</h3>
         <div class="container_line">
           <dl class="container_data">
             <dt class="libelle"> {% trans 'Depuis' %}</dt>
@@ -90,41 +95,30 @@
             <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
             <dd class="donnee" id="id_recorded_to_year">{{collection.recorded_to_year}}</dd>
           </dl>
-          <dl class="container_data">
-            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
-            <dd class="donnee" id="id_duration">{{collection.duration}}</dd>
-          </dl>
         </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
         <dl class="container_data">
-          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dt class="libelle"> {% trans 'Enquêteurs' %}</dt>
           <dd class="donnee">
-            <ul>
             {% for collector in collection.collectors %}
-              <li>
                 <a href="{% url "personne-detail" id=collector.id %}"
                 onclick="window.open(this.href); return false;">
                 {{collector.first_name}} {{collector.last_name}}
-                </a>
-            </li>
+                </a>{% if not forloop.last %}, {% endif %}
             {% endfor %}
-            </ul>
           </dd>
         </dl>
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Informateurs' %}</dt>
           <dd class="donnee">
-            <ul>
             {% for informer in collection.informers %}
-              <li>
                 <a href="{% url "personne-detail" id=informer.id %}"
                 onclick="window.open(this.href); return false;">
                 {{informer.first_name}} {{informer.last_name}}
-                </a>
-              </li>
+                </a>{% if not forloop.last %}, {% endif %}
             {% endfor %}
             </ul>
           </dd>
@@ -232,10 +226,13 @@
         </div>
       </div>
 
-      {% display_documents %}
-
     </section>
 
+    <!-- Onglet des media associes -->
+    <section class="tab-pane fade in" id="tab_media">
+      {% display_documents %}
+      <script type="text/javascript">if (document.location.hash === '#media') { $('.nav-tabs li:nth-child(2) a').tab('show'); }</script>
+    </section>
 
     <!-- Onglet des items -->
     <section class="tab-pane fade in" id="tab_item">
@@ -315,7 +312,7 @@
       {% endif %}
       </div>
     </div>
-    <script type="text/javascript">if (document.location.hash === '#items') { $('.nav-tabs li:nth-child(2) a').tab('show'); }</script>
+    <script type="text/javascript">if (document.location.hash === '#items') { $('.nav-tabs li:nth-child(3) a').tab('show'); }</script>
   </section>
 
   {% else %}

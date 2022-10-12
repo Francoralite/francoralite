@@ -42,7 +42,6 @@ def test_collection_details(francoralite_context):
 
         # Verify data
         data = {
-            'id_title': "Répertoire chanté de Sœur Cécilia McGraw au Nouveau-Brunswick [Extrait d'enquête]",
             'id_description': "Extrait d'enquête de Sœur Jeanne d'Arc Lortie le 15 mars 1963 auprès de Sœur Cécilia McGraw (53 ans).",
             'id_code': 'UPOI_AFE_0000_0001',
             'id_recorded_from_year': '1963-01-01',
@@ -101,6 +100,7 @@ def test_collection_add(francoralite_context):
     francoralite_context.open_url('/collection/5')
 
     # Verify content
+    del content['id_title']
     francoralite_context.verify_data(content)
 
 

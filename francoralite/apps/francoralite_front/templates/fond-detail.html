@@ -107,10 +107,7 @@
                 <a href="{% url "personne-detail" id=collector.id %}"
                   target="_blank">
                   {{collector.first_name}} {{collector.last_name}}
-                </a>
-                {% if not loop.last %}
-                  ,
-                {% endif %}
+                </a>{% if not forloop.last %}, {% endif %}
             {% endfor %}
           </dd>
         </dl>
@@ -121,10 +118,7 @@
                 <a href="{% url "personne-detail" id=informer.id %}"
                   target="_blank">
                   {{informer.first_name}} {{informer.last_name}}
-                </a>
-                {% if not loop.last %}
-                  ,
-                {% endif %}
+                </a>{% if not forloop.last %}, {% endif %}
               {% endfor %}
             </ul>
           </dd>
