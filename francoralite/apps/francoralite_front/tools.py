@@ -204,9 +204,9 @@ def patch(entity, form_entity, request, *args, **kwargs):
     """
 
     form = form_entity(request.POST)
+    form.current_id = id = int(kwargs.get('id'))
     if entity == 'item':
         form.fields['file'].required = False
-    id = kwargs.get('id')
 
     entity_api = entity
     if entity in PROBLEM_NAMES:

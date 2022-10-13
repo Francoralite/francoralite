@@ -1,6 +1,50 @@
 [
   {
     "fields": {
+      "type": "M",
+      "title": "Géo-Navigateur",
+      "content": "",
+      "order": 2,
+      "show": true
+    },
+    "model": "francoralite_api.block",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "type": "P",
+      "title": "Partenaires",
+      "content": "",
+      "order": 4,
+      "show": true
+    },
+    "model": "francoralite_api.block",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "type": null,
+      "title": "Présentation",
+      "content": "Bonjour et bienvenue sur Francoralité !",
+      "order": 1,
+      "show": true
+    },
+    "model": "francoralite_api.block",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "type": null,
+      "title": "Focus",
+      "content": "",
+      "order": 3,
+      "show": true
+    },
+    "model": "francoralite_api.block",
+    "pk": 4
+  },
+  {
+    "fields": {
       "name": "QUÊTES DE MAI, DE PRINTEMPS",
       "uri": "http://sha.univ-poitiers.fr/musicologie/vocabulaires/coirault/collection_90",
       "number": "X.90",

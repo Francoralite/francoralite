@@ -1,0 +1,94 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Bloc" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if perms.keycloak.block_add %}
+  <a href="{% url "block-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un bloc" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some block (number of elements > 0 ) -->
+{% if blocks|length > 0 %}
+  <!-- Table to display the blocks -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Type" %}</th>
+      <th>{% trans "Ordre d’affichage" %}</th>
+      <th>{% trans "Afficher" %}</th>
+      {% if perms.keycloak.block_update or perms.keycloak.block_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for block in blocks %}
+  <tr>
+      <td class="highlight">
+          <a href="/block/{{block.id }}">
+            {{ block.title|upper }}</a>
+      </td>
+      <td>{{ block.type_label|default:"" }}</td>
+      <td>{{ block.order }}</td>
+      <td>{{ block.show|yesno:"oui,non" }}</td>
+      {% if perms.keycloak.block_update or perms.keycloak.block_delete %}
+      <td>
+        {% if perms.keycloak.block_update %}
+        <a href="{% url "block-edit" id=block.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.block_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{block.title}}"
+            data-url="{% url "block-delete" id=block.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.block_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de bloc" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}
