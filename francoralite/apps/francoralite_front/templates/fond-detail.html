@@ -71,16 +71,15 @@
       </div>
 
       <div class="container_line">
-        {% field_data_id form.description fond.description|markdown|safe %}
-      </div>
-
-      <div class="container_line">
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
           <dd id="id_duration" class="donnee">{{duration}}</dd>
         </dl>
       </div>
 
+      <div class="container_line">
+        {% field_data_id form.description fond.description|markdown|safe %}
+      </div>
 
       {% display_documents %}
 
