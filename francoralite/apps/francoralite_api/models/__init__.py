@@ -3,6 +3,7 @@ Manage these import to have models discoverables from Django makemigrations
 """
 
 from .authority import Authority
+from .block import Block
 from .coupe import Coupe
 from .mediatype import MediaType
 from .legal_rights import LegalRights

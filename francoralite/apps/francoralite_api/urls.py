@@ -4,6 +4,7 @@ from .views import (
     acquisition_mode,
     advanced_search,
     authority,
+    block,
     civility,
     code_external,
     code_internal,
@@ -95,6 +96,8 @@ urlpatterns = [
 
 
 router = routers.SimpleRouter(trailing_slash=False)
+router.register(r'block',
+                block.BlockViewSet, basename='block')
 router.register(r'institution',
                 institution.InstitutionViewSet, basename='institution')
 router.register(r'coupe', coupe.CoupeViewSet, basename='coupe')
