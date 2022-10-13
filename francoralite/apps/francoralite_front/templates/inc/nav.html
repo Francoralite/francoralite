@@ -48,46 +48,77 @@
                   </li>
                 </ul>
             </li>
+            <li class="has-children">
+              <a href="{% url "location_gis" %}">{% trans "Lieux" %}</a>
+                <ul class="sous-menu">
+                  <li>
+                    <a href="{% url "location_gis-collection" %}">{% trans "Par enquêtes" %}</a>
+                  </li>
+                </ul>
+            </li>
             <li>
               <a href="{% url "cultural_area" %}">{% trans "Aires culturelles" %}</a>
+            </li>
+            <li>
+              <a href="{% url "language" %}">{% trans "Langue" %}</a>
+            </li>
+            <li>
+              <a href="{% url "thematic" %}">{% trans "Thématique" %}</a>
             </li>
             <li class="has-children"><a href="#musique">Musique</a>
               <ul class="sous-menu">
                 <li>
-                  <a href="{% url "coupe" %}">{% trans "Coupe" %}</a>
+                  <a href="{% url "domain_vocal" %}">{% trans "Genre d'autre expression vocale" %}</a>
                 </li>
                 <li>
-                  <a href="{% url "musical_group" %}">{% trans "Formation (musicale)" %}</a>
+                  <a href="{% url "emit_vox" %}">{% trans "Nature des émissions vocales" %}</a>
                 </li>
                 <li>
-                  <a href="{% url "hornbostelsachs" %}">{% trans "Hornbostel-Sachs" %}</a>
+                  <a href="{% url "domain_music" %}">{% trans "Genre de musique instrumentale" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "instrument" %}">{% trans "Instruments-Voix" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "hornbostelsachs" %}">{% trans "Classification Hornbostel-Sachs" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "usefulness" %}">{% trans "Fonction" %}</a>
                 </li>
                 <li>
                   <a href="{% url "musical_organization" %}">{% trans "Organisation musicale" %}</a>
                 </li>
                 <li>
-                  <a href="{% url "instrument" %}">{% trans "Voix/Instruments" %}</a>
+                  <a href="{% url "musical_group" %}">{% trans "Formation (musicale)" %}</a>
                 </li>
-              </ul>
+            </ul>
             </li>
-            <li class="has-children"><a href="#genre">Genre</a>
+            <li class="has-children"><a href="#chanson">{% trans "Chanson" %}</a>
               <ul class="sous-menu">
                 <li>
                   <a href="{% url "domain_song" %}">{% trans "Genre de chanson" %}</a>
                 </li>
                 <li>
+                  <a href="{% url "coupe" %}">{% trans "Coupe" %}</a>
+                </li>
+
+              </ul>
+            </li>
+            <li class="has-children"><a href="#conte">{% trans "Conte" %}</a>
+              <ul class="sous-menu">
+                <li>
                   <a href="{% url "domain_tale" %}">{% trans "Genre de conte" %}</a>
-                </li>
-                <li>
-                  <a href="{% url "domain_music" %}">{% trans "Genre de musique" %}</a>
-                </li>
-                <li>
-                  <a href="{% url "domain_vocal" %}">{% trans "Genre vocal" %}</a>
                 </li>
               </ul>
             </li>
             <li>
+              <a href="{% url "dance" %}">{% trans "Danses" %}</a>
+            </li>
+            <li>
               <a href="{% url "recording_context" %}">{% trans "Contexte d’enregistrement" %}</a>
+            </li>
+            <li>
+              <a href="{% url "mediatype" %}">{% trans "Type de média" %}</a>
             </li>
             <li class="has-children">
               <a href="#editeur">{% trans "Édition" %}</a>
@@ -101,35 +132,11 @@
                 <li>
                   <a href="{% url "metadata_author" %}">{% trans "Meta donnée auteur" %}</a>
                 </li>
-                <li>
-                  <a href="{% url "mediatype" %}">{% trans "Type de média" %}</a>
-                </li>
               </ul>
             </li>
-            <li>
-              <a href="{% url "dance" %}">{% trans "Danse" %}</a>
-            </li>
-            <li>
-              <a href="{% url "emit_vox" %}">{% trans "Nature des émissions vocales" %}</a>
-            </li>
-            <li>
-              <a href="{% url "language" %}">{% trans "Langue" %}</a>
-            </li>
-            <li>
-              <a href="{% url "thematic" %}">{% trans "Thématique" %}</a>
-            </li>
-            <li>
-              <a href="{% url "usefulness" %}">{% trans "Fonction" %}</a>
-            </li>
-          </ul>
-      </li>
 
-      <li class="has-children yellow">
-        <a href="{% url "location_gis" %}">{% trans "Lieux" %}</a>
-          <ul class="sous-menu">
-            <li>
-              <a href="{% url "location_gis-collection" %}">{% trans "Par enquêtes" %}</a>
-            </li>
+
+
           </ul>
       </li>
 

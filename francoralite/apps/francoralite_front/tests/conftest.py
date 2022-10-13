@@ -53,6 +53,7 @@ class FrancoraliteSeleniumContext():
         options.headless = True
         options.firefox_path = '/usr/bin/firefox-esr'
         self.browser = Firefox(options=options)
+        self.browser.set_window_size(1080, 1080)
 
     def open_url(self, url):
         self.browser.get(self.URL_PREFIX + url)
