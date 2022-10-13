@@ -95,7 +95,7 @@ class ItemForm(forms.Form):
         label=_(u'Présence de texte'),
         required=False)
     text = forms.CharField(
-        label=_(u'Texte'),
+        label=_(u'Paroles'),
         widget=forms.Textarea, required=False)
     incipit = forms.CharField(
         label=_(u'Incipit'),
