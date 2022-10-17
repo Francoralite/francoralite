@@ -166,6 +166,11 @@ def post(entity, form_entity, request, *args, **kwargs):
         except RequestException as e:
             handle_message_from_exception(request, e)
 
+    else:
+        for errors in form.errors.values():
+            for error in errors:
+                messages.add_message(request, messages.ERROR, error)
+
     return HttpResponseRedirect('/' + entity_url + '/add')
 
 
@@ -243,6 +248,11 @@ def patch(entity, form_entity, request, *args, **kwargs):
 
         except RequestException as e:
             handle_message_from_exception(request, e)
+
+    else:
+        for errors in form.errors.values():
+            for error in errors:
+                messages.add_message(request, messages.ERROR, error)
 
     return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 

@@ -47,7 +47,6 @@ class BlockForm(forms.Form):
             if block_title and block.get('title') == block_title:
                 self.add_error('title', ValidationError(
                     _('Un bloc avec ce titre existe déjà.')))
-                raise ValidationError(_('Un bloc avec ce titre existe déjà.'))
 
             block_type = cleaned_data.get('type')
             if block_type and block.get('type') == block_type:
