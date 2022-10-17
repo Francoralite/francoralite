@@ -20,6 +20,8 @@ const CONTROL_GEOCODER_CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/perlied
 import "/static/francoralite_front/js/leaflet.js";
 import "https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js";
 import "https://cdnjs.cloudflare.com/ajax/libs/perliedman-leaflet-control-geocoder/2.4.0/Control.Geocoder.min.js";
+import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "/static/francoralite_front/js/md-block.js";
+
 
 
 const STYLESHEET = `
@@ -247,7 +249,7 @@ class FrancoraliteMap extends HTMLElement {
     // A function to create the markers
     let createMarker = (loc) => {
       if (loc.collection && loc.location) {
-         // It's a Collection-Location
+        // It's a Collection-Location
         markersLayer.addLayer(
           L.marker(
             [loc.location.latitude, loc.location.longitude],
@@ -259,7 +261,7 @@ class FrancoraliteMap extends HTMLElement {
           ).bindPopup(
             '<h4><a href="/collection/' + loc.collection.id + '">' +
             loc.collection.code + ' - ' + loc.collection.title + '</a></h4>' +
-            '<p>' + loc.collection.descriptions + '</p>' +
+            '<p><md-block>' + loc.collection.description + '</md-block></p>' +
             '<hr />' +
             'Lieu : <a href="/location_gis/' +
             loc.location.id + '"><b>' + loc.location.code +
