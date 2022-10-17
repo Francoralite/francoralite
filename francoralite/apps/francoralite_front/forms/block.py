@@ -39,6 +39,10 @@ class BlockForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
 
+        if cleaned_data.get('type') and cleaned_data.get('content'):
+            self.add_error('type', ValidationError(
+                _('Un bloc de ce type ne peut pas avoir un contenu personnalisé.')))
+
         for block in tools.request_api('/api/block'):
             if block.get('id') == getattr(self, 'current_id', None):
                 continue

@@ -5,6 +5,7 @@ class TestBlock(EnumsTest):
     entity = 'block'
     first_text_field = 'title'
     second_text_field = 'content'
+    update_record_id = 3
     title = 'Bloc'
     data = [
         {'id': '3', 'title': 'Présentation', 'type': '', 'content': 'Bonjour et bienvenue sur Francoralité !', 'order': 1, 'show': True},

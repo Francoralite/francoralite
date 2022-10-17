@@ -5,6 +5,7 @@ class EnumsTest:
     first_text_field = 'name'
     second_text_field = 'notes'
     title_use_second_text_field = False
+    update_record_id = 1
 
     @property
     def url_prefix(self):
@@ -102,7 +103,7 @@ class EnumsTest:
             francoralite_context.open_homepage(auth_username=username)
 
             # Go to the first edit page
-            francoralite_context.open_url(self.url_prefix + '/edit/1')
+            francoralite_context.open_url(self.url_prefix + '/edit/' + str(self.update_record_id))
 
             # Write a note
             francoralite_context.set_element_value('id_' + self.second_text_field, 'Test notes')
@@ -111,7 +112,7 @@ class EnumsTest:
             francoralite_context.find_element(by_id='save').click()
 
             # The notes updated on the detail page
-            francoralite_context.open_url(self.url_prefix + '/1')
+            francoralite_context.open_url(self.url_prefix + '/' + str(self.update_record_id))
             label = francoralite_context.find_element(by_id="id_" + self.second_text_field)
             assert label.text == 'Test notes'
 
