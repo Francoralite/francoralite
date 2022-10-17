@@ -4,15 +4,16 @@
 {# spaces between li and a elements breaks layout #}
 <nav role="navigation" aria-label="Menu principal" class="nav">
   <ul class="menu">
-      {% if user.is_authenticated %}
-        <li>
-          <a href="{% url "home" %}" class="blue">{% trans "Accueil" %}</a>
-        </li>
-      {% else %}
-        <li class="blue">
-          <a href="{% url "home" %}">{% trans "Accueil" %}</a>
-        </li>
-      {% endif %}
+      <li class="has-children blue">
+        <a href="{% url "home" %}">{% trans "Accueil" %}</a>
+        {% if user.is_authenticated and perms.keycloak.block_view %}
+        {% if perms.keycloak.block_add or perms.keycloak.block_update or perms.keycloak.block_delete %}
+        <ul class="sous-menu">
+          <li><a href="{% url "block" %}">Édition des blocs</a></li>
+        </ul>
+        {% endif %}
+        {% endif %}
+      </li>
 
       <li class="has-children green">
         <a href="#archives" >Archives sonores</a>

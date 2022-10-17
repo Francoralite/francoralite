@@ -106,6 +106,7 @@ class KeycloakMiddleware(object):
                 'acquisition_mode:view',
                 'authority:view',
                 'acquisition_mode:view',
+                'block:view',
                 'collection_language:view',
                 'collection_location:view',
                 'collection_publisher:view',

@@ -28,6 +28,7 @@ from .views import (
 )
 
 from .views.enum import (
+    block, block_edit, block_delete, block_detail, block_add,
     instrument, instrument_edit, instrument_delete, instrument_detail,
     instrument_add,
     domain_song, domain_song_edit, domain_song_delete, domain_song_detail,
@@ -126,6 +127,21 @@ urlpatterns = [
         personne_editor.PersonneEditorView.as_view(),
         name="personne-editor"),
 
+    # Blocks
+    re_path(r'^block$', block.BlockView.as_view(),
+        name="block"),
+    re_path(r'^block/add$',
+        block_add.BlockAdd.as_view(),
+        name='block-add'),
+    re_path(r'^block/(?P<id>[0-9]+)$',
+        block_detail.BlockDetail.as_view(),
+        name='block-detail'),
+    re_path(r'^block/edit/(?P<id>[0-9]+)$',
+        block_edit.BlockEdit.as_view(),
+        name='block-edit'),
+    re_path(r'^block/delete/(?P<id>[0-9]+)$',
+        block_delete.BlockDelete.as_view(),
+        name='block-delete'),
 
     # Location ( Lieux)
     re_path(r'^location$', location.LocationView.as_view(),
