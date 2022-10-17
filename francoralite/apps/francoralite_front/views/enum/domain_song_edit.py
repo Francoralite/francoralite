@@ -16,3 +16,7 @@ class DomainSongEdit(FrancoraliteFormView):
     form_class = DomainSongForm
     template_variable_name = 'domain_song'
     success_url = '/domain_song/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'domain_song:update',
+    }

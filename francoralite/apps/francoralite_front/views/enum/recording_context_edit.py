@@ -16,3 +16,7 @@ class RecordingContextEdit(FrancoraliteFormView):
     entity_name = 'recording_context'
     template_variable_name = 'recording_context'
     success_url = '/recordingcontext/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'recording_context:update',
+    }

@@ -12,6 +12,9 @@ import francoralite.apps.francoralite_front.tools as tools
 
 class MetadataAuthorDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/metadata_author-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'metadata_author:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:

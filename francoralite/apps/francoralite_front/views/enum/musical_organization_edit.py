@@ -16,3 +16,7 @@ class MusicalOrganizationEdit(FrancoraliteFormView):
     entity_name = 'musical_organization'
     template_variable_name = 'musical_organization'
     success_url = '/musical_organization/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'musical_organization:update',
+    }

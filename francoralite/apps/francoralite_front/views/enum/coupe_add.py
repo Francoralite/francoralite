@@ -15,5 +15,9 @@ class CoupeAdd(FormView):
     form_class = CoupeForm
     success_url = '/coupe/'
 
+    keycloak_scopes = {
+        'DEFAULT': 'coupe:add',
+    }
+
     def post(self, request, *args, **kwargs):
         return tools.post('coupe', CoupeForm, request, *args, **kwargs)

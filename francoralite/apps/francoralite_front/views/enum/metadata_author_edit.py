@@ -19,6 +19,10 @@ class MetadataAuthorEdit(FormView):
     form_class = MetadataAuthorForm
     success_url = '/metadata_author/'
 
+    keycloak_scopes = {
+        'DEFAULT': 'metadata_author:update',
+    }
+
     def get_context_data(self, **kwargs):
         context = super(MetadataAuthorEdit, self).get_context_data(**kwargs)
 

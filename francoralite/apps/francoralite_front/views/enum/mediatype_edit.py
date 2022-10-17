@@ -16,3 +16,7 @@ class MediaTypeEdit(FrancoraliteFormView):
     form_class = MediaTypeForm
     template_variable_name = 'mediatype'
     success_url = '/mediatype/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'mediatype:update',
+    }

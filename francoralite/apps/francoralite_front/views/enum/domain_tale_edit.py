@@ -16,3 +16,7 @@ class DomainTaleEdit(FrancoraliteFormView):
     form_class = DomainTaleForm
     template_variable_name = 'domain_tale'
     success_url = '/domain_tale/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'domain_tale:update',
+    }

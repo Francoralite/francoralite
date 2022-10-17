@@ -16,3 +16,7 @@ class HornbostelsachsEdit(FrancoraliteFormView):
     form_class = HornbostelsachsForm
     template_variable_name = 'hornbostelsachs'
     success_url = '/hornbostelsachs/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'hornbostelsachs:update',
+    }

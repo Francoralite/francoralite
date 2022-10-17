@@ -15,6 +15,10 @@ class MetadataAuthorAdd(FormView):
     form_class = MetadataAuthorForm
     success_url = '/metadata_author/'
 
+    keycloak_scopes = {
+        'DEFAULT': 'metadata_author:add',
+    }
+
     def post(self, request, *args, **kwargs):
         return tools.post(
             'metadata_author', MetadataAuthorForm, request, *args, **kwargs)

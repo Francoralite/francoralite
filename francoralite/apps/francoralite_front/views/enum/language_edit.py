@@ -18,7 +18,5 @@ class LanguageEdit(FrancoraliteFormView):
     success_url = '/language/'
 
     keycloak_scopes = {
-            'GET': 'language:view',
-            'POST': 'language:add',
-            'PATCH': 'language:update',
-            'PUT': 'language:update'}
+        'DEFAULT': 'language:update',
+    }

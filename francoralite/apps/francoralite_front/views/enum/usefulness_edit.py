@@ -16,3 +16,7 @@ class UsefulnessEdit(FrancoraliteFormView):
     entity_name = 'usefulness'
     template_variable_name = 'usefulness'
     success_url = '/usefulness/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'usefulness:update',
+    }

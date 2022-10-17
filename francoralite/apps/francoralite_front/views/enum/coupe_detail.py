@@ -17,7 +17,6 @@ class CoupeDetail(FrancoraliteTemplateView):
     keycloak_scopes = {
         'DEFAULT': 'coupe:view',
     }
-    api_url_prefix = '/api/coupe/'
 
     def get_context_data(self, **kwargs):
         try:
