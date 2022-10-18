@@ -8,7 +8,6 @@
 
 {% block javascript %}
   {{ block.super }}
-  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 {% endblock %}
 
 
@@ -35,12 +34,12 @@
   <table class="listing">
   <thead>
   <tr>
-      <th class="sortable highlight">{% trans "Cote" %}</th>
-      <th class="sortable">{% trans "Nom" %}</th>
-      <th class="sortable">{% trans "Description" %}</th>
-      <th class="sortable number">{% trans "Missions" %}</th>
-      <th class="sortable number">{% trans "Enquêtes" %}</th>
-      <th class="sortable number">{% trans "Items" %}</th>
+      {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") highlight=True %}
+      {% include "inc/sortable-table-column-header.html" with field="title" label=_("Nom") %}
+      {% include "inc/sortable-table-column-header.html" with field="description" label=_("Description") %}
+      <th>{% trans "Missions" %}</th>
+      <th>{% trans "Enquêtes" %}</th>
+      <th>{% trans "Items" %}</th>
       <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <th>{% trans "Modifier" %}</th>
