@@ -46,7 +46,7 @@ def field_data_id(field, data, empty=True):
 
     try:
         str_data = str(data)
-        if str_data == "None":
+        if str_data == "None" or str_data == "<p>None</p>":
             str_data = ""
     except Exception:
         str_data = data

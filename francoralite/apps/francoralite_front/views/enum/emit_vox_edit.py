@@ -16,3 +16,7 @@ class EmitVoxEdit(FrancoraliteFormView):
     form_class = EmitVoxForm
     template_variable_name = 'emit_vox'
     success_url = '/emit_vox/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'emit_vox:update',
+    }

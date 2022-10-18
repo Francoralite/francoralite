@@ -145,6 +145,21 @@ h1, h2, h3, h4 {
   margin-left:10px;
 }
 
+
+.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: white;
+}
+
+.sticky-1 {
+    position: sticky;
+    top: 8rem;
+    z-index: 5;
+}
+
+
 /*
 #content h1 {
     color: #6a0307;
@@ -617,9 +632,8 @@ dl.listing dd {
 
 /* onglets en fixe */
 .nav-tabs {
-  border-bottom: 1px solid #ddd;
-  position: sticky;
-  top: 0;
+  top: 4rem;
+  position:sticky;
   z-index: 3;
   background: white;
   padding-top: 5px;
@@ -1006,13 +1020,21 @@ a.image-link {
     border: none;
 }
 
+#logo {
+    margin: 15px;
+}
+
+#francoralite-bandeau {
+    max-height: 88px;
+    margin-left: 10px;
+}
+
 .logo {
     border: none;
     vertical-align:middle;
     -moz-border-radius: 0px 0px 0px 0px;
     -webkit-border-radius: 0px 0px 0px 0px;
     border-radius: 0px 0px 0px 0px;
-
 }
 
 .map-thumbnail {
@@ -1564,7 +1586,7 @@ ul.messages li.error {
 	margin: 3px 3px auto;
 	border-bottom:5px #6a0307 solid;
 	border-radius: 0;
-  z-index:4;
+  z-index:10;
 }
 
 #menu .menu > li > a {

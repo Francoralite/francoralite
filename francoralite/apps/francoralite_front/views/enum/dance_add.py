@@ -15,5 +15,9 @@ class DanceAdd(FormView):
     form_class = DanceForm
     success_url = '/dance/'
 
+    keycloak_scopes = {
+        'DEFAULT': 'dance:add',
+    }
+
     def post(self, request, *args, **kwargs):
         return tools.post('dance', DanceForm, request, *args, **kwargs)

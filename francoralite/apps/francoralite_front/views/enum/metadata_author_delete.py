@@ -9,5 +9,9 @@ import francoralite.apps.francoralite_front.tools as tools
 
 
 class MetadataAuthorDelete(View):
+    keycloak_scopes = {
+        'DEFAULT': 'metadata_author:delete',
+    }
+
     def get(self, request, *args, **kwargs):
         return tools.delete('metadata_author', request, *args, **kwargs)

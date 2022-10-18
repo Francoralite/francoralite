@@ -15,3 +15,7 @@ class DomainVocalEdit(FrancoraliteFormView):
     form_class = DomainVocalForm
     template_variable_name = 'domain_vocal'
     success_url = '/domain_vocal/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'domain_vocal:update',
+    }

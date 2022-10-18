@@ -55,12 +55,15 @@ class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
                 page = 1
             offset = self.PAGE_SIZE * (page - 1)
 
-            api_response = tools.request_api('%s%slimit=%s&offset=%s' % (
-                self.api_url,
-                '&' if '?' in self.api_url else '?',
-                self.PAGE_SIZE,
-                offset,
-            ))
+            api_response = tools.request_api(
+                '%s%slimit=%s&offset=%s&ordering=%s' % (
+                    self.api_url,
+                    '&' if '?' in self.api_url else '?',
+                    self.PAGE_SIZE,
+                    offset,
+                    self.request.GET.get('ordering', None) or '',
+                )
+            )
 
             results_count = api_response.get('count') or 0
             last_page = (results_count - 1) // self.PAGE_SIZE + 1
@@ -76,6 +79,7 @@ class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
                 'last_item': min(self.PAGE_SIZE * page, results_count),
                 'last_page': last_page,
                 'pages': tuple(range(1, last_page + 1)),
+                'ordering': self.request.GET.get('ordering', None),
             }
 
             complementary_data_loaders = getattr(self, 'complementary_data_loaders', None)

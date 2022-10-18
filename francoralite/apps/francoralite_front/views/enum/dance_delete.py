@@ -8,5 +8,9 @@ from django.views.generic.base import View
 from ... import tools as tools
 
 class DanceDelete(View):
+    keycloak_scopes = {
+        'DEFAULT': 'dance:delete',
+    }
+
     def get(self, request, *args, **kwargs):
         return tools.delete('dance', request, *args, **kwargs)

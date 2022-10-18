@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load markdown_extra %}
 {% load static %}
 
 {% block javascript %}
@@ -34,71 +35,17 @@
   <h1 class="title">Francoralité : Plateforme numérique de gestion collaborative d’ensemble multi-média</h1>
 
   <div class="home-block">
-    <div id="block-pres" class="home-block-detail">
-      <h2>Présentation</h2>
-
-      <div class="home-block-content">
-        <h3 class="section">Plateforme</h3>
-
-        <strong>Patrimoine oral de la Francophonie (Grand-Ouest français, Canada francophone et Louisiane)</strong>
-        <p>
-        Cette plateforme regroupe les fonds de littérature orale collectés dès les décennies 30-40 du XXe siècle dans la ruralité du Centre-Ouest français, du Canada francophone et de la Louisiane. Elle formalise un socle culturel cohérent qui s’étale sur ces différents territoires sur plus de quatre siècles d’histoire.
-        </p>
-
-
-        <h3 class="section">Présentation</h3>
-        <p>
-          Le fonctionnement de la plateforme s’appuie sur des techniques de documentation de plus en plus avancées en vue de valorisation qui rejoignent les domaines d’application dans les secteurs de la patrimonialisation, du tourisme, de la création artistique et de la participation des populations locales.
-        </p>
-        <p>
-          La plateforme ambitionne également de dynamiser les démarches scientifiques. Il s’agit non seulement de poser l’archive sonore en alternative au document écrit en tant que source de savoirs mais aussi de mettre en écho les témoignages d’hier avec les préoccupations d’aujourd’hui et enfin d’interroger les dynamiques interculturelles au travers des circulations transatlantiques liées au fait acadien et cadien.
-        </p>
-
-        <h3 class="section">Fonctionnalités</h3>
-
-        <ul>
-          <li>Archivage, édition et publications sécurisés de fichiers audio, par Internet</li>
-          <li>Interface Web utilisateur "Pure HTML" utilisant des formulaires dynamiques et une gestion de flux adaptée</li>
-          <li>Analyse et transcodage de fichiers audio "à la volée", grâce à TimeSide</li>
-          <li>Lecteur audio évolué et personnalisable, avec saisie d'annotations</li>
-        </ul>
-
-
-
-        <h3 class="section">Organisation du catalogue</h3>
-
-        <p>
-          Le catalogue est organisé en 5 niveaux : <strong>Institutions</strong> (emplacement propre à chacun des partenaires scientifiques), <strong>Fonds, Missions, Enquêtes,</strong> et <strong>Items</strong>. Le niveau principal de description est l’<strong>Enquête</strong>.
-        </p>
-        <p>
-          Chaque enquête regroupe l’ensemble des fichiers audio (<strong>Items</strong>) collectés auprès d’une même personne (ou groupe de personnes), le même jour en un même lieu. Les enquêtes répondant d’un ensemble cohérent ou collectées sur une même année sont regroupées en <strong>Missions</strong> qui, réunies autour d’un collecteur, constituent le niveau <strong>Fonds</strong>.
-        </p>
-        <p>
-          Le nombre d’enregistrements mis en ligne sur la plateforme est en constante augmentation. Les fiches descriptives sont renseignées de manière collaborative par les usagers des différents partenaires de la plateforme.
-        </p>
-      </div>
-
-    </div>
-
+    {% for custom_block in blocks %}
+    {% if custom_block.type == 'M' %}
     <div id="block-geonav" class="home-block-detail">
-      <h2>Géo-Navigateur</h2>
-
+      <h2>{{ custom_block.title }}</h2>
       <div class="home-block-content">
         <francoralite-map markers-url="/api/locationgiscollection/"></francoralite-map>
       </div>
     </div>
-
-    <div id="block-focus" class="home-block-detail">
-      <h2>Focus</h2>
-
-      <div class="home-block-content">
-
-      </div>
-    </div>
-
+    {% elif custom_block.type == 'P' %}
     <div id="block-partners" class="home-block-detail">
-
-      <h2>Partenaires</h2>
+      <h2>{{ custom_block.title }}</h2>
       <div class="home-block-content">
         <div id="module1" class="module">
           <h3>{% trans "Partenaires scientifiques" %}</h3>
@@ -110,7 +57,6 @@
             <li><a href="https://louisiana.edu/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_louisiana_lafayette.jpg" alt="Université de Lafayette"></a></li>
           </ul>
         </div>
-
         <div id="module2" class="module">
             <h3>{% trans "Partenaires techniques" %}</h3>
               <ul>
@@ -119,7 +65,6 @@
                 <li><a href="https://artefacts.coop/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_artefacts.jpg" alt="Coopérative Artéfacts"></a></li>
               </ul>
         </div>
-
         <div id="module3" class="module">
             <h3>{% trans "Partenaires financiers" %}</h3>
             <ul>
@@ -132,14 +77,18 @@
             </ul>
         </div>
       </div>
-
     </div>
-
+    {% else %}
+    <div class="home-block-detail">
+      <h2>{{ custom_block.title }}</h2>
+      <div class="home-block-content">
+      {{ custom_block.content|default:""|markdown|safe }}
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
   </div>
-
-
 </div>
-
 </div>
 
 {% endblock %}

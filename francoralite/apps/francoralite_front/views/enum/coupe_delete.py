@@ -9,5 +9,9 @@ import francoralite.apps.francoralite_front.tools as tools
 
 
 class CoupeDelete(View):
+    keycloak_scopes = {
+        'DEFAULT': 'coupe:delete',
+    }
+
     def get(self, request, *args, **kwargs):
         return tools.delete('coupe', request, *args, **kwargs)

@@ -17,3 +17,7 @@ class InstrumentEdit(FrancoraliteFormView):
     form_class = InstrumentForm
     template_variable_name = 'instrument'
     success_url = '/instrument/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'instrument:update',
+    }

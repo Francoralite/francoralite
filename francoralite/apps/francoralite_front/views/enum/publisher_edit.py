@@ -16,3 +16,7 @@ class PublisherEdit(FrancoraliteFormView):
     entity_name = 'publisher'
     template_variable_name = 'publisher'
     success_url = '/publisher/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'publisher:update',
+    }

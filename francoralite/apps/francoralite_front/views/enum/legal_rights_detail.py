@@ -13,6 +13,9 @@ from ... import tools as tools
 
 class LegalRightsDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/legal_rights-detail.html"
+    keycloak_scopes = {
+        'DEFAULT': 'legal_rights:view',
+    }
 
     def get_context_data(self, **kwargs):
         try:

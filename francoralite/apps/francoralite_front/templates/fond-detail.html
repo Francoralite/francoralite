@@ -71,16 +71,15 @@
       </div>
 
       <div class="container_line">
-        {% field_data_id form.description fond.description|markdown|safe %}
-      </div>
-
-      <div class="container_line">
         <dl class="container_data">
           <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
           <dd id="id_duration" class="donnee">{{duration}}</dd>
         </dl>
       </div>
 
+      <div class="container_line">
+        {% field_data_id form.description fond.description|markdown|safe %}
+      </div>
 
       {% display_documents %}
 
@@ -107,10 +106,7 @@
                 <a href="{% url "personne-detail" id=collector.id %}"
                   target="_blank">
                   {{collector.first_name}} {{collector.last_name}}
-                </a>
-                {% if not loop.last %}
-                  ,
-                {% endif %}
+                </a>{% if not forloop.last %}, {% endif %}
             {% endfor %}
           </dd>
         </dl>
@@ -121,10 +117,7 @@
                 <a href="{% url "personne-detail" id=informer.id %}"
                   target="_blank">
                   {{informer.first_name}} {{informer.last_name}}
-                </a>
-                {% if not loop.last %}
-                  ,
-                {% endif %}
+                </a>{% if not forloop.last %}, {% endif %}
               {% endfor %}
             </ul>
           </dd>

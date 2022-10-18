@@ -56,7 +56,7 @@
               <img src="{% static "francoralite_front/images/logo_universite_poitiers.jpg" %}"
                alt="{% trans "Université de Poitiers" %}" />
             </a>
-            <img src="{% static "francoralite_front/images/logo_francoralite.png" %}"
+            <img id="francoralite-bandeau" src="{% static "francoralite_front/images/bandeau_francoralite.svg" %}"
               alt="Francoralité" />
         {% endblock %}
         </div>
@@ -71,9 +71,9 @@
         </div>
         <div id="auth_info" style="right : 1.1em;">
         {% if user.is_authenticated %}
-          <!--{% trans "Bienvenue" %}, --><a href="" class="login">{{user}}</a> | <a href="/oidc/logout/" class="logout">{% trans "Déconnexion" %}</a>
+          <!--{% trans "Bienvenue" %}, --><a href="" class="login">{{user}}</a> | <a href="{% url 'oidc_logout' %}" class="logout">{% trans "Déconnexion" %}</a>
         {% else %}
-          <a href="{% url 'oidc_authentication_init' %}">{% trans "Se connecter" %}</a>
+          <a href="{% url 'oidc_authentication_init' %}?next={{ request.path }}">{% trans "Se connecter" %}</a>
         {% endif %}
         </div>
 
@@ -88,7 +88,7 @@
 <main id="content" role="main">
 {% block content %}
   {% block title %}
-    <header>
+    <header class="sticky">
     <h1>{% block title_name %}{% endblock %}</h1>
     {% block pagination %}{% include "inc/pagination.html" %}{% endblock %}
     </header>

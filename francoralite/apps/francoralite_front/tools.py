@@ -143,10 +143,12 @@ def post(entity, form_entity, request, *args, **kwargs):
             # Remove the 'file' entry : if not, there some bugs
             del form.cleaned_data['file']
         try:
-            post_api(settings.FRONT_HOST_URL + '/api/' + entity_api,
-                     data=form.cleaned_data,
-                     request=request,
-                     entity=entity)
+            entity_json = post_api(
+                settings.FRONT_HOST_URL + '/api/' + entity_api,
+                data=form.cleaned_data,
+                request=request,
+                entity=entity,
+            )
 
             messages.add_message(request, messages.SUCCESS,
                                  _('La fiche a bien été créée.'))
@@ -155,6 +157,11 @@ def post(entity, form_entity, request, *args, **kwargs):
                 return HttpResponseRedirect(
                     '/institution/' +
                     str(form.cleaned_data['institution']))
+
+            if entity == 'item':
+                return HttpResponseRedirect(
+                    '/item/' +
+                    str(entity_json['id']))
 
             # Previous page ( not an add page ... )
             if len(request.session.get("referers", [])) > 1:
@@ -165,6 +172,11 @@ def post(entity, form_entity, request, *args, **kwargs):
 
         except RequestException as e:
             handle_message_from_exception(request, e)
+
+    else:
+        for errors in form.errors.values():
+            for error in errors:
+                messages.add_message(request, messages.ERROR, error)
 
     return HttpResponseRedirect('/' + entity_url + '/add')
 
@@ -204,9 +216,9 @@ def patch(entity, form_entity, request, *args, **kwargs):
     """
 
     form = form_entity(request.POST)
+    form.current_id = id = int(kwargs.get('id'))
     if entity == 'item':
         form.fields['file'].required = False
-    id = kwargs.get('id')
 
     entity_api = entity
     if entity in PROBLEM_NAMES:
@@ -243,6 +255,11 @@ def patch(entity, form_entity, request, *args, **kwargs):
 
         except RequestException as e:
             handle_message_from_exception(request, e)
+
+    else:
+        for errors in form.errors.values():
+            for error in errors:
+                messages.add_message(request, messages.ERROR, error)
 
     return HttpResponseRedirect('/' + entity + '/edit/' + str(id))
 

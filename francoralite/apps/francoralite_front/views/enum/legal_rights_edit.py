@@ -16,3 +16,7 @@ class LegalRightsEdit(FrancoraliteFormView):
     form_class = LegalRightsForm
     template_variable_name = 'legal_rights'
     success_url = '/legal_rights/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'legal_rights:update',
+    }

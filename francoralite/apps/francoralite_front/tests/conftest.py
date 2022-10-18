@@ -53,6 +53,7 @@ class FrancoraliteSeleniumContext():
         options.headless = True
         options.firefox_path = '/usr/bin/firefox-esr'
         self.browser = Firefox(options=options)
+        self.browser.set_window_size(1080, 1080)
 
     def open_url(self, url):
         self.browser.get(self.URL_PREFIX + url)
@@ -61,31 +62,35 @@ class FrancoraliteSeleniumContext():
         self.open_url('/')
 
         if auth_username:
-            # Test logout link text
-            try:
-                link_logout = self.find_element(by_link_class='logout')
-            except NoSuchElementException:
-                pass  # authentication is required
-            else:
-                if link_logout.text == _('Déconnexion'):
-                    return
+            self.login(auth_username)
 
-            # Authentication
-            # ---------------
+    def login(self, auth_username):
 
-            # Click on the authentication menu
-            self.find_element(by_link_text=self.string_connect).click()
+        # Test logout link text
+        try:
+            link_logout = self.find_element(by_link_class='logout')
+        except NoSuchElementException:
+            pass  # authentication is required
+        else:
+            if link_logout.text == _('Déconnexion'):
+                return
 
-            # Land on Keycloak authentication page
-            title_page = self.find_element(by_id='kc-header-wrapper')
-            assert title_page.text == 'FRANCORALITE'
+        # Authentication
+        # ---------------
 
-            # Write login and password
-            self.find_element(by_id='username').send_keys(auth_username)
-            self.find_element(by_id='password').send_keys('password')
+        # Click on the authentication menu
+        self.find_element(by_link_text=self.string_connect).click()
 
-            # Click on submit button (submit action doesn't work)
-            self.find_element(by_id='kc-login').click()
+        # Land on Keycloak authentication page
+        title_page = self.find_element(by_id='kc-header-wrapper')
+        assert title_page.text == 'FRANCORALITE'
+
+        # Write login and password
+        self.find_element(by_id='username').send_keys(auth_username)
+        self.find_element(by_id='password').send_keys('password')
+
+        # Click on submit button (submit action doesn't work)
+        self.find_element(by_id='kc-login').click()
 
     def logout(self, current_username):
 

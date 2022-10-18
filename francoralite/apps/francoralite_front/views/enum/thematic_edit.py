@@ -16,3 +16,7 @@ class ThematicEdit(FrancoraliteFormView):
     entity_name = 'thematic'
     template_variable_name = 'thematic'
     success_url = '/thematic/'
+
+    keycloak_scopes = {
+        'DEFAULT': 'thematic:update',
+    }
