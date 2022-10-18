@@ -1024,6 +1024,11 @@ a.image-link {
     margin: 15px;
 }
 
+#francoralite-bandeau {
+    max-height: 88px;
+    margin-left: 10px;
+}
+
 .logo {
     border: none;
     vertical-align:middle;
