@@ -41,6 +41,10 @@
 {% block title_buttons %}
 {% endblock %}
 
+{% block audio_player %}
+{% endblock %}
+
+
 {% block title %}
   {{ block.super }}
 {% endblock %}
@@ -52,24 +56,6 @@
   <div class="fixedWidthAsPlayer">
     <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}francoralite/images/wait.gif" />
   </div>
-  {% block player %}
-  <div id="player_maximized" class="ts-skin-lab">
-     <div id="player_header">
-      <a href="#" class="toggle">Minimize</a>
-      <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-     </div>
-      <div class="wazing"></div>
-  </div>
-  <div id="rightcol">
-      <div id="player_minimized" class="ts-skin-lab">
-          <a href="#" class="toggle">Maximize</a>
-          <a href="#" class="embed_player_frame">&lt;/&gt;</a>
-          <div class="wazing"></div>
-          <div id="player" class="ts-player">
-          </div>
-      </div>
-  </div>
-  {% endblock %}
 <!-- Tabs -->
 <ul class="nav nav-tabs" role="tablist">
    <li class="nav-item active">

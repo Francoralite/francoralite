@@ -80,6 +80,7 @@
 
 {% if not error|length %}
   {% if item %}
+  {% block audio_player %}
   <figure id="audio_player" class="sticky-1">
     <figcaption>
     </figcaption>
@@ -93,7 +94,8 @@
         {% endif %}
             Votre navigateur Internet ne prend pas en charge cet élément audio
     </audio>.
- </figure>
+  </figure>
+  {% endblock %}
 
   <!-- Tabs -->
   <ul class="nav nav-tabs" role="tablist">
