@@ -1020,13 +1020,16 @@ a.image-link {
     border: none;
 }
 
+#logo {
+    margin: 15px;
+}
+
 .logo {
     border: none;
     vertical-align:middle;
     -moz-border-radius: 0px 0px 0px 0px;
     -webkit-border-radius: 0px 0px 0px 0px;
     border-radius: 0px 0px 0px 0px;
-
 }
 
 .map-thumbnail {
