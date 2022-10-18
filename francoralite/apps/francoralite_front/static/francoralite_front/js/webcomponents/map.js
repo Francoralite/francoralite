@@ -37,8 +37,8 @@ const STYLESHEET = `
 
 class FrancoraliteMap extends HTMLElement {
 
-  static get observedAttribtues() {
-    return ["lat", "lng", "zoom", "bounds", "markers-url", "markers-list"];
+  static get observedAttributes() {
+    return ["lat", "lng", "zoom", "bounds", "markers-url", "markers-list", "markers-drag"];
   }
 
   get lat() {
@@ -61,6 +61,10 @@ class FrancoraliteMap extends HTMLElement {
     return this.getAttribute("markers-url");
   }
 
+  set markersUrl(url) {
+    this.setAttribute("markers-url", url);
+  }
+
   get markersList() {
     return JSON.parse(this.getAttribute("markers-list") || "null");
   }
@@ -70,7 +74,7 @@ class FrancoraliteMap extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
+    // super.attributeChangedCallback(name, oldValue, newValue);
 
     switch (name) {
       case "lat":
@@ -214,9 +218,12 @@ class FrancoraliteMap extends HTMLElement {
     if (this.markersList) {
       // There's a markers list !
       this.addMarkers(this.markersList, markersLayer);
+    } else if(!this.markersUrl) {
+      this.markersUrl = '/api/locationgis';
+      this.requestMarkers(markersLayer);
     } else {
       // ... using the API request
-      this.requestMarkers(markersLayer);
+      this.requestMarkers(markersLayer, this.markersDrag);
     }
   }
 
@@ -230,20 +237,20 @@ class FrancoraliteMap extends HTMLElement {
     }
   }
 
-  requestMarkers(markersLayer) {
+  requestMarkers(markersLayer, dragMarkers='') {
     // Request the locations of the collections
     if (this.markersUrl) {
       let xhr = new XMLHttpRequest();
       xhr.addEventListener('load', (event) => {
         const data = JSON.parse(event.target.response);
-        this.addMarkers(data.results !== undefined ? data.results : data, markersLayer);
+        this.addMarkers(data.results !== undefined ? data.results : data, markersLayer, dragMarkers);
       });
       xhr.open('GET', this.markersUrl, true);
       xhr.send(null);
     }
   }
 
-  addMarkers(locations, markersLayer) {
+  addMarkers(locations, markersLayer, dragMarkers) {
     // Create the markers and the popup
 
     // A function to create the markers
@@ -253,7 +260,7 @@ class FrancoraliteMap extends HTMLElement {
         markersLayer.addLayer(
           L.marker(
             [loc.location.latitude, loc.location.longitude],
-            {draggable: this.markersDrag}
+            {draggable: dragMarkers}
           ).bindTooltip(
             "Code : " + loc.collection.code + "<br>" +
             "Titre : " + loc.collection.title + "<br>" +
@@ -278,7 +285,7 @@ class FrancoraliteMap extends HTMLElement {
         markersLayer.addLayer(
           L.marker(
             [loc.latitude, loc.longitude],
-            {draggable: this.markersDrag}
+            {draggable: dragMarkers}
           ).bindTooltip(
             "Code : " + loc.code + "<br>" +
             "Nom : " + loc.name + "<br>"
