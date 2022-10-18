@@ -57,12 +57,15 @@ select[name*="start_bracket"] {
 /* Tableaux de résultats  ------------------------------------- */
 
 table th.sortable.active_sort,
-table th.sortable.active_sort::after {
+table th.sortable.active_sort::after,
+table th a.active_sort,
+table th a.active_sort::after {
     vertical-align: middle;
     cursor: pointer;
 }
 
-table th.sortable.active_sort::after {
+table th.sortable.active_sort::after,
+table th a.active_sort::after {
     display: inline-block;
     width: 8px;
     height: 12px;
@@ -74,17 +77,26 @@ table th.sortable.active_sort::after {
 }
 
 table th.sortable.active_sort.asc::after,
-table th.sortable.active_sort:hover::after {
+table th.sortable.active_sort:hover::after,
+table th a.active_sort.asc::after,
+table th a.active_sort:hover::after {
     background-position: -16px 0;
 }
 
-table th.sortable.active_sort.desc::after {
+table th.sortable.active_sort.desc::after,
+table th a.active_sort.desc::after {
     background-position: -24px 0;
 }
 
 table th.sortable.active_sort.asc:hover::after,
-table th.sortable.active_sort.desc:hover::after {
+table th.sortable.active_sort.desc:hover::after,
+table th a.active_sort.asc:hover::after,
+table th a.active_sort.desc:hover::after {
     background-position: -8px 0;
+}
+
+table th a.active_sort {
+    color: #333;
 }
 
 table ul, table li {

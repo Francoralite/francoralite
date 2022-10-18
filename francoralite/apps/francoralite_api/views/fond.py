@@ -8,7 +8,7 @@
 import datetime
 from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -34,9 +34,9 @@ class FondViewSet(viewsets.ModelViewSet):
     queryset = FondModel.objects.all()
     serializer_class = FondSerializer
 
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
     # filter_fields = ('institution',)
-    # ordering = ('institution', 'code',)
+    ordering = ('institution', 'code',)
     # search_fields = ('institution__name', 'code', 'title')
     filterset_fields = ('code', 'title', 'institution')
 

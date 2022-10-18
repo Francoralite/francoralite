@@ -1,0 +1,7 @@
+{% if pagination.ordering == field %}
+<th{% if highlight %} class="highlight"{% endif %}><a class="active_sort asc" href="?ordering=-{{ field }}">{{ label }}</a></th>
+{% elif pagination.ordering == "-"|add:field %}
+<th{% if highlight %} class="highlight"{% endif %}><a class="active_sort desc" href="?ordering={{ field }}">{{ label }}</a></th>
+{% else %}
+<th{% if highlight %} class="highlight"{% endif %}><a class="active_sort" href="?ordering={{ field }}">{{ label }}</a></th>
+{% endif %}
