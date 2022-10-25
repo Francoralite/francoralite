@@ -19,19 +19,28 @@ class DefaultLoader(object):
         if attribute_name:
             self.attribute_name = attribute_name
 
-    def complete(self, item):
-        url = self.url_pattern.format(**item)
-        api_response = tools.request_api(url)
-        item[self.attribute_name] = self.format_value(item, api_response)
+    def complete_context(self, context):
+        pass
 
-    def format_value(self, item, api_response):
+    def complete_record(self, record):
+        url = self.url_pattern.format(**record)
+        api_response = tools.request_api(url)
+        record[self.attribute_name] = self.format_value(record, api_response)
+
+    def format_value(self, record, api_response):
         return api_response
 
 
 class ProportionalColoredBarLoader(DefaultLoader):
     available_values = NotImplemented
 
-    def format_value(self, item, api_response):
+    def complete_context(self, context):
+        context['%s_legend' % self.attribute_name] = tuple({
+            'label': label,
+            'color': color,
+        } for code, color, label in self.available_values)
+
+    def format_value(self, record, api_response):
 
         total_count = float(sum(api_response.values())) if api_response else 0
 

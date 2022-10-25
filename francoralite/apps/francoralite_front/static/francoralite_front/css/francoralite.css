@@ -1782,3 +1782,30 @@ ul.proportional-colored-bar li {
     width: calc(var(--item-ratio) * 100%);
     background: var(--item-color);
 }
+
+ul.proportional-colored-bar-legend,
+ul.proportional-colored-bar-legend li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.95em;
+    text-align: right;
+    vertical-align: middle;
+}
+
+ul.proportional-colored-bar-legend li {
+    display: inline-block;
+}
+
+ul.proportional-colored-bar-legend li::before {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin: 0.5em;
+    border: 1px solid #cecece;
+    border-radius: 13px;
+    vertical-align: middle;
+    background: var(--item-color);
+    content: '';
+}

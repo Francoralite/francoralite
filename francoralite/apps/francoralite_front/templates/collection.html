@@ -79,6 +79,7 @@
   {% endfor %}
   </tbody>
 </table>
+{% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
 
 {% if perms.keycloak.collection_delete %}
     {% modal_delete %}
