@@ -33,8 +33,8 @@ def test_homepage(francoralite_context):
             [_('Thématique'), None, []],
             [_('Musique'), False, [
                 [_("Genre d'autre expression vocale"), _('Genre vocal'), []],
-                [_('Nature des émissions vocales'), None, []],
                 [_('Genre de musique instrumentale'), _('Genre de musique'), []],
+                [_('Nature des émissions vocales'), None, []],
                 [_('Instruments-Voix'), _('Voix/Instruments'), []],
                 [_('Classification Hornbostel-Sachs'), None, []],
                 [_('Fonction'), None, []],
