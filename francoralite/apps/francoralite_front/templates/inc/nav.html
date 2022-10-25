@@ -72,10 +72,10 @@
                   <a href="{% url "domain_vocal" %}">{% trans "Genre d'autre expression vocale" %}</a>
                 </li>
                 <li>
-                  <a href="{% url "emit_vox" %}">{% trans "Nature des émissions vocales" %}</a>
+                  <a href="{% url "domain_music" %}">{% trans "Genre de musique instrumentale" %}</a>
                 </li>
                 <li>
-                  <a href="{% url "domain_music" %}">{% trans "Genre de musique instrumentale" %}</a>
+                  <a href="{% url "emit_vox" %}">{% trans "Nature des émissions vocales" %}</a>
                 </li>
                 <li>
                   <a href="{% url "instrument" %}">{% trans "Instruments-Voix" %}</a>
@@ -102,13 +102,24 @@
                 <li>
                   <a href="{% url "coupe" %}">{% trans "Coupe" %}</a>
                 </li>
-
+                <li>
+                  <a href="">{% trans "Catalogages Coirault" %}</a>
+                </li>
+                <li>
+                  <a href="">{% trans "Catalogages Laforte" %}</a>
+                </li>
               </ul>
             </li>
             <li class="has-children"><a href="#conte">{% trans "Conte" %}</a>
               <ul class="sous-menu">
                 <li>
                   <a href="{% url "domain_tale" %}">{% trans "Genre de conte" %}</a>
+                </li>
+                <li>
+                  <a href="">{% trans "Catalogages Delarue-Tenèze" %}</a>
+                </li>
+                <li>
+                  <a href="">{% trans "Catalogages Aarne-Thompson" %}</a>
                 </li>
               </ul>
             </li>

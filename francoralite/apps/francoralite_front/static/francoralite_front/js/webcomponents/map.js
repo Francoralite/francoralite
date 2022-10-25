@@ -30,6 +30,7 @@ const STYLESHEET = `
   height: 100%;
   overflow: hidden;
   font-size: 14px;
+  z-index: 1;
 }
 `;
 
