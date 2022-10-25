@@ -755,16 +755,17 @@ dl.dublincore dd.caption {
 /* Pagination */
 main > header {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
 }
 main > header h1 {
     margin: 0;
-    flex-grow: 1;
+    flex: 1 1 auto;
 }
 .pagination,
 .pagination * {
     margin: 0;
     padding: 0;
+    flex: 0 0 auto;
 }
 .pagination p + p {
     margin-top: 10px;
