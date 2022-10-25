@@ -33,8 +33,10 @@ class MissionDetail(FrancoraliteTemplateView):
             subelements_count_loader = DefaultLoader('/api/collection/{id}/subelements_count', 'subelements_count')
             domains_bar_loader = DomainsBarLoader('/api/collection/{id}/items_domains')
             for collection in context['collections']:
-                subelements_count_loader.complete(collection)
-                domains_bar_loader.complete(collection)
+                subelements_count_loader.complete_record(collection)
+                domains_bar_loader.complete_record(collection)
+            subelements_count_loader.complete_context(context)
+            domains_bar_loader.complete_context(context)
             # Obtain values of related informers
             context['informers'] = tools.request_api(
                 '/api/mission/' + context['id'] + '/informers')
