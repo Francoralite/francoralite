@@ -2,8 +2,8 @@
 <nav class="pagination">
     <p class="pages">
     {% if pagination.has_previous %}
-    <a class="arrow first" href="?page=1" title="{% trans 'Afficher la première page.' %}"></a>
-    <a class="arrow previous" href="?page={{ pagination.current_page|add:-1 }}" title="{% trans 'Afficher la page précédente.' %}"></a>
+    <a class="arrow first" href="?{% if request.GET.ordering %}ordering={{ request.GET.ordering }}&{% endif %}page=1" title="{% trans 'Afficher la première page.' %}"></a>
+    <a class="arrow previous" href="?{% if request.GET.ordering %}ordering={{ request.GET.ordering }}&{% endif %}page={{ pagination.current_page|add:-1 }}" title="{% trans 'Afficher la page précédente.' %}"></a>
     {% else %}
     <span class="arrow first"></span>
     <span class="arrow previous"></span>
@@ -12,12 +12,12 @@
     {% if pagination.current_page == page %}
     <span class="number current">{{ page }}</span>
     {% elif page > pagination.current_page|add:-3 and page < pagination.current_page|add:3 %}
-    <a class="number" href="?page={{ page }}" title="{% blocktranslate %}Afficher la page n° {{ page }}.{% endblocktranslate %}">{{ page }}</a>
+    <a class="number" href="?{% if request.GET.ordering %}ordering={{ request.GET.ordering }}&{% endif %}page={{ page }}" title="{% blocktranslate %}Afficher la page n° {{ page }}.{% endblocktranslate %}">{{ page }}</a>
     {% endif %}
     {% endfor %}
     {% if pagination.has_next %}
-    <a class="arrow next" href="?page={{ pagination.current_page|add:1 }}" title="{% trans 'Afficher la page suivante.' %}"></a>
-    <a class="arrow last" href="?page={{ pagination.last_page }}" title="{% trans 'Afficher la dernière page.' %}"></a>
+    <a class="arrow next" href="?{% if request.GET.ordering %}ordering={{ request.GET.ordering }}&{% endif %}page={{ pagination.current_page|add:1 }}" title="{% trans 'Afficher la page suivante.' %}"></a>
+    <a class="arrow last" href="?{% if request.GET.ordering %}ordering={{ request.GET.ordering }}&{% endif %}page={{ pagination.last_page }}" title="{% trans 'Afficher la dernière page.' %}"></a>
     {% else %}
     <span class="arrow next"></span>
     <span class="arrow last"></span>
