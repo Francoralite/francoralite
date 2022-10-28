@@ -32,6 +32,10 @@ class FondSerializer(serializers.ModelSerializer):
     conservation_site = serializers.CharField(allow_blank=True)
     comment = serializers.CharField(allow_blank=True)
 
+    missions_count = serializers.IntegerField(required=False, read_only=True)
+    collections_count = serializers.IntegerField(required=False, read_only=True)
+    items_count = serializers.IntegerField(required=False, read_only=True)
+
     class Meta:
         model = FondModel
         fields = '__all__'
