@@ -55,12 +55,15 @@ COLLECTION_STRUCTURE = [
     ('comment', str),
     ('media_type', dict),
     ('physical_items_num', int),
-    ('auto_period_access', bool)
+    ('auto_period_access', bool),
+    ('items_count', int),
 ]
 
 # Expected keys for MODEL objects
 COLLECTION_FIELDS = sorted(
     [item[0] for item in COLLECTION_STRUCTURE])
+COLLECTION_WRITABLE_FIELDS = [
+    f for f in COLLECTION_FIELDS if not f.endswith('_count')]
 
 
 @pytest.mark.django_db
@@ -191,7 +194,7 @@ class TestCollectionList(CleanMediaMixin, APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            COLLECTION_FIELDS)
+            COLLECTION_WRITABLE_FIELDS)
 
         url = reverse(
             'collection-detail',
@@ -254,18 +257,6 @@ class TestCollectionList(CleanMediaMixin, APITestCase):
             sorted(response.data.keys()),
             COLLECTION_FIELDS)
         self.assertEqual(response.data['title'], 'foobar_test_patch')
-
-    def test_subelements_count(self):
-        """
-        Count every subelements of this collection
-        """
-        item = Collection.objects.first()
-        url = '/api/collection/' + str(item.id) + "/subelements_count"
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.data, dict)
-        self.assertEqual(response.data.keys(), set(('items',)))
 
     def test_items_domains(self):
         """

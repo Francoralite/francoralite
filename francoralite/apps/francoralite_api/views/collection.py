@@ -4,6 +4,8 @@
 #
 # Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
 
+
+from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
@@ -89,6 +91,11 @@ class CollectionViewSet(viewsets.ModelViewSet):
         'DELETE': 'collection:delete'
     }
 
+    def get_queryset(self):
+        return super().get_queryset().annotate(
+            items_count=Count('collection', distinct=True),
+        )
+
     def collect(self, id_main, data, entity):
         items = entity["model"].objects.filter(
             collection=id_main)
@@ -137,17 +144,6 @@ class CollectionViewSet(viewsets.ModelViewSet):
             data["performances"].append(data_performance)
 
         return Response(data)
-
-    @action(detail=True)
-    def subelements_count(self, request, pk=None):
-        """
-        Determine the number of collections and items
-        """
-        instance = self.get_object()
-
-        return Response({
-            'items': ItemModel.objects.filter(collection=instance).count(),
-        })
 
     @action(detail=True)
     def items_domains(self, request, pk=None):

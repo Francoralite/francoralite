@@ -5,6 +5,7 @@
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
+from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
@@ -49,6 +50,12 @@ class MissionViewSet(viewsets.ModelViewSet):
         'PUT': 'mission:update',
         'DELETE': 'mission:delete'
     }
+
+    def get_queryset(self):
+        return super().get_queryset().annotate(
+            collections_count=Count('collection', distinct=True),
+            items_count=Count('collection__collection', distinct=True),
+        )
 
     def list_collections(self, id_mission, field='id'):
         # Retrieve the collections, related to the current mission
@@ -161,18 +168,6 @@ class MissionViewSet(viewsets.ModelViewSet):
             serializer=LocationGisSerializer
             )
         return Response(data)
-
-    @action(detail=True)
-    def subelements_count(self, request, pk=None):
-        """
-        Determine the number of collections and items
-        """
-        instance = self.get_object()
-
-        return Response({
-            'collections': CollectionModel.objects.filter(mission=instance).count(),
-            'items': ItemModel.objects.filter(collection__mission=instance).count(),
-        })
 
     @action(detail=True)
     def items_domains(self, request, pk=None):

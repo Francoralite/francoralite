@@ -35,11 +35,15 @@ MISSION_STRUCTURE = [
     ('code', str),
     ('public_access', str),
     ('fonds', dict),
-    ('code_partner', str)
+    ('code_partner', str),
+    ('collections_count', int),
+    ('items_count', int),
 ]
 
 # Expected keys for MODEL objects
 MISSION_FIELDS = sorted([item[0] for item in MISSION_STRUCTURE])
+MISSION_WRITABLE_FIELDS = [
+    f for f in MISSION_FIELDS if not f.endswith('_count')]
 
 
 @pytest.mark.django_db
@@ -145,18 +149,6 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
 
-    def test_subelements_count(self):
-        """
-        Count every subelements of this mission
-        """
-        item = Mission.objects.first()
-        url = '/api/mission/' + str(item.id) + "/subelements_count"
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.data, dict)
-        self.assertEqual(response.data.keys(), set(('collections', 'items')))
-
     def test_items_domains(self):
         """
         Count every item's domains of this mission
@@ -240,7 +232,7 @@ class TestMissionList(CleanMediaMixin, APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            MISSION_FIELDS)
+            MISSION_WRITABLE_FIELDS)
 
         url = reverse(
             'mission-detail',

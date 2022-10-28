@@ -50,6 +50,8 @@ class CollectionSerializer(serializers.ModelSerializer):
     legal_rights = AsymetricRelatedField.from_serializer(
          LegalRightsSerializer, kwargs={'required': False})
 
+    items_count = serializers.IntegerField(required=False, read_only=True)
+
     class Meta:
         model = CollectionModel
         fields = '__all__'

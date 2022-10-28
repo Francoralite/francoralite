@@ -38,11 +38,15 @@ FOND_STRUCTURE = [
     ('code_partner', str),
     ('acquisition_mode', dict),
     ('conservation_site', str),
-    ('comment', str)
+    ('comment', str),
+    ('missions_count', int),
+    ('collections_count', int),
+    ('items_count', int),
 ]
 
 # Expected keys for MODEL objects
 FOND_FIELDS = sorted([item[0] for item in FOND_STRUCTURE])
+FOND_WRITABLE_FIELDS = [f for f in FOND_FIELDS if not f.endswith('_count')]
 
 
 @pytest.mark.django_db
@@ -135,18 +139,6 @@ class TestFondList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
 
-    def test_subelements_count(self):
-        """
-        Count every subelements of this fond
-        """
-        item = Fond.objects.first()
-        url = '/api/fond/' + str(item.id) + "/subelements_count"
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.data, dict)
-        self.assertEqual(response.data.keys(), set(('missions', 'collections', 'items')))
-
     def test_items_domains(self):
         """
         Count every item's domains of this fond
@@ -234,7 +226,7 @@ class TestFondList(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(
             sorted(response.data.keys()),
-            FOND_FIELDS)
+            FOND_WRITABLE_FIELDS)
 
         url = reverse(
             'fond-detail',

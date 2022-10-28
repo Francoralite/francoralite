@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ..forms.mission import MissionForm
 from ..francoralite_template_view import FrancoraliteTemplateView
-from ..widgets import DefaultLoader, DomainsBarLoader
+from ..widgets import DomainsBarLoader
 from .. import tools as tools
 
 
@@ -29,13 +29,10 @@ class MissionDetail(FrancoraliteTemplateView):
             # Obtain values of related collections
             context['collections'] = tools.request_api(
                 '/api/collection?mission=' + context['id'])
-            # Obtain values of subelements count and items domains for each related collection
-            subelements_count_loader = DefaultLoader('/api/collection/{id}/subelements_count', 'subelements_count')
+            # Obtain values of items domains for each related collection
             domains_bar_loader = DomainsBarLoader('/api/collection/{id}/items_domains')
             for collection in context['collections']:
-                subelements_count_loader.complete_record(collection)
                 domains_bar_loader.complete_record(collection)
-            subelements_count_loader.complete_context(context)
             domains_bar_loader.complete_context(context)
             # Obtain values of related informers
             context['informers'] = tools.request_api(
