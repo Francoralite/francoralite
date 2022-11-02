@@ -84,9 +84,11 @@ class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
 
             complementary_data_loaders = getattr(self, 'complementary_data_loaders', None)
             if complementary_data_loaders:
-                for item in context[self.context_results_name]:
+                for record in context[self.context_results_name]:
                     for loader in complementary_data_loaders:
-                        loader.complete(item)
+                        loader.complete_record(record)
+                for loader in complementary_data_loaders:
+                    loader.complete_context(context)
 
         except Exception as err:
             context[self.context_results_name] = []

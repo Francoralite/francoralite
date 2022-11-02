@@ -40,7 +40,7 @@
       {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") highlight=True %}
       {% include "inc/sortable-table-column-header.html" with field="title" label=_("Nom") %}
       {% include "inc/sortable-table-column-header.html" with field="description" label=_("Description") %}
-      <th>{% trans "Items" %}</th>
+      {% include "inc/sortable-table-column-header.html" with field="items_count" label=_("Items") %}
       <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
       <th>{% trans "Modifier" %}</th>
@@ -56,7 +56,7 @@
       </td>
       <td>{{ collection.title|safe }}</td>
       <td>{{ collection.description|truncatechars:50|markdown|safe }}</td>
-      <td><a href="/collection/{{ collection.id }}#items">{{ collection.subelements_count.items }}</a></td>
+      <td><a href="/collection/{{ collection.id }}#items">{{ collection.items_count }}</a></td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=collection.domains %}</td>
       {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
       <td>
@@ -79,6 +79,7 @@
   {% endfor %}
   </tbody>
 </table>
+{% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
 
 {% if perms.keycloak.collection_delete %}
     {% modal_delete %}

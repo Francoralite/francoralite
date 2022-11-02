@@ -37,9 +37,9 @@
       {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") highlight=True %}
       {% include "inc/sortable-table-column-header.html" with field="title" label=_("Nom") %}
       {% include "inc/sortable-table-column-header.html" with field="description" label=_("Description") %}
-      <th>{% trans "Missions" %}</th>
-      <th>{% trans "Enquêtes" %}</th>
-      <th>{% trans "Items" %}</th>
+      {% include "inc/sortable-table-column-header.html" with field="missions_count" label=_("Missions") %}
+      {% include "inc/sortable-table-column-header.html" with field="collections_count" label=_("Enquêtes") %}
+      {% include "inc/sortable-table-column-header.html" with field="items_count" label=_("Items") %}
       <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <th>{% trans "Modifier" %}</th>
@@ -55,9 +55,9 @@
       </td>
       <td>{{ fond.title|safe }}</td>
       <td>{{ fond.description|truncatechars:50|markdown|safe }}</td>
-      <td><a href="/fond/{{ fond.id }}#missions">{{ fond.subelements_count.missions }}</a></td>
-      <td><a href="/search_advanced/?code_internal={{ fond.code }}">{{ fond.subelements_count.collections }}</a></td>
-      <td><a href="/search_advanced/?code_internal={{ fond.code }}">{{ fond.subelements_count.items }}</a></td>
+      <td><a href="/fond/{{ fond.id }}#missions">{{ fond.missions_count }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ fond.code }}">{{ fond.collections_count }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ fond.code }}">{{ fond.items_count }}</a></td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=fond.domains %}</td>
       {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
       <td>
@@ -80,6 +80,7 @@
   {% endfor %}
   </tbody>
 </table>
+{% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
 
 {% if perms.keycloak.fond_delete %}
     {% modal_delete %}

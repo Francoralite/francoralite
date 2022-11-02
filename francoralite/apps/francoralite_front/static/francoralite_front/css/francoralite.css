@@ -755,16 +755,17 @@ dl.dublincore dd.caption {
 /* Pagination */
 main > header {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
 }
 main > header h1 {
     margin: 0;
-    flex-grow: 1;
+    flex: 1 1 auto;
 }
 .pagination,
 .pagination * {
     margin: 0;
     padding: 0;
+    flex: 0 0 auto;
 }
 .pagination p + p {
     margin-top: 10px;
@@ -1780,4 +1781,31 @@ ul.proportional-colored-bar li {
     height: 20px;
     width: calc(var(--item-ratio) * 100%);
     background: var(--item-color);
+}
+
+ul.proportional-colored-bar-legend,
+ul.proportional-colored-bar-legend li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.95em;
+    text-align: right;
+    vertical-align: middle;
+}
+
+ul.proportional-colored-bar-legend li {
+    display: inline-block;
+}
+
+ul.proportional-colored-bar-legend li::before {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin: 0.5em;
+    border: 1px solid #cecece;
+    border-radius: 13px;
+    vertical-align: middle;
+    background: var(--item-color);
+    content: '';
 }

@@ -28,6 +28,9 @@ class MissionSerializer(serializers.ModelSerializer):
          FondSerializer, kwargs={'required': True})
     code_partner = serializers.CharField(allow_blank=True)
 
+    collections_count = serializers.IntegerField(required=False, read_only=True)
+    items_count = serializers.IntegerField(required=False, read_only=True)
+
     class Meta:
         model = MissionModel
         fields = '__all__'

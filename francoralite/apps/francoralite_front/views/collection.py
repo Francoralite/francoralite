@@ -6,13 +6,12 @@
 
 
 from ..francoralite_template_view import FrancoralitePaginatedTemplateView
-from ..widgets import DefaultLoader, DomainsBarLoader
+from ..widgets import DomainsBarLoader
 
 
 class CollectionView(FrancoralitePaginatedTemplateView):
     api_url = '/api/collection'
     complementary_data_loaders = (
-        DefaultLoader(api_url + '/{id}/subelements_count', 'subelements_count'),
         DomainsBarLoader(api_url + '/{id}/items_domains'),
     )
     context_results_name = 'collections'

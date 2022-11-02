@@ -40,8 +40,8 @@
       {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") highlight=True %}
       {% include "inc/sortable-table-column-header.html" with field="title" label=_("Nom") %}
       {% include "inc/sortable-table-column-header.html" with field="description" label=_("Description") %}
-      <th>{% trans "Enquêtes" %}</th>
-      <th>{% trans "Items" %}</th>
+      {% include "inc/sortable-table-column-header.html" with field="collections_count" label=_("Enquêtes") %}
+      {% include "inc/sortable-table-column-header.html" with field="items_count" label=_("Items") %}
       <th>{% trans "Domaines" %}</th>
       {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
       <th>{% trans "Modifier" %}</th>
@@ -57,8 +57,8 @@
       </td>
       <td>{{ mission.title|safe }}</td>
       <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
-      <td><a href="/mission/{{ mission.id }}#collections">{{ mission.subelements_count.collections }}</a></td>
-      <td><a href="/search_advanced/?code_internal={{ mission.code }}">{{ mission.subelements_count.items }}</a></td>
+      <td><a href="/mission/{{ mission.id }}#collections">{{ mission.collections_count }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ mission.code }}">{{ mission.items_count }}</a></td>
       <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
       {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
       <td>
@@ -81,6 +81,7 @@
   {% endfor %}
   </tbody>
 </table>
+{% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
 
 {% if perms.keycloak.mission_delete %}
     {% modal_delete %}

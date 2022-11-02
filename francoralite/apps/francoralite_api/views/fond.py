@@ -7,6 +7,7 @@
 
 import datetime
 from django.db.models import Sum
+from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
@@ -48,6 +49,12 @@ class FondViewSet(viewsets.ModelViewSet):
         'DELETE': 'fond:delete'
     }
 
+    def get_queryset(self):
+        return super().get_queryset().annotate(
+            missions_count=Count('mission', distinct=True),
+            collections_count=Count('mission__collection', distinct=True),
+            items_count=Count('mission__collection__collection', distinct=True),
+        )
 
     def list_missions(self, id_fonds, field='id'):
 
@@ -166,19 +173,6 @@ class FondViewSet(viewsets.ModelViewSet):
             )
 
         return Response(data)
-
-    @action(detail=True)
-    def subelements_count(self, request, pk=None):
-        """
-        Determine the number of missions, collections and items
-        """
-        instance = self.get_object()
-
-        return Response({
-            'missions': MissionModel.objects.filter(fonds=instance).count(),
-            'collections': CollectionModel.objects.filter(mission__fonds=instance).count(),
-            'items': ItemModel.objects.filter(collection__mission__fonds=instance).count(),
-        })
 
     @action(detail=True)
     def items_domains(self, request, pk=None):
