@@ -12,6 +12,19 @@ body {
     text-rendering: optimizeLegibility;
 }
 
+.title {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.3em;
+}
+
+h3 {
+    font-size: 1.1em;
+    margin-top: 3px;
+}
+
 table, caption, tbody, tfoot, thead, tr, th, td {
     margin: 0;
     padding: 0;
@@ -57,7 +70,7 @@ svg {
 }
 
 #content {
-    margin: 3em;
+    margin: 1em;
     position: relative;
 }
 
@@ -1052,7 +1065,7 @@ a.image-link {
 
 .home-description {
     display: block;
-    margin: 3em;
+    margin: 5px;
 }
 
 #content .home-description h1::before{
@@ -1081,6 +1094,7 @@ a.image-link {
 
 .home-block-content {
     padding: 1rem;
+    font-size: 1.5rem;
 }
 
 #block-geonav h2 {
@@ -1089,7 +1103,7 @@ a.image-link {
 
 #block-geonav .home-block-content {
     padding: 0px;
-    height: 600px;
+    height: 400px;
     width: 100%;
 }
 
