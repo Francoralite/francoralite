@@ -156,8 +156,12 @@
           {% related_list libelle='Lieux' items=locations url_detail="location_gis-detail" field="code" %}
           {% field_data_id form_collection.location_details item.collection.location_details|markdown empty=False %}
           {% related_list libelle='Langues' items=item.languages  url_detail="language-detail" field="name" empty=False %}
-          {% field_data_id form_collection.recording_context item.collection.recording_context %}
-        </div>
+            <dl class="container_data">
+              <dt class="libelle"> {{form_collection.recording_context.label}}</dt>
+              <dd class="donnee">
+                  {{item.recording_context}}
+              </dd>
+            </dl>
       </div>
 
       <div class="block-grey">

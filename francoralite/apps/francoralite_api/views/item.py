@@ -215,6 +215,10 @@ class ItemViewSet(viewsets.ModelViewSet):
 
             data["performances"].append(data_performance)
 
+        # Retrieve the recording context name
+        rec_cont = RecordingContext.objects.get(id=1) #int(instance.collection.recording_context))
+        data['recording_context'] = rec_cont.name
+
         return Response(data)
 
     @action(detail=True)
