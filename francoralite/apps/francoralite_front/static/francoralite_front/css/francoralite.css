@@ -607,7 +607,7 @@ dl {
 dl dt, dl dd {
     position: relative;
     margin: 0;
-    margin-bottom: .5em;
+    margin-bottom: 0;
     padding: 0;
     font-size: 0.8em;
     line-height: 1.4em;
@@ -773,6 +773,7 @@ main > header {
 main > header h1 {
     margin: 0;
     flex: 1 1 auto;
+    font-size: 1.5rem;
 }
 .pagination,
 .pagination * {
@@ -1525,11 +1526,16 @@ a:focus,div:focus{
 
 .block-grey {
     background-color: #f1f1f1;
-    padding: 1em;
-    margin: 2em 0;
+    padding: 0.5em;
+    margin: 0.5em 0;
     -moz-border-radius: 8px 0px 8px 8px;
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
+}
+
+.block-grey h2{
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 #language-selector {
@@ -1743,7 +1749,7 @@ ul.messages li.error {
 
 /* correction bug qui centrait tous les champs */
 .container_line {
-	margin: inherit;
+	margin: 0.5em;
 }
 
 /* on fixe la largeur des champs pour permettre que les lignes soient alignées en  vertical */

@@ -100,50 +100,63 @@
 
       <div class="block-grey">
         <h2>{% trans "Personnes" %}</h2>
-        <dl class="container_data">
-          <dt class="libelle"> {% trans 'Enquêteurs' %}</dt>
-          <dd class="donnee">
-            {% for collector in collection.collectors %}
-                <a href="{% url "personne-detail" id=collector.id %}"
-                onclick="window.open(this.href); return false;">
-                {{collector.first_name}} {{collector.last_name}}
-                </a>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-          </dd>
-        </dl>
-        <dl class="container_data">
-          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
-          <dd class="donnee">
-            {% for informer in collection.informers %}
-                <a href="{% url "personne-detail" id=informer.id %}"
-                onclick="window.open(this.href); return false;">
-                {{informer.first_name}} {{informer.last_name}}
-                </a>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-            </ul>
-          </dd>
-        </dl>
+        <div class="row">
+          <div class="col-md-6">
+            <dl class="container_data">
+              <dt class="libelle"> {% trans 'Enquêteurs' %}</dt>
+              <dd class="donnee">
+                {% for collector in collection.collectors %}
+                    <a href="{% url "personne-detail" id=collector.id %}"
+                    onclick="window.open(this.href); return false;">
+                    {{collector.first_name}} {{collector.last_name}}
+                    </a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </dd>
+            </dl>
+          </div>
+          <div class="col-md-6">
+            <dl class="container_data">
+              <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+              <dd class="donnee">
+                {% for informer in collection.informers %}
+                    <a href="{% url "personne-detail" id=informer.id %}"
+                    onclick="window.open(this.href); return false;">
+                    {{informer.first_name}} {{informer.last_name}}
+                    </a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                </ul>
+              </dd>
+            </dl>
+          </div>
+        </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Localisation" %}</h2>
-        <dl class="container_data">
-          <dt class="libelle"> {% trans 'Lieux' %}</dt>
-          <dd class="donnee">
-            <ul>
-            {% for location in collection.locations %}
-              <li>
-                <a href="{% url "location_gis-detail" id=location.id %}"
-                onclick="window.open(this.href); return false;">
-                {{location.code}}
-                </a>
-              </li>
-            {% endfor %}
-            </ul>
-          </dd>
-        </dl>
-        {% field_data form.location_details.label|safe collection.location_details|markdown|safe empty=False %}
-        {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
+
+        <div class="row">
+          <div class="col-md-6">
+            <dl class="container_data">
+              <dt class="libelle"> {% trans 'Lieux' %}</dt>
+              <dd class="donnee">
+                <ul>
+                {% for location in collection.locations %}
+                  <li>
+                    <a href="{% url "location_gis-detail" id=location.id %}"
+                    onclick="window.open(this.href); return false;">
+                    {{location.code}}
+                    </a>
+                  </li>
+                {% endfor %}
+                </ul>
+              </dd>
+            </dl>
+          </div>
+          <div class="col-md-6">
+            {% field_data form.location_details.label|safe collection.location_details|markdown|safe empty=False %}
+            {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
+          </div>
+        </div>
       </div>
 
       {% if collection.languages %}
