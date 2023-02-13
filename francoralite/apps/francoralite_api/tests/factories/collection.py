@@ -10,7 +10,6 @@ from .mediatype import MediaTypeFactory
 from .legalrights import LegalRightsFactory
 from .publisher import PublisherFactory
 from .acquisition_mode import AcquisitionModeFactory
-from .recording_context import RecordingContextFactory
 from .collectioncollectors import CollectionCollectorsFactory
 from .collection_informer import CollectionInformerFactory
 from .collection_location import CollectionLocationFactory
@@ -37,7 +36,7 @@ class CollectionFactory(factory.django.DjangoModelFactory):
     description = factory.Faker('paragraph', nb_sentences=5)
     # descriptions = factory.Faker('paragraph', nb_sentences=5)
 
-    recording_context = factory.Faker('word')
+    recording_context = "1"
     recorded_from_year = factory.Faker('date')
     recorded_to_year = factory.Faker('date')
     year_published = factory.Faker('year')
