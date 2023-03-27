@@ -158,7 +158,7 @@
           {% related_list libelle='Langues' items=item.languages  url_detail="language-detail" field="name" empty=False %}
             <dl class="container_data">
               <dt class="libelle"> {{form_collection.recording_context.label}}</dt>
-              <dd class="donnee">
+              <dd class="donnee" id="id_recording_context">
                   {{item.recording_context}}
               </dd>
             </dl>
