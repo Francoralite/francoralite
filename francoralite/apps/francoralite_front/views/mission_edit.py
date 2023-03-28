@@ -20,5 +20,11 @@ class MissionEdit(FrancoraliteFormView):
     success_url = '/mission/'
 
     keycloak_scopes = {
-        'DEFAULT': 'authority:update',
+        'DEFAULT': 'mission:update',
     }
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['fonds'] = initial['fonds']['id']
+
+        return initial
