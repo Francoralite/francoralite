@@ -10,13 +10,22 @@ from francoralite.apps.francoralite_front import tools
 class FrancoraliteFormView(FormView):
     default_403_error_message = _('Accès interdit.')
 
+    def get_initial(self):
+        initial = super().get_initial()
+        record_id = self.kwargs.get('id')
+        record = tools.request_api(self.api_url_prefix + str(record_id))
+        initial.update(record)
+
+        return initial
+
     def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
 
         record_id = kwargs.get('id')
 
         # Obtain values of the record
         record = tools.request_api(self.api_url_prefix + str(record_id))
-        form = self.form_class(initial=record)
+        form = self.form_class(initial=self.get_initial())
 
         return render(request, self.template_name, {
             'form': form,

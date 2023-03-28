@@ -57,7 +57,7 @@ setup(
     'django-bootstrap3==14.2.0',
     'django-bower==5.2.0',
     'pyyaml==5.4.1',
-    'Werkzeug==1.0.1',
+    'Werkzeug==2.2.3',
     'django-dirtyfields==1.5.0',
     'sqlparse==0.4.2',
     'django-markdownx==3.0.1',

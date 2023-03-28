@@ -22,3 +22,10 @@ class CollectionEdit(FrancoraliteFormView):
     keycloak_scopes = {
         'DEFAULT': 'collection:update',
     }
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['mission'] = initial['mission']['id']
+
+        return initial
+

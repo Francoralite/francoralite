@@ -12,6 +12,19 @@ body {
     text-rendering: optimizeLegibility;
 }
 
+.title {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.3em;
+}
+
+h3 {
+    font-size: 1.1em;
+    margin-top: 3px;
+}
+
 table, caption, tbody, tfoot, thead, tr, th, td {
     margin: 0;
     padding: 0;
@@ -57,7 +70,7 @@ svg {
 }
 
 #content {
-    margin: 3em;
+    margin: 1em;
     position: relative;
 }
 
@@ -594,7 +607,7 @@ dl {
 dl dt, dl dd {
     position: relative;
     margin: 0;
-    margin-bottom: .5em;
+    margin-bottom: 0;
     padding: 0;
     font-size: 0.8em;
     line-height: 1.4em;
@@ -760,6 +773,7 @@ main > header {
 main > header h1 {
     margin: 0;
     flex: 1 1 auto;
+    font-size: 1.5rem;
 }
 .pagination,
 .pagination * {
@@ -1052,7 +1066,7 @@ a.image-link {
 
 .home-description {
     display: block;
-    margin: 3em;
+    margin: 5px;
 }
 
 #content .home-description h1::before{
@@ -1081,6 +1095,7 @@ a.image-link {
 
 .home-block-content {
     padding: 1rem;
+    font-size: 1.5rem;
 }
 
 #block-geonav h2 {
@@ -1089,7 +1104,7 @@ a.image-link {
 
 #block-geonav .home-block-content {
     padding: 0px;
-    height: 600px;
+    height: 400px;
     width: 100%;
 }
 
@@ -1330,7 +1345,7 @@ a.image-link {
     font-weight: bold;
     color:#ffffff;
     background-color:black;
-    border-color:#black;
+    border-color:black;
 
 }
 
@@ -1511,11 +1526,16 @@ a:focus,div:focus{
 
 .block-grey {
     background-color: #f1f1f1;
-    padding: 1em;
-    margin: 2em 0;
+    padding: 0.5em;
+    margin: 0.5em 0;
     -moz-border-radius: 8px 0px 8px 8px;
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
+}
+
+.block-grey h2{
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 #language-selector {
@@ -1729,7 +1749,7 @@ ul.messages li.error {
 
 /* correction bug qui centrait tous les champs */
 .container_line {
-	margin: inherit;
+	margin: 0.5em;
 }
 
 /* on fixe la largeur des champs pour permettre que les lignes soient alignées en  vertical */

@@ -18,12 +18,14 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories.item import ItemFactory, ItemCompleteFactory
+from .factories.recording_context import RecordingContextFactory
 from .factories.performancecollectionmusician import PerformanceCollectionMusicianFactory
 from .fake_data.fake_sound import CleanMediaMixin
 from ..models.item import Item
 from ..models.collection import Collection
 from ..models.mediatype import MediaType
 from ..models.coupe import Coupe
+from ..models.recording_context import RecordingContext
 from ..models.performance_collection_musician import PerformanceCollectionMusician
 from .fake_data.fake_sound import create_tmp_sound
 
@@ -82,6 +84,7 @@ class TestItemList(CleanMediaMixin, APITestCase):
         ItemFactory.reset_sequence()
 
         # Create a set of sample data
+        RecordingContextFactory.create_batch(6)
         ItemCompleteFactory.create_batch(6)
         PerformanceCollectionMusicianFactory.create_batch(3)
 

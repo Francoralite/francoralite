@@ -102,18 +102,22 @@
      <li class="nav-item active">
        <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
      </li>
+     {% if documents %}
      <li class="nav-item">
        <a href="#tab_media" role="tab" data-toggle="tab">{% trans "Média associés" %}</a>
      </li>
+     {% endif %}
      <li class="nav-item">
        <a href="#tab_desc" role="tab" data-toggle="tab">{% trans "Description" %}</a>
      </li>
      <li class="nav-item">
        <a href="#tab_text" role="tab" data-toggle="tab">{% trans "Texte" %}</a>
      </li>
+     {% if performances or item.musical_organizations or item.musical_groups%}
      <li class="nav-item">
        <a href="#tab_vox" role="tab" data-toggle="tab">{% trans "Voix/Instruments" %}</a>
      </li>
+     {% endif %}
   </ul>
 
   <div class="tab-content">
@@ -122,45 +126,59 @@
       <h2>Général</h2>
 
       <div class="champs_general">
-        {% field_data_id form.title item.title %}
-        {% field_data_id form.alt_title item.alt_title empty=False %}
-        {% field_data_id form.trans_title item.trans_title empty=False %}
-        <dl class="container_data">
-          <dt class="libelle"> {{form.collection.label}}</dt>
-          <dd class="donnee">
-            <a href="{% url "collection-detail" id=item.collection.id %}">
-              {{item.collection.title}}
-            </a>
-          </dd>
-        </dl>
+        <div class="container_line">
+          {% field_data_id form.title item.title %}
+          {% field_data_id form.alt_title item.alt_title empty=False %}
+          {% field_data_id form.trans_title item.trans_title empty=False %}
+          <dl class="container_data">
+            <dt class="libelle"> {{form.collection.label}}</dt>
+            <dd class="donnee">
+              <a href="{% url "collection-detail" id=item.collection.id %}">
+                {{item.collection.title}}
+              </a>
+            </dd>
+          </dl>
+        </div>
         {% field_data_id form.description item.description|markdown %}
 
         <div class="block-grey">
           <h2>{% trans "Personnes" %}</h2>
-          {% related_list libelle='Enquêteurs' items=item.collectors url_detail="personne-detail" field="first_name" field2="last_name"%}
-          {% related_list libelle='Informateurs' items=item.informers url_detail="personne-detail" field="first_name" field2="last_name"%}
+          <div class="container_line">
+            {% related_list libelle='Enquêteurs' items=item.collectors url_detail="personne-detail" field="first_name" field2="last_name"%}
+            {% related_list libelle='Informateurs' items=item.informers url_detail="personne-detail" field="first_name" field2="last_name"%}
+          </div>
         </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Indications géographiques et culturelles" %}</h2>
-        {% related_list libelle='Lieux' items=locations url_detail="location_gis-detail" field="code" %}
-        {% field_data_id form_collection.location_details item.collection.location_details|markdown empty=False %}
-        {% related_list libelle='Langues' items=item.languages  url_detail="language-detail" field="name" empty=False %}
-        {% field_data_id form_collection.recording_context item.collection.recording_context %}
+        <div class="container_line">
+          {% related_list libelle='Lieux' items=locations url_detail="location_gis-detail" field="code" %}
+          {% field_data_id form_collection.location_details item.collection.location_details|markdown empty=False %}
+          {% related_list libelle='Langues' items=item.languages  url_detail="language-detail" field="name" empty=False %}
+            <dl class="container_data">
+              <dt class="libelle"> {{form_collection.recording_context.label}}</dt>
+              <dd class="donnee" id="id_recording_context">
+                  {{item.recording_context}}
+              </dd>
+            </dl>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Données d'archivage" %}</h2>
-        {% field_data_id form.code item.code|upper %}
-        {% field_data_id form.code_partner item.code_partner empty=False %}
-        {% field_data_id form.remarks item.remarks %}
+        <div class="container_line">
+          {% field_data_id form.code item.code|upper %}
+          {% field_data_id form.code_partner item.code_partner empty=False %}
+          {% field_data_id form.remarks item.remarks empty=False%}
+        </div>
       </div>
 
       <div class="block-grey">
         <h2>{% trans "Données techniques" %}</h2>
-        {% field_data_id form.media_type item.media_type.name %}
-        {% field_data_id form.approx_duration item.approx_duration empty=False %}
+          <div class="container_line">
+            {% field_data_id form.media_type item.media_type.name empty=False %}
+            {% field_data_id form.approx_duration item.approx_duration empty=False %}
+          </div>
       </div>
     </section>
 
@@ -177,13 +195,14 @@
       <h2>{% trans "Description" %}</h2>
       <div class="block-grey">
         <h2>{% trans "Genres" %}</h2>
-        {% field_data_id form.domain item.domain|domains %}
-        {% related_list libelle='Genre(s) de la chanson' items=item.domain_songs url_detail="domain_song-detail" field="name" empty=False %}
-        {% related_list libelle="Genre(s) de l'expression vocale" items=item.domain_vocals url_detail="domain_vocal-detail" field="name" empty=False %}
-        {% related_list libelle="Genre(s) de l'expression instrumentale" items=item.domain_musics url_detail="domain_music-detail" field="name" empty=False %}
-        {% related_list libelle='Genre(s) du conte' items=item.domain_tales url_detail="domain_tale-detail" field="name" empty=False %}
-        {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
-        {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
+        <div class="container_line">
+          {% field_data_id form.domain item.domain|domains %}
+          {% related_list libelle='Genre(s) de la chanson' items=item.domain_songs url_detail="domain_song-detail" field="name" empty=False %}
+          {% related_list libelle="Genre(s) de l'expression vocale" items=item.domain_vocals url_detail="domain_vocal-detail" field="name" empty=False %}
+          {% related_list libelle="Genre(s) de l'expression instrumentale" items=item.domain_musics url_detail="domain_music-detail" field="name" empty=False %}
+          {% related_list libelle='Genre(s) du conte' items=item.domain_tales url_detail="domain_tale-detail" field="name" empty=False %}
+          {% related_list libelle='Fonction(s)' items=item.usefulnesses url_detail="usefulness-detail" field="name" empty=False %}
+          {% related_list libelle='Danse(s)' items=item.dances url_detail="dance-detail" field="name" empty=False %}
       </div>
 
       {% if item.deposit_digest or item.thematics or item_deposit_names or item.deposit_places or item.deposit_periods %}
@@ -197,12 +216,15 @@
       </aside>
       {% endif %}
 
+      {% if item.authors or item.compositors or item.timbre or item.timbre_ref %}
       <div class="block-grey">
         <h2>{% trans "Chanson/Musique" %}</h2>
-        {% related_list libelle='Auteurs' items=item.authors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
-        {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
-        {% field_data_id form.timbre item.timbre empty=False %}
-        {% field_data_id form.timbre_ref item.timbre_ref empty=False %}
+        <div class="container_line">
+          {% related_list libelle='Auteurs' items=item.authors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
+          {% related_list libelle='Compositeurs' items=item.compositors url_detail="personne-detail" field="first_name" field2="last_name" empty=False %}
+          {% field_data_id form.timbre item.timbre empty=False %}
+          {% field_data_id form.timbre_ref item.timbre_ref empty=False %}
+        </div>
 
         {% if item.melody and item.melody != "None" %}
         <div class="block-grey row">
@@ -225,6 +247,7 @@
         {% endif %}
 
       </div>
+      {% endif %}
 
 
 
@@ -236,15 +259,19 @@
 
 
       {% field_data_id form.incipit item.incipit|markdown empty=False %}
-      {% field_data_id form.refrain item.refrain|markdown empty=False %}
-      {% field_data_id form.jingle item.jingle|markdown empty=False %}
-      {% field_data_id form.text item.text|markdown empty=False %}
+      <div class="container_line">
+        {% field_data_id form.refrain item.refrain|markdown empty=False %}
+        {% field_data_id form.jingle item.jingle|markdown empty=False %}
+        {% field_data_id form.text item.text|markdown empty=False %}
+      </div>
       {% field_data_id form.coupe item.coupe.name empty=False %}
 
+      {% if item.coiraults %}
       <aside class="block-grey">
         <h3>{% trans "Références" %}</h3>
         {% related_list libelle='Coirault' items=item.coiraults url_detail="coirault-detail" field="number" field2="name"%}
       </aside>
+      {% endif %}
     </section>
 
 
