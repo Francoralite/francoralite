@@ -12,8 +12,7 @@
 }
 
 .container_line  > * {
-  flex: 1 auto;
-  flex: 2 auto;
+  flex: 2;
 }
 
 .four {

@@ -139,7 +139,9 @@
             </dd>
           </dl>
         </div>
-        {% field_data_id form.description item.description|markdown %}
+        <div class="container_line">
+          {% field_data_id form.description item.description|markdown %}
+        </div>
 
         <div class="block-grey">
           <h2>{% trans "Personnes" %}</h2>
