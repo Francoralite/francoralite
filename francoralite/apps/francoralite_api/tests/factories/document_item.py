@@ -11,6 +11,7 @@ import factory
 from ...models.document_item import DocumentItem
 # Import nested/related factories
 from .document import DocumentFactory
+from icecream import ic
 
 
 class DocumentItemFactory(DocumentFactory):
@@ -25,3 +26,5 @@ class DocumentItemFactory(DocumentFactory):
 
     # Nested/related factories
     item = factory.SubFactory("francoralite.apps.francoralite_api.tests.factories.item.ItemFactory")
+
+    ic(item)
