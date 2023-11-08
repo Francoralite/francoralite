@@ -44,7 +44,6 @@ setup(
     'django-model-utils==4.1.1',
     'psycopg2-binary==2.8.6',
     'pyaml==20.4.0',
-    'django-google-tools==1.1.0', # Always useful ?
     #'MySQL-python==1.2.5',
     'mysqlclient==2.0.3',
     # V3
@@ -53,7 +52,6 @@ setup(
     'django-timezones', # Always useful ?
     'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
-    'django-breadcrumbs==1.1.3', # Always useful ?
     'django-bootstrap3==14.2.0',
     'django-bower==5.2.0',
     'pyyaml==5.4.1',
