@@ -103,6 +103,22 @@ class TestAdvancedSearch(APITestCase):
 
     # ------------------------------------------------------------------------
 
+    def test_void(self):
+        """
+        A function that runs the 'test_advanced_search' method with empty parameters.
+
+        Parameters:
+            self (object): The instance of the class.
+        
+        Returns:
+            None
+        """
+        self._test_advanced_search(
+            params='',
+            collections={},
+            items={},
+        )
+
     def test_code_external(self):
         """
         - code external : 56-10-138
