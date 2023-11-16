@@ -11,6 +11,7 @@
 ## Référencement des applications à supprimer
 
 'bootstrap3',
+'timezones',
 'telemeta',
 'timeside.player',
 # 'timeside.server',
@@ -39,7 +40,6 @@
 'django.contrib.admin',
 'django.contrib.staticfiles',
 'django_extensions',
-'timezones',
 'registration',
 'rest_framework',
 'rest_framework_xml',

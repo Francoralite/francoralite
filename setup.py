@@ -45,7 +45,6 @@ setup(
     # V3
     'django-registration-redux==2.9',
     'django-extensions==3.1.1',
-    'django-timezones', # Always useful ?
     'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
     'django-bower==5.2.0',

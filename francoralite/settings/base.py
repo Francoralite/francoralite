@@ -74,7 +74,6 @@ INSTALLED_APPS = (
 #    'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
-    'timezones',
     'registration',
     'rest_framework',
     'rest_framework_xml',
