@@ -12,26 +12,23 @@ class TestAdvancedSearch(APITestCase):
     This class tests advanced search
     """
 
-    fixtures = ['francoralite.json']
+    fixtures = ["francoralite.json"]
 
     def _test_advanced_search(self, params, collections, items):
-        from icecream import ic
-        ic.configureOutput(includeContext=True)
-        ic(params, collections, items)
 
-        response = self.client.get('/advancedsearch/?' + params)
+        response = self.client.get("/advancedsearch/?" + params)
         self.assertEqual(response.status_code, HTTP_200_OK)
 
-        response_collections = response.data['results']['collections']
-        response_items = response.data['results']['items']
-        response_locations = response.data['results']['locations']
+        response_collections = response.data["results"]["collections"]
+        response_items = response.data["results"]["items"]
+        response_locations = response.data["results"]["locations"]
 
         self.assertEqual(len(response_collections), len(collections))
         self.assertEqual(len(response_items), len(items))
         self.assertEqual(len(response_locations), len(collections))
 
-        response_collections_ids = tuple(c['id'] for c in response_collections)
-        response_items_ids = tuple(i['id'] for i in response_items)
+        response_collections_ids = tuple(c["id"] for c in response_collections)
+        response_items_ids = tuple(i["id"] for i in response_items)
 
         if isinstance(collections, (tuple, list)):
             self.assertEqual(tuple(response_collections_ids), tuple(collections))
@@ -57,10 +54,10 @@ class TestAdvancedSearch(APITestCase):
 
         for length in range(1, len(results_per_values) + 1):
             for values in combinations(all_values, length):
-                params = '&'.join('%s=%s' % (name, value) for value in values)
+                params = "&".join("%s=%s" % (name, value) for value in values)
 
                 selected_collections = tuple(
-                    frozenset(results.get('collections', {}))
+                    frozenset(results.get("collections", {}))
                     for value, results in results_per_values.items()
                     if value in values
                 )
@@ -69,7 +66,7 @@ class TestAdvancedSearch(APITestCase):
                 nor_collections = all_collections.difference(or_collections)
 
                 selected_items = tuple(
-                    frozenset(results.get('items', {}))
+                    frozenset(results.get("items", {}))
                     for value, results in results_per_values.items()
                     if value in values
                 )
@@ -84,37 +81,53 @@ class TestAdvancedSearch(APITestCase):
                 )
 
                 self._test_advanced_search(
-                    params=params + ('&%s_operator=and' % name),
+                    params=params + ("&%s_operator=and" % name),
                     collections=and_collections,
                     items=and_items,
                 )
 
                 self._test_advanced_search(
-                    params=params + ('&%s_operator=or' % name),
+                    params=params + ("&%s_operator=or" % name),
                     collections=or_collections,
                     items=or_items,
                 )
 
                 self._test_advanced_search(
-                    params=params + ('&%s_operator=nor' % name),
+                    params=params + ("&%s_operator=nor" % name),
                     collections=nor_collections,
                     items=nor_items,
                 )
 
     # ------------------------------------------------------------------------
 
-    def test_void(self):
+    def test_empty_params(self):
         """
         A function that runs the 'test_advanced_search' method with empty parameters.
 
         Parameters:
             self (object): The instance of the class.
-        
+
         Returns:
             None
         """
         self._test_advanced_search(
-            params='',
+            params="code_internal_operator=or&code_external_operator=or&title=&description=&informer_civility_operator=or&informer_operator=or&collector_civility_operator=or&collector_operator=or&date_start=&date_end=&location_operator=or&cultural_area_operator=or&media_type_operator=or&language_operator=or&recording_context_operator=or&usefulness_operator=or&dance_operator=or&thematic_operator=or&domain_song_operator=or&timbre_operator=or&timbre_ref_operator=or&coupe_operator=or&domain_vocal_operator=or&coirault_operator=or&domain_music_operator=or&instrument_operator=or&domain_tale_operator=or&text=&incipit=&refrain=&jingle=",
+            collections={},
+            items={},
+        )
+
+    def test_void(self):
+        """
+        A function that runs the 'test_advanced_search' method with void.
+
+        Parameters:
+            self (object): The instance of the class.
+
+        Returns:
+            None
+        """
+        self._test_advanced_search(
+            params="",
             collections={},
             items={},
         )
@@ -124,10 +137,13 @@ class TestAdvancedSearch(APITestCase):
         - code external : 56-10-138
         - code external : MUS1969.33.2
         """
-        self._test_all_combinations('code_external', {
-            '56-10-138': {'collections': {4}, 'items': {4}},
-            'MUS1969.33.2': {'items': {2, 3}},
-        })
+        self._test_all_combinations(
+            "code_external",
+            {
+                "56-10-138": {"collections": {4}, "items": {4}},
+                "MUS1969.33.2": {"items": {2, 3}},
+            },
+        )
 
     def test_code_internal(self):
         """
@@ -137,23 +153,29 @@ class TestAdvancedSearch(APITestCase):
         - code internal : UPOI_ATP_0001_0001
         - code internal : UPOI_ATP_0001_0001_002
         """
-        self._test_all_combinations('code_internal', {
-            'UPOI': {'collections': {1, 2, 3, 4}, 'items': {1, 2, 3, 4}},
-            'UPOI_ATP': {'collections': {2, 3, 4}, 'items': {1, 2, 4}},
-            'UPOI_ATP_0001': {'collections': {2, 3}, 'items': {1, 2}},
-            'UPOI_ATP_0001_0001': {'collections': {2}, 'items': {1, 2}},
-            'UPOI_ATP_0001_0001_002': {'collections': {2}, 'items': {2}},
-        })
+        self._test_all_combinations(
+            "code_internal",
+            {
+                "UPOI": {"collections": {1, 2, 3, 4}, "items": {1, 2, 3, 4}},
+                "UPOI_ATP": {"collections": {2, 3, 4}, "items": {1, 2, 4}},
+                "UPOI_ATP_0001": {"collections": {2, 3}, "items": {1, 2}},
+                "UPOI_ATP_0001_0001": {"collections": {2}, "items": {1, 2}},
+                "UPOI_ATP_0001_0001_002": {"collections": {2}, "items": {2}},
+            },
+        )
 
     def test_coirault(self):
         """
         - coirault : 1 - À l’arrivée du doux printemps
         - coirault : 2 - Joli mois de mai, que tu es agréable
         """
-        self._test_all_combinations('coirault', {
-            1: {'collections': {1, 2}, 'items': {1, 3}},
-            2: {'collections': {1, 2}, 'items': {2, 3}},
-        })
+        self._test_all_combinations(
+            "coirault",
+            {
+                1: {"collections": {1, 2}, "items": {1, 3}},
+                2: {"collections": {1, 2}, "items": {2, 3}},
+            },
+        )
 
     def test_collector(self):
         """
@@ -162,31 +184,40 @@ class TestAdvancedSearch(APITestCase):
         - collector : 6 - Jeanne-Marie Bourreau
         - collector : 8 - Mlle Claudie Marcel-Dubois
         """
-        self._test_all_combinations('collector', {
-            1: {},
-            3: {'collections': {1}},
-            6: {'collections': {2, 3}},
-            8: {'collections': {4}, 'items': {1, 2, 4}},
-        })
+        self._test_all_combinations(
+            "collector",
+            {
+                1: {},
+                3: {"collections": {1}},
+                6: {"collections": {2, 3}},
+                8: {"collections": {4}, "items": {1, 2, 4}},
+            },
+        )
 
     def test_collector_civility(self):
-        self._test_all_combinations('collector_civility', {
-            '(Mme)': {},
-            'Mlle': {'collections': {4}, 'items': {1, 2, 4}},
-            'Mme': {},
-            'Monsieur': {},
-            'Sr': {'collections': {1}},
-        })
+        self._test_all_combinations(
+            "collector_civility",
+            {
+                "(Mme)": {},
+                "Mlle": {"collections": {4}, "items": {1, 2, 4}},
+                "Mme": {},
+                "Monsieur": {},
+                "Sr": {"collections": {1}},
+            },
+        )
 
     def test_coupe(self):
         """
         - coupe : 1 - AABB
         - coupe : 2 - ABCD
         """
-        self._test_all_combinations('coupe', {
-            1: {'collections': {2}, 'items': {1, 2}},
-            2: {'collections': {1}, 'items': {3}},
-        })
+        self._test_all_combinations(
+            "coupe",
+            {
+                1: {"collections": {2}, "items": {1, 2}},
+                2: {"collections": {1}, "items": {3}},
+            },
+        )
 
     def test_cultural_area(self):
         """
@@ -194,11 +225,14 @@ class TestAdvancedSearch(APITestCase):
         - cultural area : Saintonge, Poitou
         - cultural area : Vendée
         """
-        self._test_all_combinations('cultural_area', {
-            'Poitou': {'collections': {3}},
-            'Saintonge, Poitou': {'collections': {2}, 'items': {1, 2}},
-            'Vendée': {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "cultural_area",
+            {
+                "Poitou": {"collections": {3}},
+                "Saintonge, Poitou": {"collections": {2}, "items": {1, 2}},
+                "Vendée": {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_dance(self):
         """
@@ -206,54 +240,63 @@ class TestAdvancedSearch(APITestCase):
         - dance : 2 - valse
         - dance : 3 - mazurka
         """
-        self._test_all_combinations('dance', {
-            1: {'collections': {2}, 'items': {1, 2}},
-            2: {'collections': {2}, 'items': {2}},
-            3: {},
-        })
+        self._test_all_combinations(
+            "dance",
+            {
+                1: {"collections": {2}, "items": {1, 2}},
+                2: {"collections": {2}, "items": {2}},
+                3: {},
+            },
+        )
 
     def test_date(self):
         self._test_advanced_search(
-            params='date_start=1969-09-05&date_end=1969-09-07',
+            params="date_start=1969-09-05&date_end=1969-09-07",
             collections={3},
             items={},
         )
 
         self._test_advanced_search(
-            params='date_start=1969-09-01&date_end=1969-09-07',
+            params="date_start=1969-09-01&date_end=1969-09-07",
             collections={2, 3},
             items={1, 2},
         )
 
         self._test_advanced_search(
-            params='date_start=1969-09-05',
+            params="date_start=1969-09-05",
             collections={3},
             items={},
         )
 
         self._test_advanced_search(
-            params='date_end=1969-09-05',
+            params="date_end=1969-09-05",
             collections={1, 2, 4},
             items={1, 2, 3, 4},
         )
 
     def test_description(self):
-        self._test_all_combinations('description', {
-            'violon': {'collections': {2, 3}, 'items': {2, 3}},
-            'extrait': {'collections': {1, 4}},
-            'chanson': {'items': {4}},
-            'raconte': {'items': {1}},
-        })
+        self._test_all_combinations(
+            "description",
+            {
+                "violon": {"collections": {2, 3}, "items": {2, 3}},
+                "extrait": {"collections": {1, 4}},
+                "chanson": {"items": {4}},
+                "raconte": {"items": {1}},
+            },
+        )
 
     def test_domain_music(self):
         """
         - domain music : 1 - air de musique
         - domain music : 2 - air de chanson
         """
-        self._test_all_combinations('domain_music', {
-            1: {},
-            2: {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "domain_music",
+            {
+                1: {},
+                2: {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_domain_song(self):
         """
@@ -261,41 +304,50 @@ class TestAdvancedSearch(APITestCase):
         - domain song : 2 - mariage
         - domain song : 3 - éducation
         """
-        self._test_all_combinations('domain_song', {
-            1: {},
-            2: {'collections': {4}, 'items': {4}},
-            3: {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "domain_song",
+            {
+                1: {},
+                2: {"collections": {4}, "items": {4}},
+                3: {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_domain_tale(self):
         """
         - domain tale : 1 - conte facétieux
         - domain tale : 2 - récit
         """
-        self._test_all_combinations('domain_tale', {
-            1: {},
-            2: {'collections': {1, 2}, 'items': {1, 2, 3}},
-        })
+        self._test_all_combinations(
+            "domain_tale",
+            {
+                1: {},
+                2: {"collections": {1, 2}, "items": {1, 2, 3}},
+            },
+        )
 
     def test_domain_vocal(self):
         """
         - domain vocal : 1 - comptine
         """
-        self._test_all_combinations('domain_vocal', {
-            1: {},
-        })
+        self._test_all_combinations(
+            "domain_vocal",
+            {
+                1: {},
+            },
+        )
 
     def test_incipit(self):
         self._test_advanced_search(
-            params='incipit=école%20du%20roi',
+            params="incipit=école%20du%20roi",
             collections={},
             items={4},
         )
 
-        #TODO critère unique : autres textes (ajouter du texte sur d’autres items pour améliorer les tests)
+        # TODO critère unique : autres textes (ajouter du texte sur d’autres items pour améliorer les tests)
 
         self._test_advanced_search(
-            params='incipit=ordinateur',
+            params="incipit=ordinateur",
             collections={},
             items={},
         )
@@ -308,22 +360,28 @@ class TestAdvancedSearch(APITestCase):
         - informer : 5 - (Mme) Mme Aubrière
         - informer : 9 - Mlle Michèle Bouchereau
         """
-        self._test_all_combinations('informer', {
-            1: {},
-            2: {'collections': {1}},
-            4: {'collections': {2, 3}, 'items': {1, 2}},
-            5: {'collections': {2, 3}},
-            9: {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "informer",
+            {
+                1: {},
+                2: {"collections": {1}},
+                4: {"collections": {2, 3}, "items": {1, 2}},
+                5: {"collections": {2, 3}},
+                9: {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_informer_civility(self):
-        self._test_all_combinations('informer_civility', {
-            '(Mme)': {'collections': {2, 3}},
-            'Mlle': {'collections': {4}, 'items': {4}},
-            'Mme': {},
-            'Monsieur': {'collections': {2, 3}, 'items': {1, 2}},
-            'Sr': {'collections': {1}},
-        })
+        self._test_all_combinations(
+            "informer_civility",
+            {
+                "(Mme)": {"collections": {2, 3}},
+                "Mlle": {"collections": {4}, "items": {4}},
+                "Mme": {},
+                "Monsieur": {"collections": {2, 3}, "items": {1, 2}},
+                "Sr": {"collections": {1}},
+            },
+        )
 
     def test_instrument(self):
         """
@@ -331,14 +389,17 @@ class TestAdvancedSearch(APITestCase):
         - instrument : 2 - voix d'homme
         - instrument : 3 - voix de fille
         """
-        self._test_all_combinations('instrument', {
-            1: {'collections': {3}},
-            2: {'collections': {2, 3}, 'items': {2}},
-            3: {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "instrument",
+            {
+                1: {"collections": {3}},
+                2: {"collections": {2, 3}, "items": {2}},
+                3: {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_jingle(self):
-        pass  #TODO critère unique : textes différents (cf incipit)
+        pass  # TODO critère unique : textes différents (cf incipit)
 
     def test_language(self):
         """
@@ -348,13 +409,16 @@ class TestAdvancedSearch(APITestCase):
         - language : 4 - Français
         - language : 5 - Poitevin-saintongeais
         """
-        self._test_all_combinations('language', {
-            1: {'items': {4}},
-            2: {},
-            3: {'collections': {4}, 'items': {2}},
-            4: {'collections': {1, 2, 4}, 'items': {1, 4}},
-            5: {'collections': {2}},
-        })
+        self._test_all_combinations(
+            "language",
+            {
+                1: {"items": {4}},
+                2: {},
+                3: {"collections": {4}, "items": {2}},
+                4: {"collections": {1, 2, 4}, "items": {1, 4}},
+                5: {"collections": {2}},
+            },
+        )
 
     def test_location(self):
         """
@@ -363,12 +427,15 @@ class TestAdvancedSearch(APITestCase):
         - location : 3 - La Biroire
         - location : 4 - L'Épine
         """
-        self._test_all_combinations('location', {
-            1: {},
-            2: {'collections': {1}, 'items': {3}},
-            3: {'collections': {2, 3}, 'items': {1, 2}},
-            4: {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "location",
+            {
+                1: {},
+                2: {"collections": {1}, "items": {3}},
+                3: {"collections": {2, 3}, "items": {1, 2}},
+                4: {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_media_type(self):
         """
@@ -376,11 +443,14 @@ class TestAdvancedSearch(APITestCase):
         - media type : 2 - bande dat
         - media type : 3 - son uniquement
         """
-        self._test_all_combinations('media_type', {
-            1: {},
-            2: {'collections': {1, 2, 3}, 'items': {1, 2, 3}},
-            3: {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "media_type",
+            {
+                1: {},
+                2: {"collections": {1, 2, 3}, "items": {1, 2, 3}},
+                3: {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_recording_context(self):
         """
@@ -389,72 +459,90 @@ class TestAdvancedSearch(APITestCase):
         - recording context : 3 - enquête
         - recording context : 6 - TODO à créer dans les fixtures et nom à mettre ici
         """
-        self._test_all_combinations('recording_context', {
-            1: {'collections': {2, 3}, 'items': {1, 2}},
-            2: {},
-            3: {'collections': {1}, 'items': {3}},
-            6: {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "recording_context",
+            {
+                1: {"collections": {2, 3}, "items": {1, 2}},
+                2: {},
+                3: {"collections": {1}, "items": {3}},
+                6: {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_refrain(self):
         self._test_advanced_search(
-            params='refrain=rose%20au%20bois',
+            params="refrain=rose%20au%20bois",
             collections={},
             items={4},
         )
 
-        #TODO critère unique : autres textes (cf incipit)
+        # TODO critère unique : autres textes (cf incipit)
 
     def test_text(self):
-        pass  #TODO critère unique : textes différents (cf incipit)
+        pass  # TODO critère unique : textes différents (cf incipit)
 
     def test_thematic(self):
         """
         - thématique : 1 - danse
         - thématique : 2 - récit
         """
-        self._test_all_combinations('thematic', {
-            1: {'collections': {2, 4}, 'items': {2, 4}},
-            2: {'collections': {2}, 'items': {1, 2}},
-        })
+        self._test_all_combinations(
+            "thematic",
+            {
+                1: {"collections": {2, 4}, "items": {2, 4}},
+                2: {"collections": {2}, "items": {1, 2}},
+            },
+        )
 
     def test_timbre(self):
         """
         - thématique : timbre_1
         - thématique : timbre_2
         """
-        self._test_all_combinations('timbre', {
-            'timbre_1': {'collections': {2}, 'items': {1, 2}},
-            'timbre_2': {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "timbre",
+            {
+                "timbre_1": {"collections": {2}, "items": {1, 2}},
+                "timbre_2": {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_timbre_ref(self):
         """
         - thématique : timbre_ref_1
         - thématique : timbre_ref_2
         """
-        self._test_all_combinations('timbre_ref', {
-            'timbre_ref_1': {'collections': {2}, 'items': {1, 2}},
-            'timbre_ref_2': {'collections': {4}, 'items': {4}},
-        })
+        self._test_all_combinations(
+            "timbre_ref",
+            {
+                "timbre_ref_1": {"collections": {2}, "items": {1, 2}},
+                "timbre_ref_2": {"collections": {4}, "items": {4}},
+            },
+        )
 
     def test_title(self):
-        self._test_all_combinations('title', {
-            'Charles': {'collections': {2, 3}, 'items': {2, 3}},
-            'roi': {'collections': {2, 3}, 'items': {4}},
-            'violon': {'collections': {3}, 'items': {1}},
-            'rose': {'items': {4}},
-        })
+        self._test_all_combinations(
+            "title",
+            {
+                "Charles": {"collections": {2, 3}, "items": {2, 3}},
+                "roi": {"collections": {2, 3}, "items": {4}},
+                "violon": {"collections": {3}, "items": {1}},
+                "rose": {"items": {4}},
+            },
+        )
 
     def test_usefulness(self):
         """
         - fonction : 1 - écouter
         - fonction : 2 - danser
         """
-        self._test_all_combinations('usefulness', {
-            1: {'collections': {2, 4}, 'items': {1, 4}},
-            2: {'collections': {1, 2}, 'items': {1, 3}},
-        })
+        self._test_all_combinations(
+            "usefulness",
+            {
+                1: {"collections": {2, 4}, "items": {1, 4}},
+                2: {"collections": {1, 2}, "items": {1, 3}},
+            },
+        )
 
     # ------------------------------------------------------------------------
 
@@ -464,7 +552,7 @@ class TestAdvancedSearch(APITestCase):
         - instrument : 2 - voix d'homme
         """
         self._test_advanced_search(
-            params='dance=2&instrument=2',
+            params="dance=2&instrument=2",
             collections={2},
             items={2},
         )
@@ -474,7 +562,7 @@ class TestAdvancedSearch(APITestCase):
         - instrument : 2 - voix d'homme
         """
         self._test_advanced_search(
-            params='dance=1&instrument=2',
+            params="dance=1&instrument=2",
             collections={2},
             items={2},
         )
@@ -484,7 +572,7 @@ class TestAdvancedSearch(APITestCase):
         - instrument : 1 - violon
         """
         self._test_advanced_search(
-            params='dance=2&instrument=1',
+            params="dance=2&instrument=1",
             collections={},
             items={},
         )
@@ -494,7 +582,7 @@ class TestAdvancedSearch(APITestCase):
         - instrument : 1 - violon
         """
         self._test_advanced_search(
-            params='collector=6&instrument=1',
+            params="collector=6&instrument=1",
             collections={3},
             items={},
         )
@@ -504,7 +592,7 @@ class TestAdvancedSearch(APITestCase):
         - instrument : 2 - voix d'homme
         """
         self._test_advanced_search(
-            params='coupe=1&instrument=2',
+            params="coupe=1&instrument=2",
             collections={2},
             items={2},
         )
@@ -514,7 +602,7 @@ class TestAdvancedSearch(APITestCase):
         - domain_tale : 2 - récit
         """
         self._test_advanced_search(
-            params='date_start=1969-09-01&date_end=1969-09-07&domain_tale=2',
+            params="date_start=1969-09-01&date_end=1969-09-07&domain_tale=2",
             collections={2},
             items={1, 2},
         )
@@ -524,7 +612,7 @@ class TestAdvancedSearch(APITestCase):
         - text : empty value
         """
         self._test_advanced_search(
-            params='code_internal=UPOI_ATP_0001_0001&text=',
+            params="code_internal=UPOI_ATP_0001_0001&text=",
             collections={2},
             items={1, 2},
         )

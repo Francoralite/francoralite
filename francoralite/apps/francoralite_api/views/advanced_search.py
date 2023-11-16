@@ -33,7 +33,6 @@ class AdvancedSearchList(generics.GenericAPIView):
     serializer_class = AdvancedSearchSerializer
 
     def get(self, *args, **kwargs):
- 
         # Initialize data from ORM (-> querysets)
         query_sets = [
             Collection.objects.all(),
@@ -275,10 +274,11 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Verify if query parameters exist
         for criterion in criteria:
             if self.request.query_params.get(criterion["name"]) is not None:
-                vide = False
-        if self.request.query_params.get("date_start") is not None:
+                if self.request.query_params.get(criterion["name"])  != "" :
+                    vide = False
+        if self.request.query_params.get("date_start") and self.request.query_params.get("date_start") != "":
             vide = False
-        if self.request.query_params.get("date_end") is not None:
+        if self.request.query_params.get("date_end") and self.request.query_params.get("date_end") != "":
             vide = False
         # If no query parameters, return an empty response
         if vide == True:
@@ -292,7 +292,6 @@ class AdvancedSearchList(generics.GenericAPIView):
                     },
                 }
             )
-
 
         operators = {}
 
