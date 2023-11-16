@@ -10,6 +10,7 @@
 
 ## Référencement des applications à supprimer
 
+'bootstrap3',
 'telemeta',
 'timeside.player',
 # 'timeside.server',
@@ -39,7 +40,6 @@
 'django.contrib.staticfiles',
 'django_extensions',
 'timezones',
-'bootstrap3',
 'registration',
 'rest_framework',
 'rest_framework_xml',

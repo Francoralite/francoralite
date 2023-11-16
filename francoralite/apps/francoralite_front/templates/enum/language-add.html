@@ -1,13 +1,7 @@
-
 {% extends "enum/language.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -38,7 +32,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ block.super }}
+    {{ block.super }}
 {% endblock %}
 
 {{ form.media }}
@@ -51,14 +45,14 @@
     {% endif %}
       {% csrf_token %}
       <!-- FIXIT  champs en saisie -->
-      {% bootstrap_field form.identifier layout='vertical' %}
-      {% bootstrap_field form.part2B layout='vertical' %}
-      {% bootstrap_field form.part2T layout='vertical' %}
-      {% bootstrap_field form.part1 layout='vertical' %}
-      {% bootstrap_field form.scope layout='vertical' %}
-      {% bootstrap_field form.type layout='vertical' %}
-      {% bootstrap_field form.name layout='vertical' %}
-      {% bootstrap_field form.comment layout='vertical' %}
+      {% field_editor form.identifier %}
+      {% field_editor form.part2B %}
+      {% field_editor form.part2T %}
+      {% field_editor form.part1 %}
+      {% field_editor form.scope %}
+      {% field_editor form.type %}
+      {% field_editor form.name %}
+      {% field_editor form.comment %}
       <div class="block-grey">
         <h2></h2>
         <div class="container_line">

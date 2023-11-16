@@ -1,6 +1,4 @@
-
 {% extends "base.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
@@ -55,7 +53,6 @@
       <td>{{ language.name|safe }}</td>
       {% if perms.keycloak.language_update or perms.keycloak.language_delete %}
       <td>
-        {% buttons %}
         {% if perms.keycloak.language_update %}
         <a href="{% url "language-edit" id=language.id %}">
               <button type="button" class="btn btn-default">
@@ -71,7 +68,6 @@
               <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
         </button>
         {% endif %}
-        {% endbuttons %}
       </td>
       {% endif %}
   </tr>

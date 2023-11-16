@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import multiprocessing
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
-
-import sys
 
 
 CLASSIFIERS = ['Environment :: Web Environment',
@@ -52,7 +48,6 @@ setup(
     'django-timezones', # Always useful ?
     'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
-    'django-bootstrap3==14.2.0',
     'django-bower==5.2.0',
     'pyyaml==5.4.1',
     'Werkzeug==2.2.3',

@@ -45,15 +45,6 @@ TEMPLATES = [
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 AUTH_USER_MODEL = 'auth.User'
 
-# Settings for django-bootstrap3
-BOOTSTRAP3 = {
-    'set_required': True,
-    'set_placeholder': False,
-    'error_css_class': 'has-error',
-    'required_css_class': 'has-warning',
-    'javascript_in_head': True,
-}
-
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
@@ -84,7 +75,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'timezones',
-    'bootstrap3',
     'registration',
     'rest_framework',
     'rest_framework_xml',

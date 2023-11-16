@@ -4,12 +4,15 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django import template
-from django.utils.translation import gettext_lazy as _
-from francoralite_front.errors import APPLICATION_ERRORS
-from django.utils.safestring import mark_safe
-
 import json
+
+from django import template
+from django.forms.widgets import CheckboxInput, HiddenInput
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
+
+from francoralite_front.errors import APPLICATION_ERRORS
 
 register = template.Library()
 
@@ -72,6 +75,42 @@ def field_data_bool(label, data):
     code = code + "</dd> </dl>"
 
     return mark_safe(code)
+
+
+@register.simple_tag
+def field_editor(field):
+    if isinstance(field.field.widget, HiddenInput):
+        return field
+
+    elif isinstance(field.field.widget, CheckboxInput):
+        inner_html = format_html(
+            '<div class="checkbox"><label for="{}">{} {}</label>{}</div>',
+            field.id_for_label,
+            field,
+            field.label,
+            field.errors,
+        )
+
+    else:
+        attrs = field.field.widget.attrs
+        attrs['class'] = f'form-control {attrs.get("class") or ""}'.strip()
+        inner_html = format_html(
+            '<label class="control-label" for="{}">{}</label>{}{}',
+            field.id_for_label,
+            field.label,
+            field,
+            field.errors,
+        )
+
+    return format_html(
+        '<div class="{}">{}</div>',
+        ' '.join(filter(None, [
+            'form-group',
+            'has-error' if field.errors else '',
+            'has-warning' if field.field.required else '',
+        ])),
+        inner_html,
+    )
 
 
 @register.simple_tag
