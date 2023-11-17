@@ -29,7 +29,6 @@ setup(
   install_requires = [
     'django==3.1.14',
     'django-appconf==1.0.4',
-    'django-environ==0.4.5',
     'django-filter==2.4.0',
     'djangorestframework==3.12.2',
     'djangorestframework-xml==2.0.0',
@@ -37,7 +36,6 @@ setup(
     'drf-yasg==1.20.0',
     'gunicorn==20.0.4',
     # V2
-    'django-model-utils==4.1.1',
     'psycopg2-binary==2.8.6',
     'pyaml==20.4.0',
     #'MySQL-python==1.2.5',
@@ -47,10 +45,8 @@ setup(
     'django-extensions==3.1.1',
     'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
-    'django-bower==5.2.0',
     'pyyaml==5.4.1',
     'Werkzeug==2.2.3',
-    'django-dirtyfields==1.5.0',
     'sqlparse==0.4.2',
     'django-markdownx==3.0.1',
     'django_select2==7.6.2',
