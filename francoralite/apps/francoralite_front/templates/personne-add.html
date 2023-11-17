@@ -1,12 +1,7 @@
 {% extends "personne.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -47,39 +42,39 @@
   {% endif %}
     {% csrf_token %}
     <div class="container_line">
-      {% bootstrap_field form.last_name layout='vertical' %}
-      {% bootstrap_field form.first_name layout='vertical' %}
+      {% field_editor form.last_name %}
+      {% field_editor form.first_name %}
     </div>
     <div class="container_line">
-        {% bootstrap_field form.civility layout='vertical' %}
-        {% bootstrap_field form.alias layout='vertical' %}
+        {% field_editor form.civility %}
+        {% field_editor form.alias %}
     </div>
     <div class="form-group">
           <label class="control-label">{% trans "Rôles" %}</label>
           <div class="container_line space-around">
-          {% bootstrap_field form.is_collector %}
-          {% bootstrap_field form.is_informer %}
-          {% bootstrap_field form.is_author %}
-          {% bootstrap_field form.is_composer %}
-          {% bootstrap_field form.is_editor %}
+          {% field_editor form.is_collector %}
+          {% field_editor form.is_informer %}
+          {% field_editor form.is_author %}
+          {% field_editor form.is_composer %}
+          {% field_editor form.is_editor %}
         </div>
 
     </div>
     <div class="block-grey">
       <h2>{% trans "Naissance" %}</h2>
-      {% bootstrap_field form.birth_date %}
-      {% bootstrap_field form.birth_location_name layout='vertical' %}
-      {% bootstrap_field form.birth_location %}
+      {% field_editor form.birth_date %}
+      {% field_editor form.birth_location_name %}
+      {% field_editor form.birth_location %}
     </div>
     <div class="block-grey">
       <h2>{% trans "Décès" %}</h2>
-      {% bootstrap_field form.death_date layout='vertical' %}
-      {% bootstrap_field form.death_location_name layout='vertical' %}
-      {% bootstrap_field form.death_location %}
+      {% field_editor form.death_date %}
+      {% field_editor form.death_location_name %}
+      {% field_editor form.death_location %}
     </div>
 
     {% markdown_editor component=form.biography  %}
-    {% bootstrap_field form.uri layout='vertical' %}
+    {% field_editor form.uri %}
 
     {% buttons_form %}
   </form>

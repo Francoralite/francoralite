@@ -1,5 +1,4 @@
 {% extends "institution.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
@@ -90,7 +89,7 @@
       </div>
 
 {% if perms.keycloak.fond_delete %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
     {% else %}
       {% trans "Il n'a pas de fonds pour cette institution." %}
