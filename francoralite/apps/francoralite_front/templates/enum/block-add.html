@@ -1,13 +1,7 @@
-
 {% extends "enum/block.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -50,11 +44,11 @@
   <form action="{%url "block-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    {% bootstrap_field form.title layout='vertical' %}
-    {% bootstrap_field form.type layout='vertical' %}
+    {% field_editor form.title %}
+    {% field_editor form.type %}
     {% markdown_editor component=form.content %}
-    {% bootstrap_field form.order layout='vertical' %}
-    {% bootstrap_field form.show layout='vertical' %}
+    {% field_editor form.order %}
+    {% field_editor form.show %}
 
     {% buttons_form %}
   </form>

@@ -1,13 +1,7 @@
-
 {% extends "enum/publisher.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -50,8 +44,8 @@
   <form action="{%url "publisher-add" %}" method="POST">
   {% endif %}
     {% csrf_token %}
-    {% bootstrap_field form.name layout='vertical' %}
-    {% bootstrap_field form.notes layout='vertical' %}
+    {% field_editor form.name %}
+    {% field_editor form.notes %}
 
     {% buttons_form %}
   </form>
