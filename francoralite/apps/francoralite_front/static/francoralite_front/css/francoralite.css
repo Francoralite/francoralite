@@ -396,6 +396,43 @@ label.disabled { color: #d7d7d7 }
     background: none;
 }
 
+form ul.switch {
+    display: inline-flex;
+    flex-flow: row wrap;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #6f0a08;
+    border-radius: 3px;
+    list-style: none;
+}
+
+form ul.switch li {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+form ul.switch li input {
+    position: absolute;
+    left: -99px;
+}
+
+form ul.switch li label {
+    margin: 0;
+    padding: 4px 6px;
+    background: #6f0a08;
+    color: white;
+    cursor: pointer;
+}
+
+form ul.switch li input:checked + label {
+    background: #ae8484;
+    color: #6f0a08;
+}
+
 /**/
 .has-warning > label {
     color: black !important;

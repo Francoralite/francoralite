@@ -29,10 +29,18 @@
 <h2>Filtres de recherche</h2>
 <form>
   <label>{% trans "Type de recherche" %}</label>
-  <ul>
-    <li><label><input type="radio" name="request_type" value="collection" {% if parameters.request_type != 'item' %} checked {% endif %}> {% trans "Collections" %}</label></li>
-    <li><label><input type="radio" name="request_type" value="item" {% if parameters.request_type == 'item' %} checked {% endif %}> {% trans "Items" %}</label></li>
+  <br>
+  <ul class="switch">
+    <li>
+      <input type="radio" name="request_type" value="collection" id="request_type_collection" {% if parameters.request_type != 'item' %} checked {% endif %}>
+      <label for="request_type_collection">{% trans "Collections" %}</label>
+    </li>
+    <li>
+      <input type="radio" name="request_type" value="item" id="request_type_item" {% if parameters.request_type == 'item' %} checked {% endif %}>
+      <label for="request_type_item">{% trans "Items" %}</label>
+    </li>
   </ul>
+  <br><br>
 
   <details{% if parameters_instances_json.code_internal or parameters_instances_json.code_external or parameters.title or parameters.description %} open{% endif %} id="details_references">
     <summary>{% trans "Références" %}</summary>
