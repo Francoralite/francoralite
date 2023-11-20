@@ -274,11 +274,17 @@ class AdvancedSearchList(generics.GenericAPIView):
         # Verify if query parameters exist
         for criterion in criteria:
             if self.request.query_params.get(criterion["name"]) is not None:
-                if self.request.query_params.get(criterion["name"])  != "" :
+                if self.request.query_params.get(criterion["name"]) != "":
                     vide = False
-        if self.request.query_params.get("date_start") and self.request.query_params.get("date_start") != "":
+        if (
+            self.request.query_params.get("date_start")
+            and self.request.query_params.get("date_start") != ""
+        ):
             vide = False
-        if self.request.query_params.get("date_end") and self.request.query_params.get("date_end") != "":
+        if (
+            self.request.query_params.get("date_end")
+            and self.request.query_params.get("date_end") != ""
+        ):
             vide = False
         # If no query parameters, return an empty response
         if vide == True:
@@ -286,8 +292,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                 {
                     "parameters": {},
                     "results": {
-                        "collections": {},
-                        "items": {},
+                        "records": {},
                         "locations": {},
                     },
                 }
@@ -424,12 +429,11 @@ class AdvancedSearchList(generics.GenericAPIView):
                 query_sets[1] = query_sets[1].filter(domain__icontains=domain)
         # ---------------------------------------------------- end filtering
 
-        # Collecting the locations
-        locations_qs = CollectionLocation.objects.filter(collection__in=query_sets[0])
-
         # Collecting static parameters
         parameters_instances = {}
         parameters = {
+            # type of request : collection OR item
+            "request_type": self.request.query_params.get("request_type", None),
             # autocomplete criteria
             "instances": parameters_instances,
             "operators": operators,
@@ -497,9 +501,17 @@ class AdvancedSearchList(generics.GenericAPIView):
                         ):
                             parameters_instances.setdefault(name, []).append(serialized)
 
-        # Composing results
-        collections = self.get_serializer(query_sets[0].distinct(), many=True).data
-        items = self.get_serializer(query_sets[1].distinct(), many=True).data
+        # Collecting the records
+        if self.request.query_params.get("request_type") == "item":
+            # Items
+            locations_qs = CollectionLocation.objects.filter(collection__collection__in=query_sets[1])
+            records = self.get_serializer(query_sets[1].distinct(), many=True).data
+        else:
+            # Collections
+            locations_qs = CollectionLocation.objects.filter(collection__in=query_sets[0])
+            records = self.get_serializer(query_sets[0].distinct(), many=True).data
+
+        # Collecting the locations
         locations = self.get_serializer(locations_qs.distinct(), many=True).data
 
         # Returning results
@@ -507,8 +519,7 @@ class AdvancedSearchList(generics.GenericAPIView):
             {
                 "parameters": parameters,
                 "results": {
-                    "collections": collections,
-                    "items": items,
+                    "records": records,
                     "locations": locations,
                 },
             }

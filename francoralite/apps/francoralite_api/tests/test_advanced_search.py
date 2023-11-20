@@ -14,35 +14,29 @@ class TestAdvancedSearch(APITestCase):
 
     fixtures = ["francoralite.json"]
 
-    def _test_advanced_search(self, params, collections, items):
-
+    def _test_advanced_search_implementation(self, params, records, locations=None):
         response = self.client.get("/advancedsearch/?" + params)
         self.assertEqual(response.status_code, HTTP_200_OK)
 
-        response_collections = response.data["results"]["collections"]
-        response_items = response.data["results"]["items"]
-        response_locations = response.data["results"]["locations"]
+        response_records = response.data["results"]["records"]
+        self.assertEqual(len(response_records), len(records))
 
-        self.assertEqual(len(response_collections), len(collections))
-        self.assertEqual(len(response_items), len(items))
-        self.assertEqual(len(response_locations), len(collections))
+        if locations is not None:
+            response_locations = response.data["results"]["locations"]
+            self.assertEqual(len(response_locations), len(locations))
 
-        response_collections_ids = tuple(c["id"] for c in response_collections)
-        response_items_ids = tuple(i["id"] for i in response_items)
-
-        if isinstance(collections, (tuple, list)):
-            self.assertEqual(tuple(response_collections_ids), tuple(collections))
-        elif isinstance(collections, (frozenset, set, dict)):
-            self.assertEqual(set(response_collections_ids), set(collections))
+        response_records_ids = tuple(r["id"] for r in response_records)
+        if isinstance(records, (tuple, list)):
+            self.assertEqual(tuple(response_records_ids), tuple(records))
+        elif isinstance(records, (frozenset, set, dict)):
+            self.assertEqual(set(response_records_ids), set(records))
         else:
             raise NotImplementedError
 
-        if isinstance(items, (tuple, list)):
-            self.assertEqual(tuple(response_items_ids), tuple(items))
-        elif isinstance(items, (frozenset, set, dict)):
-            self.assertEqual(set(response_items_ids), set(items))
-        else:
-            raise NotImplementedError
+    def _test_advanced_search(self, params, collections, items, locations=None):
+        self._test_advanced_search_implementation(params, collections, locations)
+        self._test_advanced_search_implementation(params + "&request_type=collection", collections, locations)
+        self._test_advanced_search_implementation(params + "&request_type=item", items, locations)
 
     def _test_all_combinations(self, name, results_per_values):
         all_collections = frozenset((1, 2, 3, 4))
@@ -114,6 +108,7 @@ class TestAdvancedSearch(APITestCase):
             params="code_internal_operator=or&code_external_operator=or&title=&description=&informer_civility_operator=or&informer_operator=or&collector_civility_operator=or&collector_operator=or&date_start=&date_end=&location_operator=or&cultural_area_operator=or&media_type_operator=or&language_operator=or&recording_context_operator=or&usefulness_operator=or&dance_operator=or&thematic_operator=or&domain_song_operator=or&timbre_operator=or&timbre_ref_operator=or&coupe_operator=or&domain_vocal_operator=or&coirault_operator=or&domain_music_operator=or&instrument_operator=or&domain_tale_operator=or&text=&incipit=&refrain=&jingle=",
             collections={},
             items={},
+            locations={},
         )
 
     def test_void(self):
@@ -130,6 +125,7 @@ class TestAdvancedSearch(APITestCase):
             params="",
             collections={},
             items={},
+            locations={},
         )
 
     def test_code_external(self):
