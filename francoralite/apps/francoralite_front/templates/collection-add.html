@@ -1,13 +1,7 @@
-
 {% extends "collection.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -56,10 +50,9 @@
     {% endif %}
       {% csrf_token %}
 
-
-        {% bootstrap_field form.mission layout='vertical' %}
-        {% bootstrap_field form.title layout='vertical' %}
-        {% bootstrap_field form.alt_title layout='vertical' %}
+        {% field_editor form.mission %}
+        {% field_editor form.title %}
+        {% field_editor form.alt_title %}
 
       <div class="app2">
       <!-- Collectors -->
@@ -120,10 +113,10 @@
       <div class="block-grey">
         <h2>{% trans "Enregistrement" %}</h2>
         <div class="container_line">
-          {% bootstrap_field form.recording_context layout='vertical'%}
-          {% bootstrap_field form.recorded_from_year layout='vertical' %}
-          {% bootstrap_field form.recorded_to_year layout='vertical' %}
-          {% bootstrap_field form.year_published layout='vertical' %}
+          {% field_editor form.recording_context %}
+          {% field_editor form.recorded_from_year %}
+          {% field_editor form.recorded_to_year %}
+          {% field_editor form.year_published %}
         </div>
       </div>
 
@@ -156,8 +149,8 @@
         <input name="locations" type="hidden"
           :value="JSON.stringify(locations, replacerLocation)" />
         </div> <!-- app2 -->
-        {% markdown_editor component=form.location_details layout='vertical'  %}
-        {% bootstrap_field form.cultural_area layout='vertical' %}
+        {% markdown_editor component=form.location_details %}
+        {% field_editor form.cultural_area %}
       </div>
 
       <div class="app2">
@@ -186,7 +179,7 @@
         <h2>{% trans "Éditeur" %}</h2>
         <!-- Publishers -->
         <div class="container_data">
-          <label class="control_label">{% trans "Editeurs" %}</label>
+          <label class="control_label">{% trans "Éditeurs" %}</label>
           <v-select
             multiple
             v-model="publishers"
@@ -205,29 +198,29 @@
         <input name="publishers" type="hidden"
           :value="JSON.stringify(publishers, replacerPublisher)" />
         <div class="container_line">
-          {% bootstrap_field form.publisher_collection layout='vertical' %}
+          {% field_editor form.publisher_collection %}
         </div>
       </div>
       </div> <!-- app2 -->
 
       <div class="container_line">
-        {% bootstrap_field form.booklet_author %}
-        {% bootstrap_field form.metadata_author %}
+        {% field_editor form.booklet_author %}
+        {% field_editor form.metadata_author %}
       </div>
 
       <div class="container_line">
-        {% bootstrap_field form.code layout='vertical' %}
-        {% bootstrap_field form.code_partner layout='vertical' %}
+        {% field_editor form.code %}
+        {% field_editor form.code_partner %}
       </div>
 
 
-      {% markdown_editor component=form.booklet_description  %}
+      {% markdown_editor component=form.booklet_description %}
       {% markdown_editor component=form.comment  %}
 
-      {% bootstrap_field form.physical_items_num layout='vertical' %}
-      {% bootstrap_field form.media_type layout='vertical' %}
-      {% bootstrap_field form.auto_period_access layout='vertical' %}
-      {% bootstrap_field form.legal_rights layout='vertical' %}
+      {% field_editor form.physical_items_num %}
+      {% field_editor form.media_type %}
+      {% field_editor form.auto_period_access %}
+      {% field_editor form.legal_rights %}
 
 
       <div id="appvox">

@@ -1,6 +1,4 @@
-
 {% extends "base.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
@@ -75,7 +73,7 @@
 </table>
 
 {% if user.is_authenticated %}
-	{% modal_delete %}
+    {% modal_delete %}
 {% endif %}
 
 {% else %}

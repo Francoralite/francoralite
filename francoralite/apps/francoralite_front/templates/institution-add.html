@@ -1,5 +1,4 @@
 {% extends "institution.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
@@ -38,7 +37,7 @@
     <form action="{{request.path}}" method="POST">
     {% endif %}
       {% csrf_token %}
-      {% bootstrap_field form.name layout='vertical' %}
+      {% field_editor form.name %}
       {% markdown_editor component=form.notes  %}
 
       {% buttons_form %}

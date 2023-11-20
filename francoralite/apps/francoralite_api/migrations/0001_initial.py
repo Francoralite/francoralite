@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import dirtyfields.dirtyfields
 import django.db.models.deletion
 from django.conf import settings
 import django.core.validators

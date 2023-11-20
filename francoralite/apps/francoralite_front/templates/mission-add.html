@@ -1,13 +1,7 @@
-
 {% extends "mission.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -55,13 +49,13 @@
   {% endif %}
     {% csrf_token %}
     <div class="container_line">
-      {% bootstrap_field form.fonds layout='vertical' %}
-      {% bootstrap_field form.code_partner layout='vertical' %}
+      {% field_editor form.fonds %}
+      {% field_editor form.code_partner  %}
     </div>
     <div class="container_line">
-      {% bootstrap_field form.code layout='vertical' %}
-      {% bootstrap_field form.title layout='vertical' %}
-      {% bootstrap_field form.public_access layout='vertical' %}
+      {% field_editor form.code %}
+      {% field_editor form.title %}
+      {% field_editor form.public_access %}
     </div>
     <div class="container">
     {% markdown_editor component=form.description  %}
