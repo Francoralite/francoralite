@@ -23,9 +23,123 @@
 {% endblock %}
 
 {% block content %}
+<header class="sticky">
 <h1>{% trans "Recherche avancée"%}</h1>
+{% include "inc/pagination.html" %}
+</header>
+
+{% if show_results %}
 <hr/>
 
+<div>
+  <h2>Résultats</h2>
+
+  {% if parameters.request_type != 'item' %}
+  <div>
+    <h3>{% trans "Enquêtes" %}</h3>
+    {% if records %}
+    <table class="listing">
+      <thead>
+        <th class="sortable">{% trans "Cote" %}</th>
+        <th class="sortable">{% trans "Titre" %}</th>
+        <th class="sortable">{% trans "Aire culturelle" %}</th>
+        <th>{% trans "Informateurs" %}</th>
+      </thead>
+      <tbody>
+        {% for collection in records %}
+        <tr>
+          <td>
+            <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
+          </td>
+          <td>{{ collection.title }}</td>
+          <td>{{ collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for informer in collection.informers %}
+              <li>
+                <a href="{% url 'personne-detail' id=informer.id %}">
+                  {{informer.first_name}} {{informer.last_name}}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>{% trans "Il n'y pas d'enquête qui correspond à ces critères." %}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if parameters.request_type == 'item' %}
+  <div>
+    <h3>{% trans "Items" %}</h3>
+    {% if records %}
+    <table class="listing">
+      <thead>
+        <th class="sortable">{% trans "Cote" %}</th>
+        <th class="sortable">{% trans "Titre" %}</th>
+        <th class="sortable">{% trans "Aire culturelle" %}</th>
+        <th>{% trans "Informateurs" %}</th>
+        <th>{% trans "Piste son" %}</th>
+      </thead>
+      <tbody>
+        {% for item in records %}
+        <tr>
+          <td>
+            <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
+          </td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for informer in item.informers %}
+              <li>
+                <a href="{% url 'personne-detail' id=informer.id %}">
+                  {{informer.first_name}} {{informer.last_name}}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>
+            <audio
+              controls
+              preload="metadata"
+              {% if item.file %}
+              src="/api/item/{{item.id}}/download">
+              {% else %}
+              src="{{item.url_file}}"
+              {% endif %}
+              Votre navigateur Internet ne prend pas en charge cet élément audio
+            </audio>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>{% trans "Il n'y pas d'item qui correspond à ces critères." %}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div>
+    <h3>{% trans "Lieux des enquêtes" %}</h3>
+    {% if locations %}
+    <francoralite-map markers-list="{{locations|json}}"></francoralite-map>
+    {% else %}
+    <p>{% trans "Il n'y pas de lieu qui correspond à ces critères." %}</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endif %}
+
+<hr/>
 <h2>Filtres de recherche</h2>
 <form>
   <label>{% trans "Type de recherche" %}</label>
@@ -262,115 +376,4 @@
                 {% trans "Effectuer une recherche" %}
               </button>
 </form>
-
-{% if show_results %}
-<hr/>
-
-<div>
-  <h2>Résultats</h2>
-
-  {% if parameters.request_type != 'item' %}
-  <div>
-    <h3>{% trans "Enquêtes" %}</h3>
-    {% if records %}
-    <table class="listing">
-      <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
-        <th>{% trans "Informateurs" %}</th>
-      </thead>
-      <tbody>
-        {% for collection in records %}
-        <tr>
-          <td>
-            <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
-          </td>
-          <td>{{ collection.title }}</td>
-          <td>{{ collection.cultural_area }}</td>
-          <td>
-            <ul>
-              {% for informer in collection.informers %}
-              <li>
-                <a href="{% url 'personne-detail' id=informer.id %}">
-                  {{informer.first_name}} {{informer.last_name}}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>{% trans "Il n'y pas d'enquête qui correspond à ces critères." %}</p>
-    {% endif %}
-  </div>
-  {% endif %}
-
-  {% if parameters.request_type == 'item' %}
-  <div>
-    <h3>{% trans "Items" %}</h3>
-    {% if records %}
-    <table class="listing">
-      <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
-        <th>{% trans "Informateurs" %}</th>
-        <th>{% trans "Piste son" %}</th>
-      </thead>
-      <tbody>
-        {% for item in records %}
-        <tr>
-          <td>
-            <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
-          </td>
-          <td>{{ item.title }}</td>
-          <td>{{ item.collection.cultural_area }}</td>
-          <td>
-            <ul>
-              {% for informer in item.informers %}
-              <li>
-                <a href="{% url 'personne-detail' id=informer.id %}">
-                  {{informer.first_name}} {{informer.last_name}}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </td>
-          <td>
-            <audio
-              controls
-              preload="metadata"
-              {% if item.file %}
-              src="/api/item/{{item.id}}/download">
-              {% else %}
-              src="{{item.url_file}}"
-              {% endif %}
-              Votre navigateur Internet ne prend pas en charge cet élément audio
-            </audio>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>{% trans "Il n'y pas d'item qui correspond à ces critères." %}</p>
-    {% endif %}
-  </div>
-  {% endif %}
-
-  <div>
-    <h3>{% trans "Lieux des enquêtes" %}</h3>
-    {% if locations %}
-    <francoralite-map markers-list="{{locations|json}}"></francoralite-map>
-    {% else %}
-    <p>{% trans "Il n'y pas de lieu qui correspond à ces critères." %}</p>
-    {% endif %}
-  </div>
-
-</div>
-{% endif %}
 {% endblock %}

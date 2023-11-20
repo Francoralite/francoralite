@@ -810,7 +810,6 @@ main > header {
 main > header h1 {
     margin: 0;
     flex: 1 1 auto;
-    font-size: 1.5rem;
 }
 .pagination,
 .pagination * {
