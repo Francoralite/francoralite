@@ -290,7 +290,10 @@ class AdvancedSearchList(generics.GenericAPIView):
         if vide == True:
             return Response(
                 {
-                    "parameters": {},
+                    "parameters": {
+                        "request_type":
+                            self.request.query_params.get("request_type", None),
+                    },
                     "results": {
                         "records": {},
                         "locations": {},
