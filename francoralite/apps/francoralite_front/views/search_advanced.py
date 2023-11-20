@@ -24,8 +24,7 @@ class SearchAdvancedView(FrancoraliteTemplateView):
 
         context = self.get_context_data(**kwargs)
         context['show_results'] = bool(api_response)
-        context['collections'] = api_response.get('results', {}).get('collections', ())
-        context['items'] = api_response.get('results', {}).get('items', ())
+        context['records'] = api_response.get('results', {}).get('records', ())
         context['locations'] = api_response.get('results', {}).get('locations', ())
 
         context['parameters'] = api_response.get('parameters', {})
