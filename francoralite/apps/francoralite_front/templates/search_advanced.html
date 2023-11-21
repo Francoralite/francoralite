@@ -34,6 +34,10 @@
 <div>
   <h2>Résultats</h2>
 
+  {% if search_warning %}
+  <p>{{ search_warning }}</p>
+  {% else %}
+
   {% if parameters.request_type != 'item' %}
   <div>
     <h3>{% trans "Enquêtes" %}</h3>
@@ -135,6 +139,7 @@
     <p>{% trans "Il n'y pas de lieu qui correspond à ces critères." %}</p>
     {% endif %}
   </div>
+  {% endif %}
 
 </div>
 {% endif %}

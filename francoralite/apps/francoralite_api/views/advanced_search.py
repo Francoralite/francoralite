@@ -301,6 +301,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                         "records": {},
                         "locations": {},
                     },
+                    "warning": "Rien à rechercher. Merci de remplir au moins un critère de recherche.",
                 }
             )
 
