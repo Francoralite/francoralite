@@ -184,6 +184,7 @@ class FrancoraliteAutocomplete extends HTMLElement {
 
         const button = document.createElement('button');
         button.innerHTML = '&times;';
+        button.setAttribute('type', 'button');
         button.setAttribute('class', 'remove');
         button.setAttribute('title', 'supprimer cet élément');
         button.addEventListener('click', function(event) {
