@@ -23,6 +23,6 @@
     <span class="arrow last"></span>
     {% endif %}
     </p>
-    <p class="rows">Lignes : {{ pagination.first_item }} à {{ pagination.last_item }} sur {{ pagination.count }}</p>
+    <p class="rows">{{ pagination.first_item }} à {{ pagination.last_item }} sur {% blocktrans count pagination.count as count %}{{ count }} élément{% plural %}{{ count }} éléments{% endblocktrans %}</p>
 </nav>
 {% endif %}
