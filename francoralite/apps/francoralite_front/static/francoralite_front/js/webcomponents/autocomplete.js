@@ -58,7 +58,7 @@ class FrancoraliteAutocomplete extends HTMLElement {
     connectedCallback() {
         this.inputField.addEventListener('keyup', (event) => this.inputChanged(event));
         this.inputField.addEventListener('focus', () => this.inputChanged());
-        this.inputField.addEventListener('blur', () => window.setTimeout(() => this.showProposals([]), 200));
+        this.inputField.addEventListener('blur', () => window.setTimeout(() => this.clearInputAndProposals(), 200));
 
         this.proposalsList.addEventListener('click', (event) => this.proposalClick(event));
 
@@ -109,6 +109,11 @@ class FrancoraliteAutocomplete extends HTMLElement {
         return null;
     }
 
+    clearInputAndProposals() {
+        this.inputField.value = '';
+        this.proposalsList.innerHTML = '';
+    }
+
     inputChanged(event) {
         const text = this.inputField.value;
         if (text && text.length >= 1) {
@@ -155,8 +160,7 @@ class FrancoraliteAutocomplete extends HTMLElement {
                 'url': event.target.getAttribute('data-url'),
                 'tooltip': event.target.getAttribute('data-tooltip')
             });
-            this.showProposals([]);
-            this.inputField.value = '';
+            this.clearInputAndProposals();
             this.inputField.focus();
         }
     }
