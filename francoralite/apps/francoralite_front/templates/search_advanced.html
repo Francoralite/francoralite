@@ -37,6 +37,48 @@
   <p>{{ search_warning }}</p>
   {% else %}
 
+  <div>
+    <h3>{% trans "Votre recherche" %}</h3>
+    <ul>
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_internal operator=parameters.operators.code_internal title=_('Cote') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_external operator=parameters.operators.code_external title=_('Référence partenaire') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.title title=_('Titre') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.description title=_('Description') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.informer_civility operator=parameters.operators.informer_civility title=_('Civilité informateur') %}
+      {% include "inc/search_remind_filter_person.html" with multi_values=parameters.instances.informer operator=parameters.operators.informer title=_('Informateur') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.collector_civility operator=parameters.operators.collector_civility title=_('Civilité enquêteur') %}
+      {% include "inc/search_remind_filter_person.html" with multi_values=parameters.instances.collector operator=parameters.operators.collector title=_('Enquêteur') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.date_start title=_('Date de début') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.date_end title=_('Date de fin') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.location operator=parameters.operators.location title=_('Lieu') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.cultural_area operator=parameters.operators.cultural_area title=_('Aire culturelle') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.media_type operator=parameters.operators.media_type title=_('Type de média') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.language operator=parameters.operators.language title=_('Langue(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.recording_context operator=parameters.operators.recording_context title=_('Contexte d’enregistrement') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.usefulness operator=parameters.operators.usefulness title=_('Fonction') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.dance operator=parameters.operators.dance title=_('Danse') %}
+      {% if 'T' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Témoignage') %}{% endif %}
+      {% if 'C' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Chanson') %}{% endif %}
+      {% if 'A' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Autre expression vocale') %}{% endif %}
+      {% if 'I' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Expression instrumentale') %}{% endif %}
+      {% if 'R' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Conte ou récit légendaire') %}{% endif %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.thematic operator=parameters.operators.thematic title=_('Thématique(s) du témoignage') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_song operator=parameters.operators.domain_song title=_('Genre(s) de la chanson') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre operator=parameters.operators.timbre title=_('Timbre de l’air') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre_ref operator=parameters.operators.timbre_ref title=_('Timbre référencé') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coupe operator=parameters.operators.coupe title=_('Coupe(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_vocal operator=parameters.operators.domain_vocal title=_('Genre(s) de l’autre expression vocale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Coirault') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_music operator=parameters.operators.domain_music title=_('Genre(s) de l’expression instrumentale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.instrument operator=parameters.operators.instrument title=_('Voix/Instrument(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_tale operator=parameters.operators.domain_tale title=_('Genre(s) du conte') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.text title=_('Texte') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.incipit title=_('Incipit') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.refrain title=_('Refrain') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.jingle title=_('Ritournelle') %}
+    </ul>
+  </div>
+
   {% if parameters.request_type != 'item' %}
   <div>
     <h3>{% trans "Enquêtes" %}</h3>
@@ -311,7 +353,7 @@
               <p class="domains_song">
                 <label for="coupe">{% trans "Coupe(s)" %}</label>
                 <br>
-                <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.coupe|default:'or' }}"></francoralite-coupe>
+                <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.operators.coupe|default:'or' }}"></francoralite-coupe>
                 <a target="_blank" id="link_coupe" href="/coupe">
                   <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
                 </a>
@@ -327,7 +369,7 @@
               <p class="domains_song domains_vocal">
                 <label for="coirault">{% trans "Coirault" %}</label>
                 <br>
-                <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.coirault|default:'or' }}"></francoralite-coirault>
+                <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
               </p>
               <p class="domains_music">
                 <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>

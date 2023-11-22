@@ -433,6 +433,15 @@ form ul.switch li input:checked + label {
     color: #6f0a08;
 }
 
+.request_remind_operator {
+    padding: 0 2px;
+    border: 1px solid #6f0a08;
+    border-radius: 3px;
+    font-size: 75%;
+    background: #ae8484;
+    color: #6f0a08;
+}
+
 /**/
 .has-warning > label {
     color: black !important;
