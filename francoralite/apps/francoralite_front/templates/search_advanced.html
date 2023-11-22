@@ -6,7 +6,6 @@
 {% block javascript %}
 {{ block.super }}
 <script src="{% static "francoralite_front/js/webcomponents/autocomplete.js" %}" defer></script>
-<script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
 {% endblock %}
 
@@ -44,9 +43,9 @@
     {% if records %}
     <table class="listing">
       <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
+        {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
+        {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
+        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
         <th>{% trans "Informateurs" %}</th>
       </thead>
       <tbody>
@@ -84,9 +83,9 @@
     {% if records %}
     <table class="listing">
       <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
+        {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
+        {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
+        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
         <th>{% trans "Informateurs" %}</th>
         <th>{% trans "Piste son" %}</th>
       </thead>

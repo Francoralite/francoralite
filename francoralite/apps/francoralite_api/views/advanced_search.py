@@ -434,7 +434,15 @@ class AdvancedSearchList(generics.GenericAPIView):
                     collection__domain__icontains=domain
                 )
                 query_sets[1] = query_sets[1].filter(domain__icontains=domain)
+
         # ---------------------------------------------------- end filtering
+
+        # Ordering results
+        ordering = self.request.query_params.get("ordering")
+        if ordering not in ("code", "-code", "title", "-title", "cultural_area", "-cultural_area"):
+            ordering = "code"
+        query_sets[0] = query_sets[0].order_by(ordering, "code")
+        query_sets[1] = query_sets[1].order_by(ordering.replace("cultural_area", "collection__cultural_area"), "code")
 
         # Collecting static parameters
         parameters_instances = {}
@@ -545,6 +553,7 @@ class AdvancedSearchList(generics.GenericAPIView):
                     "first_item": records_page.start_index(),
                     "last_item": records_page.end_index(),
                     "last_page": records_paginator.num_pages,
+                    "ordering": ordering,
                 } if records_paginator.count else None,
             }
         )
