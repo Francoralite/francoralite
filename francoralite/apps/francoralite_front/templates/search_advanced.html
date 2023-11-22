@@ -6,7 +6,6 @@
 {% block javascript %}
 {{ block.super }}
 <script src="{% static "francoralite_front/js/webcomponents/autocomplete.js" %}" defer></script>
-<script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
 {% endblock %}
 
@@ -23,16 +22,185 @@
 {% endblock %}
 
 {% block content %}
+<header class="sticky">
 <h1>{% trans "Recherche avancée"%}</h1>
+{% include "inc/pagination.html" %}
+</header>
+
+{% if show_results %}
 <hr/>
 
+<div>
+  <h2>Résultats</h2>
+
+  {% if search_warning %}
+  <p>{{ search_warning }}</p>
+  {% else %}
+
+  <div>
+    <h3>{% trans "Votre recherche" %}</h3>
+    <ul>
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_internal operator=parameters.operators.code_internal title=_('Cote') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_external operator=parameters.operators.code_external title=_('Référence partenaire') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.title title=_('Titre') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.description title=_('Description') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.informer_civility operator=parameters.operators.informer_civility title=_('Civilité informateur') %}
+      {% include "inc/search_remind_filter_person.html" with multi_values=parameters.instances.informer operator=parameters.operators.informer title=_('Informateur') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.collector_civility operator=parameters.operators.collector_civility title=_('Civilité enquêteur') %}
+      {% include "inc/search_remind_filter_person.html" with multi_values=parameters.instances.collector operator=parameters.operators.collector title=_('Enquêteur') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.date_start title=_('Date de début') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.date_end title=_('Date de fin') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.location operator=parameters.operators.location title=_('Lieu') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.cultural_area operator=parameters.operators.cultural_area title=_('Aire culturelle') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.media_type operator=parameters.operators.media_type title=_('Type de média') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.language operator=parameters.operators.language title=_('Langue(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.recording_context operator=parameters.operators.recording_context title=_('Contexte d’enregistrement') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.usefulness operator=parameters.operators.usefulness title=_('Fonction') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.dance operator=parameters.operators.dance title=_('Danse') %}
+      {% if 'T' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Témoignage') %}{% endif %}
+      {% if 'C' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Chanson') %}{% endif %}
+      {% if 'A' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Autre expression vocale') %}{% endif %}
+      {% if 'I' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Expression instrumentale') %}{% endif %}
+      {% if 'R' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Conte ou récit légendaire') %}{% endif %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.thematic operator=parameters.operators.thematic title=_('Thématique(s) du témoignage') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_song operator=parameters.operators.domain_song title=_('Genre(s) de la chanson') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre operator=parameters.operators.timbre title=_('Timbre de l’air') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre_ref operator=parameters.operators.timbre_ref title=_('Timbre référencé') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coupe operator=parameters.operators.coupe title=_('Coupe(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_vocal operator=parameters.operators.domain_vocal title=_('Genre(s) de l’autre expression vocale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Coirault') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_music operator=parameters.operators.domain_music title=_('Genre(s) de l’expression instrumentale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.instrument operator=parameters.operators.instrument title=_('Voix/Instrument(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_tale operator=parameters.operators.domain_tale title=_('Genre(s) du conte') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.text title=_('Texte') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.incipit title=_('Incipit') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.refrain title=_('Refrain') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.jingle title=_('Ritournelle') %}
+    </ul>
+  </div>
+
+  {% if parameters.request_type != 'item' %}
+  <div>
+    <h3>{% trans "Enquêtes" %}</h3>
+    {% if records %}
+    <table class="listing">
+      <thead>
+        {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
+        {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
+        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
+        <th>{% trans "Informateurs" %}</th>
+      </thead>
+      <tbody>
+        {% for collection in records %}
+        <tr>
+          <td>
+            <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
+          </td>
+          <td>{{ collection.title }}</td>
+          <td>{{ collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for informer in collection.informers %}
+              <li>
+                <a href="{% url 'personne-detail' id=informer.id %}">
+                  {{informer.first_name}} {{informer.last_name}}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>{% trans "Il n'y pas d'enquête qui correspond à ces critères." %}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if parameters.request_type == 'item' %}
+  <div>
+    <h3>{% trans "Items" %}</h3>
+    {% if records %}
+    <table class="listing">
+      <thead>
+        {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
+        {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
+        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
+        <th>{% trans "Informateurs" %}</th>
+        <th>{% trans "Piste son" %}</th>
+      </thead>
+      <tbody>
+        {% for item in records %}
+        <tr>
+          <td>
+            <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
+          </td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for informer in item.informers %}
+              <li>
+                <a href="{% url 'personne-detail' id=informer.id %}">
+                  {{informer.first_name}} {{informer.last_name}}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>
+            <audio
+              controls
+              preload="metadata"
+              {% if item.file %}
+              src="/api/item/{{item.id}}/download">
+              {% else %}
+              src="{{item.url_file}}"
+              {% endif %}
+              Votre navigateur Internet ne prend pas en charge cet élément audio
+            </audio>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>{% trans "Il n'y pas d'item qui correspond à ces critères." %}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div>
+    <h3>{% trans "Lieux des enquêtes" %}</h3>
+    {% if locations %}
+    <francoralite-map markers-list="{{locations|json}}"></francoralite-map>
+    {% else %}
+    <p>{% trans "Il n'y pas de lieu qui correspond à ces critères." %}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+</div>
+{% endif %}
+
+<hr/>
 <h2>Filtres de recherche</h2>
 <form>
   <label>{% trans "Type de recherche" %}</label>
-  <ul>
-    <li><label><input type="radio" name="request_type" value="collection" {% if parameters.request_type != 'item' %} checked {% endif %}> {% trans "Collections" %}</label></li>
-    <li><label><input type="radio" name="request_type" value="item" {% if parameters.request_type == 'item' %} checked {% endif %}> {% trans "Items" %}</label></li>
+  <br>
+  <ul class="switch">
+    <li>
+      <input type="radio" name="request_type" value="collection" id="request_type_collection" {% if parameters.request_type != 'item' %} checked {% endif %}>
+      <label for="request_type_collection">{% trans "Collections" %}</label>
+    </li>
+    <li>
+      <input type="radio" name="request_type" value="item" id="request_type_item" {% if parameters.request_type == 'item' %} checked {% endif %}>
+      <label for="request_type_item">{% trans "Items" %}</label>
+    </li>
   </ul>
+  <br><br>
 
   <details{% if parameters_instances_json.code_internal or parameters_instances_json.code_external or parameters.title or parameters.description %} open{% endif %} id="details_references">
     <summary>{% trans "Références" %}</summary>
@@ -185,7 +353,7 @@
               <p class="domains_song">
                 <label for="coupe">{% trans "Coupe(s)" %}</label>
                 <br>
-                <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.coupe|default:'or' }}"></francoralite-coupe>
+                <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.operators.coupe|default:'or' }}"></francoralite-coupe>
                 <a target="_blank" id="link_coupe" href="/coupe">
                   <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
                 </a>
@@ -201,7 +369,7 @@
               <p class="domains_song domains_vocal">
                 <label for="coirault">{% trans "Coirault" %}</label>
                 <br>
-                <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.coirault|default:'or' }}"></francoralite-coirault>
+                <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
               </p>
               <p class="domains_music">
                 <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
@@ -254,115 +422,4 @@
                 {% trans "Effectuer une recherche" %}
               </button>
 </form>
-
-{% if show_results %}
-<hr/>
-
-<div>
-  <h2>Résultats</h2>
-
-  {% if parameters.request_type != 'item' %}
-  <div>
-    <h3>{% trans "Enquêtes" %}</h3>
-    {% if records %}
-    <table class="listing">
-      <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
-        <th>{% trans "Informateurs" %}</th>
-      </thead>
-      <tbody>
-        {% for collection in records %}
-        <tr>
-          <td>
-            <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
-          </td>
-          <td>{{ collection.title }}</td>
-          <td>{{ collection.cultural_area }}</td>
-          <td>
-            <ul>
-              {% for informer in collection.informers %}
-              <li>
-                <a href="{% url 'personne-detail' id=informer.id %}">
-                  {{informer.first_name}} {{informer.last_name}}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>{% trans "Il n'y pas d'enquête qui correspond à ces critères." %}</p>
-    {% endif %}
-  </div>
-  {% endif %}
-
-  {% if parameters.request_type == 'item' %}
-  <div>
-    <h3>{% trans "Items" %}</h3>
-    {% if records %}
-    <table class="listing">
-      <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
-        <th>{% trans "Informateurs" %}</th>
-        <th>{% trans "Piste son" %}</th>
-      </thead>
-      <tbody>
-        {% for item in records %}
-        <tr>
-          <td>
-            <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
-          </td>
-          <td>{{ item.title }}</td>
-          <td>{{ item.collection.cultural_area }}</td>
-          <td>
-            <ul>
-              {% for informer in item.informers %}
-              <li>
-                <a href="{% url 'personne-detail' id=informer.id %}">
-                  {{informer.first_name}} {{informer.last_name}}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </td>
-          <td>
-            <audio
-              controls
-              preload="metadata"
-              {% if item.file %}
-              src="/api/item/{{item.id}}/download">
-              {% else %}
-              src="{{item.url_file}}"
-              {% endif %}
-              Votre navigateur Internet ne prend pas en charge cet élément audio
-            </audio>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>{% trans "Il n'y pas d'item qui correspond à ces critères." %}</p>
-    {% endif %}
-  </div>
-  {% endif %}
-
-  <div>
-    <h3>{% trans "Lieux des enquêtes" %}</h3>
-    {% if locations %}
-    <francoralite-map markers-list="{{locations|json}}"></francoralite-map>
-    {% else %}
-    <p>{% trans "Il n'y pas de lieu qui correspond à ces critères." %}</p>
-    {% endif %}
-  </div>
-
-</div>
-{% endif %}
 {% endblock %}

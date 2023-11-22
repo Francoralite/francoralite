@@ -36,13 +36,16 @@
 {% if institutions|length > 0 %}
   <!-- Table to display the institutions -->
   <table class="listing">
+  <thead>
   <tr>
-      <th class="highlight">{% trans "Nom" %}</th>
+      {% include "inc/sortable-table-column-header.html" with field="name" label=_("Nom") highlight=True %}
       <th>{% trans "Notes" %}</th>
       {% if perms.keycloak.institution_update or perms.keycloak.institution_delete %}
       <th>{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
+  </thead>
+  <tbody>
   {% for institution in institutions %}
   <tr>
       <td class="highlight">
@@ -68,6 +71,7 @@
       {% endif %}
   </tr>
   {% endfor %}
+  </tbody>
 </table>
 
 {% if perms.keycloak.institution_delete %}

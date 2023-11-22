@@ -8,13 +8,33 @@ import json
 
 from django import template
 from django.forms.widgets import CheckboxInput, HiddenInput
+from django.utils.datastructures import MultiValueDict
 from django.utils.html import format_html
+from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from francoralite_front.errors import APPLICATION_ERRORS
 
 register = template.Library()
+
+
+@register.simple_tag(takes_context=True)
+def current_url_params(context, **kwargs):
+    # Get previous parameters
+    params = MultiValueDict(context['request'].GET)
+    # Remove parameters to be replaced, otherwise new are added, not replaced
+    for key in kwargs:
+        if key in params:
+            del params[key]
+    # Add new parameters
+    params.update(kwargs)
+    # Remove empty parameters
+    for key in tuple(params):
+        if not any(params.getlist(key)):
+            del params[key]
+    # Build new query string
+    return '?' + urlencode(params, doseq=True)
 
 
 @register.simple_tag
@@ -236,3 +256,8 @@ def nakala_button(*args, **kwargs):
 @register.filter(name='json')
 def json_dumps(data):
     return json.dumps(data)
+
+
+@register.filter(name='range')
+def range_filter(length, offset=0):
+    return range(offset, length + offset)

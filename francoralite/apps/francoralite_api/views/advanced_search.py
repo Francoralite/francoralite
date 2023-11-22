@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+from django.core.paginator import Paginator
 from django.db import models
 from rest_framework import generics
 from rest_framework.response import Response
@@ -31,6 +32,8 @@ from ..serializers.advanced_search import AdvancedSearchSerializer
 
 class AdvancedSearchList(generics.GenericAPIView):
     serializer_class = AdvancedSearchSerializer
+
+    PAGE_SIZE = 20
 
     def get(self, *args, **kwargs):
         # Initialize data from ORM (-> querysets)
@@ -290,11 +293,15 @@ class AdvancedSearchList(generics.GenericAPIView):
         if vide == True:
             return Response(
                 {
-                    "parameters": {},
+                    "parameters": {
+                        "request_type":
+                            self.request.query_params.get("request_type", None),
+                    },
                     "results": {
                         "records": {},
                         "locations": {},
                     },
+                    "warning": "Rien à rechercher. Merci de remplir au moins un critère de recherche.",
                 }
             )
 
@@ -427,7 +434,15 @@ class AdvancedSearchList(generics.GenericAPIView):
                     collection__domain__icontains=domain
                 )
                 query_sets[1] = query_sets[1].filter(domain__icontains=domain)
+
         # ---------------------------------------------------- end filtering
+
+        # Ordering results
+        ordering = self.request.query_params.get("ordering")
+        if ordering not in ("code", "-code", "title", "-title", "cultural_area", "-cultural_area"):
+            ordering = "code"
+        query_sets[0] = query_sets[0].order_by(ordering, "code")
+        query_sets[1] = query_sets[1].order_by(ordering.replace("cultural_area", "collection__cultural_area"), "code")
 
         # Collecting static parameters
         parameters_instances = {}
@@ -501,17 +516,24 @@ class AdvancedSearchList(generics.GenericAPIView):
                         ):
                             parameters_instances.setdefault(name, []).append(serialized)
 
-        # Collecting the records
+        # Collecting the type of request: collection OR item
         if self.request.query_params.get("request_type") == "item":
             # Items
-            locations_qs = CollectionLocation.objects.filter(collection__collection__in=query_sets[1])
-            records = self.get_serializer(query_sets[1].distinct(), many=True).data
+            locations_path = "collection__collection__in"
+            query_set_index = 1
         else:
             # Collections
-            locations_qs = CollectionLocation.objects.filter(collection__in=query_sets[0])
-            records = self.get_serializer(query_sets[0].distinct(), many=True).data
+            locations_path = "collection__in"
+            query_set_index = 0
+
+        # Collecting the records
+        records_qs = query_sets[query_set_index].distinct()
+        records_paginator = Paginator(records_qs, self.PAGE_SIZE)
+        records_page = records_paginator.get_page(self.request.query_params.get("page"))
+        records = self.get_serializer(records_page, many=True).data
 
         # Collecting the locations
+        locations_qs = CollectionLocation.objects.filter(**{locations_path: query_sets[query_set_index]})
         locations = self.get_serializer(locations_qs.distinct(), many=True).data
 
         # Returning results
@@ -522,5 +544,16 @@ class AdvancedSearchList(generics.GenericAPIView):
                     "records": records,
                     "locations": locations,
                 },
+                "pagination": {
+                    "count": records_paginator.count,
+                    "page_size": records_paginator.per_page,
+                    "current_page": records_page.number,
+                    "has_previous": records_page.has_previous(),
+                    "has_next": records_page.has_next(),
+                    "first_item": records_page.start_index(),
+                    "last_item": records_page.end_index(),
+                    "last_page": records_paginator.num_pages,
+                    "ordering": ordering,
+                } if records_paginator.count else None,
             }
         )
