@@ -256,3 +256,8 @@ def nakala_button(*args, **kwargs):
 @register.filter(name='json')
 def json_dumps(data):
     return json.dumps(data)
+
+
+@register.filter(name='range')
+def range_filter(length, offset=0):
+    return range(offset, length + offset)

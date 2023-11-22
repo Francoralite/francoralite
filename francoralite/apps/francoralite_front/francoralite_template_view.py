@@ -87,7 +87,6 @@ class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
                 'first_item': min(self.PAGE_SIZE * (page - 1) + 1, results_count),
                 'last_item': min(self.PAGE_SIZE * page, results_count),
                 'last_page': last_page,
-                'pages': tuple(range(1, last_page + 1)),
                 'ordering': self.request.GET.get('ordering', None),
             }
 

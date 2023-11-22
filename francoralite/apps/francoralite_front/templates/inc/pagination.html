@@ -1,4 +1,4 @@
-{% if pagination.pages %}{% load i18n data_display %}
+{% if pagination.count %}{% load i18n data_display %}
 <nav class="pagination">
     <p class="pages">
     {% if pagination.has_previous %}
@@ -8,7 +8,7 @@
     <span class="arrow first"></span>
     <span class="arrow previous"></span>
     {% endif %}
-    {% for page in pagination.pages %}
+    {% for page in pagination.last_page|range:1 %}
     {% if pagination.current_page == page %}
     <span class="number current">{{ page }}</span>
     {% elif page > pagination.current_page|add:-3 and page < pagination.current_page|add:3 %}

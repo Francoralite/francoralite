@@ -545,7 +545,6 @@ class AdvancedSearchList(generics.GenericAPIView):
                     "first_item": records_page.start_index(),
                     "last_item": records_page.end_index(),
                     "last_page": records_paginator.num_pages,
-                    "pages": tuple(range(1, records_paginator.num_pages + 1)),
                 } if records_paginator.count else None,
             }
         )
