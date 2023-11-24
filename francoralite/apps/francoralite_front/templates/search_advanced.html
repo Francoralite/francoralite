@@ -421,5 +421,10 @@
                 <span class="glyphicon glyphicon-search"></span>
                 {% trans "Effectuer une recherche" %}
               </button>
+
+              <a href="{% url "search-advanced" %}" id="reset" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+                {% trans "Effacer les critères" %}
+              </a>
 </form>
 {% endblock %}
