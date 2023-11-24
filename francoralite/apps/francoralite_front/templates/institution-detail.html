@@ -1,10 +1,12 @@
 {% extends "institution.html" %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
 {% endblock %}
 
 
@@ -47,10 +49,10 @@
     <div class="with-rightcol">
       <table class="listing">
       <thead>
-          <th class="highlight">{% trans "Cote" %}</th>
-          <th>{% trans "Nom" %}</th>
-          <th>{% trans "Description" %}</th>
-          {% if perms.keycloak.fond_update %}
+          <th class="sortable highlight">{% trans "Cote" %}</th>
+          <th class="sortable">{% trans "Nom" %}</th>
+          <th class="sortable">{% trans "Description" %}</th>
+          {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
           <th>{% trans "Modifier" %}</th>
           {% endif %}
       </thead>
@@ -63,8 +65,10 @@
             <td>{{ fond.title|safe }}</td>
             <td>
               {% if fond.description %}
-              {{ fond.description|markdown|safe }}</td>
+              {{ fond.description|markdown|safe }}
               {% endif %}
+            </td>
+            {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
             <td>
               {% if perms.keycloak.fond_update %}
                 <a href="{% url "fond-edit" id=fond.id %}">
@@ -81,8 +85,8 @@
                       <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
                 </button>
               {% endif %}
-
             </td>
+            {% endif %}
           </tr>
         {% endfor %}
       </table>

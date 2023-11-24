@@ -4,250 +4,28 @@
 {% load data_display %}
 
 {% block javascript %}
-  {{ block.super }}
-  <script src="{% static "francoralite_front/js/webcomponents/autocomplete.js" %}" defer></script>
-  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
-  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
+{{ block.super }}
+<script src="{% static "francoralite_front/js/webcomponents/autocomplete.js" %}" defer></script>
+<script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
 {% endblock %}
 
 {% block stylesheets %}
-  {{ block.super }}
-  <link rel="stylesheet" href="{% static "francoralite_front/css/webcomponents/autocomplete.css" %}">
-  <style>
-    francoralite-map {
-      height: 600px;
-      width: 100%;
-      display: inline-block;
-    }
-  </style>
- {% endblock %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "francoralite_front/css/webcomponents/autocomplete.css" %}">
+<style>
+  francoralite-map {
+    height: 600px;
+    width: 100%;
+    display: inline-block;
+  }
+</style>
+{% endblock %}
 
 {% block content %}
+<header class="sticky">
 <h1>{% trans "Recherche avancée"%}</h1>
-<hr/>
-
-<h2>Filtres de recherche</h2>
-<form>
-  <details{% if parameters_instances_json.code_internal or parameters_instances_json.code_external or parameters.title or parameters.description %} open{% endif %} id="details_references">
-    <summary>{% trans "Références" %}</summary>
-    <label for="code_internal">{% trans "Cote" %}</label>
-    <br>
-    <francoralite-code-internal name="code_internal" data-values="{{ parameters_instances_json.code_internal }}" data-default-operator="{{ parameters.operators.code_internal|default:'or' }}"></francoralite-code-internal>
-    <br><br>
-    <label for="code_external">{% trans "Référence partenaire" %}</label>
-    <br>
-    <francoralite-code-external name="code_external" data-values="{{ parameters_instances_json.code_external }}" data-default-operator="{{ parameters.operators.code_external|default:'or' }}"></francoralite-code-external>
-    <br><br>
-    <label for="title">{% trans "Titre" %}</label>
-    <br>
-    <input name="title" id="title" value="{{ parameters.title | default:'' }}">
-    <br><br>
-    <label for="description">{% trans "Description" %}</label>
-    <br>
-    <input name="description" id="description" value="{{ parameters.description | default:'' }}">
-  </details>
-
-  <details{% if parameters_instances_json.informer_civility or parameters_instances_json.informer or parameters_instances_json.collector_civility or parameters_instances_json.collector %} open{% endif %} id="details_who">
-    <summary>{% trans "Qui ?" %}</summary>
-    <label for="informer_civility">{% trans "Civilité informateur" %}</label>
-    <br>
-    <francoralite-civility name="informer_civility" data-values="{{ parameters_instances_json.informer_civility }}" data-default-operator="{{ parameters.operators.informer_civility|default:'or' }}"></francoralite-civility>
-    <br><br>
-    <label for="informer">{% trans "Informateur" %}</label>
-    <br>
-    <francoralite-informer name="informer" data-values="{{ parameters_instances_json.informer }}" data-default-operator="{{ parameters.operators.informer|default:'or' }}"></francoralite-informer>
-    <a target="_blank" id="link_authority_informer" href="/authority_informer">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Informateurs ..."%}
-    </a>
-    <br><br>
-    <label for="collector_civility">{% trans "Civilité enquêteur" %}</label>
-    <br>
-    <francoralite-civility name="collector_civility" data-values="{{ parameters_instances_json.collector_civility }}" data-default-operator="{{ parameters.operators.collector_civility|default:'or' }}"></francoralite-civility>
-    <br><br>
-    <label for="collector">{% trans "Enquêteur" %}</label>
-    <br>
-    <francoralite-collector name="collector" data-values="{{ parameters_instances_json.collector }}" data-default-operator="{{ parameters.operators.collector|default:'or' }}"></francoralite-collector>
-    <a target="_blank" id="link_authority_collector" href="/authority_collector">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Enquêteurs ..."%}
-    </a>
-  </details>
-
-  <details{% if parameters.date_start or parameters.date_end %} open{% endif %} id="details_when">
-    <summary>{% trans "Quand ?" %}</summary>
-    <label for="date_start">{% trans "De" %}</label>
-    <input type="date" id="date_start" name="date_start" value="{{ parameters.date_start|default:'' }}">
-    <label for="date_end">{% trans "à" %}</label>
-    <input type="date" id="date_end" name="date_end" value="{{ parameters.date_end|default:'' }}">
-  </details>
-
-  <details{% if parameters_instances_json.location or parameters_instances_json.cultural_area %} open{% endif %} id="details_where">
-    <summary>{% trans "Où ?" %}</summary>
-    <label for="location">{% trans "Lieu" %}</label>
-    <br>
-    <francoralite-location name="location" data-values="{{ parameters_instances_json.location }}" data-default-operator="{{ parameters.operators.location|default:'or' }}"></francoralite-location>
-    <a target="_blank" id="link_location" href="/location_gis/">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Lieux ..."%}
-    </a>
-    <br><br>
-    <label for="cultural_area">{% trans "Aire culturelle" %}</label>
-    <br>
-    <francoralite-cultural-area name="cultural_area" data-values="{{ parameters_instances_json.cultural_area }}" data-default-operator="{{ parameters.operators.cultural_area|default:'or' }}"></francoralite-cultural-area>
-  </details>
-
-  <details{% if parameters_instances_json.media_type or parameters_instances_json.language or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance %} open{% endif %} id="details_what">
-    <summary>{% trans "Quoi ?" %}</summary>
-    <label for="media_type">{% trans "Type de média" %}</label>
-    <br>
-    <francoralite-media-type name="media_type" data-values="{{ parameters_instances_json.media_type }}" data-default-operator="{{ parameters.operators.media_type|default:'or' }}"></francoralite-media-type>
-    <a target="_blank" id="link_media_type" href="/mediatype">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Types de média ..."%}
-    </a>
-    <br><br>
-    <label for="language">{% trans "Langue(s)" %}</label>
-    <br>
-    <francoralite-language name="language" data-values="{{ parameters_instances_json.language }}" data-default-operator="{{ parameters.operators.language|default:'or' }}"></francoralite-language>
-    <a target="_blank" id="link_language" href="/language">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Langues ..."%}
-    </a>
-    <br><br>
-    <label for="recording_context">{% trans "Contexte d'enregistrement" %}</label>
-    <br>
-    <francoralite-recording-context name="recording_context" data-values="{{ parameters_instances_json.recording_context }}" data-default-operator="{{ parameters.operators.recording_context|default:'or' }}"></francoralite-recording-context>
-    <a target="_blank" id="link_recording_context" href="/recording_context">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Contextes d'enregistrement ..."%}
-    </a>
-    <br><br>
-    <label for="usefulness">{% trans "Fonction" %}</label>
-    <br>
-    <francoralite-usefulness name="usefulness" data-values="{{ parameters_instances_json.usefulness }}" data-default-operator="{{ parameters.operators.usefulness|default:'or' }}"></francoralite-usefulness>
-    <a target="_blank" id="link_usefulness" href="/usefulness">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Fonctions ..."%}
-    </a>
-    <br><br>
-    <label for="dance">{% trans "Danse" %}</label>
-    <br>
-    <francoralite-dance name="dance" data-values="{{ parameters_instances_json.dance }}" data-default-operator="{{ parameters.operators.dance|default:'or' }}"></francoralite-dance>
-    <a target="_blank" id="link_dance" href="/dance">
-      <span class="glyphicon glyphicon-list"></span> {% trans "Danses ..."%}
-    </a>
-  </details>
-
-  <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_song or parameters_instances_json.timbre or parameters_instances_json.timbre_ref or parameters_instances_json.coupe or parameters_instances_json.domain_vocal or parameters_instances_json.coirault or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.domain_tale or parameters.text or parameters.incipit or parameters.refrain or parameters.jingle %} open{% endif %} id="details_genders">
-    <summary>{% trans "Genres" %}</summary>
-    <label>{% trans "Domaine(s) :" %}</label>
-    <br>
-    <input type="checkbox" name="domain" value="T" id="domains_deposit"{% if 'T' in parameters.domain %} checked{% endif %}>
-    <label for="domains_deposit">{% trans "Témoignage" %}</label>
-    <br>
-    <input type="checkbox" name="domain" value="C" id="domains_song"{% if 'C' in parameters.domain %} checked{% endif %}>
-    <label for="domains_song">{% trans "Chanson" %}</label>
-    <br>
-    <input type="checkbox" name="domain" value="A" id="domains_vocal"{% if 'A' in parameters.domain %} checked{% endif %}>
-    <label for="domains_vocal">{% trans "Autre expression vocale" %}</label>
-    <br>
-    <input type="checkbox" name="domain" value="I" id="domains_music"{% if 'I' in parameters.domain %} checked{% endif %}>
-    <label for="domains_music">{% trans "Expression instrumentale" %}</label>
-    <br>
-    <input type="checkbox" name="domain" value="R" id="domains_tale"{% if 'R' in parameters.domain %} checked{% endif %}>
-    <label for="domains_tale">{% trans "Conte ou récit légendaire" %}</label>
-    <p class="domains_deposit">
-      <label for="thematic">{% trans "Thématique(s) du témoignage" %}</label>
-      <br>
-      <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}" data-default-operator="{{ parameters.operators.thematic|default:'or' }}"></francoralite-thematic>
-      <a target="_blank" id="link_thematic" href="/thematic">
-        <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
-      </a>
-    </p>
-    <p class="domains_song">
-      <label for="domain_song">{% trans "Genre(s) de la chanson" %}</label>
-      <br>
-      <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}" data-default-operator="{{ parameters.operators.domain_song|default:'or' }}"></francoralite-domain-song>
-      <a target="_blank" id="link_domain_song" href="/domain_song">
-        <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
-      </a>
-    </p>
-    <p class="domains_song">
-      <label for="timbre">{% trans "Timbre de l’air" %}</label>
-      <br>
-      <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}" data-default-operator="{{ parameters.operators.timbre|default:'or' }}"></francoralite-timbre>
-    </p>
-    <p class="domains_song">
-      <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
-      <br>
-      <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}" data-default-operator="{{ parameters.operators.timbre_ref|default:'or' }}"></francoralite-timbre-ref>
-    </p>
-    <p class="domains_song">
-      <label for="coupe">{% trans "Coupe(s)" %}</label>
-      <br>
-      <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.coupe|default:'or' }}"></francoralite-coupe>
-      <a target="_blank" id="link_coupe" href="/coupe">
-        <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
-      </a>
-    </p>
-    <p class="domains_vocal">
-      <label for="domain_vocal">{% trans "Genre(s) de l’autre expression vocale" %}</label>
-      <br>
-      <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_instances_json.domain_vocal }}" data-default-operator="{{ parameters.operators.domain_vocal|default:'or' }}"></francoralite-domain-vocal>
-      <a target="_blank" id="link_domain_vocal" href="/domain_vocal">
-        <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
-      </a>
-    </p>
-    <p class="domains_song domains_vocal">
-      <label for="coirault">{% trans "Coirault" %}</label>
-      <br>
-      <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.coirault|default:'or' }}"></francoralite-coirault>
-    </p>
-    <p class="domains_music">
-      <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
-      <br>
-      <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}" data-default-operator="{{ parameters.operators.domain_music|default:'or' }}"></francoralite-domain-music>
-      <a target="_blank" id="link_domain_music" href="/domain_music">
-        <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
-      </a>
-    </p>
-    <p class="domains_music">
-      <label for="instrument">{% trans "Voix/Instrument(s)" %}</label>
-      <br>
-      <francoralite-instrument name="instrument" data-values="{{ parameters_instances_json.instrument }}" data-default-operator="{{ parameters.operators.instrument|default:'or' }}"></francoralite-instrument>
-      <a target="_blank" id="link_instrument" href="/instrument">
-        <span class="glyphicon glyphicon-list"></span> {% trans "Voix/Instruments ..."%}
-      </a>
-    </p>
-    <p class="domains_tale">
-      <label for="domain_tale">{% trans "Genre(s) du conte" %}</label>
-      <br>
-      <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}" data-default-operator="{{ parameters.operators.domain_tale|default:'or' }}"></francoralite-domain-tale>
-      <a target="_blank" id="link_domain_tale" href="/domain_tale">
-        <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
-      </a>
-    </p>
-    <p class="domains_song domains_tale domains_vocal">
-      <label for="text">{% trans "Texte" %}</label>
-      <br>
-      <input name="text" id="text" value="{{ parameters.text | default:'' }}">
-    </p>
-    <p class="domains_song domains_tale domains_vocal">
-      <label for="incipit">{% trans "Incipit" %}</label>
-      <br>
-      <input name="incipit" id="incipit" value="{{ parameters.incipit | default:'' }}">
-    </p>
-    <p class="domains_song domains_vocal">
-      <label for="refrain">{% trans "Refrain" %}</label>
-      <br>
-      <input name="refrain" id="refrain" value="{{ parameters.refrain | default:'' }}">
-    </p>
-    <p class="domains_tale">
-      <label for="jingle">{% trans "Ritournelle" %}</label>
-      <br>
-      <input name="jingle" id="jingle" value="{{ parameters.jingle | default:'' }}">
-    </p>
-  </details>
-
-  <button type="submit" id="btn" class="btn btn-default">
-    <span class="glyphicon glyphicon-search"></span>
-    {% trans "Effectuer une recherche" %}
-  </button>
-</form>
+{% include "inc/pagination.html" %}
+</header>
 
 {% if show_results %}
 <hr/>
@@ -255,18 +33,65 @@
 <div>
   <h2>Résultats</h2>
 
+  {% if search_warning %}
+  <p>{{ search_warning }}</p>
+  {% else %}
+
+  <div>
+    <h3>{% trans "Votre recherche" %}</h3>
+    <ul>
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_internal operator=parameters.operators.code_internal title=_('Cote') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_external operator=parameters.operators.code_external title=_('Référence partenaire') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.title title=_('Titre') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.description title=_('Description') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.informer_civility operator=parameters.operators.informer_civility title=_('Civilité informateur') %}
+      {% include "inc/search_remind_filter_person.html" with multi_values=parameters.instances.informer operator=parameters.operators.informer title=_('Informateur') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.collector_civility operator=parameters.operators.collector_civility title=_('Civilité enquêteur') %}
+      {% include "inc/search_remind_filter_person.html" with multi_values=parameters.instances.collector operator=parameters.operators.collector title=_('Enquêteur') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.date_start title=_('Date de début') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.date_end title=_('Date de fin') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.location operator=parameters.operators.location title=_('Lieu') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.cultural_area operator=parameters.operators.cultural_area title=_('Aire culturelle') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.media_type operator=parameters.operators.media_type title=_('Type de média') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.language operator=parameters.operators.language title=_('Langue(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.recording_context operator=parameters.operators.recording_context title=_('Contexte d’enregistrement') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.usefulness operator=parameters.operators.usefulness title=_('Fonction') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.dance operator=parameters.operators.dance title=_('Danse') %}
+      {% if 'T' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Témoignage') %}{% endif %}
+      {% if 'C' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Chanson') %}{% endif %}
+      {% if 'A' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Autre expression vocale') %}{% endif %}
+      {% if 'I' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Expression instrumentale') %}{% endif %}
+      {% if 'R' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Conte ou récit légendaire') %}{% endif %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.thematic operator=parameters.operators.thematic title=_('Thématique(s) du témoignage') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_song operator=parameters.operators.domain_song title=_('Genre(s) de la chanson') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre operator=parameters.operators.timbre title=_('Timbre de l’air') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre_ref operator=parameters.operators.timbre_ref title=_('Timbre référencé') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coupe operator=parameters.operators.coupe title=_('Coupe(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_vocal operator=parameters.operators.domain_vocal title=_('Genre(s) de l’autre expression vocale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Coirault') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_music operator=parameters.operators.domain_music title=_('Genre(s) de l’expression instrumentale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.instrument operator=parameters.operators.instrument title=_('Voix/Instrument(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_tale operator=parameters.operators.domain_tale title=_('Genre(s) du conte') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.text title=_('Texte') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.incipit title=_('Incipit') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.refrain title=_('Refrain') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.jingle title=_('Ritournelle') %}
+    </ul>
+  </div>
+
+  {% if parameters.request_type != 'item' %}
   <div>
     <h3>{% trans "Enquêtes" %}</h3>
-    {% if collections %}
+    {% if records %}
     <table class="listing">
       <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
+        {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
+        {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
+        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
         <th>{% trans "Informateurs" %}</th>
       </thead>
       <tbody>
-        {% for collection in collections %}
+        {% for collection in records %}
         <tr>
           <td>
             <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
@@ -277,8 +102,8 @@
             <ul>
               {% for informer in collection.informers %}
               <li>
-                <a href="{% url "personne-detail" id=informer.id %}">
-                {{informer.first_name}} {{informer.last_name}}
+                <a href="{% url 'personne-detail' id=informer.id %}">
+                  {{informer.first_name}} {{informer.last_name}}
                 </a>
               </li>
               {% endfor %}
@@ -292,20 +117,22 @@
     <p>{% trans "Il n'y pas d'enquête qui correspond à ces critères." %}</p>
     {% endif %}
   </div>
+  {% endif %}
 
+  {% if parameters.request_type == 'item' %}
   <div>
     <h3>{% trans "Items" %}</h3>
-    {% if items %}
+    {% if records %}
     <table class="listing">
       <thead>
-        <th class="sortable">{% trans "Cote" %}</th>
-        <th class="sortable">{% trans "Titre" %}</th>
-        <th class="sortable">{% trans "Aire culturelle" %}</th>
+        {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
+        {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
+        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
         <th>{% trans "Informateurs" %}</th>
         <th>{% trans "Piste son" %}</th>
       </thead>
       <tbody>
-        {% for item in items %}
+        {% for item in records %}
         <tr>
           <td>
             <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
@@ -316,8 +143,8 @@
             <ul>
               {% for informer in item.informers %}
               <li>
-                <a href="{% url "personne-detail" id=informer.id %}">
-                {{informer.first_name}} {{informer.last_name}}
+                <a href="{% url 'personne-detail' id=informer.id %}">
+                  {{informer.first_name}} {{informer.last_name}}
                 </a>
               </li>
               {% endfor %}
@@ -343,6 +170,7 @@
     <p>{% trans "Il n'y pas d'item qui correspond à ces critères." %}</p>
     {% endif %}
   </div>
+  {% endif %}
 
   <div>
     <h3>{% trans "Lieux des enquêtes" %}</h3>
@@ -352,7 +180,251 @@
     <p>{% trans "Il n'y pas de lieu qui correspond à ces critères." %}</p>
     {% endif %}
   </div>
+  {% endif %}
 
 </div>
 {% endif %}
+
+<hr/>
+<h2>Filtres de recherche</h2>
+<form>
+  <label>{% trans "Type de recherche" %}</label>
+  <br>
+  <ul class="switch">
+    <li>
+      <input type="radio" name="request_type" value="collection" id="request_type_collection" {% if parameters.request_type != 'item' %} checked {% endif %}>
+      <label for="request_type_collection">{% trans "Collections" %}</label>
+    </li>
+    <li>
+      <input type="radio" name="request_type" value="item" id="request_type_item" {% if parameters.request_type == 'item' %} checked {% endif %}>
+      <label for="request_type_item">{% trans "Items" %}</label>
+    </li>
+  </ul>
+  <br><br>
+
+  <details{% if parameters_instances_json.code_internal or parameters_instances_json.code_external or parameters.title or parameters.description %} open{% endif %} id="details_references">
+    <summary>{% trans "Références" %}</summary>
+    <label for="code_internal">{% trans "Cote" %}</label>
+    <br>
+    <francoralite-code-internal name="code_internal" data-values="{{ parameters_instances_json.code_internal }}" data-default-operator="{{ parameters.operators.code_internal|default:'or' }}"></francoralite-code-internal>
+    <br><br>
+    <label for="code_external">{% trans "Référence partenaire" %}</label>
+    <br>
+    <francoralite-code-external name="code_external" data-values="{{ parameters_instances_json.code_external }}" data-default-operator="{{ parameters.operators.code_external|default:'or' }}"></francoralite-code-external>
+    <br><br>
+    <label for="title">{% trans "Titre" %}</label>
+    <br>
+    <input name="title" id="title" value="{{ parameters.title | default:'' }}">
+    <br><br>
+    <label for="description">{% trans "Description" %}</label>
+    <br>
+    <input name="description" id="description" value="{{ parameters.description | default:'' }}">
+    </details>
+
+    <details{% if parameters_instances_json.informer_civility or parameters_instances_json.informer or parameters_instances_json.collector_civility or parameters_instances_json.collector %} open{% endif %} id="details_who">
+      <summary>{% trans "Qui ?" %}</summary>
+      <label for="informer_civility">{% trans "Civilité informateur" %}</label>
+      <br>
+      <francoralite-civility name="informer_civility" data-values="{{ parameters_instances_json.informer_civility }}" data-default-operator="{{ parameters.operators.informer_civility|default:'or' }}"></francoralite-civility>
+      <br><br>
+      <label for="informer">{% trans "Informateur" %}</label>
+      <br>
+      <francoralite-informer name="informer" data-values="{{ parameters_instances_json.informer }}" data-default-operator="{{ parameters.operators.informer|default:'or' }}"></francoralite-informer>
+      <a target="_blank" id="link_authority_informer" href="/authority_informer">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Informateurs ..."%}
+      </a>
+      <br><br>
+      <label for="collector_civility">{% trans "Civilité enquêteur" %}</label>
+      <br>
+      <francoralite-civility name="collector_civility" data-values="{{ parameters_instances_json.collector_civility }}" data-default-operator="{{ parameters.operators.collector_civility|default:'or' }}"></francoralite-civility>
+      <br><br>
+      <label for="collector">{% trans "Enquêteur" %}</label>
+      <br>
+      <francoralite-collector name="collector" data-values="{{ parameters_instances_json.collector }}" data-default-operator="{{ parameters.operators.collector|default:'or' }}"></francoralite-collector>
+      <a target="_blank" id="link_authority_collector" href="/authority_collector">
+        <span class="glyphicon glyphicon-list"></span> {% trans "Enquêteurs ..."%}
+      </a>
+      </details>
+
+      <details{% if parameters.date_start or parameters.date_end %} open{% endif %} id="details_when">
+        <summary>{% trans "Quand ?" %}</summary>
+        <label for="date_start">{% trans "De" %}</label>
+        <input type="date" id="date_start" name="date_start" value="{{ parameters.date_start|default:'' }}">
+        <label for="date_end">{% trans "à" %}</label>
+        <input type="date" id="date_end" name="date_end" value="{{ parameters.date_end|default:'' }}">
+        </details>
+
+        <details{% if parameters_instances_json.location or parameters_instances_json.cultural_area %} open{% endif %} id="details_where">
+          <summary>{% trans "Où ?" %}</summary>
+          <label for="location">{% trans "Lieu" %}</label>
+          <br>
+          <francoralite-location name="location" data-values="{{ parameters_instances_json.location }}" data-default-operator="{{ parameters.operators.location|default:'or' }}"></francoralite-location>
+          <a target="_blank" id="link_location" href="/location_gis/">
+            <span class="glyphicon glyphicon-list"></span> {% trans "Lieux ..."%}
+          </a>
+          <br><br>
+          <label for="cultural_area">{% trans "Aire culturelle" %}</label>
+          <br>
+          <francoralite-cultural-area name="cultural_area" data-values="{{ parameters_instances_json.cultural_area }}" data-default-operator="{{ parameters.operators.cultural_area|default:'or' }}"></francoralite-cultural-area>
+          </details>
+
+          <details{% if parameters_instances_json.media_type or parameters_instances_json.language or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance %} open{% endif %} id="details_what">
+            <summary>{% trans "Quoi ?" %}</summary>
+            <label for="media_type">{% trans "Type de média" %}</label>
+            <br>
+            <francoralite-media-type name="media_type" data-values="{{ parameters_instances_json.media_type }}" data-default-operator="{{ parameters.operators.media_type|default:'or' }}"></francoralite-media-type>
+            <a target="_blank" id="link_media_type" href="/mediatype">
+              <span class="glyphicon glyphicon-list"></span> {% trans "Types de média ..."%}
+            </a>
+            <br><br>
+            <label for="language">{% trans "Langue(s)" %}</label>
+            <br>
+            <francoralite-language name="language" data-values="{{ parameters_instances_json.language }}" data-default-operator="{{ parameters.operators.language|default:'or' }}"></francoralite-language>
+            <a target="_blank" id="link_language" href="/language">
+              <span class="glyphicon glyphicon-list"></span> {% trans "Langues ..."%}
+            </a>
+            <br><br>
+            <label for="recording_context">{% trans "Contexte d'enregistrement" %}</label>
+            <br>
+            <francoralite-recording-context name="recording_context" data-values="{{ parameters_instances_json.recording_context }}" data-default-operator="{{ parameters.operators.recording_context|default:'or' }}"></francoralite-recording-context>
+            <a target="_blank" id="link_recording_context" href="/recording_context">
+              <span class="glyphicon glyphicon-list"></span> {% trans "Contextes d'enregistrement ..."%}
+            </a>
+            <br><br>
+            <label for="usefulness">{% trans "Fonction" %}</label>
+            <br>
+            <francoralite-usefulness name="usefulness" data-values="{{ parameters_instances_json.usefulness }}" data-default-operator="{{ parameters.operators.usefulness|default:'or' }}"></francoralite-usefulness>
+            <a target="_blank" id="link_usefulness" href="/usefulness">
+              <span class="glyphicon glyphicon-list"></span> {% trans "Fonctions ..."%}
+            </a>
+            <br><br>
+            <label for="dance">{% trans "Danse" %}</label>
+            <br>
+            <francoralite-dance name="dance" data-values="{{ parameters_instances_json.dance }}" data-default-operator="{{ parameters.operators.dance|default:'or' }}"></francoralite-dance>
+            <a target="_blank" id="link_dance" href="/dance">
+              <span class="glyphicon glyphicon-list"></span> {% trans "Danses ..."%}
+            </a>
+            </details>
+
+            <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_song or parameters_instances_json.timbre or parameters_instances_json.timbre_ref or parameters_instances_json.coupe or parameters_instances_json.domain_vocal or parameters_instances_json.coirault or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.domain_tale or parameters.text or parameters.incipit or parameters.refrain or parameters.jingle %} open{% endif %} id="details_genders">
+              <summary>{% trans "Genres" %}</summary>
+              <label>{% trans "Domaine(s) :" %}</label>
+              <br>
+              <input type="checkbox" name="domain" value="T" id="domains_deposit"{% if 'T' in parameters.domain %} checked{% endif %}>
+              <label for="domains_deposit">{% trans "Témoignage" %}</label>
+              <br>
+              <input type="checkbox" name="domain" value="C" id="domains_song"{% if 'C' in parameters.domain %} checked{% endif %}>
+              <label for="domains_song">{% trans "Chanson" %}</label>
+              <br>
+              <input type="checkbox" name="domain" value="A" id="domains_vocal"{% if 'A' in parameters.domain %} checked{% endif %}>
+              <label for="domains_vocal">{% trans "Autre expression vocale" %}</label>
+              <br>
+              <input type="checkbox" name="domain" value="I" id="domains_music"{% if 'I' in parameters.domain %} checked{% endif %}>
+              <label for="domains_music">{% trans "Expression instrumentale" %}</label>
+              <br>
+              <input type="checkbox" name="domain" value="R" id="domains_tale"{% if 'R' in parameters.domain %} checked{% endif %}>
+              <label for="domains_tale">{% trans "Conte ou récit légendaire" %}</label>
+              <p class="domains_deposit">
+                <label for="thematic">{% trans "Thématique(s) du témoignage" %}</label>
+                <br>
+                <francoralite-thematic name="thematic" data-values="{{ parameters_instances_json.thematic }}" data-default-operator="{{ parameters.operators.thematic|default:'or' }}"></francoralite-thematic>
+                <a target="_blank" id="link_thematic" href="/thematic">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
+                </a>
+              </p>
+              <p class="domains_song">
+                <label for="domain_song">{% trans "Genre(s) de la chanson" %}</label>
+                <br>
+                <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}" data-default-operator="{{ parameters.operators.domain_song|default:'or' }}"></francoralite-domain-song>
+                <a target="_blank" id="link_domain_song" href="/domain_song">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
+                </a>
+              </p>
+              <p class="domains_song">
+                <label for="timbre">{% trans "Timbre de l’air" %}</label>
+                <br>
+                <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}" data-default-operator="{{ parameters.operators.timbre|default:'or' }}"></francoralite-timbre>
+              </p>
+              <p class="domains_song">
+                <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
+                <br>
+                <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}" data-default-operator="{{ parameters.operators.timbre_ref|default:'or' }}"></francoralite-timbre-ref>
+              </p>
+              <p class="domains_song">
+                <label for="coupe">{% trans "Coupe(s)" %}</label>
+                <br>
+                <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.operators.coupe|default:'or' }}"></francoralite-coupe>
+                <a target="_blank" id="link_coupe" href="/coupe">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
+                </a>
+              </p>
+              <p class="domains_vocal">
+                <label for="domain_vocal">{% trans "Genre(s) de l’autre expression vocale" %}</label>
+                <br>
+                <francoralite-domain-vocal name="domain_vocal" data-values="{{ parameters_instances_json.domain_vocal }}" data-default-operator="{{ parameters.operators.domain_vocal|default:'or' }}"></francoralite-domain-vocal>
+                <a target="_blank" id="link_domain_vocal" href="/domain_vocal">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
+                </a>
+              </p>
+              <p class="domains_song domains_vocal">
+                <label for="coirault">{% trans "Coirault" %}</label>
+                <br>
+                <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
+              </p>
+              <p class="domains_music">
+                <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
+                <br>
+                <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}" data-default-operator="{{ parameters.operators.domain_music|default:'or' }}"></francoralite-domain-music>
+                <a target="_blank" id="link_domain_music" href="/domain_music">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
+                </a>
+              </p>
+              <p class="domains_music">
+                <label for="instrument">{% trans "Voix/Instrument(s)" %}</label>
+                <br>
+                <francoralite-instrument name="instrument" data-values="{{ parameters_instances_json.instrument }}" data-default-operator="{{ parameters.operators.instrument|default:'or' }}"></francoralite-instrument>
+                <a target="_blank" id="link_instrument" href="/instrument">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Voix/Instruments ..."%}
+                </a>
+              </p>
+              <p class="domains_tale">
+                <label for="domain_tale">{% trans "Genre(s) du conte" %}</label>
+                <br>
+                <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}" data-default-operator="{{ parameters.operators.domain_tale|default:'or' }}"></francoralite-domain-tale>
+                <a target="_blank" id="link_domain_tale" href="/domain_tale">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
+                </a>
+              </p>
+              <p class="domains_song domains_tale domains_vocal">
+                <label for="text">{% trans "Texte" %}</label>
+                <br>
+                <input name="text" id="text" value="{{ parameters.text | default:'' }}">
+              </p>
+              <p class="domains_song domains_tale domains_vocal">
+                <label for="incipit">{% trans "Incipit" %}</label>
+                <br>
+                <input name="incipit" id="incipit" value="{{ parameters.incipit | default:'' }}">
+              </p>
+              <p class="domains_song domains_vocal">
+                <label for="refrain">{% trans "Refrain" %}</label>
+                <br>
+                <input name="refrain" id="refrain" value="{{ parameters.refrain | default:'' }}">
+              </p>
+              <p class="domains_tale">
+                <label for="jingle">{% trans "Ritournelle" %}</label>
+                <br>
+                <input name="jingle" id="jingle" value="{{ parameters.jingle | default:'' }}">
+              </p>
+              </details>
+
+              <button type="submit" id="btn" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+                {% trans "Effectuer une recherche" %}
+              </button>
+
+              <a href="{% url "search-advanced" %}" id="reset" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+                {% trans "Effacer les critères" %}
+              </a>
+</form>
 {% endblock %}
