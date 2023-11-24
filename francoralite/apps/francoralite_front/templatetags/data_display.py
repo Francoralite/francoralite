@@ -7,8 +7,8 @@
 import json
 
 from django import template
-from django.forms.widgets import CheckboxInput, HiddenInput
-from django.utils.html import format_html
+from django.forms.widgets import CheckboxInput, CheckboxSelectMultiple, HiddenInput
+from django.utils.html import format_html, format_html_join
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
@@ -89,6 +89,33 @@ def field_editor(field):
             field,
             field.label,
             field.errors,
+        )
+
+    elif isinstance(field.field.widget, CheckboxSelectMultiple):
+        value = field.value()
+        widget = CheckboxInput()
+        inner_html = format_html(
+            '<label class="control-label">{}</label><div id="id_{}">{}</div>',
+            field.label,
+            field.name,
+            format_html_join(
+                '',
+                '<div class="checkbox"><label for="{}">{} {}</label></div>',
+                (
+                    (
+                        f'id_{field.name}_{context["index"]}',
+                        widget.render(
+                            field.name,
+                            context['value'] in value,
+                            {
+                                'id': f'id_{field.name}_{context["index"]}',
+                                'value': context['value'],
+                            },
+                        ),
+                        context['label'],
+                    ) for context in field.field.widget.subwidgets(field.name, value)
+                ),
+            ),
         )
 
     else:
