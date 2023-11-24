@@ -19,7 +19,7 @@ class PersonneForm(forms.Form):
     is_informer = forms.BooleanField(label=_(u'Informateur'), required=False)
     is_author = forms.BooleanField(label=_(u'Auteur'), required=False)
     is_composer = forms.BooleanField(label=_(u'Compositeur'), required=False)
-    is_editor = forms.BooleanField(label=_(u'Editeur'), required=False)
+    is_editor = forms.BooleanField(label=_(u'Éditeur'), required=False)
     birth_date = forms.DateField(label=_(u'Date de naissance'),
                                  required=False,
                                  widget=forms.DateInput(
@@ -38,7 +38,7 @@ class PersonneForm(forms.Form):
         label=_(u'Lieu de naissance'),
         widget=forms.HiddenInput(),
         required=False)
-    death_date = forms.DateField(label=_(u'Date de Décès'), required=False,
+    death_date = forms.DateField(label=_(u'Date de décès'), required=False,
                                  widget=forms.DateInput(
                                      attrs={'type': 'date'},
                                      format='%Y-%m-%d'))

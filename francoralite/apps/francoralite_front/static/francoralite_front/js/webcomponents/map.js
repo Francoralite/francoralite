@@ -148,6 +148,8 @@ class FrancoraliteMap extends HTMLElement {
 
     this.map = L.map(this.mapEl, {
       zoomControl: false,
+      zoomWheel: true,
+      scrollWheelZoom: false,
     });
 
     // Control for the zoom

@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load tags %}
 
 <!doctype html>
 <html lang="fr">
@@ -105,6 +106,7 @@
 {% block footer %}
     <footer id="footer">
         <hr>
+        {% git_short_version %} - {% host_name %}
     </footer>
 {% endblock %}
 </body>
