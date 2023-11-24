@@ -18,6 +18,7 @@
 
 import logging
 from django.conf import settings
+from django.contrib.auth import logout
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from keycloak import KeycloakOpenID
@@ -237,6 +238,8 @@ class KeycloakMiddleware(object):
         try:
             permissions = self.keycloak.get_permissions(access_token)
         except KeycloakInvalidTokenError:
+            # Invalid keycloak session, so logout user from Django too
+            logout(request)
             return None
 
         # Extract permissions from scopes
