@@ -38,7 +38,13 @@
   {% else %}
 
   <div>
-    <h3>{% trans "Votre recherche" %}</h3>
+    <h3>{% trans "Votre recherche" %},
+      {% if parameters.request_type != 'item' %}
+      {% trans "sur les enquêtes" %}
+      {% else %}
+      {% trans "sur les items" %}
+      {% endif %}
+    </h3>
     <ul>
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_internal operator=parameters.operators.code_internal title=_('Cote') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.code_external operator=parameters.operators.code_external title=_('Référence partenaire') %}
