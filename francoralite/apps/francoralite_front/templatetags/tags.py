@@ -19,27 +19,43 @@ except:
 # --- GIT Label---
 # Use Popen for running git commands and capturing output
 # Get the latest commit hash that was tagged
-get_latest_tagged_commit = ["git", "rev-list", "--tags", "--max-count=1"]
-latest_tagged_commit = (
-    subprocess.check_output(get_latest_tagged_commit).decode().strip()
-)
+try:
+    head = subprocess.Popen(
+        "git rev-list --tags --max-count=1",
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
+    )
+    latest_tagged_commit = head.stdout.readline().strip()
+except:
+    latest_tagged_commit = ""
 
-with subprocess.Popen(
-    [
-        "git",
-        "describe",
-        "--tags",
-        latest_tagged_commit,
-        "--abbrev=0",
-    ],
-    stdout=subprocess.PIPE,
-) as proc:
-    last_tag = proc.stdout.read().decode().strip()
 
-with subprocess.Popen(
-    ["git", "show", "-s", "--format=%ai"], stdout=subprocess.PIPE
-) as proc:
-    last_tag_date = proc.stdout.read().strip().decode()[:10]
+try:
+    head = subprocess.Popen(
+        f"git describe --tags {latest_tagged_commit} --abbrev=0",
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
+    )
+    last_tag = head.stdout.readline().strip()
+except:
+    last_tag = ""
+
+try:
+    head = subprocess.Popen(
+        "git show -s --format=%ai",
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
+    )
+    last_tag_date = head.stdout.readline().strip()[:10]
+except:
+    last_tag_date = ""
+
 
 # Print the tag and its date
 LABEL = last_tag
