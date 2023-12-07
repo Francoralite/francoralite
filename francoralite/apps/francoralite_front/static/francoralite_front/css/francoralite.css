@@ -458,15 +458,17 @@ form ul.switch li input:checked + label {
     position: absolute;
     top: 65px;
     right: 25px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
     padding: 0.5em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
-    width: 300px;
 }
 
-#quick_search form {
-    float: left;
+#quick_search > span.glyphicon {
+    padding-right: 0.5em;
 }
 
 #quick_search input {
@@ -478,15 +480,6 @@ form ul.switch li input:checked + label {
     width: 250px;
     padding-left: 0.5em;
     border-color:#6a0307;
-}
-
-#quick_search_pattern {
-    background-color: white;
-    padding: .4em .1em;
-    width: 180px;
-    color: #555;
-    font-weight: bold;
-    float: left;
 }
 
 
