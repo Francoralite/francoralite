@@ -490,6 +490,51 @@ form ul.switch li input:checked + label {
 }
 
 
+
+/* Advanced search */
+
+header.advanced-search > h1 span.glyphicon {
+  padding-left: 0.5em;
+}
+
+header.advanced-search aside.search-tooltip {
+  position: absolute;
+  top: 0;
+  left: min(25vw - 2em, 6em);
+  display: none;
+  max-width: min(75vw - 2em, 800px);
+  max-height: 75vh;
+  margin: 0;
+  padding: 1em;
+  border: solid 2px #6a0307;
+  border-radius: 10px;
+  background: #eedcdc;
+  font-size: smaller;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-color: #ae8484 transparent;
+}
+
+header.advanced-search aside.search-tooltip h1::before {
+  display: none;
+}
+
+@supports selector(:has(a, b)) {
+  header.advanced-search h1:has(span.glyphicon:hover) + aside.search-tooltip,
+  header.advanced-search aside.search-tooltip:hover {
+    display: block;
+  }
+}
+
+@supports not selector(:has(a, b)) {
+  header.advanced-search h1:hover + aside.search-tooltip,
+  header.advanced-search aside.search-tooltip:hover {
+    display: block;
+  }
+}
+
+
+
 /* Authentication */
 #auth_info {
   color: #FFF;
