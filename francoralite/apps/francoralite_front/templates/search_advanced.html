@@ -22,9 +22,68 @@
 {% endblock %}
 
 {% block content %}
-<header class="sticky">
-<h1>{% trans "Recherche avancée"%}</h1>
-{% include "inc/pagination.html" %}
+<header class="sticky advanced-search">
+    <h1>
+        {% trans "Recherche avancée"%}
+        <span class="glyphicon glyphicon-question-sign"></span>
+    </h1>
+
+    <aside class="search-tooltip">
+        <p>La <strong>recherche rapide</strong> recherche <strong>un seul terme</strong> dans plusieurs champs.</p>
+        <p>La <strong>recherche avancée</strong> permet de rechercher selon <strong>plusieurs critères</strong> différents <strong>simultanément</strong>.</p>
+
+        <h1>Pour effectuer une recherche avancée</h1>
+
+        <h2>1. Types de résultats désirés</h2>
+        <p>Cliquez en haut du formulaire de recherche sur le <strong>commutateur "Enquêtes | Items"</strong>, choisissez le type de résultats désirés (par défaut&nbsp;: Enquêtes).</p>
+
+        <h2>2. Saisissez vos critères de recherche</h2>
+        <p>Sur le formulaire de recherche, cliquez sur une des sections listées ci-dessous pour faire apparaître les champs de saisie (regroupés par thèmes).</p>
+        <p>Recherchez&nbsp;:</p>
+        <ul>
+            <li>par <strong>référence (cote)</strong>&nbsp;: quand vous savez précisément la mission ou l’enquête ou l’item que vous voulez, tapez son nom ou sa cote&nbsp;;</li>
+            <li>par <strong>personne</strong> (Qui&nbsp;?)&nbsp;: sélectionnez directement dans une liste prédéfinie, l’intervieweur ou la personne interviewée&nbsp;;</li>
+            <li>en limitant les résultats à une <strong>période</strong> donnée (Quand&nbsp;?)&nbsp;: saisissez une date de début, et une date de fin de période&nbsp;;</li>
+            <li><strong>Où&nbsp;?</strong>&nbsp;: les documents liés à un lieu précis, ou une région (aire culturelle) donnée&nbsp;;</li>
+            <li>le <strong>type de contenu</strong> (Quoi&nbsp;?)&nbsp;: son ou média associé, sujet de l’enregistrement, …&nbsp;;</li>
+            <li>un type d’enregistrement&nbsp;: cochez un ou plusieurs <strong>genres d’enregistrements</strong> (témoignage, chanson, conte, …).</li>
+        </ul>
+
+        <h2>3. Valeurs prédéfinies, et champs multivalués</h2>
+        <p>Certains critères de recherche vous imposent de choisir une valeur dans une <strong>liste prédéfinie</strong>&nbsp;:
+        <p>Dès la saisie des premiers caractères, la liste des valeurs s’ouvre.
+        Au final, <strong>vous devez cliquer sur une valeur</strong> (ou plusieurs) de la liste.
+        <strong>Elle apparaît alors sur fond rouge</strong> dans le champ, à la place de votre saisie.
+        Si vous ne sélectionnez aucune valeur prédéfinie, votre saisie manuelle ne sera pas prise en compte
+        (champ considéré comme non-renseigné, ne contenant aucune valeur sur fond rouge).</p>
+        <p>Champs <strong>multivalués</strong>&nbsp;: à droite d’un champ de saisie, la présence des commutateurs "et | <strong>ou</strong> | sauf"
+        vous indique la possibilité de saisir plusieurs valeurs prédéfinies.
+        Si souhaité, répétez alors l’étape précédente (tapez un caractère puis cliquez sur une autre valeur de la liste prédéfinie).
+        Puis cliquez sur un des commutateurs&nbsp;:</p>
+        <ul>
+            <li><strong>et</strong>&nbsp;: les éléments trouvés doivent correspondre à <strong>tous</strong> les éléments que vous avez choisis&nbsp;;</li>
+            <li><strong>ou</strong> (par défaut)&nbsp;: les éléments trouvés comporteront <strong>au moins un</strong> des éléments sélectionnés&nbsp;;</li>
+            <li><strong>sauf</strong>&nbsp;: les éléments trouvés ne contiendront <strong>aucun</strong> des éléments choisis.</li>
+        </ul>
+
+        <h2>4. Lancez la recherche</h2>
+        <p>Cliquez sur le bouton "<strong>Effectuer une recherche</strong>" tout en bas du formulaire.</p>
+
+        <h2>5. Si les résultats sont nombreux</h2>
+        <ul>
+            <li><strong>naviguez entre les pages</strong> de résultats&nbsp;: cliquez sur les numéros de pages situés en haut à droite&nbsp;;</li>
+            <li><strong>affinez votre recherche</strong>&nbsp;: en bas de page, le formulaire de recherche reprend vos critères.
+            À vous d’en ajouter pour réduire le nombre de résultats.
+            Relancez alors la recherche avec le bouton "Effectuer une recherche".</li>
+        </ul>
+
+        <h2>6. Nouvelle recherche</h2>
+        <p>Pas besoin de développer chaque groupe de critères pour les effacer&nbsp;:
+        cliquez simplement sur le <strong>bouton "Effacer les critères"</strong> en bas de page.
+        Un formulaire vierge apparaîtra.</p>
+    </aside>
+
+    {% include "inc/pagination.html" %}
 </header>
 
 {% if show_results %}
