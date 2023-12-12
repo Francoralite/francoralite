@@ -21,6 +21,7 @@ from .item_domain_vocal import ItemDomainVocal
 from .item_domain_tale import ItemDomainTale
 from .item_usefulness import ItemUsefulness
 from .item_dance import ItemDance
+from .item_keyword import ItemKeyword
 from .item_thematic import ItemThematic
 from .item_language import ItemLanguage
 from .item_musical_organization import ItemMusicalOrganization
@@ -46,6 +47,7 @@ from .performance_collection import PerformanceCollection
 from .item_performance import ItemPerformance
 from .musical_organization import MusicalOrganization
 from .musical_group import MusicalGroup
+from .keyword import Keyword
 from .thematic import Thematic
 from .dance import Dance
 from .domain_tale import DomainTale
