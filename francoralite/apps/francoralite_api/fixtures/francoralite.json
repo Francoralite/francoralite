@@ -313,6 +313,22 @@
   },
   {
     "fields": {
+      "name": "violon",
+      "notes": "Notes violon"
+    },
+    "model": "francoralite_api.keyword",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "biographie",
+      "notes": ""
+    },
+    "model": "francoralite_api.keyword",
+    "pk": 2
+  },
+  {
+    "fields": {
       "identifier": "Eng",
       "part2B": "eng",
       "part2T": "eng",
