@@ -20,6 +20,7 @@ from ..models.domain_tale import DomainTale
 from ..models.domain_vocal import DomainVocal
 from ..models.instrument import Instrument
 from ..models.item import Item
+from ..models.keyword import Keyword
 from ..models.language import Language
 from ..models.location import Location
 from ..models.mediatype import MediaType
@@ -189,6 +190,14 @@ class AdvancedSearchList(generics.GenericAPIView):
                 "name": "jingle",
                 "paths": (None, "jingle"),
                 "lookups": "icontains",
+            },
+            {
+                "name": "keyword",
+                "paths": (
+                    "collection__itemkeyword__keyword",
+                    "itemkeyword__keyword",
+                ),
+                "parameter_model": Keyword,
             },
             {
                 "name": "language",

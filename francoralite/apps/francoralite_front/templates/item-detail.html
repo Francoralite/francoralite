@@ -251,7 +251,12 @@
       </div>
       {% endif %}
 
-
+      {% if item.keywords %}
+      <h2>{% trans "Mots-clés" %}</h2>
+      <div class="container_line">
+        {% related_list libelle='Mot(s)-clé(s)' items=item.keywords url_detail="keyword-detail" field="name" empty=False %}
+      </div>
+      {% endif %}
 
     </section>
 

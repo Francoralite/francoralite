@@ -30,6 +30,7 @@ def test_homepage(francoralite_context):
             ]],
             [_('Aires culturelles'), None, []],
             [_('Langue'), None, []],
+            [_('Mot-clé'), None, []],
             [_('Thématique'), None, []],
             [_('Musique'), False, [
                 [_("Genre d'autre expression vocale"), _('Genre vocal'), []],

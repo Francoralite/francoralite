@@ -61,7 +61,7 @@
         {% endblock %}
         </div>
         <div id="quick_search">
-            <span class="glyphicon glyphicon-question-sign" title="Recherche sur les champs&nbsp;: prénom/nom des personnes, nom des lieux, titre des fonds, titre des missions, titre des enquêtes et titre des items"></span>
+            <span class="glyphicon glyphicon-question-sign" title="Recherche sur les champs&nbsp;: prénom/nom des personnes, nom des lieux, titre des fonds, titre des missions, titre des enquêtes, titre des items et mots-clés des items"></span>
             <form action="{% url "search-simple" %}" id="_quickSearchForm" method="get" role="search">
                 <div class="input-group">
                     <input class="form-control" id="id_q" name="q" type="text" value="{{query}}"  placeholder="Recherche rapide ..." /><span

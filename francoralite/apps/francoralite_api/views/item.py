@@ -39,6 +39,8 @@ from ..models.item_domain_tale import ItemDomainTale
 from ..serializers.item_domain_tale import ItemDomainTaleSerializer
 from ..models.item_domain_vocal import ItemDomainVocal
 from ..serializers.item_domain_vocal import ItemDomainVocalSerializer
+from ..models.item_keyword import ItemKeyword
+from ..serializers.item_keyword import ItemKeywordSerializer
 from ..models.item_language import ItemLanguage
 from ..serializers.item_language import ItemLanguageSerializer
 from ..models.item_thematic import ItemThematic
@@ -109,6 +111,11 @@ entities = [
         "names": "domain_vocals", "name": "domain_vocal",
         "model": ItemDomainVocal,
         "serializer": ItemDomainVocalSerializer
+    },
+    {
+        "names": "keywords", "name": "keyword",
+        "model": ItemKeyword,
+        "serializer": ItemKeywordSerializer
     },
     {
         "names": "languages", "name": "language",
