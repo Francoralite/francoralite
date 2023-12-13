@@ -397,6 +397,19 @@ class TestAdvancedSearch(APITestCase):
     def test_jingle(self):
         pass  # TODO critère unique : textes différents (cf incipit)
 
+    def test_keyword(self):
+        """
+        - keyword : 1 - violon
+        - keyword : 2 - biographie
+        """
+        self._test_all_combinations(
+            "keyword",
+            {
+                1: {"collections": {1, 2}, "items": {1, 2, 3}},
+                2: {"collections": {1, 2}, "items": {2, 3}},
+            },
+        )
+
     def test_language(self):
         """
         - language : 1 - Anglais

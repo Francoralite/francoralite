@@ -122,6 +122,7 @@
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.recording_context operator=parameters.operators.recording_context title=_('Contexte d’enregistrement') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.usefulness operator=parameters.operators.usefulness title=_('Fonction') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.dance operator=parameters.operators.dance title=_('Danse') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.keyword operator=parameters.operators.keyword title=_('Mot(s)-clé(s)') %}
       {% if 'T' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Témoignage') %}{% endif %}
       {% if 'C' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Chanson') %}{% endif %}
       {% if 'A' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Autre expression vocale') %}{% endif %}
@@ -333,7 +334,7 @@
           <francoralite-cultural-area name="cultural_area" data-values="{{ parameters_instances_json.cultural_area }}" data-default-operator="{{ parameters.operators.cultural_area|default:'or' }}"></francoralite-cultural-area>
           </details>
 
-          <details{% if parameters_instances_json.media_type or parameters_instances_json.language or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance %} open{% endif %} id="details_what">
+          <details{% if parameters_instances_json.media_type or parameters_instances_json.language or parameters_instances_json.recording_context or parameters_instances_json.usefulness or parameters_instances_json.dance or parameters_instances_json.keyword %} open{% endif %} id="details_what">
             <summary>{% trans "Quoi ?" %}</summary>
             <label for="media_type">{% trans "Type de média" %}</label>
             <br>
@@ -368,6 +369,13 @@
             <francoralite-dance name="dance" data-values="{{ parameters_instances_json.dance }}" data-default-operator="{{ parameters.operators.dance|default:'or' }}"></francoralite-dance>
             <a target="_blank" id="link_dance" href="/dance">
               <span class="glyphicon glyphicon-list"></span> {% trans "Danses ..."%}
+            </a>
+            <br><br>
+            <label for="keyword">{% trans "Mot(s)-clé(s)" %}</label>
+            <br>
+            <francoralite-keyword name="keyword" data-values="{{ parameters_instances_json.keyword }}" data-default-operator="{{ parameters.operators.keyword|default:'or' }}"></francoralite-keyword>
+            <a target="_blank" id="link_keyword" href="/keyword">
+              <span class="glyphicon glyphicon-list"></span> {% trans "Mots-clés ..."%}
             </a>
             </details>
 
