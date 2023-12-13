@@ -37,7 +37,8 @@ class GlobalSearchList(generics.ListAPIView):
             Q(alt_title__icontains=query))[:limit]
         items = Item.objects.filter(
             Q(title__icontains=query) |
-            Q(alt_title__icontains=query))[:limit]
+            Q(alt_title__icontains=query) |
+            Q(itemkeyword__keyword__name__icontains=query))[:limit]
         all_results = list(itertools.chain(
             authorities,
             locations,
