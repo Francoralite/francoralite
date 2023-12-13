@@ -159,6 +159,7 @@ def write_item_related(id_main, request, headers):
         ["informer", "informers"],
         ["author", "authors"],
         ["compositor", "compositors"],
+        ["keyword", "keywords"],
         ["thematic", "thematics"],
         ["dance", "dances"],
         ["usefulness", "usefulnesses"],

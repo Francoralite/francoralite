@@ -1050,6 +1050,14 @@
   {
     "fields":{
       "item":1,
+      "keyword":1
+    },
+    "model":"francoralite_api.itemkeyword",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
       "thematic":2
     },
     "model":"francoralite_api.itemthematic",
@@ -1143,6 +1151,22 @@
   {
     "fields":{
       "item":2,
+      "keyword":1
+    },
+    "model":"francoralite_api.itemkeyword",
+    "pk":2
+  },
+  {
+    "fields":{
+      "item":2,
+      "keyword":2
+    },
+    "model":"francoralite_api.itemkeyword",
+    "pk":3
+  },
+  {
+    "fields":{
+      "item":2,
       "thematic":2
     },
     "model":"francoralite_api.itemthematic",
@@ -1215,6 +1239,22 @@
     },
     "model":"francoralite_api.itemusefulness",
     "pk":3
+  },
+  {
+    "fields":{
+      "item":3,
+      "keyword":1
+    },
+    "model":"francoralite_api.itemkeyword",
+    "pk":4
+  },
+  {
+    "fields":{
+      "item":3,
+      "keyword":2
+    },
+    "model":"francoralite_api.itemkeyword",
+    "pk":5
   },
   {
     "fields":{
