@@ -42,12 +42,14 @@ from .views import (
     item_domain_tale,
     item_domain_vocal,
     item_informer,
+    item_keyword,
     item_language,
     item_musical_group,
     item_musical_organization,
     item_performance,
     item_thematic,
     item_usefulness,
+    keyword,
     language,
     legal_rights,
     location_gis,
@@ -151,6 +153,9 @@ router.register(r'musical_organization',
 router.register(r'musical_group',
                 musical_group.MusicalGroupViewSet,
                 basename='musicalgroup')
+router.register(r'keyword',
+                keyword.KeywordViewSet,
+                basename='keyword')
 router.register(r'thematic',
                 thematic.ThematicViewSet,
                 basename='thematic')
@@ -249,6 +254,8 @@ item_router.register(
     r'dance', item_dance.ItemDanceViewSet)
 item_router.register(
     r'language', item_language.ItemLanguageViewSet)
+item_router.register(
+    r'keyword', item_keyword.ItemKeywordViewSet)
 item_router.register(
     r'thematic', item_thematic.ItemThematicViewSet)
 item_router.register(

@@ -43,6 +43,7 @@ from .views.enum import (
     dance_add,
     emit_vox, emit_vox_edit, emit_vox_delete, emit_vox_detail,
     emit_vox_add,
+    keyword, keyword_edit, keyword_delete, keyword_detail, keyword_add,
     language, language_edit, language_delete, language_detail, language_add,
     musical_organization, musical_organization_edit,
     musical_organization_delete, musical_organization_detail,
@@ -387,6 +388,22 @@ urlpatterns = [
     re_path(r'^emit_vox/delete/(?P<id>[0-9]+)$',
         emit_vox_delete.EmitVoxDelete.as_view(),
         name='emit_vox-delete'),
+
+    # keyword
+    re_path(r'^keyword$', keyword.KeywordView.as_view(),
+        name="keyword"),
+    re_path(r'^keyword/add$',
+        keyword_add.KeywordAdd.as_view(),
+        name='keyword-add'),
+    re_path(r'^keyword/(?P<id>[0-9]+)$',
+     keyword_detail.KeywordDetail.as_view(),
+     name='keyword-detail'),
+    re_path(r'^keyword/edit/(?P<id>[0-9]+)$',
+         keyword_edit.KeywordEdit.as_view(),
+         name='keyword-edit'),
+    re_path(r'^keyword/delete/(?P<id>[0-9]+)$',
+        keyword_delete.KeywordDelete.as_view(),
+        name='keyword-delete'),
 
     # Language
     re_path(r'^language$', language.LanguageView.as_view(),

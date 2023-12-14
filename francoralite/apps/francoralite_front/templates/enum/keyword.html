@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Mot-clé" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if perms.keycloak.keyword_add %}
+  <a href="{% url "keyword-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un mot-clé" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some keywords (number of elements > 0 ) -->
+{% if keywords|length > 0 %}
+  <!-- Table to display the keywords -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if perms.keycloak.keyword_update or perms.keycloak.keyword_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for keyword in keywords %}
+  <tr>
+      <td class="highlight">
+          <a href="/keyword/{{keyword.id }}">
+            {{ keyword.name|upper }}</a>
+      </td>
+      <td>
+        {% if keyword.notes %}
+          {{ keyword.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if perms.keycloak.keyword_update or perms.keycloak.keyword_delete %}
+      <td>
+        {% if perms.keycloak.keyword_update %}
+        <a href="{% url "keyword-edit" id=keyword.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.keyword_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{keyword.title}}"
+            data-url="{% url "keyword-delete" id=keyword.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.keyword_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de mot-clé." %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

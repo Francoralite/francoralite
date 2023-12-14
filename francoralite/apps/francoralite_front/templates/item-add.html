@@ -531,9 +531,40 @@
 
       </div> <!-- app4 -->
       </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Mots-clés" %}</h2>
+
+          <div id="appKeywords">
+          <!-- Keyword -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Mot(s)-clé(s)" %}</label>
+          <v-select
+          multiple
+          v-model="keywords"
+          label="name"
+          :filterable="false"
+          @search="onSearchKeywords"
+          :options="optionsKeywords">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="keywords" type="hidden"
+          :value="JSON.stringify(keywords,replacerKeyword)" />
+      </div> <!-- appKeywords -->
+      </div>
+
       </div> <!-- tab_desc -->
-
-
 
       <!-- Tab Text ---------------------------------------------->
       <div class="tab-pane" id="tab_text">

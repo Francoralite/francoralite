@@ -17,6 +17,7 @@ from ..models.domain_tale import DomainTale as DomainTaleModel
 from ..models.domain_vocal import DomainVocal as DomainVocalModel
 from ..models.instrument import Instrument as InstrumentModel
 from ..models.item import Item as ItemModel
+from ..models.keyword import Keyword as KeywordModel
 from ..models.language import Language as LanguageModel
 from ..models.location import Location as LocationModel
 from ..models.mediatype import MediaType as MediaTypeModel
@@ -35,6 +36,7 @@ from .domain_tale import DomainTaleSerializer
 from .domain_vocal import DomainVocalSerializer
 from .instrument import InstrumentSerializer
 from .item import AdvancedSearchItemSerializer
+from .keyword import KeywordSerializer
 from .language import LanguageSerializer
 from .location_gis import LocationGisSerializer
 from .mediatype import MediaTypeSerializer
@@ -69,6 +71,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = InstrumentSerializer(instance)
         elif isinstance(instance, ItemModel):
             serializer = AdvancedSearchItemSerializer(instance)
+        elif isinstance(instance, KeywordModel):
+            serializer = KeywordSerializer(instance)
         elif isinstance(instance, LanguageModel):
             serializer = LanguageSerializer(instance)
         elif isinstance(instance, LocationModel):
