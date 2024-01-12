@@ -44,6 +44,7 @@ from .views import (
     item_informer,
     item_keyword,
     item_language,
+    item_ref_laforte,
     item_musical_group,
     item_musical_organization,
     item_performance,
@@ -63,6 +64,7 @@ from .views import (
     performance_collection_musician,
     publisher,
     recording_context,
+    ref_laforte,
     skos_collection,
     skos_concept,
     thematic,
@@ -180,6 +182,9 @@ router.register(r'usefulness',
 # router.register(r'performance_collection_musician',
 #                 performance_collection_musician.PerformanceCollectionMusicianViewSet,  # noqa
 #                 basename='performance_collection_musician')
+router.register(r'ref_laforte',
+                ref_laforte.RefLaforteViewSet,
+                basename='ref_laforte')
 router.register(r'skos_collection',
                 skos_collection.SkosCollectionViewSet,
                 basename='coirault')
@@ -261,6 +266,8 @@ item_router.register(
 item_router.register(
     r'musical_organization',
     item_musical_organization.ItemMusicalOrganizationViewSet)
+item_router.register(
+    r'ref_laforte', item_ref_laforte.ItemRefLaforteViewSet)
 item_router.register(
     r'coirault', item_coirault.ItemCoiraultViewSet
 )
