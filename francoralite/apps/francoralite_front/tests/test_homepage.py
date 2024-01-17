@@ -45,7 +45,7 @@ def test_homepage(francoralite_context):
             [_('Chanson'), False, [
                 [_('Genre de chanson'), None, []],
                 [_('Coupe'), None, []],
-                [_('Catalogages Laforte'), None, []],
+                [_('Catalogue Laforte'), None, []],
             ]],
             [_('Conte'), False, [
                 [_('Genre de conte'), None, []],
