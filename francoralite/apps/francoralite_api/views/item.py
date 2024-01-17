@@ -62,6 +62,9 @@ from ..serializers.performance_collection_musician import (
     PerformanceCollectionMusicianSerializer)
 from ..models.item_coirault import ItemCoirault
 from ..serializers.item_coirault import ItemCoiraultSerializer
+from ..models.item_laforte import ItemLaforte
+from ..serializers.item_laforte import ItemLaforteSerializer
+
 
 from ..models.recording_context import RecordingContext
 
@@ -146,6 +149,11 @@ entities = [
         "names": "coiraults", "name": "coirault",
         "model": ItemCoirault,
         "serializer": ItemCoiraultSerializer
+    },
+    {
+        "names": "lafortes", "name": "laforte",
+        "model": ItemLaforte,
+        "serializer": ItemLaforteSerializer
     },
 ]
 

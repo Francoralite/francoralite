@@ -450,6 +450,46 @@ new Vue({
   }
 });
 
+// AppLaforte -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#appLaforte",
+  data: {
+    lafortes: [],
+    optionsLafortes: [],
+  },
+  computed: {
+  },
+  methods: {
+    onSearchLaforte(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/ref_laforte?search=${escape(search)}`,
+        'optionsLafortes',
+        'ref_laforte'
+       );
+    },
+    getLafortes: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/ref_laforte`,
+         'lafortes',
+         'ref_laforte',
+         'ref_laforte'
+       );
+    },
+    replacerLaforte: function(key,value){
+       return replacer(key,value,"ref_laforte");
+    }
+  },
+  mounted: function () {
+      {% if id %}
+      this.getLafortes();
+      {% endif %}
+  }
+});
+
 // AppKeywords -----------------------------
 new Vue({
   delimiters: ['${', '}'],

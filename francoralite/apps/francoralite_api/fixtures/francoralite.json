@@ -1010,6 +1010,14 @@
   {
     "fields":{
       "item":1,
+      "laforte":1
+    },
+    "model":"francoralite_api.itemlaforte",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
       "collector":8
     },
     "model":"francoralite_api.itemcollector",
@@ -1107,6 +1115,22 @@
     },
     "model":"francoralite_api.itemcoirault",
     "pk":2
+  },
+  {
+    "fields": {
+      "item": 2,
+      "laforte": 2
+    },
+    "model": "francoralite_api.itemlaforte",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "item": 2,
+      "laforte": 1
+    },
+    "model": "francoralite_api.itemlaforte",
+    "pk": 3
   },
   {
     "fields":{

@@ -243,6 +243,7 @@ class TestItemList(CleanMediaMixin, APITestCase):
         self.assertEqual(len(response.data["thematics"]), 2)
         self.assertEqual(len(response.data["usefulnesses"]), 2)
         self.assertEqual(len(response.data["coiraults"]), 2)
+        self.assertEqual(len(response.data["lafortes"]), 2)
 
 
     def test_performances(self):
