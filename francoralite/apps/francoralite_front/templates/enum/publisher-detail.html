@@ -1,0 +1,50 @@
+{% extends "enum/publisher.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+  {{ block.super }}
+    {% if publisher %}
+     : {{ publisher.name }}
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.publisher_update %}
+  <a href="{% url "publisher-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if publisher %}
+
+  {% field_data_id form.name publisher.name|safe %}
+  {% field_data_id form.notes publisher.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Cet éditeur n'existe pas." %}</p>
+{% endif %}
+{% else %}
+    {% display_error error %}
+{% endif %}
+{% endblock %}

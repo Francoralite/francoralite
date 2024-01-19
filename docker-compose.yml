@@ -1,6 +1,6 @@
 ---
 
-# Docker compose to build Telemeta meta project
+# Docker compose to build Francoralite meta project
 
 version: '2.1'
 
@@ -12,122 +12,58 @@ networks:
       name: 'services'
 
 services:
-  data:
-    image: 'debian:jessie'
-    networks:
-      - 'francoralite'
-    volumes:
-       - './data/media/:/srv/media'
-       - './data/backup/:/srv/backup'
-       - './data/static:/srv/static'
-       - './data/bower:/srv/bower'
-       - './data/log/nginx:/var/log/nginx'
-       - './data/log/uwsgi:/var/log/uwsgi'
-    command: 'true'
-
-  db:
-    image: 'mysql:8.0.2'
-    volumes:
-      - './telemeta_mshs/apps/Telemeta/scripts/:/srv/scripts'
-      - './data/mysql/:/var/lib/mysql'
-    networks:
-      - 'francoralite'
-    volumes_from:
-      - 'data'
-    env_file:
-      - './telemeta_mshs/apps/Telemeta/env/prod.env'
-    healthcheck:
-      test: ["CMD-SHELL", "mysql -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SHOW DATABASES;'"]
-      interval: '30s'
-      timeout: '2s'
-      retries: 3
-
-  broker:
-    image: 'redis'
-    networks:
-      - 'francoralite'
-
-  search:
-    image: 'elasticsearch:1'
-    networks:
-      - 'francoralite'
-
   app:
-    build:
-      context: .
-    networks:
-      - 'services'
-      - 'francoralite'
-    volumes:
-      - './:/srv/app'
-      - './scripts:/srv/scripts'
-      - './telemeta_mshs/apps/Telemeta/app/enumeration:/srv/app/enumeration'
-      - './telemeta_mshs/apps/Telemeta/app/fixtures:/srv/app/fixtures'
-      - './telemeta_mshs/settings/base.py:/srv/app/settings.py'
-      - './telemeta_mshs/apps/Telemeta/app/settings.py:/srv/app/telemeta_settings.py'
-      - './telemeta_mshs/apps/Telemeta/app/worker.py:/srv/app/worker.py'
-      - './telemeta_mshs/apps/Telemeta/app/robots.txt:/srv/app/telemeta_mshs/robots.txt'
-      - './etc/keycloak/auth.json:/tmp/authorization_config.json'
-    volumes_from:
-      - 'data'
+    restart: 'unless-stopped'
+    depends_on:
+      db:
+        condition: 'service_healthy'
     env_file:
-      - './telemeta_mshs/apps/Telemeta/env/debug.env'
-      - './francoralite-env/app.env'
+      - './env/app.env'
+      - './env/francoralite_db.env'
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 8000"]
       interval: '10s'
       timeout: '2s'
       retries: 20
-    command: '/bin/bash /srv/scripts/start_api.sh'
-    depends_on:
-      db:
-        condition: 'service_healthy'
-
-  worker:
-    build:
-      context: .
-    networks:
-      - 'francoralite'
-    volumes_from:
-      - 'app'
-    env_file:
-      - './telemeta_mshs/apps/Telemeta/env/prod.env'
-    command: '/bin/bash /srv/scripts/start_worker.sh'
-    depends_on:
-      app:
-        condition: 'service_healthy'
-
-  nginx:
-    image: 'nginx'
-    depends_on:
-      - 'app'
-      - 'keycloak'
-      - 'phpmyadmin'
-    networks:
-      - 'services'
-    volumes:
-      - './etc/nginx.conf:/etc/nginx/conf.d/default.conf'
-    volumes_from:
-      - 'data'
-
-  phpmyadmin:
-    image: 'nazarpc/phpmyadmin'
-    networks:
-      - 'services'
-      - 'francoralite'
-    environment:
-      - ABSOLUTE_URI=http://phpmyadmin.francoralite.localhost:50000/phpmyadmin/
-
-  keycloak:
-    image: "${KEYCLOAK_IMAGE}:${KEYCLOAK_VERSION}"
-    restart: 'unless-stopped'
-    logging:
+    logging: &logging
       driver: 'json-file'
       options:
         max-size: "${LOGGING_MAX_SIZE}"
         max-file: "${LOGGING_MAX_FILE}"
+    networks:
+      - 'services'
+      - 'francoralite'
+    volumes:
+      - './etc/keycloak/auth.json:/tmp/authorization_config.json'
+      - 'francoralite_app_media:/srv/media'
+      - 'francoralite_app_static:/srv/static'
+
+  db:
+    image: "${MYSQL_IMAGE}:${MYSQL_VERSION}"
+    restart: 'unless-stopped'
     env_file:
-      - './francoralite-env/keycloak.env'
+      - './env/francoralite_db.env'
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SHOW DATABASES;'"]
+      interval: '30s'
+      timeout: '2s'
+      retries: 3
+    logging:
+      <<: *logging
+    networks:
+      - 'francoralite'
+    volumes:
+      - 'francoralite_db:/var/lib/mysql'
+
+  keycloak:
+    image: "${KEYCLOAK_IMAGE}:${KEYCLOAK_VERSION}"
+    restart: 'unless-stopped'
+    depends_on:
+      - 'keycloak_db'
+    env_file:
+      - './env/keycloak.env'
+    logging:
+      <<: *logging
     networks:
       keycloak:
         aliases:
@@ -136,23 +72,36 @@ services:
         aliases:
           - 'keycloak'
           - 'keycloak.francoralite.localhost'
-    depends_on:
-      - 'keycloak_db'
 
   keycloak_db:
     image: "${POSTGRES_IMAGE}:${POSTGRES_VERSION}"
     restart: 'unless-stopped'
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: "${LOGGING_MAX_SIZE}"
-        max-file: "${LOGGING_MAX_FILE}"
     env_file:
-      - './francoralite-env/keycloak_database.env'
+      - './env/keycloak_database.env'
+    logging:
+      <<: *logging
     networks:
       - 'keycloak'
     volumes:
       - 'keycloak_db:/var/lib/postgresql/data'
 
+  nginx:
+    image: "${NGINX_IMAGE}:${NGINX_VERSION}"
+    restart: 'unless-stopped'
+    depends_on:
+      - 'app'
+      - 'keycloak'
+    logging:
+      <<: *logging
+    networks:
+      - 'services'
+    volumes:
+      - './etc/nginx.conf:/etc/nginx/conf.d/default.conf'
+      - 'francoralite_app_media:/srv/media'
+      - 'francoralite_app_static:/srv/static'
+
 volumes:
+  francoralite_app_media: {}
+  francoralite_app_static: {}
+  francoralite_db: {}
   keycloak_db: {}

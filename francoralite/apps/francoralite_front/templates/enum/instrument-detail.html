@@ -1,0 +1,54 @@
+{% extends "enum/instrument.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {{ block.super }}
+    {% if instrument %}
+     : {{ instrument.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.instrument_update %}
+    <a href="{% url "instrument-edit" id=id %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+    </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  {% if instrument %}
+
+    {% field_data_id form.name instrument.name|safe %}
+    {% field_data_id form.notes instrument.notes|markdown|safe %}
+    <span class="container_data">
+      <span class="libelle">{{ form.typology.label|safe }}</span>
+      <span class="donnee"> {{ instrument.typology.number|safe }} :
+        {{ instrument.typology.name|safe }}</span>
+    </span>
+
+  {% else %}
+    <p>{% trans "Cet instrument n'existe pas." %}</p>
+    {% display_error error %}
+  {% endif %}
+{% else %}
+   {% display_error error %}
+{% endif %}
+{% endblock %}

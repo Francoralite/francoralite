@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Institutions" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if perms.keycloak.institution_add %}
+    <a href="{% url "institution-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
+    </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+<!-- If there is some institution (number of elements > 0 ) -->
+{% if institutions|length > 0 %}
+  <!-- Table to display the institutions -->
+  <table class="listing">
+  <thead>
+  <tr>
+      {% include "inc/sortable-table-column-header.html" with field="name" label=_("Nom") highlight=True %}
+      <th>{% trans "Notes" %}</th>
+      {% if perms.keycloak.institution_update or perms.keycloak.institution_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  </thead>
+  <tbody>
+  {% for institution in institutions %}
+  <tr>
+      <td class="highlight">
+          <a href="/institution/{{ institution.id }}">{{ institution.name }}</a>
+      </td>
+      <td>{{ institution.notes|markdown|safe }}</td>
+      {% if perms.keycloak.institution_update or perms.keycloak.institution_delete %}
+      <td>
+        {% if perms.keycloak.institution_update %}
+          <a href="{% url "institution-edit" id=institution.id %}"  class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+          </a>
+        {% endif %}
+        {% if perms.keycloak.institution_delete %}
+            <button type="button" class="btn btn-default"
+              data-toggle="modal" data-target="#modalDelete"
+              data-name="{{institution.name}}"
+              data-url="{% url "institution-delete" id=institution.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+            </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% if perms.keycloak.institution_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+    <p>{% trans "Il n'y a pas d'institutions" %}</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

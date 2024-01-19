@@ -1,0 +1,48 @@
+{% extends "enum/domain_vocal.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {{ block.super }}
+    {% if domain_vocal %}
+     : {{ domain_vocal.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.domain_vocal_update %}
+  <a href="{% url "domain_vocal-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if domain_vocal %}
+
+  {% field_data_id form.name domain_vocal.name|safe %}
+  {% field_data_id form.notes domain_vocal.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Ce genre n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

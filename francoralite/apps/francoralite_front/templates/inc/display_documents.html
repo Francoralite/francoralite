@@ -1,0 +1,49 @@
+{% load i18n %}
+
+<div class="block-grey">
+  <h2>{% trans "Médias associés" %}</h2>
+
+  {% if documents %}
+
+  <table class="listing">
+    <tr>
+      <th class="highlight">
+        Nakala (<em>Document</em>)
+      </th>
+      <th class="highlight">
+        Nakala (<em>meta-données</em>)
+      </th>
+      <th>
+        Titre
+      </th>
+      <th>
+        Description
+      </th>
+      <th>
+        Date de création/modification
+      </th>
+    </tr>
+    {% for doc  in documents %}
+    <tr>
+      <td>
+        <a href="https://www.nakala.fr/nakala/data/{{doc.id_nakala}}" target="_blank">{{doc.id_nakala}}</a>
+      </td>
+      <td>
+        <a href="https://www.nakala.fr/page/data/{{doc.id_nakala}}" target="_blank">{{doc.id_nakala}}</a>
+      </td>
+      <td>
+        {{doc.title}}
+      </td>
+      <td>
+        {{doc.description}}
+      </td>
+      <td>
+        {{doc.date}}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% endif %}
+
+</div>

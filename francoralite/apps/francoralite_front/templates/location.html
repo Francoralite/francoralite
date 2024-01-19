@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load static %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <style>
+    francoralite-map {
+      height: 500px;
+      width: 100%;
+      display: inline-block;
+    }
+  </style>
+{% endblock %}
+
+{% block title_name %}
+{% trans "Lieux" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if perms.keycloak.location_gis_add %}
+    <a href="{% url "location_gis-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Ajouter" %}
+    </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  {% block request_location %}
+  <francoralite-map markers-url="/api/locationgis?ordering=code"></francoralite-map>
+  {% endblock request_location %}
+</div>
+{% endblock %}

@@ -1,4 +1,6 @@
-# Telemeta-mshs
+# Francoralite
+![example workflow](https://github.com/Francoralite/francoralite/actions/workflows/docker_publish_image.yml/badge.svg)
+[![codecov](https://codecov.io/gh/Francoralite/francoralite/branch/develop/graph/badge.svg?token=0FZPO67WYJ)](https://codecov.io/gh/Francoralite/francoralite)
 
 ## Installation
 
@@ -20,7 +22,7 @@ apt-get install python-tk python-gst-1.0 python-dev libmysqlclient-dev
 * Clone the repository
 
 ```
-git clone git@github.com:lluc/telemeta-integration.git
+git clone git@github.com:francoralite/francoralite.git
 ```
 
 * Manage sub modules
@@ -37,21 +39,34 @@ git submodule update --recursive --init
 docker-compose up
 ```
 
-### Run tests
+### Run tests (back and front)
 
-We need to install tests dependencies inside container before and remove south
+We need to install tests dependencies inside container before run tests
 
 ```
-docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip install --no-cache-dir .[tests] --process-dependency-links'
-docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps pip uninstall south'
+docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
+docker-compose exec app bash -c './scripts/deps_selenium.sh'
 ```
 
-Now, we can launch tests
+Now, we can launch all tests
 ```
-docker-compose exec app bash -c 'PYTHONPATH=telemeta_mshs/apps python manage.py test --settings=telemeta_mshs.settings.testing -v 3'
+docker-compose exec app bash -c 'py.test -Werror -x'
+```
+
+In case, we want to launch front tests only
+```
+docker-compose exec app bash -c 'py.test francoralite/apps/francoralite_front/tests/ -x'
+```
+
+### Generate graph models
+
+```
+docker-compose exec app bash -c './scripts/generate_graph_models.sh'
 ```
 
 ## URLs
+
+> Replace **50000** with your Traefik listening port
 
 With Traefik as reverse proxy, you can use explicit fqdn instead IP addresses.
 
@@ -59,3 +74,12 @@ With Traefik as reverse proxy, you can use explicit fqdn instead IP addresses.
 * [Keycloak](http://keycloak.francoralite.localhost:50000)
 
 During development, all services are accessible behind the reverse proxy but this must be change for the production deployment.
+
+### Documentation
+
+> You **MUST** update the permission linked to these URLs
+
+* [Redoc UI](http://nginx.francoralite.localhost:50000/redoc/)
+* [Swagger UI](http://nginx.francoralite.localhost:50000/swagger/)
+* [JSON Swagger export](http://nginx.francoralite.localhost:50000/swagger.json)
+* [YAML Swagger export](http://nginx.francoralite.localhost:50000/swagger.yaml)

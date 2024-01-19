@@ -1,0 +1,690 @@
+<script type="application/javascript">
+
+function searchRelated(loading, search, vm, url, options, entity){
+  axios.get(url).then(
+  res => {
+    for(i = 0; i < res.data.length; i++) {
+      res.data[i].url= "/"+entity+"/"+res.data[i].id;
+    };
+    vm[options] = res.data;
+  }
+  );
+  loading(false);
+}
+
+function getRelated (component, url, field, rel_entity, entity){
+   // Get the data from a related table to display it in a field
+   axios.get(url).then(
+   res => {
+     for(i = 0; i < res.data.length; i++) {
+       res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+     }
+     var listRelated = [];
+     for( var item in res.data) {
+       // Fill the list of related
+       listRelated.push(res.data[item][rel_entity]);
+     }
+     // Use the list of related to feeds the select
+     component[field] = listRelated;
+   });
+}
+
+function replacer(key,value,field){
+   if(value.length > 0){
+     items=[];
+     for(i = 0; i< value.length; i++){
+       var dict = {};
+       dict[field] = value[i].id;
+       items.push(dict);
+     };
+     return items;
+   };
+   return value;
+}
+
+
+Vue.component('v-select', VueSelect.VueSelect)
+
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#app2",
+  data: {
+      collectors: [],
+      optionsCollectors: [],
+      informers: [],
+      optionsInformers: [],
+      languages: [],
+      optionsLanguages: [],
+      authors: [],
+  },
+  watch: {
+ },
+  computed: {
+  },
+  methods: {
+    onSearchCollectors(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsCollectors',
+        'authority'
+       );
+    },
+    onSearchInformers(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsInformers',
+        'authority'
+       );
+    },
+    onSearchLanguages(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/language?ordering=name&search=${escape(search)}`,
+        'optionsLanguages',
+        'language'
+       );
+    },
+    getCollectors: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/collector`,
+         'collectors',
+         'collector',
+         'authority'
+       );
+    },
+    getInitialCollectors: function(){
+       getRelated(
+         this,
+         '/api/collection/'+$('#id-collection').data().name+'/collectors',
+         'collectors',
+         'collector',
+         'authority'
+       );
+    },
+    getInformers: function(){
+      getRelated(
+        this,
+        `/api/item/${escape({{id}})}/informer`,
+        'informers',
+        'informer',
+        'authority'
+      );
+    },
+    getInitialInformers: function(){
+       getRelated(
+         this,
+         '/api/collection/'+$('#id-collection').data().name+'/informer',
+         'informers',
+         'informer',
+         'authority'
+       );
+    },
+    getLanguages: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/language`,
+         'languages',
+         'language',
+         'language'
+       );
+    },
+    replacerCollector: function(key,value){
+       return replacer(key,value,"collector");
+    },
+    replacerInformer: function(key,value){
+      return replacer(key,value,"informer");
+    },
+    replacerLanguage: function(key,value){
+       return replacer(key,value,"language");
+    },
+  },
+  mounted: function () {
+    {% if id %}
+    this.getCollectors();
+    this.getInformers();
+    this.getLanguages();
+    {% else %}
+    this.getInitialCollectors();
+    this.getInitialInformers();
+    {% endif %}
+  }
+});
+
+// Appmedia -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#appmedia",
+  data: {
+    documents: [],
+  },
+  watch: {
+    documents () {
+      this.blockRemoval = this.documents.length <= 1
+    },
+  },
+  computed: {
+  },
+  methods: {
+    // Documents related (media) -------------------------
+    addDoc(){
+      let checkEmptyLines = this.documents.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.documents.length > 0) return;
+      this.documents.push({
+       number: "1"
+     });
+    },
+    removeDoc (lineId) {
+       if (!this.blockRemoval) this.documents.splice(lineId, 1)
+    },
+    getDocuments: function(){
+      axios.get(`/api/item/${escape({{id}})}/document`).then(
+        response => {
+          this.documents = response.data;
+        }
+      );
+    },
+    replacerMedia: function(key,value){
+      return value;
+    },
+  },
+  mounted: function () {
+      {% if id %}
+      this.getDocuments();
+      {% endif %}
+  }
+});
+
+// App3 -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#app3",
+  data: {
+    usefulnesses: [],
+    optionsUsefullness: [],
+    dances: [],
+    optionsDances: [],
+    authors: [],
+    optionsAuthors: [],
+    usefulnesses: [],
+    optionsCompositors: [],
+    compositors: [],
+    optionsDomainsongs: [],
+    domainsongs: [],
+    optionsDomainvocals: [],
+    domainvocals: [],
+    optionsDomainmusics: [],
+    domainmusics: [],
+    optionsDomaintales: [],
+    domaintales: [],
+  },
+  computed: {
+  },
+  methods: {
+    onSearchUsefulness(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/usefulness?search=${escape(search)}`,
+        'optionsUsefullness',
+        'usefulness'
+       );
+    },
+    onSearchDance(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/dance?search=${escape(search)}`,
+        'optionsDances',
+        'dance'
+       );
+    },
+    onSearchAuthors(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/authority?is_author=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsAuthors',
+        'authority'
+       );
+    },
+    onSearchCompositors(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/authority?is_composer=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsCompositors',
+        'authority'
+       );
+    },
+    onSearchDomainsongs(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/domain_song?search=${escape(search)}`,
+        'optionsDomainsongs',
+        'domain_song'
+       );
+    },
+    onSearchDomainvocals(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/domain_vocal?search=${escape(search)}`,
+        'optionsDomainvocals',
+        'domain_vocal'
+       );
+    },
+    onSearchDomainmusics(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/domain_music?search=${escape(search)}`,
+        'optionsDomainmusics',
+        'domain_music'
+       );
+    },
+    onSearchDomaintales(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/domain_tale?search=${escape(search)}`,
+        'optionsDomaintales',
+        'domain_tale'
+       );
+    },
+    getUsefulness: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/usefulness`,
+         'usefulnesses',
+         'usefulness',
+         'usefulness'
+       );
+    },
+    getDance: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/dance`,
+         'dances',
+         'dance',
+         'dance'
+       );
+    },
+    getAuthors: function(){
+        getRelated(
+          this,
+         `/api/item/${escape({{id}})}/author`,
+         'authors',
+         'author',
+         'authority'
+       );
+    },
+    getCompositors: function(){
+        getRelated(
+          this,
+         `/api/item/${escape({{id}})}/compositor`,
+         'compositors',
+         'compositor',
+         'authority'
+       );
+    },
+    getDomainsongs: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_song`,
+         'domainsongs',
+         'domainsong',
+         'domain_song'
+       );        <!-- Musical organization -->
+    },
+    getDomainvocals: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_vocal`,
+         'domainvocals',
+         'domainvocal',
+         'domain_vocal'
+       );
+    },
+    getDomainmusics: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_music`,
+         'domainmusics',
+         'domainmusic',
+         'domain_music'
+       );
+    },
+    getDomaintales: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/domain_tale`,
+         'domaintales',
+         'domaintale',
+         'domain_tale'
+       );
+    },
+    replacerUsefulness: function(key,value){
+       return replacer(key,value,"usefulness");
+    },
+    replacerDance: function(key,value){
+       return replacer(key,value,"dance");
+    },
+    replacerAuthor: function(key,value){
+       return replacer(key,value,"author");
+    },
+    replacerCompositor: function(key,value){
+       return replacer(key,value,"compositor");
+    },
+    replacerDomainsong: function(key,value){
+       return replacer(key,value,"domain_song");
+    },
+    replacerDomainvocal: function(key,value){
+       return replacer(key,value,"domain_vocal");
+    },
+    replacerDomainmusic: function(key,value){
+       return replacer(key,value,"domain_music");
+    },
+    replacerDomaintale: function(key,value){
+       return replacer(key,value,"domain_tale");
+    },
+
+  },
+  mounted: function () {
+      {% if id %}
+      this.getUsefulness();
+      this.getDance();
+      this.getAuthors();
+      this.getCompositors();
+      this.getDomainsongs();
+      this.getDomainvocals();
+      this.getDomainmusics();
+      this.getDomaintales();
+      {% endif %}
+  }
+});
+
+// App4 -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#app4",
+  data: {
+    thematics: [],
+    optionsThematics: [],
+  },
+  computed: {
+  },
+  methods: {
+    onSearchThematics(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/thematic?search=${escape(search)}`,
+        'optionsThematics',
+        'thematic'
+       );
+    },
+    getThematics: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/thematic`,
+         'thematics',
+         'thematic',
+         'thematic'
+       );
+    },
+    replacerThematic: function(key,value){
+       return replacer(key,value,"thematic");
+    },
+  },
+  mounted: function () {
+      {% if id %}
+      this.getThematics();
+      {% endif %}
+  }
+});
+
+// AppLaforte -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#appLaforte",
+  data: {
+    lafortes: [],
+    optionsLafortes: [],
+  },
+  computed: {
+  },
+  methods: {
+    onSearchLaforte(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/ref_laforte?search=${escape(search)}`,
+        'optionsLafortes',
+        'ref_laforte'
+       );
+    },
+    getLafortes: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/ref_laforte`,
+         'lafortes',
+         'ref_laforte',
+         'ref_laforte'
+       );
+    },
+    replacerLaforte: function(key,value){
+       return replacer(key,value,"ref_laforte");
+    }
+  },
+  mounted: function () {
+      {% if id %}
+      this.getLafortes();
+      {% endif %}
+  }
+});
+
+// AppKeywords -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#appKeywords",
+  data: {
+    keywords: [],
+    optionsKeywords: [],
+  },
+  computed: {
+  },
+  methods: {
+    onSearchKeywords(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/keyword?search=${escape(search)}`,
+        'optionsKeywords',
+        'keyword'
+       );
+    },
+    getKeywords: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/keyword`,
+         'keywords',
+         'keyword',
+         'keyword'
+       );
+    },
+    replacerKeyword: function(key,value){
+       return replacer(key,value,"keyword");
+    },
+  },
+  mounted: function () {
+      {% if id %}
+      this.getKeywords();
+      {% endif %}
+  }
+});
+
+// App5 -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#app5",
+  data: {
+    coiraults: [],
+    optionsCoirault: [],
+  },
+  computed: {
+  },
+  methods: {
+    onSearchCoirault(search, loading) {
+      loading(true);
+       searchRelated(
+       loading, search, this,
+        `/api/skos_concept?search=${escape(search)}`,
+        'optionsCoirault',
+        'coirault'
+       );
+    },
+    getCoiraults: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/coirault`,
+         'coiraults',
+         'coirault',
+         'coirault'
+       );
+    },
+    replacerCoirault: function(key,value){
+       return replacer(key,value,"coirault");
+    },
+  },
+  mounted: function () {
+    {% if id %}
+    this.getCoiraults();
+      {% endif %}
+  }
+});
+
+
+// AppVox -----------------------------
+new Vue({
+  delimiters: ['${', '}'],
+  el:"#appvox",
+  data: {
+    musical_organizations: [],
+    optionsMusicalOrganizations: [],
+    musical_groups: [],
+    optionsMusicalGroups: [],
+    optionsEmit: [],
+    performances: [],
+    optionsPerformances: [],
+  },
+  computed: {
+  },
+  methods: {
+    onSearchMusicalOrganizations(search, loading) {
+        loading(true);
+        searchRelated(
+          loading, search, this,
+           `/api/musical_organization?ordering=name&search=${escape(search)}`,
+           'optionsMusicalOrganizations',
+           'musical_organization'
+        );
+    },
+    onSearchMusicalGroups(search, loading) {
+        loading(true);
+        searchRelated(
+          loading, search, this,
+           `/api/musical_group?ordering=name&search=${escape(search)}`,
+           'optionsMusicalGroups',
+           'musical_group'
+        );
+    },
+    getMusicalOrganizations: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/musical_organization`,
+         'musical_organizations',
+         'musical_organization',
+         'musical_organization'
+       );
+    },
+    getMusicalGroups: function(){
+       getRelated(
+         this,
+         `/api/item/${escape({{id}})}/musical_group`,
+         'musical_groups',
+         'musical_group',
+         'musical_group'
+       );
+    },
+    getPerformances: function(){
+      axios.get('/api/item/{{id}}/performance').then(
+      res => {
+        var listRelated = [];
+        for( var item in res.data) {
+          // Fill the list of related
+          listRelated.push(res.data[item].performance);
+        }
+        // Use the list of related to feeds the select
+        this.performances = listRelated;
+      });
+    },
+    getOptionsPerformances: function(){
+      axios.get('/api/collection/' + $('#id_collection').val() + '/complete').then(
+      res => {
+        this.optionsPerformances = res.data.performances;
+      });
+    },
+    getInitialPerformances: function(){
+      axios.get('/api/collection/' + $('#id_collection').val() + '/complete').then(
+      res => {
+        this.performances = res.data.performances;
+      });
+    },
+    replacerMusicalOrganization: function(key,value){
+       return replacer(key,value,"musical_organization");
+    },
+    replacerMusicalGroup: function(key,value){
+       return replacer(key,value,"musical_group");
+    },
+    replacerPerformance: function(key,value){
+      if(key=="instrument"){
+        return value.id;
+      };
+
+      if(key=="informers"){
+        if(value.length > 0){
+          musicians=[];
+          for(i = 0; i< value.length; i++){
+            musicians.push({
+              musician: value[i].id
+            });
+          };
+          return musicians;
+        };
+        return undefined;
+      };
+
+      return value;
+    },
+
+  },
+  mounted: function () {
+    this.getOptionsPerformances();
+    {% if id %}
+    this.getMusicalOrganizations();
+    this.getMusicalGroups();
+    this.getPerformances();
+    {% else %}
+    this.getInitialPerformances();
+    {% endif %}
+  }
+});
+
+</script>

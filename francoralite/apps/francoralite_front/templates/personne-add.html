@@ -1,0 +1,166 @@
+{% extends "personne.html" %}
+{% load i18n %}
+{% load data_display %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+{% endblock %}
+
+{% block title_name %}
+   {{ block.super}} -
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block content %}
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{{ form.media }}
+<div class="container">
+  {% if id %}
+  <form action="{%url "personne-edit" id %}" method="POST">
+  {% else %}
+  <form action="{%url "personne-add" %}" method="POST">
+  {% endif %}
+    {% csrf_token %}
+    <div class="container_line">
+      {% field_editor form.last_name %}
+      {% field_editor form.first_name %}
+    </div>
+    <div class="container_line">
+        {% field_editor form.civility %}
+        {% field_editor form.alias %}
+    </div>
+    <div class="form-group">
+          <label class="control-label">{% trans "Rôles" %}</label>
+          <div class="container_line space-around">
+          {% field_editor form.is_collector %}
+          {% field_editor form.is_informer %}
+          {% field_editor form.is_author %}
+          {% field_editor form.is_composer %}
+          {% field_editor form.is_editor %}
+        </div>
+
+    </div>
+    <div class="block-grey">
+      <h2>{% trans "Naissance" %}</h2>
+      {% field_editor form.birth_date %}
+      {% field_editor form.birth_location_name %}
+      {% field_editor form.birth_location %}
+    </div>
+    <div class="block-grey">
+      <h2>{% trans "Décès" %}</h2>
+      {% field_editor form.death_date %}
+      {% field_editor form.death_location_name %}
+      {% field_editor form.death_location %}
+    </div>
+
+    {% markdown_editor component=form.biography  %}
+    {% field_editor form.uri %}
+
+    {% buttons_form %}
+  </form>
+</div>
+
+{% if id %}
+<script>
+  // Fill the locations fields with related values
+  $('#id_birth_location').val({{personne.birth_location.id}});
+  $('#id_birth_location_name').val("{{personne.birth_location.name}}");
+  $('#id_death_location').val({{personne.death_location.id}});
+  $('#id_death_location_name').val("{{personne.death_location.name}}");
+</script>
+{% else %}
+<script>
+  $('#id_birth_location').val();
+  $('#id_death_location').val();
+</script>
+{% endif %}
+
+<script>
+
+// Searching a location, using Bloodhound
+//  and queyring the API
+var locations = new Bloodhound({
+  datumTokenizer: function(datum) {
+    return Bloodhound.tokenizers.whitespace(datum.value);
+  },
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    url: '/api/locationgis?search=%QUERY',
+    wildcard: '%QUERY',
+    transform: function(response) {
+      // Map the remote source JSON array to a JavaScript object array
+      return $.map(response, function(location) {
+        return {
+          name: location.name,
+          code: location.code,
+          id: location.id
+        };
+      });
+    }
+  }
+});
+
+// An autocompletion to choose a location
+$('.typeahead').typeahead({
+  minLength: 2,
+  highlight: true,
+},{
+  display: 'name',
+  source: locations,
+  templates: {
+    empty: [
+      '<div class="empty-message">',
+        "Il n\'y a pas de lieux qui corresponde à cette recherche.",
+      '</div>'
+    ].join('\n'),
+    suggestion: function(data) {
+      return '<div><strong>' + data.code + '</strong> : '+ data.name + '</div>';
+    }
+}
+});
+
+// Catch the ID of a selectd location
+$('#id_birth_location_name').on('typeahead:selected', function (event, result){
+  $('#id_birth_location').val(result.id);
+});
+$('#id_death_location_name').on('typeahead:selected', function (event, result){
+  $('#id_death_location').val(result.id);
+});
+$('#id_birth_location_name').change(function() {
+    if ($('#id_birth_location_name').val() == '') {
+        $('#id_birth_location').val(null);
+    }
+});
+$('#id_death_location_name').change(function() {
+    if ($('#id_death_location_name').val() == '') {
+        $('#id_death_location').val(null);
+    }
+});
+</script>
+
+
+{{ form.media.js }}
+{% else %}
+  {% display_error error %}
+{% endif %}
+{% endblock %}

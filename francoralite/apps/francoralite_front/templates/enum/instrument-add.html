@@ -1,0 +1,159 @@
+{% extends "enum/instrument.html" %}
+{% load i18n %}
+{% load data_display %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-select@2.5.1/dist/vue-select.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title_name %}
+   {{ block.super}} -
+   {% if id %}
+    {% trans "Modification" %}
+   {% else %}
+    {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{{ form.media }}
+<div class="container">
+    <div id="app">
+      {% if id %}
+      <form action="/instrument/edit/{{id}}" method="POST">
+      {% else %}
+      <form action="/instrument/add" method="POST">
+      {% endif %}
+        {% csrf_token %}
+        {% field_editor form.name %}
+        {% field_editor form.notes %}
+        <div class="container_data">
+          <label class="control_label">
+            {% trans "Classification Hornbostel-Sachs" %}
+          </label>
+          <v-select
+            v-model="typologies"
+            label="number"
+            :filterable="false"
+            @search="onSearchTypology"
+            :options="optionsTypology">
+            <template slot="option" slot-scope="option">
+              ${ option.number }  : ${ option.name }
+            </template>
+            <template slot="selected-option" slot-label="typologyNumber" scope="option">
+              ${ option.number } : ${ option.name }
+            </template>
+            <span slot="no-options">
+              {% trans "Veuillez saisir un code numérique Hornbostel-Sachs." %}
+            </span>
+          </v-select>
+        </div>
+        <input name="typology" type="hidden"
+          :value="JSON.stringify(typologies,replacerTypology)" />
+        {% buttons_form %}
+      </form>
+    </div>
+  </div>
+
+
+<script type="application/javascript">
+    Vue.component('v-select', VueSelect.VueSelect)
+
+    new Vue({
+      delimiters: ['${', '}'],
+      el: '#app',
+      data: {
+        typologies: [{
+            id: '{{form.typology.value.id}}',
+            number:'{{form.typology.value.number}}',
+            name:'{{form.typology.value.name}}',
+            url:'/hornbostelsachs/{{form.typology.value.id}}'
+          }],
+        optionsTypology: [],
+      },
+      watch: {},
+      computed: {},
+      methods:{
+        searchRelated:
+          _.debounce((loading, search, vm, url, options, entity)=>
+          {
+            axios.get(url).then(
+            res => {
+              for(i = 0; i < res.data.length; i++) {
+                res.data[i].url= "/"+entity+"/"+res.data[i].id;
+              };
+              vm[options] = res.data;
+            }
+            );
+            loading(false);
+          }),
+        onSearchTypology(search, loading) {
+            loading(true);
+            this.searchRelated(
+              loading, search, this,
+               `/api/hornbostelsachs?ordering=number&search=${escape(search)}`,
+               'optionsTypology',
+               'hornbostelsachs'
+            );
+        },
+        getRelated: function(url, field, rel_entity, entity){
+           // Get the data from a related table to display it in a field
+           axios.get(url).then(
+           res => {
+             for(i = 0; i < res.data.length; i++) {
+               res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+             }
+             var listRelated = [];
+             for( var item in res.data) {
+               // Fill the list of related
+               listRelated.push(res.data[item][rel_entity]);
+             }
+             // Use the list of related to feeds the select
+             this[field] = listRelated;
+             console.log(field);
+             console.log(listRelated);
+           });
+        },
+
+        replacer: function(key,value,field){
+           if(value){
+             return value.id;
+           };
+
+        },
+        replacerTypology: function(key,value){
+           return this.replacer(key,value,"hornbostelsachs");
+        },
+      },
+      mounted: function () {
+      },
+
+    });
+
+</script>
+
+{{ form.media.js }}
+{% else %}
+  {% display_error error %}
+{% endif %}
+{% endblock %}

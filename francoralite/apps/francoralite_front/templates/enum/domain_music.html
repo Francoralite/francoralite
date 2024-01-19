@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Genre de musique" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if perms.keycloak.domain_music_add %}
+  <a href="{% url "domain_music-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer un genre de musique" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some domain music (number of elements > 0 ) -->
+{% if domain_musics|length > 0 %}
+  <!-- Table to display the domain_musics -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if perms.keycloak.domain_music_update or perms.keycloak.domain_music_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for domain_music in domain_musics %}
+  <tr>
+      <td class="highlight">
+          <a href="/domain_music/{{domain_music.id }}">
+            {{ domain_music.name|upper }}</a>
+      </td>
+      <td>
+        {% if domain_music.notes %}
+          {{ domain_music.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if perms.keycloak.domain_music_update or perms.keycloak.domain_music_delete %}
+      <td>
+        {% if perms.keycloak.domain_music_update %}
+        <a href="{% url "domain_music-edit" id=domain_music.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.domain_music_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{domain_music.title}}"
+            data-url="{% url "domain_music-delete" id=domain_music.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.domain_music_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de genre de musique" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

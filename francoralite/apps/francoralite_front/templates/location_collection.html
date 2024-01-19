@@ -1,0 +1,11 @@
+{% extends "location.html" %}
+{% load i18n %}
+
+
+{% block title_name %}
+{% trans "Lieux, par enquêtes" %}
+{% endblock %}
+
+{% block request_location %}
+<francoralite-map markers-url="/api/locationgiscollection/"></francoralite-map>
+{% endblock request_location %}

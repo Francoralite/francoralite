@@ -1,0 +1,51 @@
+{% extends "enum/block.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {{ block.super }}
+    {% if custom_block %}
+     : {{ custom_block.title }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.block_update %}
+  <a href="{% url "block-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if custom_block %}
+
+  {% field_data_id form.title custom_block.title %}
+  {% field_data_id form.type custom_block.type_label %}
+  {% field_data_id form.content custom_block.content|default:''|markdown %}
+  {% field_data_id form.order custom_block.order %}
+  {% field_data_id form.show custom_block.show|yesno:"oui,non" %}
+
+{% else %}
+  <p>{% trans "Ce bloc n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

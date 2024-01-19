@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load static %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<link rel="import" href="">
+
+<div class="home-content">
+<div id="module-set">
+
+{% block modules %}
+
+
+<!--
+{% with "Last changes" as title %}
+{% endwith %}
+-->
+
+{% endblock %}
+</div>
+
+<div class="home-description">
+
+  <h1 class="title">Francoralité : Plateforme numérique de gestion collaborative d’ensemble multi-média</h1>
+
+  <div class="home-block">
+    {% for custom_block in blocks %}
+    {% if custom_block.type == 'M' %}
+    <div id="block-geonav" class="home-block-detail">
+      <h2>{{ custom_block.title }}</h2>
+      <div class="home-block-content">
+        <francoralite-map markers-url="/api/locationgiscollection/"></francoralite-map>
+      </div>
+    </div>
+    {% elif custom_block.type == 'P' %}
+    <div id="block-partners" class="home-block-detail">
+      <h2>{{ custom_block.title }}</h2>
+      <div class="home-block-content">
+        <div id="module1" class="module">
+          <h3>{% trans "Partenaires scientifiques" %}</h3>
+          <ul>
+            <li><a href="https://www.umoncton.ca/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_moncton.jpg" alt="Université de Moncton"></a></li>
+            <li><a href="https://ustboniface.ca/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_saint_boniface.jpg" alt="Université de Saint-Boniface"></a></li>
+            <li><a href="https://laurentienne.ca/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_laurentienne.jpg" alt="Université Laurentienne"></a></li>
+            <li><a href="https://www.usainteanne.ca" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_sainte_anne.png" alt="Université de Sainte-Anne"></a></li>
+            <li><a href="https://louisiana.edu/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_louisiana_lafayette.jpg" alt="Université de Lafayette"></a></li>
+          </ul>
+        </div>
+        <div id="module2" class="module">
+            <h3>{% trans "Partenaires techniques" %}</h3>
+              <ul>
+                <li><a href="http://mshs.univ-poitiers.fr/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_mshs.jpg" alt="MSHS"></a></li>
+                <li><a href="http://www.univ-poitiers.fr/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_universite_poitiers.jpg" alt="Université de Poitiers"></a></li>
+                <li><a href="https://artefacts.coop/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_artefacts.jpg" alt="Coopérative Artéfacts"></a></li>
+              </ul>
+        </div>
+        <div id="module3" class="module">
+            <h3>{% trans "Partenaires financiers" %}</h3>
+            <ul>
+              <li><a href="" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_insect.png" alt="CPER INSECT"></a></li>
+              <li><a href="" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_numeric.png" alt="CPER Numeric"></a></li>
+              <li><a href="" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_feder.jpg" alt="Europe"></a></li>
+              <li><a href="" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_grand_poitiers.jpg" alt="Grand Poitiers"></a></li>
+              <li><a href="" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_nouvelle_aquitaine.png" alt="Région Nouvelle-Aquitaine"></a></li>
+              <li><a href="https://www.collexpersee.eu/" target="_blank"><img class="logo" src="{{ STATIC_URL }}francoralite_front/images/logo_collex.png" alt="CollEx-Persée"></a></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="home-block-detail">
+      <h2>{{ custom_block.title }}</h2>
+      <div class="home-block-content">
+      {{ custom_block.content|default:""|markdown|safe }}
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+{% endblock %}

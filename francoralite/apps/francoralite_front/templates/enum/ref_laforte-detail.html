@@ -1,0 +1,50 @@
+{% extends "enum/ref_laforte.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+{{ block.super }}
+{% endblock %}
+
+
+
+{% block title_name %}
+{{ block.super }}
+{% if ref_laforte %}
+: {{ ref_laforte.number }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if perms.keycloak.ref_laforte_update %}
+<a href="{% url "ref_laforte-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+</a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if ref_laforte %}
+
+{% field_data_id form.number ref_laforte.number|safe %}
+{% field_data_id form.name ref_laforte.name|safe %}
+
+{% else %}
+<p>{% trans "Cette référence Laforte n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

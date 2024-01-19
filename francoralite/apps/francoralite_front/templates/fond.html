@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Fonds" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+{% if fonds|length > 0 %}
+  <!-- Table to display the institutions -->
+  <table class="listing">
+  <thead>
+  <tr>
+      {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") highlight=True %}
+      {% include "inc/sortable-table-column-header.html" with field="title" label=_("Nom") %}
+      {% include "inc/sortable-table-column-header.html" with field="description" label=_("Description") %}
+      {% include "inc/sortable-table-column-header.html" with field="missions_count" label=_("Missions") %}
+      {% include "inc/sortable-table-column-header.html" with field="collections_count" label=_("Enquêtes") %}
+      {% include "inc/sortable-table-column-header.html" with field="items_count" label=_("Items") %}
+      <th>{% trans "Domaines" %}</th>
+      {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  </thead>
+  <tbody>
+  {% for fond in fonds %}
+  <tr class="alterne">
+      <td class="highlight">
+          <a href="/fond/{{ fond.id }}">
+            {{ fond.code|upper }}</a>
+      </td>
+      <td>{{ fond.title|safe }}</td>
+      <td>{{ fond.description|truncatechars:50|markdown|safe }}</td>
+      <td><a href="/fond/{{ fond.id }}#missions">{{ fond.missions_count }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ fond.code }}">{{ fond.collections_count }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ fond.code }}">{{ fond.items_count }}</a></td>
+      <td>{% include 'inc/proportional_colored_bar.html' with items=fond.domains %}</td>
+      {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
+      <td>
+        {% if perms.keycloak.fond_update %}
+        <a href="{% url "fond-edit" id=fond.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.fond_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{fond.title}}"
+            data-url="{% url "fond-delete" id=fond.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
+
+{% if perms.keycloak.fond_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+    <p>{% trans "Il n'y a pas de fonds" %}</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

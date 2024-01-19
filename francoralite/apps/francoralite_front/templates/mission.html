@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title_name %}
+{% trans "Missions" %}
+{% endblock %}
+
+{% block content %}
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+
+<div class="fullpage">
+{% if missions|length > 0 %}
+  <!-- Table to display the missions -->
+  <table class="listing">
+  <thead>
+  <tr>
+      {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") highlight=True %}
+      {% include "inc/sortable-table-column-header.html" with field="title" label=_("Nom") %}
+      {% include "inc/sortable-table-column-header.html" with field="description" label=_("Description") %}
+      {% include "inc/sortable-table-column-header.html" with field="collections_count" label=_("Enquêtes") %}
+      {% include "inc/sortable-table-column-header.html" with field="items_count" label=_("Items") %}
+      <th>{% trans "Domaines" %}</th>
+      {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  </thead>
+  <tbody>
+  {% for mission in missions %}
+  <tr>
+      <td class="highlight">
+          <a href="/mission/{{mission.id}}">
+            {{ mission.code|upper }}</a>
+      </td>
+      <td>{{ mission.title|safe }}</td>
+      <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
+      <td><a href="/mission/{{ mission.id }}#collections">{{ mission.collections_count }}</a></td>
+      <td><a href="/search_advanced/?code_internal={{ mission.code }}">{{ mission.items_count }}</a></td>
+      <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
+      {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
+      <td>
+        {% if perms.keycloak.mission_update %}
+        <a href="{% url "mission-edit" id=mission.id %}"  class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.mission_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{mission.title}}"
+            data-url="{% url "mission-delete" id=mission.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
+
+{% if perms.keycloak.mission_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+    <p>{% trans "Il n'y a pas de missions" %}</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+---
+
+version: '2.1'
+
+services:
+  adminer:
+    image: "${ADMINER_IMAGE}:${ADMINER_VERSION}"
+    logging: &logging
+      driver: 'json-file'
+      options:
+        max-size: "${LOGGING_MAX_SIZE}"
+        max-file: "${LOGGING_MAX_FILE}"
+    restart: 'unless-stopped'
+    networks:
+      - 'services'
+      - 'francoralite'
+    labels:
+      - 'traefik.frontend.rule=Host:adminer.${SERVER_IP}.nip.io'
+      - 'traefik.docker.network=services'
+
+  app:
+    image: "${FRANCORALITE_IMAGE}:${FRANCORALITE_VERSION}"
+    environment:
+      COVERALLS_REPO_TOKEN: "${COVERALLS_REPO_TOKEN}"
+    labels:
+      - 'traefik.frontend.rule=Host:app.${SERVER_IP}.nip.io'
+      - 'traefik.docker.network=services'
+
+  db:
+    labels:
+      - 'traefik.frontend.rule=Host:db.${SERVER_IP}.nip.io'
+
+  nginx:
+    labels:
+      - 'traefik.frontend.rule=Host:nginx.${SERVER_IP}.nip.io'
+      - 'traefik.docker.network=services'
+
+  keycloak:
+    labels:
+      - 'traefik.frontend.rule=Host:keycloak.${SERVER_IP}.nip.io'
+      - 'traefik.docker.network=services'
+
+  keycloak_db:
+    labels:
+      - 'traefik.frontend.rule=Host:keycloak-db.${SERVER_IP}.nip.io'
+
+  reverse_proxy:
+    image: 'traefik:1.7.11'
+    command: '--api --docker --docker.domain=${SERVER_IP}.nip.io'
+    networks:
+      - 'keycloak'
+      - 'services'
+    ports:
+      - '8080:80'
+      - '58080:8080'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'

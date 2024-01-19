@@ -1,0 +1,107 @@
+{% extends "institution.html" %}
+{% load i18n %}
+{% load static %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title_name %}
+  {% trans "Institution" %}
+  {% if institution %}
+   : {{ institution.name }}
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.fond_add %}
+    <a href="{% url "fond-add" id_institution=institution.id %}" class="btn_add btn btn-default"><span class="glyphicon glyphicon-plus"></span>{% trans "Créer un fonds" %}</a>
+  {% endif %}
+  {% if perms.keycloak.institution_update %}
+    <a href="{% url "institution-edit" id=id %}" class="btn_add btn btn-default">
+        <span class="glyphicon glyphicon-edit"></span>{% trans "Modifier" %}
+    </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  {% if institution %}
+  <p id="id_notes">{{institution.notes|markdown|safe}}</p>
+
+    {% if fonds|length > 0 %}
+    <div class="with-rightcol">
+      <table class="listing">
+      <thead>
+          <th class="sortable highlight">{% trans "Cote" %}</th>
+          <th class="sortable">{% trans "Nom" %}</th>
+          <th class="sortable">{% trans "Description" %}</th>
+          {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
+          <th>{% trans "Modifier" %}</th>
+          {% endif %}
+      </thead>
+      {% for fond in fonds %}
+        <tr>
+            <td class="highlight">
+                <a href="/fond/{{ fond.id }}">
+                  {{ fond.code|upper|safe }}</a>
+            </td>
+            <td>{{ fond.title|safe }}</td>
+            <td>
+              {% if fond.description %}
+              {{ fond.description|markdown|safe }}
+              {% endif %}
+            </td>
+            {% if perms.keycloak.fond_update or perms.keycloak.fond_delete %}
+            <td>
+              {% if perms.keycloak.fond_update %}
+                <a href="{% url "fond-edit" id=fond.id %}">
+                      <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+                      </button>
+                </a>
+              {% endif %}
+              {% if perms.keycloak.fond_delete %}
+                <button type="button" class="btn btn-default"
+                    data-toggle="modal" data-target="#modalDelete"
+                    data-name="{{fond.title}}"
+                    data-url="{% url "fond-delete" id=fond.id %}">
+                      <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+                </button>
+              {% endif %}
+            </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
+      </div>
+
+{% if perms.keycloak.fond_delete %}
+    {% modal_delete %}
+{% endif %}
+    {% else %}
+      {% trans "Il n'a pas de fonds pour cette institution." %}
+    {% endif %}
+  {% else %}
+    <p>{% trans "Cette institution n'existe pas." %}</p>
+  {% endif %}
+{% else %}
+    {% display_error error %}
+{% endif %}
+{% endblock %}

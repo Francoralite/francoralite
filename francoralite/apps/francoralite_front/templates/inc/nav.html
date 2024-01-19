@@ -1,0 +1,161 @@
+{% load i18n %}
+
+{# spaces between li and a elements breaks layout #}
+<nav role="navigation" aria-label="Menu principal" class="nav">
+  <ul class="menu">
+      <li class="has-children blue">
+        <a href="{% url "home" %}">{% trans "Accueil" %}</a>
+        {% if user.is_authenticated and perms.keycloak.block_view %}
+        {% if perms.keycloak.block_add or perms.keycloak.block_update or perms.keycloak.block_delete %}
+        <ul class="sous-menu">
+          <li><a href="{% url "block" %}">Édition des blocs</a></li>
+        </ul>
+        {% endif %}
+        {% endif %}
+      </li>
+
+      <li class="has-children green">
+        <a href="#archives" >Archives sonores</a>
+          <ul class="sous-menu">
+              <li><a href="{% url "institution" %}">Institutions</a></li>
+              <li><a href="{% url "fond" %}">Fonds</a></li>
+              <li><a href="{% url "mission" %}">Missions</a></li>
+              <li><a href="{% url "collection" %}">Enquêtes</a></li>
+              <li><a href="{% url "item" %}">Items</a></li>
+          </ul>
+      </li>
+
+      <li class="has-children yellow">
+        <a href="#enums">{% trans "Thésaurus" %}</a>
+          <ul class="sous-menu">
+            <li class="has-children">
+              <a href="{% url "personne" %}">{% trans "Personnes" %}</a>
+                <ul class="sous-menu">
+                  <li>
+                    <a href="{% url "personne-collector" %}">{% trans "Enquêteurs" %}</a>
+                  </li>
+                  <li>
+                    <a href="{% url "personne-informer" %}">{% trans "Informateurs" %}</a>
+                  </li>
+                  <li>
+                    <a href="{% url "personne-author" %}">{% trans "Auteurs" %}</a>
+                  </li>
+                  <li>
+                    <a href="{% url "personne-composer" %}">{% trans "Compositeurs" %}</a>
+                  </li>
+                  <li>
+                    <a href="{% url "personne-editor" %}">{% trans "Éditeurs" %}</a>
+                  </li>
+                </ul>
+            </li>
+            <li class="has-children">
+              <a href="{% url "location_gis" %}">{% trans "Lieux" %}</a>
+                <ul class="sous-menu">
+                  <li>
+                    <a href="{% url "location_gis-collection" %}">{% trans "Par enquêtes" %}</a>
+                  </li>
+                </ul>
+            </li>
+            <li>
+              <a href="{% url "cultural_area" %}">{% trans "Aires culturelles" %}</a>
+            </li>
+            <li>
+              <a href="{% url "language" %}">{% trans "Langue" %}</a>
+            </li>
+            <li>
+              <a href="{% url "keyword" %}">{% trans "Mot-clé" %}</a>
+            </li>
+            <li>
+              <a href="{% url "thematic" %}">{% trans "Thématique" %}</a>
+            </li>
+            <li class="has-children"><a href="#musique">Musique</a>
+              <ul class="sous-menu">
+                <li>
+                  <a href="{% url "domain_vocal" %}">{% trans "Genre d'autre expression vocale" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "domain_music" %}">{% trans "Genre de musique instrumentale" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "emit_vox" %}">{% trans "Nature des émissions vocales" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "instrument" %}">{% trans "Instruments-Voix" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "hornbostelsachs" %}">{% trans "Classification Hornbostel-Sachs" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "usefulness" %}">{% trans "Fonction" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "musical_organization" %}">{% trans "Organisation musicale" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "musical_group" %}">{% trans "Formation (musicale)" %}</a>
+                </li>
+            </ul>
+            </li>
+            <li class="has-children"><a href="#chanson">{% trans "Chanson" %}</a>
+              <ul class="sous-menu">
+                <li>
+                  <a href="{% url "domain_song" %}">{% trans "Genre de chanson" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "coupe" %}">{% trans "Coupe" %}</a>
+                </li>
+                <li>
+                  <a href="">{% trans "Catalogages Coirault" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "ref_laforte" %}">{% trans "Catalogue Laforte" %}</a>
+                </li>
+              </ul>
+            </li>
+            <li class="has-children"><a href="#conte">{% trans "Conte" %}</a>
+              <ul class="sous-menu">
+                <li>
+                  <a href="{% url "domain_tale" %}">{% trans "Genre de conte" %}</a>
+                </li>
+                <li>
+                  <a href="">{% trans "Catalogages Delarue-Tenèze" %}</a>
+                </li>
+                <li>
+                  <a href="">{% trans "Catalogages Aarne-Thompson" %}</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="{% url "dance" %}">{% trans "Danses" %}</a>
+            </li>
+            <li>
+              <a href="{% url "recording_context" %}">{% trans "Contexte d’enregistrement" %}</a>
+            </li>
+            <li>
+              <a href="{% url "mediatype" %}">{% trans "Type de média" %}</a>
+            </li>
+            <li class="has-children">
+              <a href="#editeur">{% trans "Édition" %}</a>
+              <ul class="sous-menu">
+                <li>
+                  <a href="{% url "legal_rights" %}">{% trans "Droits légaux" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "publisher" %}">{% trans "Éditeur" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "metadata_author" %}">{% trans "Meta donnée auteur" %}</a>
+                </li>
+              </ul>
+            </li>
+
+
+
+          </ul>
+      </li>
+
+      <li class="orange">
+        <a href="{% url "search-advanced" %}" >{% trans "Recherche avancée" %}</a>
+      </li>
+  </ul>
+</nav>

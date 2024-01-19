@@ -1,0 +1,204 @@
+{% extends "fond.html" %}
+{% load i18n %}
+{% load static %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+{{ block.super }}
+  {% if fond %}
+   : {{ fond.title }}
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.mission_add %}
+    <a href="{% url "mission-add" id_institution=fond.institution.id id_fond=id %}" class="btn_add btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        {% trans "Créer une mission" %}
+    </a>
+  {% endif %}
+  {% if perms.keycloak.fond_update %}
+    <a href="{% url "fond-edit" id=id %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+    </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  {% if fond %}
+  <ul class="nav nav-tabs" role="tablist">
+     <li class="active">
+       <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
+     </li>
+     <li>
+       <a href="#tab_mission" role="tab" data-toggle="tab">{% trans "Missions" %}</a>
+     </li>
+  </ul>
+
+  <div class="tab-content">
+
+    <section class="tab-pane fade in active" id="tab_general">
+      <div class="container_line">
+        <dl class="container_data">
+          <dt class="libelle"> {{form.institution.label|safe}}</dt>
+          <dd class="donnee">
+            <a href="{% url "institution-detail" id=fond.institution.id %}">
+              {{fond.institution.name|safe}}
+            </a>
+          </dd>
+        </dl>
+        {% field_data_id form.code_partner fond.code_partner|safe  empty=False %}
+        {% field_data_id form.code fond.code|upper|safe %}
+      </div>
+
+      <div class="container_line">
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+          <dd id="id_duration" class="donnee">{{duration}}</dd>
+        </dl>
+      </div>
+
+      <div class="container_line">
+        {% field_data_id form.description fond.description|markdown|safe %}
+      </div>
+
+      {% display_documents %}
+
+      <div class="block-grey">
+        <h2>{% trans "Période d'enregistrement" %}</h2>
+        <div class="container_line">
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Depuis' %}</dt>
+            <dd id="id_dates0" class="donnee">{{dates.0}}</dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
+            <dd id="id_dates1" class="donnee">{{dates.1}}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Personnes" %}</h2>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dd class="donnee">
+            {% for collector in collectors %}
+                <a href="{% url "personne-detail" id=collector.id %}"
+                  target="_blank">
+                  {{collector.first_name}} {{collector.last_name}}
+                </a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </dd>
+        </dl>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+          <dd class="donnee">
+              {% for informer in informers %}
+                <a href="{% url "personne-detail" id=informer.id %}"
+                  target="_blank">
+                  {{informer.first_name}} {{informer.last_name}}
+                </a>{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </ul>
+          </dd>
+        </dl>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Archivage" %}</h2>
+        {% field_data_id form.acquisition_mode fond.acquisition_mode.name|safe empty=False %}
+        {% field_data_id form.conservation_site fond.conservation_site|safe %}
+      </div>
+      {% field_data_id form.comment fond.comment|markdown|safe empty=False %}
+    </section>
+
+    <section class="tab-pane" id="tab_mission">
+      {% if missions|length > 0 %}
+        <!-- Table to display the missions -->
+        <table aria-describedby="missions" class="listing">
+        <thead>
+            <th class="sortable highlight" id="mission_code">{% trans "Cote" %}</th>
+            <th class="sortable" id="mission_name">{% trans "Nom" %}</th>
+            <th class="sortable" id="mission_desc">{% trans "Description" %}</th>
+            <th class="sortable number" id="mission_collections">{% trans "Enquêtes" %}</th>
+            <th class="sortable number" id="mission_items">{% trans "Items" %}</th>
+            <th id="mission_domains">{% trans "Domaines" %}</th>
+            {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
+            <th id="mission_action">{% trans "Modifier" %}</th>
+            {% endif %}
+        </thead>
+        {% for mission in missions %}
+        <tr>
+            <td class="highlight">
+                <a href="/mission/{{mission.id }}">
+                  {{ mission.code|upper }}</a>
+            </td>
+            <td>{{ mission.title|safe }}</td>
+            <td>{{ mission.description|truncatechars:50|markdown|safe }}</td>
+            <td><a href="/mission/{{ mission.id }}#collections">{{ mission.collections_count }}</a></td>
+            <td><a href="/search_advanced/?code_internal={{ mission.code }}">{{ mission.items_count }}</a></td>
+            <td>{% include 'inc/proportional_colored_bar.html' with items=mission.domains %}</td>
+            {% if perms.keycloak.mission_update or perms.keycloak.mission_delete %}
+            <td>
+              {% if perms.keycloak.mission_update %}
+              <a href="{% url "mission-edit" id=mission.id %}">
+                    <button type="button" class="btn btn-default">
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+                    </button>
+              </a>
+              {% endif %}
+              {% if perms.keycloak.mission_delete %}
+              <button type="button" class="btn btn-default"
+                  data-toggle="modal" data-target="#modalDelete"
+                  data-name="{{mission.title}}"
+                  data-url="{% url "mission-delete" id=mission.id %}">
+                    <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+              {% endif %}
+            </td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </table>
+        {% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
+        {% if perms.keycloak.mission_delete %}
+            {% modal_delete %}
+        {% endif %}
+      {% else %}
+        <div class="block-grey">
+        {% trans "Ce fonds ne possède pas de mission."%}
+        </div>
+      {% endif %}
+
+    </div>
+    <script type="text/javascript">if (document.location.hash === '#missions') { $('.nav-tabs li:nth-child(2) a').tab('show'); }</script>
+  </section>
+
+
+  {% else %}
+    <p>{% trans "Ce fond n'existe pas." %}</p>
+  {% endif %}
+{% else %}
+    {% display_error error %}
+{% endif %}
+{% endblock %}

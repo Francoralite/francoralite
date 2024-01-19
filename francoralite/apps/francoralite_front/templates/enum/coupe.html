@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Coupe" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if perms.keycloak.coupe_add %}
+  <a href="{% url "coupe-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une coupe" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some coupe (number of elements > 0 ) -->
+{% if coupes|length > 0 %}
+  <!-- Table to display the coupes -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if perms.keycloak.coupe_update or perms.keycloak.coupe_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for coupe in coupes %}
+  <tr>
+      <td class="highlight">
+          <a href="/coupe/{{coupe.id }}">
+            {{ coupe.name|upper }}</a>
+      </td>
+      <td>
+        {% if coupe.notes %}
+          {{ coupe.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if perms.keycloak.coupe_update or perms.keycloak.coupe_delete %}
+      <td>
+        {% if perms.keycloak.coupe_update %}
+        <a href="{% url "coupe-edit" id=coupe.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.coupe_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{coupe.title}}"
+            data-url="{% url "coupe-delete" id=coupe.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.coupe_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de coupe" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

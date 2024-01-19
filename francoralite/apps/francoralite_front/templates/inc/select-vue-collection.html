@@ -1,0 +1,363 @@
+<script type="application/javascript">
+
+function searchRelated(loading, search, vm, url, options, entity){
+  axios.get(url).then(
+  res => {
+    for(i = 0; i < res.data.length; i++) {
+      res.data[i].url= "/"+entity+"/"+res.data[i].id;
+    };
+    vm[options] = res.data;
+  }
+  );
+  loading(false);
+}
+
+Vue.component('v-select', VueSelect.VueSelect)
+let elements = document.getElementsByClassName('app2');
+for(let el of elements){
+new Vue({
+  delimiters: ['${', '}'],
+  el: el,
+  data: {
+      collectors: [],
+      optionsCollectors: [],
+      informers: [],
+      optionsInformers: [],
+      locations: [],
+      optionsLocations: [],
+      languages: [],
+      optionsLanguages:[],
+      publishers:[],
+      optionsPublishers:[],
+      lines: [],
+      optionsInstruments: [],
+      documents:[],
+  },
+  watch: {
+  },
+  computed: {
+  },
+  methods: {
+    searchRelated:
+    _.debounce((loading, search, vm, url, options, entity)=>
+    {
+      axios.get(url).then(
+      res => {
+        for(i = 0; i < res.data.length; i++) {
+          res.data[i].url= "/"+entity+"/"+res.data[i].id;
+        };
+        vm[options] = res.data;
+      }
+      );
+      loading(false);
+    }),
+    onSearchCollectors(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
+        'optionsCollectors',
+        'authority'
+       );
+     },
+    onSearchInformers(search, loading) {
+      loading(true);
+      searchRelated(
+      loading, search, this,
+       `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+       'optionsInformers',
+       'authority'
+      );
+    },
+    onSearchLocations(search, loading) {
+        loading(true);
+        this.searchRelated(
+          loading, search, this,
+           `/api/locationgis?ordering=code&search=${escape(search)}`,
+           'optionsLocations',
+           'location_gis'
+        );
+    },
+    onSearchLanguages(search, loading) {
+        loading(true);
+        this.searchRelated(
+          loading, search, this,
+           `/api/language?ordering=code&search=${escape(search)}`,
+           'optionsLanguages',
+           'language'
+        );
+    },
+    onSearchPublishers(search, loading) {
+        loading(true);
+        this.searchRelated(
+          loading, search, this,
+           `/api/publisher?ordering=code&search=${escape(search)}`,
+           'optionsPublishers',
+           'publisher'
+        );
+    },
+    getRelated: function(url, field, rel_entity, entity){
+      // Get the data from a related table to display it in a field
+      axios.get(url).then(
+      res => {
+        for(i = 0; i < res.data.length; i++) {
+          res.data[i][rel_entity].url= "/"+ entity+"/"+res.data[i][rel_entity].id;
+        }
+        var listRelated = [];
+        for( var item in res.data) {
+          // Fill the list of related
+          listRelated.push(res.data[item][rel_entity]);
+        }
+        // Use the list of related to feeds the select
+        this[field] = listRelated;
+      });
+    },
+    getCollectors: function(){
+      this.getRelated(
+        `/api/collection/${escape({{id}})}/collectors`,
+        'collectors',
+        'collector',
+        'authority'
+      );
+    },
+    getInformers: function(){
+      this.getRelated(
+        `/api/collection/${escape({{id}})}/informer`,
+        'informers',
+        'informer',
+        'authority'
+      );
+    },
+    getLocations: function(){
+      this.getRelated(
+        `/api/collection/${escape({{id}})}/location`,
+        'locations',
+        'location',
+        'location_gis'
+      );
+    },
+    getLanguages: function(){
+      this.getRelated(
+        `/api/collection/${escape({{id}})}/language`,
+        'languages',
+        'language',
+        'language'
+      );
+    },
+    getPublishers: function(){
+      this.getRelated(
+        `/api/collection/${escape({{id}})}/publisher`,
+        'publishers',
+        'publisher',
+        'publisher'
+      );
+    },
+    replacerPerformance: function(key,value){
+      if(key=="instrument"){
+        if( value != null){
+          return value.id;
+        }
+      };
+
+      if(key=="informers"){
+        if(value.length > 0){
+          musicians=[];
+          for(i = 0; i< value.length; i++){
+            musicians.push({
+              musician: value[i].id
+            });
+          };
+          return musicians;
+        };
+        return undefined;
+      };
+
+      return value;
+    },
+    replacer: function(key,value,field){
+      if(value.length > 0){
+        items=[];
+        for(i = 0; i< value.length; i++){
+          var dict = {};
+          dict[field] = value[i].id;
+          items.push(dict);
+        };
+        return items;
+      };
+      return value;
+    },
+    replacerCollector: function(key,value){
+      return this.replacer(key,value,"collector");
+    },
+    replacerInformer: function(key,value){
+      return this.replacer(key,value,"informer");
+    },
+    replacerPublisher: function(key,value){
+      return this.replacer(key,value,"publisher");
+    },
+    replacerLanguage: function(key,value){
+      return this.replacer(key,value,"language");
+    },
+    replacerLocation: function(key,value){
+      return this.replacer(key,value,"location");
+    },
+    addLine(){
+      let checkEmptyLines = this.lines.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
+      this.lines.push({
+       number: "1"
+     });
+    },
+
+    // Documents related (media) -------------------------
+    addDoc(){
+      let checkEmptyLines = this.documents.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.documents.length > 0) return;
+      this.documents.push({
+       number: "1"
+     });
+    },
+    removeDoc (lineId) {
+       this.documents.splice(lineId, 1)
+    },
+    getDocuments: function(){
+      axios.get(`/api/collection/${escape({{id}})}/document`).then(
+        response => {
+          if(response.data.length>0){
+            this.documents = response.data;
+          }
+        }
+      );
+    },
+    replacerMedia: function(key,value){
+      return value;
+    },
+
+   },
+   created: function () {
+     {% if id %}
+       this.getCollectors();
+       this.getInformers();
+       this.getLocations();
+       this.getLanguages();
+       this.getPublishers();
+       this.getDocuments();
+     {% endif %}
+   }
+});
+};
+
+
+new Vue({
+  delimiters: ['${', '}'],
+  el: "#appvox",
+  data: {
+    lines:[],
+    optionsInstruments: [],
+    optionsEmit:[],
+    optionsMusicians: [],
+  },
+  watch: {
+    lines () {
+     this.blockRemoval = this.lines.length <= 1;
+    }
+  },
+  computed: {},
+  created: function () {
+    this.getEmits();
+    {% if id %}
+      this.getLines();
+    {% else %}
+     this.addLine();
+    {% endif %}
+  },
+  methods: {
+    addLine(){
+      let checkEmptyLines = this.lines.filter(line => line.number === null);
+      if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
+      this.lines.push({
+       number: "0"
+     });
+    },
+    removeLine (lineId) {
+      this.lines.splice(lineId, 1);
+    },
+    onSearchInstruments(search, loading) {
+        loading(true);
+        searchRelated(
+          loading, search, this,
+           `/api/instrument?ordering=name&search=${escape(search)}`,
+           'optionsInstruments',
+           'instrument'
+        );
+    },
+    onSearchMusicians(search, loading) {
+      loading(true);
+      searchRelated(
+      loading, search, this,
+       `/api/authority?is_informer=true&ordering=first_name+last_name&search=${escape(search)}`,
+       'optionsMusicians',
+       'authority'
+      );
+    },
+    getLines: function(){
+      // Get all performances, one per line
+      axios.get(`/api/collection/${escape({{id}})}/complete`).then(
+      res => {
+        // Fill the performances
+        for( item_perf in res.data["performances"]){
+          var perf = res.data["performances"][item_perf];
+          // Get the emit vox
+          var emit_vox = 0;
+          if(perf.emit){
+            emit_vox = perf.emit.id;
+          };
+          // ... Get all musicians for a line (performance)
+          var listRelated = []; // list of musicians
+          for(item_mus in perf.musicians){
+            var musician = perf.musicians[item_mus];
+            listRelated.push(musician);
+          }
+          this.lines.push(
+            {
+              number: perf.number,
+              instrument: perf.instrument,
+              emit: emit_vox,
+              informers: listRelated,
+              id: perf.id
+            });
+        }
+      });
+    },
+    getEmits: function(){
+      axios.get('/api/emit_vox').then(response => {
+        this.optionsEmit = response.data;
+      });
+    },
+    replacerPerformance: function(key,value) {
+      if(key=="instrument"){
+        if( value != null){
+          return value.id;
+        }
+      };
+
+      if(key=="informers"){
+        if(value.length > 0){
+          musicians=[];
+          for(i = 0; i< value.length; i++){
+            musicians.push({
+              musician: value[i].id
+            });
+          };
+          return musicians;
+        };
+        return undefined;
+      };
+
+      return value;
+    },
+  },
+});
+
+
+</script>

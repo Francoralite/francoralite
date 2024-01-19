@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Voix/Instruments" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if perms.keycloak.instrument_add %}
+  <a href="{% url "instrument-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une voix/instrument" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some instruments (number of elements > 0 ) -->
+{% if instruments|length > 0 %}
+  <!-- Table to display the instruments -->
+  <table class="listing">
+  <thead>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      <th>{% trans "Classification Hornbostel-Sachs" %}</th>
+      {% if perms.keycloak.instrument_update or perms.keycloak.instrument_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </thead>
+  {% for instrument in instruments %}
+  <tr>
+      <td class="highlight">
+          <a href="/instrument/{{ instrument.id }}">
+            {{ instrument.name|safe|upper }}</a>
+      </td>
+      <td>
+        {% if instrument.notes %}
+          {{ instrument.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      <td>
+        {{ instrument.typology.number|safe}} : {{ instrument.typology.name|safe}}
+      </td>
+      {% if perms.keycloak.instrument_update or perms.keycloak.instrument_delete %}
+      <td>
+        {% if perms.keycloak.instrument_update %}
+        <a href="{% url "instrument-edit" id=instrument.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.instrument_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{instrument.name}}"
+            data-url="{% url "instrument-delete" id=instrument.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.instrument_delete %}
+    {% modal_delete %}
+{% endif %}
+{% else %}
+  {% if error|length %}
+    {% display_error error %}
+  {% else %}
+      <p>{% trans "Il n'y a pas de voix/instruments" %}</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

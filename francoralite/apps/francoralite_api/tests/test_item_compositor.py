@@ -1,0 +1,179 @@
+# -*- coding: utf-8 -*-
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
+
+"""
+Item Compositor tests
+"""
+
+import factory
+import pytest
+import sys
+
+from django.core.management import call_command
+from django.urls import reverse
+from parameterized import parameterized
+from rest_framework import status
+from rest_framework.test import APITestCase
+
+from .factories.item_compositor import ItemCompositorFactory
+from .fake_data.fake_sound import CleanMediaMixin
+from ..models.item_compositor import ItemCompositor
+# Models related
+from ..models.authority import Authority
+from ..models.item import Item
+
+from .keycloak import get_token
+
+# Expected structure for Item_compositor objects
+
+ITEMCOMPOSITOR_STRUCTURE = [
+    ('id', int),
+    ('item', dict),
+    ('compositor', dict),
+]
+
+# Expected keys for MODEL objects
+ITEMCOMPOSITOR_FIELDS = sorted(
+    [item[0] for item in ITEMCOMPOSITOR_STRUCTURE])
+
+
+@pytest.mark.django_db
+class TestItemCompositorList(CleanMediaMixin, APITestCase):
+    """
+    This class manage all ItemCompositor tests
+    """
+
+    def setUp(self):
+        """
+        Run needed commands to have a fully working project
+        """
+        get_token(self)
+        
+        # Create a set of sample data
+        ItemCompositorFactory.create_batch(6)
+
+    def test_can_get_item_compositor_list(self):
+        """
+        Ensure ItemCompositor objects exists
+        """
+        # kwargs for the related tables
+        url = reverse('itemcompositor-list', kwargs={
+            'item_pk': 1})
+
+        # ORM side
+        item_compositors = ItemCompositor.objects.all()
+        self.assertEqual(len(item_compositors), 6)
+
+        # API side
+        response = self.client.get(url)
+
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+    @parameterized.expand(ITEMCOMPOSITOR_STRUCTURE)
+    def test_has_valid_item_compositor_values(self, attribute, attribute_type):
+        """
+        Ensure ItemCompositor objects have valid values
+        """
+
+        # kwargs for the related tables
+        url = reverse('itemcompositor-list', kwargs={
+            'item_pk': 1})
+        response = self.client.get(url)
+
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        for item_compositor in response.data:
+            # Check only expected attributes returned
+            self.assertEqual(
+                sorted(item_compositor.keys()), ITEMCOMPOSITOR_FIELDS)
+
+            # Ensure type of each attribute
+            if attribute_type == str:
+                elf.assertIsInstance(item_compositor[attribute], str)
+            else:
+                self.assertIsInstance(
+                    item_compositor[attribute], attribute_type)
+            self.assertIsNot(item_compositor[attribute], '')
+
+    def test_get_an_item_compositor(self):
+        """
+        Ensure we can get an ItemCompositor objects
+        using an existing id
+        """
+
+        item = ItemCompositor.objects.first()
+
+        url = reverse('itemcompositor-detail', kwargs={
+                      'item_pk': item.item.id,
+                      'pk': item.compositor.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, dict)
+
+    def test_create_an_item_compositor(self):
+        """
+        Ensure we can create an ItemCompositor object
+        """
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=ItemCompositorFactory)
+
+        # Convert the related entity in dictionnary.
+        #  Then they will be easily converted in JSON format.
+        data['item'] = 1
+        data['compositor'] = 2
+
+        url = reverse('itemcompositor-list', kwargs={
+            'item_pk': data['item']})
+        response = self.client.post(url, data, format='json')
+
+        # Check only expected attributes returned
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(
+            sorted(response.data.keys()),
+            ITEMCOMPOSITOR_FIELDS)
+
+        url = reverse(
+            'itemcompositor-detail',
+            kwargs={'item_pk': response.data['item']['id'],
+                    'pk': response.data['id']}
+        )
+        response_get = self.client.get(url)
+
+        self.assertEqual(response_get.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response_get.data, dict)
+
+    def test_delete_an_item_compositor(self):
+        """
+        Ensure we can delete an ItemCompositor object
+        """
+
+        item = ItemCompositor.objects.first()
+
+        # Delete this object
+        url = reverse(
+            'itemcompositor-detail', kwargs={
+                'item_pk': item.item.id,
+                'pk': item.compositor.id}
+        )
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # Ensure ItemCompositor removed
+        url_get = reverse(
+            'itemcompositor-detail', kwargs={
+                'item_pk': item.item.id,
+                'pk': item.compositor.id}
+        )
+        response_get = self.client.get(url_get)
+        self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)

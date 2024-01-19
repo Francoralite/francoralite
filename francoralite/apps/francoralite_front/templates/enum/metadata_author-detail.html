@@ -1,0 +1,50 @@
+{% extends "enum/metadata_author.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title_name %}
+  {{ block.super }}
+    {% if metadata_author %}
+     : {{ metadata_author.value }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if user.is_authenticated %}
+  <a href="{% url "metadata_author-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if metadata_author %}
+
+  {% field_data form.name.label|safe metadata_author.name|safe %}
+  {% field_data form.notes.label|safe metadata_author.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Cette méta donnée auteur n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

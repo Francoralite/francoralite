@@ -1,0 +1,35 @@
+
+language: python
+python:
+  - "3.7"
+
+services:
+  - docker
+
+# Install Francoralite
+install:
+  - docker-compose pull
+  - docker-compose build
+
+before_script:
+  - docker network create services
+
+script:
+  - docker-compose up --no-start
+  - bash -c ./scripts/load_keycloak_data.sh
+  - docker-compose exec app bash -c 'pip install --no-cache-dir .[tests]'
+  - docker-compose exec app bash -c 'py.test'
+  - >
+      if [[ "${TRAVIS_PULL_REQUEST}" == "false" ]];
+      then bash -c ./scripts/manage_docker_image.sh;
+      fi
+
+after_success:
+  - docker-compose exec app bash -c 'coveralls'
+
+after_failure:
+  - docker-compose logs
+
+after_script:
+  - docker-compose stop
+  - docker-compose down

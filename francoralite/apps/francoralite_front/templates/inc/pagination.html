@@ -1,0 +1,28 @@
+{% if pagination.count %}{% load i18n data_display %}
+<nav class="pagination">
+    <p class="pages">
+    {% if pagination.has_previous %}
+    <a class="arrow first" href="{% current_url_params page=1 %}" title="{% trans 'Afficher la première page.' %}"></a>
+    <a class="arrow previous" href="{% current_url_params page=pagination.current_page|add:-1 %}" title="{% trans 'Afficher la page précédente.' %}"></a>
+    {% else %}
+    <span class="arrow first"></span>
+    <span class="arrow previous"></span>
+    {% endif %}
+    {% for page in pagination.last_page|range:1 %}
+    {% if pagination.current_page == page %}
+    <span class="number current">{{ page }}</span>
+    {% elif page > pagination.current_page|add:-3 and page < pagination.current_page|add:3 %}
+    <a class="number" href="{% current_url_params page=page %}" title="{% blocktranslate %}Afficher la page n° {{ page }}.{% endblocktranslate %}">{{ page }}</a>
+    {% endif %}
+    {% endfor %}
+    {% if pagination.has_next %}
+    <a class="arrow next" href="{% current_url_params page=pagination.current_page|add:1 %}" title="{% trans 'Afficher la page suivante.' %}"></a>
+    <a class="arrow last" href="{% current_url_params page=pagination.last_page %}" title="{% trans 'Afficher la dernière page.' %}"></a>
+    {% else %}
+    <span class="arrow next"></span>
+    <span class="arrow last"></span>
+    {% endif %}
+    </p>
+    <p class="rows">{{ pagination.first_item }} à {{ pagination.last_item }} sur {% blocktrans count pagination.count as count %}{{ count }} élément{% plural %}{{ count }} éléments{% endblocktrans %}</p>
+</nav>
+{% endif %}

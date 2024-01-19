@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+{% load static %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+<style>
+  francoralite-map  {
+    height: 500px;
+    width: 100%;
+    display: inline-block;
+    justify-content: center;
+   }
+</style>
+{% endblock %}
+
+{% block title_name %}
+{{ block.super }}
+  {% if location %}
+   Lieu : {{ location.name }}
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% if location %}
+
+  {% block title_buttons %}
+    {% if perms.keycloak.location_gis_update %}
+      <a href="{% url "location_gis-edit" id=id %}" class="btn_add btn btn-default">
+        <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+      </a>
+    {% endif %}
+    {% if perms.keycloak.location_gis_delete %}
+      <button type="button" class="btn_add btn btn-default"
+        data-toggle="modal" data-target="#modalDelete"
+        data-name="{{location.code}} | {{location.name}}"
+        data-url="{% url "location_gis-delete" id=location.id %}">
+        <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+      </button>
+    {% endif %}
+  {% endblock %}
+
+
+  {% if perms.keycloak.location_gis_delete %}
+    {% modal_delete %}
+  {% endif %}
+
+  {% block title %}
+  {{ block.super }}
+  {% endblock %}
+
+  <div class="container_line center">
+  {% field_data_id form.code location.code|safe %}
+  {% if location.notes %}
+    {% field_data_id form.notes location.notes|markdown|safe %}
+  {% endif %}
+  {% field_data_id form.latitude location.latitude %}
+  {% field_data_id form.longitude location.longitude %}
+  </div>
+
+  <francoralite-map
+    markers-url="/api/locationgis/{{location.id}}"
+    lat="{{location.latitude|virgule}}"
+    lng="{{location.longitude|virgule}}"
+    zoom="15"
+    >
+  </francoralite-map>
+
+  <div class="block-grey">
+  <h2>{% trans "Enquêtes" %}</h2>
+
+  {% if collections|length > 0 %}
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Cote" %}</th>
+      <th>{% trans "Nom" %}</th>
+      <th>{% trans "Description" %}</th>
+      <th>{% trans "Mission" %}</th>
+  </tr>
+  {% for collection in collections %}
+  <tr>
+      <td class="highlight">
+          <a href="/collection/{{collection.id }}">
+          {{ collection.code|upper }}</a>
+      </td>
+      <td>{{ collection.title|safe }}</td>
+      <td>{{ collection.description|truncatechars:50|markdown|safe}}          </td>
+      <td>{{ collection.mission.title|safe }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  </div>
+
+  <div class="block-grey">
+  <h2>{% trans "Items" %}</h2>
+  {% if items|length > 0 %}
+    <table class="listing">
+    <tr>
+        <th class="highlight">{% trans "Cote" %}</th>
+        <th>{% trans "Nom" %}</th>
+        <th>{% trans "Description" %}</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td class="highlight">
+            <a href="/item/{{item.id }}">
+            {{ item.code|upper }}</a>
+        </td>
+        <td>{{ item.title|safe }}</td>
+        <td>{{ item.description|truncatechars:50|markdown|safe}}          </td>
+      </tr>
+    {% endfor %}
+    </table>
+  {% endif %}
+  </div>
+  </div>
+
+{% else %}
+  <p>{% trans "Ce lieu n'existe pas." %}</p>
+{% endif %}
+{% endblock %}

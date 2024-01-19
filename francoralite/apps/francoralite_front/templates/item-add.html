@@ -1,0 +1,746 @@
+{% extends "item-detail.html" %}
+{% load i18n %}
+{% load data_display %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-select/2.5.1/vue-select.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title_name %}
+   {{ block.super}}
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block audio_player %}
+{% endblock %}
+
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+<meta id="id-collection" data-name="{{id_collection}}">
+{{ form.media }}
+{% if not error|length %}
+
+  <div class="fixedWidthAsPlayer">
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}francoralite/images/wait.gif" />
+  </div>
+<!-- Tabs -->
+<ul class="nav nav-tabs" role="tablist">
+   <li class="nav-item active">
+     <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Général" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_desc" role="tab" data-toggle="tab">{% trans "Description" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_text" role="tab" data-toggle="tab">{% trans "Texte" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_vox" role="tab" data-toggle="tab">{% trans "Voix/Instruments" %}</a>
+   </li>
+   <li class="nav-item">
+     <a href="#tab_mark" role="tab" data-toggle="tab">{% trans "Marqueurs" %}</a>
+   </li>
+</ul>
+
+<div class="container">
+
+  {% if id %}
+  <form enctype="multipart/form-data" action="{%url "item-edit" id %}" method="POST">
+  {% else %}
+  <form enctype="multipart/form-data" action="{{request.path}}" method="POST">
+  {% endif %}
+    {% csrf_token %}
+
+
+    <div class="tab-content">
+      <!-- Tab General -->
+      <div class="tab-pane fade active in" id="tab_general">
+        {% field_editor form.collection %}
+        {% field_editor form.title %}
+        {% field_editor form.alt_title %}
+        {% field_editor form.trans_title %}
+        {% markdown_editor component=form.description %}
+
+        {% if id %}
+          <div hidden=True>
+        {% else %}
+          <div>
+        {% endif %}
+        {% field_editor form.file %}
+        {% field_editor form.url_file %}
+        </div>
+
+
+
+        <div id="app2">
+        <div class="block-grey">
+          <h2>{% trans "Personnes" %}</h2>
+
+          <!-- Collectors -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Enquêteur(s)" %}</label>
+            <v-select
+              multiple
+                v-model="collectors"
+                label="first_name"
+                :filterable="false"
+                @search="onSearchCollectors"
+                :options="optionsCollectors">
+                <template slot="option" slot-scope="option">
+                  ${ option.first_name } ${ option.last_name } -
+                  <a :href="option.url"
+                    onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-label="countryName" scope="option">
+                  <a :href="option.url" class="item_collector"
+                  onclick="window.open(this.href); return false;">
+                  ${ option.first_name } ${ option.last_name }</a>
+                </template>
+            </v-select>
+          </div>
+          <input name="collectors" type="hidden"
+            :value="JSON.stringify(collectors,replacerCollector)" />
+
+          <!-- Informers -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Informateur(s)" %}</label>
+            <v-select
+              multiple
+                v-model="informers"
+                label="first_name"
+                :filterable="false"
+                @search="onSearchInformers"
+                :options="optionsInformers">
+                <template slot="option" slot-scope="option">
+                  ${ option.first_name } ${ option.last_name } -
+                  <a :href="option.url"
+                    onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                  <a :href="option.url" class="item_informer"
+                  onclick="window.open(this.href); return false;">
+                  ${ option.first_name } ${ option.last_name }</a>
+                </template>
+            </v-select>
+          </div>
+          <input name="informers" type="hidden"
+            :value="JSON.stringify(informers, replacerInformer)" />
+        </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Indications géographiques et culturelles" %}</h2>
+
+          <!-- Locations from collection -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Lieux" %}</label>
+            <div>
+              {% for loc in locations %}
+              {{loc.location.code|safe}} | {{loc.location.name|markdown|safe}}
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Language -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Langue(s)" %}</label>
+            <v-select
+            multiple
+            v-model="languages"
+            label="name"
+            :filterable="false"
+            @search="onSearchLanguages"
+            :options="optionsLanguages">
+              <template slot="option" slot-scope="option">
+                <p>${ option.name }</p>
+              </template>
+              <template slot="selected-option" slot-scope="option">
+                ${ option.name }
+              </template>
+            </v-select>
+          </div>
+          <input name="languages" type="hidden"
+          :value="JSON.stringify(languages,replacerLanguage)" />
+        </div>
+      </div> <!-- app2 -->
+
+        <div class="block-grey">
+          <h2>{% trans "Données d'archivage" %}</h2>
+          {% field_editor form.code %}
+          {% field_editor form.code_partner %}
+          {% field_editor form.auto_period_access %}
+          {% markdown_editor component=form.remarks %}
+
+        </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Données techniques" %}</h2>
+          {% field_editor form.media_type %}
+          {% field_editor form.approx_duration %}
+        </div>
+
+      <div id="appmedia">
+        <!-- Media ---------------------------------------------->
+        <div class="block-grey">
+          <h2>{% trans "Média associés" %}</h2>
+          <div class="container_line">
+            <template>
+              <div v-for="(doc, index) in documents"
+                v-bind:key="index">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div class=container_line>
+                      <input v-model="doc.id" hidden="True" type="number" />
+                      <span class="container_data one">
+                        <label class="control_label">{% trans "Nakala ID" %}</label>
+                        <input v-model="doc.id_nakala" type="string"
+                        required="required" pattern=".*\S+.*"/>
+                      </span>
+                      <span class="container_data one">
+                        <label class="control_label">{% trans "Titre" %}</label>
+                        <input v-model="doc.title" type="string"
+                        required="required" pattern=".*\S+.*"/>
+                      </span>
+                      <span class="container_data four">
+                        <label class="control_label">{% trans "Description" %}</label>
+                        <input v-model="doc.description" type="string" required="required"/>
+                      </span>
+                      <span class="container_data two">
+                        <label class="control_label">{% trans "Crédits" %}</label>
+                        <input v-model="doc.credits" type="string" required="required"/>
+                      </span>
+                    </div>
+
+                    <div class="center">
+                      <button type="button" @click="removeDoc(index)"
+                        class="btn btn-default">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        {% trans "Supprimer" %}
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </template>
+            <input name="media" type="hidden" :value="JSON.stringify(documents,replacerMedia)" />
+          </div>
+          {% nakala_button %}
+        </div>
+      </div><!-- appmedia -->
+      </div>
+
+      <!-- Tab Description ------------------------------------- -->
+      <div class="tab-pane" id="tab_desc">
+        <div id="app3">
+
+        <!-- Authors -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Auteur(s)" %}</label>
+          <v-select
+            multiple
+              v-model="authors"
+              label="first_name"
+              :filterable="false"
+              @search="onSearchAuthors"
+              :options="optionsAuthors">
+              <template slot="option" slot-scope="option">
+                ${ option.first_name } ${ option.last_name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+              </template>
+              <template slot="selected-option" slot-label="countryName" scope="option">
+                <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                ${ option.first_name } ${ option.last_name }</a>
+              </template>
+          </v-select>
+        </div>
+        <input name="authors" type="hidden"
+          :value="JSON.stringify(authors,replacerAuthor)" />
+
+        <!-- Compositors -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Compositeur(s)" %}</label>
+          <v-select
+            multiple
+              v-model="compositors"
+              label="first_name"
+              :filterable="false"
+              @search="onSearchCompositors"
+              :options="optionsCompositors">
+              <template slot="option" slot-scope="option">
+                ${ option.first_name } ${ option.last_name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+              </template>
+              <template slot="selected-option" slot-label="countryName" scope="option">
+                <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                ${ option.first_name } ${ option.last_name }</a>
+              </template>
+          </v-select>
+        </div>
+        <input name="compositors" type="hidden"
+          :value="JSON.stringify(compositors,replacerCompositor)" />
+
+
+        {% field_editor form.timbre %}
+        {% field_editor form.timbre_ref %}
+        <div class="block-grey row">
+          <div class="col-md-6">
+            <label for="id_melody" class="control-label melody">{% trans "Mélodie (transcription alphabétique)" %}</label>
+              <textarea id="id_melody" name="melody" cols="80" rows="15">
+                {{form.melody.value|safe}}
+              </textarea>
+              <div id="midi"></div>
+              <div id="midi-download"></div>
+              <div id="warnings"></div>
+            </div>
+          <div class="col-md-6">
+            <div id="paper0" class="paper"></div>
+            <div id="selection"></div>
+          </div>
+
+          <script src="{{ STATIC_URL }}francoralite_front/js/melody_abc.js" type="text/javascript"></script>
+        </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Genres" %}</h2>
+
+          {% field_editor form.domain %}
+
+          <!-- Domain song -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) de la chanson" %}</label>
+          <v-select
+          multiple
+          v-model="domainsongs"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomainsongs"
+          :options="optionsDomainsongs">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domainsongs" type="hidden"
+          :value="JSON.stringify(domainsongs,replacerDomainsong)" />
+
+          <!-- Domain vocal -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) de l'expression vocale" %}</label>
+          <v-select
+          multiple
+          v-model="domainvocals"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomainvocals"
+          :options="optionsDomainvocals">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domainvocals" type="hidden"
+          :value="JSON.stringify(domainvocals,replacerDomainvocal)" />
+
+          <!-- Domain music -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) de l'expression instrumentale" %}</label>
+          <v-select
+          multiple
+          v-model="domainmusics"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomainmusics"
+          :options="optionsDomainmusics">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domainmusics" type="hidden"
+          :value="JSON.stringify(domainmusics,replacerDomainmusic)" />
+
+          <!-- Domain tale -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Genre(s) du conte" %}</label>
+          <v-select
+          multiple
+          v-model="domaintales"
+          label="name"
+          :filterable="false"
+          @search="onSearchDomaintales"
+          :options="optionsDomaintales">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="domaintales" type="hidden"
+          :value="JSON.stringify(domaintales,replacerDomaintale)" />
+
+          <!-- Usefulness -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Fonction(s)" %}</label>
+          <v-select
+          multiple
+          v-model="usefulnesses"
+          label="name"
+          :filterable="false"
+          @search="onSearchUsefulness"
+          :options="optionsUsefullness">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="usefulnesses" type="hidden"
+          :value="JSON.stringify(usefulnesses,replacerUsefulness)" />
+
+          <!-- Dance -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Danse(s)" %}</label>
+          <v-select
+          multiple
+          v-model="dances"
+          label="name"
+          :filterable="false"
+          @search="onSearchDance"
+          :options="optionsDances">
+            <template slot="option" slot-scope="option">
+              <p>${ option.name }</p>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              ${ option.name }
+            </template>
+          </v-select>
+          </div>
+          <input name="dances" type="hidden"
+          :value="JSON.stringify(dances,replacerDance)" />
+
+        </div>
+        </div> <!-- app3 -->
+
+        <div class="block-grey">
+          <h2>{% trans "Témoignage" %}</h2>
+          {% markdown_editor component=form.deposit_digest %}
+
+          <div id="app4">
+          <!-- Thematic -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Thématique(s)" %}</label>
+          <v-select
+          multiple
+          v-model="thematics"
+          label="name"
+          :filterable="false"
+          @search="onSearchThematics"
+          :options="optionsThematics">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="thematics" type="hidden"
+          :value="JSON.stringify(thematics,replacerThematic)" />
+
+          {% field_editor form.deposit_names %}
+          {% field_editor form.deposit_places %}
+          {% field_editor form.deposit_periods %}
+
+      </div> <!-- app4 -->
+      </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Mots-clés" %}</h2>
+
+          <div id="appKeywords">
+          <!-- Keyword -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Mot(s)-clé(s)" %}</label>
+          <v-select
+          multiple
+          v-model="keywords"
+          label="name"
+          :filterable="false"
+          @search="onSearchKeywords"
+          :options="optionsKeywords">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="keywords" type="hidden"
+          :value="JSON.stringify(keywords,replacerKeyword)" />
+      </div> <!-- appKeywords -->
+      </div>
+
+      </div> <!-- tab_desc -->
+
+      <!-- Tab Text ---------------------------------------------->
+      <div class="tab-pane" id="tab_text">
+        {% field_editor form.text_bool %}
+        {% markdown_editor component=form.text %}
+        {% markdown_editor component=form.incipit %}
+        {% markdown_editor component=form.refrain %}
+        {% markdown_editor component=form.jingle %}
+        {% field_editor form.coupe %}
+        <div class="block-grey">
+          <h2>{% trans "Références" %}</h2>
+          <div id="app5">
+            <div class="container_data">
+              <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Coirault" %}</label>
+              <v-select
+              multiple
+              v-model="coiraults"
+              label="name"
+              :filterable="false"
+              @search="onSearchCoirault"
+              :options="optionsCoirault">
+                <template slot="option" slot-scope="option">
+                  ${option.number} : ${ option.name } -
+                    <a :href="option.url"
+                      onclick="window.open(this.href); return false;">
+                      <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                  <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  ${option.number} : ${ option.name }</a>
+                </template>
+              </v-select>
+            </div>
+            <input name="coiraults" type="hidden"
+            :value="JSON.stringify(coiraults,replacerCoirault)" />
+          </div>
+          <div id="appLaforte">
+            <div class="container_data">
+              <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Laforte" %}</label>
+              <v-select multiple v-model="lafortes" label="name" :filterable="false" @search="onSearchLaforte"
+                :options="optionsLafortes">
+                <template slot="option" slot-scope="option">
+                  ${ option.name } -
+                  <a :href="option.url" onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                  <a :href="option.url" onclick="window.open(this.href); return false;">
+                    ${ option.name }</a>
+                </template>
+              </v-select>
+            </div>
+            <input name="lafortes" type="hidden" :value="JSON.stringify(lafortes,replacerLaforte)" />
+          </div>
+        </div> <!-- app5 -->
+      </div> <!-- tab_text-->
+
+
+      <!-- Tab Vox/Instruments ----------------------------------->
+      <div class="tab-pane" id="tab_vox">
+        <div id="appvox">
+        <!-- Musical organization -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Organisation(s) musicale(s)" %}</label>
+          <v-select
+          multiple
+          v-model="musical_organizations"
+          label="name"
+          :filterable="false"
+          @search="onSearchMusicalOrganizations"
+          :options="optionsMusicalOrganizations">
+            <template slot="option" slot-scope="option">
+              <p>${ option.name }</p>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              ${ option.name }
+            </template>
+          </v-select>
+        </div>
+        <input name="musical_organizations" type="hidden"
+        :value="JSON.stringify(musical_organizations,replacerMusicalOrganization)" />
+
+        <!-- Musical group -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Formation(s) musicale(s)" %}</label>
+          <v-select
+          multiple
+          v-model="musical_groups"
+          label="name"
+          :filterable="false"
+          @search="onSearchMusicalGroups"
+          :options="optionsMusicalGroups">
+            <template slot="option" slot-scope="option">
+              <p>${ option.name }</p>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              ${ option.name }
+            </template>
+          </v-select>
+        </div>
+        <input name="musical_groups" type="hidden"
+        :value="JSON.stringify(musical_groups,replacerMusicalGroup)" />
+
+        <!-- Performances -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Voix/intrument(s)" %}</label>
+          <v-select
+            multiple
+              v-model="performances"
+              label="instrument"
+              :filterable="false"
+              :options="optionsPerformances">
+              <template slot="option" slot-scope="option">
+                ${option.number}
+                ${option.instrument.name}
+                - <span v-if="option.emit">${option.emit.name} - </span> musiciens :
+                <div v-for="musician in option.musicians">
+                  ${musician.first_name} ${musician.last_name}
+                </div>
+              </template>
+              <template slot="selected-option" scope="option">
+                ${option.number}
+                ${option.instrument.name}
+                - <span v-if="option.emit">${option.emit.name} </span> musiciens :
+                <div v-for="musician in option.musicians">
+                  ${musician.first_name} ${musician.last_name}
+                </div>
+              </template>
+          </v-select>
+        </div>
+        <input name="performances" type="hidden"
+          :value="JSON.stringify(performances,replacerPerformance)" />
+
+        </div> <!-- appvox -->
+      </div> <!-- tab_vox-->
+
+      <!-- Tab Player/Markers ------------------------------------>
+      <div class="tab-pane" id="tab_mark">
+
+          <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}francoralite/images/wait.gif" />&nbsp;
+              <span id="loading_span_text">Loading...</span></span>
+          <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "File" %}</a><!--
+           do not let space here as it appears in the document!!!!!
+          --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Markers" %}</a>
+
+          <div class="markers" id="markers_div_id"></div>
+
+          <div class="analyzer" id="analyzer_div_id">
+            <table width="100%">
+                <tr class="analyzer-title">
+                    <td>{% trans "Property" %}</td>
+                    <td>{% trans "Value" %}</td>
+                    <td>{% trans "Unit" %}</td>
+                </tr>
+            </table>
+          </div>
+      </div> <!-- tab_mark -->
+
+    </div>
+    <!-- end tab-content -->
+  </div>
+    {% buttons_form %}
+  </form>
+
+
+</div>
+
+
+{% select_vue_item %}
+
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+
+{% else %}
+  {% display_error error %}
+{% endif %}
+
+{{ form.media.js }}
+{% endblock content %}

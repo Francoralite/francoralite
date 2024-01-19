@@ -1,0 +1,221 @@
+
+{% extends "mission.html" %}
+{% load i18n %}
+{% load static %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="{% static "francoralite_front/js/table_sort.js" %}" defer></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+    {% trans "Mission" %}
+    {% if mission %}
+     : {{ mission.title }}
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.collection_add %}
+    <a href="{% url "collection-add" id_institution=mission.fonds.institution.id id_fond=mission.fonds.id id_mission=id %}" class="btn_add btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        {% trans "Créer une enquête" %}
+    </a>
+  {% endif %}
+  {% if perms.keycloak.mission_update %}
+    <a href="{% url "mission-edit" id=id %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+    </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  {% if mission %}
+  <ul class="nav nav-tabs" role="tablist">
+     <li class="active">
+       <a href="#tab_general" role="tab" data-toggle="tab">{% trans "Fiche" %}</a>
+     </li>
+     <li>
+       <a href="#tab_collection" role="tab" data-toggle="tab">{% trans "Enquêtes" %}</a>
+     </li>
+  </ul>
+
+  <div class="tab-content">
+    <section class="tab-pane fade in active" id="tab_general">
+      <div class="container_line">
+          <dl class="container_data">
+            <dt class="libelle"> {{form.fonds.label|safe}}</dt>
+          <dd class="donnee">
+            <a href="{% url "fond-detail" id=mission.fonds.id %}">
+              {{mission.fonds.title|safe}}
+            </a>
+          </dd>
+        </dl>
+        {% field_data_id form.code_partner mission.code_partner|safe empty=False %}
+        {% field_data_id form.code mission.code|upper|safe %}
+        {% field_data_id form.title mission.title|safe %}
+        {% field_data_id form.public_access mission.public_access|public_access|safe %}
+      </div>
+
+      <div class="container_line">
+        {% field_data_id form.description mission.description|markdown|safe %}
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Période" %}</h2>
+        <h3>{% trans "Années d'enregistrement" %}</h3>
+        <div class="container_line">
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Depuis' %}</dt>
+            <dd class="donnee">{{dates.0}}</dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans "Jusqu\'à" %}</dt>
+            <dd class="donnee">{{dates.1}}</dd>
+          </dl>
+          <dl class="container_data">
+            <dt class="libelle"> {% trans 'Durée totale disponible' %}</dt>
+            <dd id="id_duration" class="donnee">{{duration}}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Lieux" %}</h2>
+        <dl class="container_data">
+          <dt class="libelle"></dt>
+          <dd class="donnee">
+            <ul>
+              {% for location in locations %}
+              <li>
+                <a href="{% url "location_gis-detail" id=location.id %}"
+                target="_blank">
+                <b>{{location.code}}</b> - {{location.name}}
+              </li>
+            </a>
+            {% endfor %}
+            </ul>
+          </dd>
+        </dl>
+      </div>
+
+      <div class="block-grey">
+        <h2>{% trans "Personnes" %}</h2>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Collecteurs' %}</dt>
+          <dd class="donnee">
+            <ul>
+              {% for collector in collectors %}
+              <li>
+                <a href="{% url "personne-detail" id=collector.id %}"
+                target="_blank">
+                {{collector.first_name}} {{collector.last_name}}
+                </a>
+
+              </li>
+              {% endfor %}
+            </ul>
+          </dd>
+        </dl>
+        <dl class="container_data">
+          <dt class="libelle"> {% trans 'Informateurs' %}</dt>
+          <dd class="donnee">
+            <ul>
+              {% for informer in informers %}
+              <li>
+                <a href="{% url "personne-detail" id=informer.id %}"
+                target="_blank">
+                {{informer.first_name}} {{informer.last_name}}
+              </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </dd>
+        </dl>
+      </div>
+
+      {% display_documents %}
+
+    </section>
+
+
+    <section class="tab-pane fade in" id="tab_collection">
+      {% if collections|length > 0 %}
+        <!-- Table to display the collections -->
+        <table class="listing" aria-describedby="Collections">
+        <thead>
+            <th class="sortable highlight">{% trans "Cote" %}</th>
+            <th class="sortable">{% trans "Nom" %}</th>
+            <th class="sortable">{% trans "Description" %}</th>
+            <th class="sortable number">{% trans "Items" %}</th>
+            <th>{% trans "Domaines" %}</th>
+            {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
+            <th>{% trans "Modifier" %}</th>
+            {% endif %}
+        </thead>
+        {% for collection in collections %}
+        <tr>
+            <td class="highlight">
+                <a href="/collection/{{collection.id }}">
+                {{ collection.code|upper }}</a>
+            </td>
+            <td>{{ collection.title|safe }}</td>
+            <td>{{ collection.description|truncatechars:50|markdown|safe }}</td>
+            <td><a href="/collection/{{ collection.id }}#items">{{ collection.items_count }}</a></td>
+            <td>{% include 'inc/proportional_colored_bar.html' with items=collection.domains %}</td>
+            {% if perms.keycloak.collection_update or perms.keycloak.collection_delete %}
+            <td>
+              {% if perms.keycloak.collection_update %}
+              <a href="{% url "collection-edit" id=collection.id %}">
+                    <button type="button" class="btn btn-default">
+                      <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+                    </button>
+              </a>
+              {% endif %}
+              {% if perms.keycloak.collection_delete %}
+              <button type="button" class="btn btn-default"
+                  data-toggle="modal" data-target="#modalDelete"
+                  data-name="{{collection.title}}"
+                  data-url="{% url "collection-delete" id=collection.id %}">
+                    <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+              </button>
+              {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </table>
+        {% include 'inc/proportional_colored_bar.html' with legend=domains_legend %}
+        {% if perms.keycloak.collection_delete %}
+            {% modal_delete %}
+        {% endif %}
+      {% else %}
+        <div class="block-grey">
+        {% trans "Cette mission ne possède pas d'enquête."%}
+        </div>
+      {% endif %}
+    </section>
+  </div>
+  <script type="text/javascript">if (document.location.hash === '#collections') { $('.nav-tabs li:nth-child(2) a').tab('show'); }</script>
+
+  {% else %}
+    <p>{% trans "Cette mission n'existe pas." %}</p>
+  {% endif %}
+{% else %}
+  {% display_error error %}
+{% endif %}
+{% endblock %}

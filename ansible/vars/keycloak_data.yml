@@ -41,19 +41,19 @@ _keycloak_clients:
   - client_id: 'francoralite'
     directAccessGrantsEnabled: True
     fullScopeAllowed: False
-    base_url: 'http://francoralite-api/*'
+    base_url: 'http://nginx.francoralite.localhost:8080/api/*'
     enabled: True
     name: 'Francoralite API'
     authorization_settings: "{{ lookup('template', 'templates/keycloak/francoralite_authorization_settings.yml.j2') | from_yaml }}"
     redirect_uris:
-      - 'http://francoralite-api/*'
-      - 'http://francoralite-api/**/*'
-    root_url: 'http://francoralite-api/'
+      - 'http://nginx.francoralite.localhost:8080/api/*'
+      - 'http://nginx.francoralite.localhost:8080/api/**/*'
+    root_url: 'http://nginx.francoralite.localhost:8080/api/'
     web_origins:
       - 'localhost'
       - 'localhost:3000'
       - 'localhost:8000'
-      - 'http://francoralite-api'
+      - 'http://nginx.francoralite.localhost:8080/'
 
 # List of Francoralite API endpoints
 _keycloak_endpoints:
@@ -74,6 +74,14 @@ _keycloak_endpoints:
     contributors_authorized: True
   - name: "coupe"
   - name: "dance"
+  - name: "document_collection"
+    contributors_authorized: True
+  - name: "document_fonds"
+    contributors_authorized: True
+  - name: "document_item"
+    contributors_authorized: True
+  - name: "document_mission"
+    contributors_authorized: True
   - name: "domain_music"
   - name: "domain_song"
   - name: "domain_tale"
@@ -82,6 +90,8 @@ _keycloak_endpoints:
   - name: "enumeration"
   - name: "ext_media_item"
   - name: "fond"
+    contributors_authorized: True
+  - name: "fond_document"
     contributors_authorized: True
   - name: "hornbostelsachs"
   - name: "institution"
@@ -105,6 +115,8 @@ _keycloak_endpoints:
   - name: "item_musical_organization"
   - name: "item"
     contributors_authorized: True
+  - name: "item_document"
+    contributors_authorized: True
   - name: "item_thematic"
     contributors_authorized: True
   - name: "item_transcoding_flag"
@@ -118,6 +130,8 @@ _keycloak_endpoints:
   - name: "media_item"
   - name: "mediatype"
   - name: "mission"
+    contributors_authorized: True
+  - name: "mission_document"
     contributors_authorized: True
   - name: "musical_group"
   - name: "musical_organization"

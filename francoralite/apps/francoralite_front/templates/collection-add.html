@@ -1,0 +1,381 @@
+{% extends "collection.html" %}
+{% load i18n %}
+{% load data_display %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-select/2.5.1/vue-select.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title_name %}
+  {{ block.super}}  -
+  {% if id %}
+  {% trans "Modification" %}
+  {% else %}
+  {% trans "Création" %}
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+{{ form.media }}
+<div class="container">
+    {% if id %}
+    <form action="{% url "collection-edit" id %}" method="POST">
+    {% else %}
+    <form action="{{request.path}}" method="POST">
+    {% endif %}
+      {% csrf_token %}
+
+        {% field_editor form.mission %}
+        {% field_editor form.title %}
+        {% field_editor form.alt_title %}
+
+      <div class="app2">
+      <!-- Collectors -->
+      <div class="container_data">
+        <label class="control_label">{% trans "Enquêteur(s)" %}</label>
+        <v-select
+          multiple
+            v-model="collectors"
+            label="first_name"
+            :filterable="false"
+            @search="onSearchCollectors"
+            :options="optionsCollectors">
+            <template slot="option" slot-scope="option">
+              ${ option.first_name } ${ option.last_name } -
+              <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-label="countryName" scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.first_name } ${ option.last_name }</a>
+            </template>
+        </v-select>
+      </div>
+      <input name="collectors" type="hidden"
+        :value="JSON.stringify(collectors,replacerCollector)" />
+
+
+      <!-- Informers -->
+      <div class="container_data">
+        <label class="control_label">{% trans "Informateur(s)" %}</label>
+        <v-select
+          multiple
+            v-model="informers"
+            label="first_name"
+            :filterable="false"
+            @search="onSearchInformers"
+            :options="optionsInformers">
+            <template slot="option" slot-scope="option">
+              ${ option.first_name } ${ option.last_name } -
+              <a :href="option.url"
+                onclick="window.open(this.href); return false;">
+                <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.first_name } ${ option.last_name }</a>
+            </template>
+        </v-select>
+      </div>
+      <input name="informers" type="hidden"
+        :value="JSON.stringify(informers, replacerInformer)" />
+      </div> <!-- app2 -->
+
+      {% markdown_editor component=form.description  %}
+      <div class="block-grey">
+        <h2>{% trans "Enregistrement" %}</h2>
+        <div class="container_line">
+          {% field_editor form.recording_context %}
+          {% field_editor form.recorded_from_year %}
+          {% field_editor form.recorded_to_year %}
+          {% field_editor form.year_published %}
+        </div>
+      </div>
+
+      <div class="block-grey">
+        <div class = "app2">
+        <h2>{% trans "Localisation" %}</h2>
+          <!-- Locations -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Lieux" %}</label>
+            <v-select
+            multiple
+            v-model="locations"
+            label="name"
+            :filterable="false"
+            @search="onSearchLocations"
+            :options="optionsLocations">
+            <template slot="option" slot-scope="option">
+              <b>${ option.code }</b>
+              <p>${ option.name }</p>
+              <p><a :href="option.url"
+                onclick="window.open(this.href); return false;">Fiche...</a></p>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.code }</a>
+            </template>
+          </v-select>
+        </div>
+        <input name="locations" type="hidden"
+          :value="JSON.stringify(locations, replacerLocation)" />
+        </div> <!-- app2 -->
+        {% markdown_editor component=form.location_details %}
+        {% field_editor form.cultural_area %}
+      </div>
+
+      <div class="app2">
+      <!-- Languages -->
+      <div class="container_data">
+        <label class="control_label">{% trans "Langues" %}</label>
+        <v-select
+        multiple
+        v-model="languages"
+        label="name"
+        :filterable="false"
+        @search="onSearchLanguages"
+        :options="optionsLanguages">
+          <template slot="option" slot-scope="option">
+            <p>${ option.name }</p>
+          </template>
+          <template slot="selected-option" slot-scope="option">
+            ${ option.name }
+          </template>
+        </v-select>
+      </div>
+      <input name="languages" type="hidden"
+        :value="JSON.stringify(languages,replacerLanguage)" />
+
+      <div class="block-grey">
+        <h2>{% trans "Éditeur" %}</h2>
+        <!-- Publishers -->
+        <div class="container_data">
+          <label class="control_label">{% trans "Éditeurs" %}</label>
+          <v-select
+            multiple
+            v-model="publishers"
+            label="name"
+            :filterable="false"
+            @search="onSearchPublishers"
+            :options="optionsPublishers">
+              <template slot="option" slot-scope="option">
+                <p>${ option.name }</p>
+              </template>
+              <template slot="selected-option" slot-scope="option">
+                ${ option.name }
+              </template>
+            </v-select>
+        </div>
+        <input name="publishers" type="hidden"
+          :value="JSON.stringify(publishers, replacerPublisher)" />
+        <div class="container_line">
+          {% field_editor form.publisher_collection %}
+        </div>
+      </div>
+      </div> <!-- app2 -->
+
+      <div class="container_line">
+        {% field_editor form.booklet_author %}
+        {% field_editor form.metadata_author %}
+      </div>
+
+      <div class="container_line">
+        {% field_editor form.code %}
+        {% field_editor form.code_partner %}
+      </div>
+
+
+      {% markdown_editor component=form.booklet_description %}
+      {% markdown_editor component=form.comment  %}
+
+      {% field_editor form.physical_items_num %}
+      {% field_editor form.media_type %}
+      {% field_editor form.auto_period_access %}
+      {% field_editor form.legal_rights %}
+
+
+      <div id="appvox">
+        <div class="block-grey">
+          <h2>{% trans "Voix/Instruments" %}</h2>
+          <div class="container_line">
+            <div>
+              <template>
+                <div v-for="(line, index) in lines"
+                  v-bind:key="index">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <div class=container_line>
+                        <input v-model="line.id" hidden="True" type="number" />
+                        <span class="container_data one">
+                          <label class="control_label">{% trans "Nombre" %}</label>
+                          <input v-model="line.number" type="number" required="required"/>
+                        </span>
+                        <span class="container_data four">
+                          <label class="control_label">{% trans "Voix/Instrument" %}</label>
+                          <v-select
+                            single
+                            v-model="line.instrument"
+                            label="name"
+                            :filterable="false"
+                            @search="onSearchInstruments"
+                            :options="optionsInstruments">
+                              <template slot="option" slot-scope="option">
+                                <p>${ option.name }, ${ option.typology.number}</p>
+                              </template>
+                              <template slot="selected-option" slot-scope="option">
+                                ${ option.name }, ${ option.typology.number}
+                              </template>
+                            </v-select>
+                        </span>
+                        <span class="container_data one">
+                          <label class="control_label">{% trans "Nature émission vocale" %}</label>
+                          <select v-model="line.emit">
+                            <option value="0"></option>
+                            <option v-for="option in optionsEmit" v-bind:value="option.id" required="required">
+                              ${option.name }
+                            </option>
+                          </select>
+                        </span>
+                      </div>
+                      <div class=container_line>
+                        <span class="container_data">
+                          <label class="control_label">{% trans "Informateur(s)" %}</label>
+                          <v-select
+                            multiple
+                              v-model="line.informers"
+                              label="first_name"
+                              :filterable="false"
+                              @search="onSearchMusicians"
+                              :options="optionsMusicians">
+                              <template slot="option" slot-scope="option">
+                                ${ option.first_name } ${ option.last_name } -
+                                <a :href="option.url"
+                                  onclick="window.open(this.href); return false;">
+                                  <i>Fiche...</i></a>
+                              </template>
+                              <template slot="selected-option" slot-scope="option">
+                                <a :href="option.url"
+                                onclick="window.open(this.href); return false;">
+                                ${ option.first_name } ${ option.last_name }</a>
+                              </template>
+                            </v-select>
+                            <input :name="'musicians'+index"
+                                  type="hidden"
+                                  :value="JSON.stringify(line.informers)" />
+                        </span>
+                      </div>
+                      <div class="center">
+                        <button type="button" @click="removeLine(index)"
+                          class="btn btn-default">
+                          <span class="glyphicon glyphicon-trash"></span>
+                          {% trans "Supprimer" %}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </template>
+            <input name="performances"
+              type="hidden"
+              :value="JSON.stringify(lines,replacerPerformance)" />
+
+            </div>
+          </div>
+          <button type="button" @click="addLine" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            {% trans "Ajouter une voix/instrument" %}
+          </button>
+        </div>
+      </div>
+
+
+    <div class="block-grey">
+      <div class="app2">
+      <h2>{% trans "Média associés" %}</h2>
+      <div class="container_line">
+        <template>
+          <div v-for="(doc, index) in documents"
+            v-bind:key="index">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class=container_line>
+                  <input v-model="doc.id" hidden="True" type="number" />
+                  <span class="container_data one">
+                    <label class="control_label">{% trans "Nakala ID" %}</label>
+                    <input v-model="doc.id_nakala" type="string"
+                     required="required" pattern=".*\S+.*"/>
+                  </span>
+                  <span class="container_data one">
+                    <label class="control_label">{% trans "Titre" %}</label>
+                    <input v-model="doc.title" type="string"
+                     required="required" pattern=".*\S+.*"/>
+                  </span>
+                  <span class="container_data four">
+                    <label class="control_label">{% trans "Description" %}</label>
+                    <input v-model="doc.description" type="string" required="required"/>
+                  </span>
+                  <span class="container_data two">
+                    <label class="control_label">{% trans "Crédits" %}</label>
+                    <input v-model="doc.credits" type="string" required="required"/>
+                  </span>
+                </div>
+
+                <div class="center">
+                  <button type="button" @click="removeDoc(index)"
+                    class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    {% trans "Supprimer" %}
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </template>
+        <input name="media" type="hidden" :value="JSON.stringify(documents,replacerMedia)" />
+      </div>
+      {% nakala_button %}
+    </div> <!-- app2 -->
+    </div>
+      {% buttons_form %}
+    </form>
+</div>
+
+
+
+    {% select_vue_collection %}
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+
+
+{{ form.media.js }}
+{% endblock %}

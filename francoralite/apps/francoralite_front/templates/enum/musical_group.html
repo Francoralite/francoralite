@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Formation" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if perms.keycloak.musical_group_add %}
+  <a href="{% url "musical_group-add" %}"  class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une formation" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some musical_group (number of elements > 0 ) -->
+{% if musical_groups|length > 0 %}
+  <!-- Table to display the musical_groups -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if perms.keycloak.musical_group_update or perms.keycloak.musical_group_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for musical_group in musical_groups %}
+  <tr>
+      <td class="highlight">
+          <a href="/musical_group/{{musical_group.id }}">
+            {{ musical_group.name|upper }}</a>
+      </td>
+      <td>
+        {% if musical_group.notes %}
+          {{ musical_group.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if perms.keycloak.musical_group_update or perms.keycloak.musical_group_delete %}
+      <td>
+        {% if perms.keycloak.musical_group_update %}
+        <a href="{% url "musical_group-edit" id=musical_group.id %}">
+              <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+              </button>
+        </a>
+        {% endif %}
+        {% if perms.keycloak.musical_group_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{musical_group.title}}"
+            data-url="{% url "musical_group-delete" id=musical_group.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.musical_group_delete %}
+    {% modal_delete %}
+{% endif %}
+{% else %}
+  {% if error|length %}
+     {% display_error error %}
+  {% else %}
+      <p>{% trans "Il n'y a pas de formation" %}</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

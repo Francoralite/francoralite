@@ -1,0 +1,50 @@
+{% extends "institution.html" %}
+{% load i18n %}
+{% load data_display %}
+{% load markdown_extra %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+   {{ block.super}} -
+   {% if id %}
+   {% trans "Modification" %}
+   {% else %}
+   {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  <div class="container">
+    {% if id %}
+    <form action="{% url "institution-edit" id %}" method="POST">
+    {% else %}
+    <form action="{{request.path}}" method="POST">
+    {% endif %}
+      {% csrf_token %}
+      {% field_editor form.name %}
+      {% markdown_editor component=form.notes  %}
+
+      {% buttons_form %}
+    </form>
+  </div>
+
+{% else %}
+  {% display_error error %}
+{% endif %}
+{% endblock %}

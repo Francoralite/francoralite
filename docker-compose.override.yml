@@ -3,39 +3,41 @@
 version: '2.1'
 
 services:
-  data:
+  adminer:
+    image: "${ADMINER_IMAGE}:${ADMINER_VERSION}"
+    logging: &logging
+      driver: 'json-file'
+      options:
+        max-size: "${LOGGING_MAX_SIZE}"
+        max-file: "${LOGGING_MAX_FILE}"
+    restart: 'unless-stopped'
+    networks:
+      - 'services'
+      - 'francoralite'
     labels:
-      - 'traefik.frontend.rule=Host:data.francoralite.localhost'
+      - 'traefik.frontend.rule=Host:adminer.francoralite.localhost'
+      - 'traefik.docker.network=services'
+
+  app:
+    build:
+      context: .
+    environment:
+      COVERALLS_REPO_TOKEN: "${COVERALLS_REPO_TOKEN}"
+    labels:
+      - 'traefik.frontend.rule=Host:app.francoralite.localhost'
+      - 'traefik.docker.network=services'
+    volumes:
+      - './:/srv/app'
 
   db:
     labels:
       - 'traefik.frontend.rule=Host:db.francoralite.localhost'
-
-  broker:
-    labels:
-      - 'traefik.frontend.rule=Host:broker.francoralite.localhost'
-
-  search:
-    labels:
-      - 'traefik.frontend.rule=Host:search.francoralite.localhost'
-
-  app:
-    labels:
-      - 'traefik.frontend.rule=Host:app.francoralite.localhost'
-      - 'traefik.docker.network=services'
-
-  worker:
-    labels:
-      - 'traefik.frontend.rule=Host:worker.francoralite.localhost'
+    command:
+      - --default-authentication-plugin=mysql_native_password
 
   nginx:
     labels:
       - 'traefik.frontend.rule=Host:nginx.francoralite.localhost'
-      - 'traefik.docker.network=services'
-
-  phpmyadmin:
-    labels:
-      - 'traefik.frontend.rule=Host:phpmyadmin.francoralite.localhost'
       - 'traefik.docker.network=services'
 
   keycloak:

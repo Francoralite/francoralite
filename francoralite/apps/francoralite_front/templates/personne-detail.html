@@ -1,0 +1,167 @@
+{% extends "personne.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block title_name %}
+    {% trans "Personne" %}
+    {% if personne %}
+     : {{ personne.last_name }} {{personne.first_name}}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.authority_update %}
+  <a href="{% url "personne-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %} </span>
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+  {% if personne %}
+  <div class="container_line">
+    {% field_data_id form.first_name personne.first_name|safe %}
+    {% field_data_id form.last_name personne.last_name|safe %}
+    {% field_data_id form.civility personne.civility|safe %}
+    {% field_data_id form.alias personne.alias %}
+  </div>
+  <div class="container_line">
+    <h2>{% trans "Rôles" %}</h2>
+      {% if personne.is_collector %}
+      {% field_data_bool form.is_collector.label personne.is_collector %}
+      {% endif %}
+      {% if personne.is_informer %}
+      {% field_data_bool form.is_informer.label personne.is_informer %}
+      {% endif %}
+      {% if personne.is_author %}
+      {% field_data_bool form.is_author.label personne.is_author %}
+      {% endif %}
+      {% if personne.is_composer %}
+      {% field_data_bool form.is_composer.label personne.is_composer %}
+      {% endif %}
+      {% if personne.is_editor %}
+      {% field_data_bool form.is_editor.label personne.is_editor %}
+      {% endif %}
+  </div>
+  <div class="block-grey">
+    <h2>{% trans "Naissance" %}</h2>
+    <div class="container_line">
+      {% field_data_id form.birth_date personne.birth_date %}
+      {% field_data_id form.birth_location personne.birth_location.name %}
+    </div>
+  </div>
+  <div class="block-grey">
+    <h2>{% trans "Décès" %}</h2>
+    <div class="container_line">
+      {% field_data_id form.death_date personne.death_date %}
+      {% field_data_id form.death_location personne.death_location.name %}
+    </div>
+  </div>
+  {% field_data_id form.biography personne.biography|markdown|safe %}
+  {% field_data_id form.uri personne.uri %}
+  
+  <div class="block-grey">
+    <h2>{% trans "Contributions" %}</h2>
+    {% if contribs.informers|length > 0 %} 
+      <!-- Table to display the items -->
+      <caption><h3>{% trans "Informateur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for informer  in  contribs.informers %}
+          <tr>
+            <td> <a href="/item/{{informer.id }}">{{ informer.title }}</a></td>
+            <td>{{ informer.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+    {% if contribs.collectors|length > 0 %}
+      <caption><h3>{% trans "Enquêteur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for collector  in  contribs.collectors %}
+          <tr>
+            <td> <a href="/item/{{collector.id }}">{{ collector.title }}</a></td>
+            <td>{{ collector.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+    {% if contribs.authors|length > 0 %}
+      <caption><h3>{% trans "Auteur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for author  in  contribs.authors %}
+          <tr>
+            <td> <a href="/item/{{author.id }}">{{ author.title }}</a></td>
+            <td>{{ author.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+    {% if contribs.compositors|length > 0 %}
+      <caption><h3>{% trans "Compositeur" %}</h3></caption>
+      <table class="listing">
+        <thead>
+          <tr>
+              <th class="highlight">{% trans "Item" %}</th>
+              <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for compositor  in  contribs.compositors %}
+          <tr>
+            <td> <a href="/item/{{compositor.id }}">{{ compositor.title }}</a></td>
+            <td>{{ compositor.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+  
+  {% else %}
+    <p>{% trans "Cette personne n'existe pas." %}</p>
+  {% endif %}
+{% else %}
+    {% display_error error %}
+{% endif %}
+{% endblock %}

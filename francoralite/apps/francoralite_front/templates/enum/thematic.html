@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Thématique" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if perms.keycloak.thematic_add %}
+  <a href="{% url "thematic-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une thématique" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some thematics (number of elements > 0 ) -->
+{% if thematics|length > 0 %}
+  <!-- Table to display the thematics -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      <th>{% trans "Notes" %}</th>
+      {% if perms.keycloak.thematic_update or perms.keycloak.thematic_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for thematic in thematics %}
+  <tr>
+      <td class="highlight">
+          <a href="/thematic/{{thematic.id }}">
+            {{ thematic.name|upper }}</a>
+      </td>
+      <td>
+        {% if thematic.notes %}
+          {{ thematic.notes|markdown|safe }}
+        {% endif %}
+      </td>
+      {% if perms.keycloak.thematic_update or perms.keycloak.thematic_delete %}
+      <td>
+        {% if perms.keycloak.thematic_update %}
+        <a href="{% url "thematic-edit" id=thematic.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.thematic_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{thematic.title}}"
+            data-url="{% url "thematic-delete" id=thematic.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.thematic_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de thématiques" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

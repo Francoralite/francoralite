@@ -1,0 +1,48 @@
+{% extends "enum/coupe.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {{ block.super }}
+    {% if coupe %}
+     : {{ coupe.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.coupe_update %}
+  <a href="{% url "coupe-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if coupe %}
+
+  {% field_data_id form.name coupe.name|safe %}
+  {% field_data_id form.notes coupe.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Cette coupe n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

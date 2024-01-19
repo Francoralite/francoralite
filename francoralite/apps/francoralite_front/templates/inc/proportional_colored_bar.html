@@ -1,0 +1,13 @@
+{% if legend %}
+<ul class="proportional-colored-bar-legend">
+    {% for item in legend %}
+    <li style="--item-color: {{ item.color }}">{{ item.label }}</li>
+    {% endfor %}
+</ul>
+{% elif items %}
+<ul class="proportional-colored-bar">
+    {% for item in items %}
+    <li style="--item-ratio: {{ item.ratio|stringformat:'.2f' }}; --item-color: {{ item.color }}" title="{{ item.label }} : {{ item.count }} ({{ item.percent|floatformat }} %)">{{ item.label }} : {{ item.count }} ({{ item.percent|floatformat }} %)</li>
+    {% endfor %}
+</ul>
+{% endif %}

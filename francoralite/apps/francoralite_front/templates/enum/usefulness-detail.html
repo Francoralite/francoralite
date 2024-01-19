@@ -1,0 +1,50 @@
+{% extends "enum/usefulness.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+
+
+{% block title_name %}
+  {{ block.super }}
+    {% if usefulness %}
+     : {{ usefulness.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.usefulness_update %}
+  <a href="{% url "usefulness-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if usefulness %}
+
+  {% field_data_id form.name usefulness.name|safe %}
+  {% field_data_id form.notes usefulness.notes|markdown|safe %}
+
+{% else %}
+  <p>{% trans "Cette fonction n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}
