@@ -131,6 +131,9 @@ class EnumsTest:
             # Write a code
             francoralite_context.set_element_value('id_' + self.first_text_field, self.data[0][self.first_text_field])
 
+            # Write other field
+            francoralite_context.set_element_value('id_' + self.second_text_field, self.data[0][self.second_text_field])
+
             # Validation
             francoralite_context.find_element(by_id='save').click()
 

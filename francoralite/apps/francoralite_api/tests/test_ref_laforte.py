@@ -23,8 +23,8 @@ from .keycloak import get_token
 # Expected structure for Keyword objects
 KEYWORD_STRUCTURE = [
     ("id", int),
+    ("number", str),
     ("name", str),
-    ("description", str),
 ]
 
 # Expected keys for MODEL objects
@@ -120,13 +120,13 @@ class TestRefLaforte(APITestCase):
         Ensure we can update a RefLaforte object
         """
         item = RefLaforte.objects.first()
-        self.assertNotEqual(item.name, "foobar_test_put")
+        self.assertNotEqual(item.number, "foobar_test_put")
 
         # Get existing object from API
         url = reverse("ref_laforte-detail", kwargs={"pk": item.id})
         data = self.client.get(url).data
 
-        data["name"] = "foobar_test_put"
+        data["number"] = "foobar_test_put"
         url = reverse("ref_laforte-detail", kwargs={"pk": item.id})
         response = self.client.put(url, data, format="json")
 
@@ -135,7 +135,7 @@ class TestRefLaforte(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), KEYWORD_FIELDS)
 
-        self.assertEqual(response.data["name"], "foobar_test_put")
+        self.assertEqual(response.data["number"], "foobar_test_put")
 
     def test_patch_a_ref_laforte(self):
         """
@@ -143,9 +143,9 @@ class TestRefLaforte(APITestCase):
         """
         item = RefLaforte.objects.first()
 
-        self.assertNotEqual(item.name, "foobar_test_patch")
+        self.assertNotEqual(item.number, "foobar_test_patch")
 
-        data = {"name": "foobar_test_patch"}
+        data = {"number": "foobar_test_patch"}
         url = reverse("ref_laforte-detail", kwargs={"pk": item.id})
         response = self.client.patch(url, data, format="json")
 
@@ -154,7 +154,7 @@ class TestRefLaforte(APITestCase):
         self.assertIsInstance(response.data, dict)
         self.assertEqual(sorted(response.data.keys()), KEYWORD_FIELDS)
 
-        self.assertEqual(response.data["name"], "foobar_test_patch")
+        self.assertEqual(response.data["number"], "foobar_test_patch")
 
     def test_delete_a_ref_laforte(self):
         """

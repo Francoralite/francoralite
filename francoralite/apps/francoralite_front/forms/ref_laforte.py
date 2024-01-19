@@ -9,10 +9,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 class RefLaforteForm(forms.Form):
-    name = forms.CharField(label=_("Code"), max_length=255, required=True)
-    description = forms.CharField(
-        label=_("Description"), widget=forms.Textarea, required=False
-    )
+    number = forms.CharField(label=_("Numérotation"), max_length=40, required=True)
+    name = forms.CharField(label=_("Nom"), max_length=500, required=True)
 
     def __init__(self, *args, **kwargs):
         super(RefLaforteForm, self).__init__(*args, **kwargs)

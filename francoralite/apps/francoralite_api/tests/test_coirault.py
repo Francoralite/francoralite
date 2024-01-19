@@ -29,9 +29,9 @@ from icecream import ic
 
 COIRAULT_STRUCTURE = [
     ("id", int),
+    ("number", str),
     ("name", str),
     ("uri", str),
-    ("number", str),
     ("abstract", str),
     ("collection", int),
 ]

@@ -19,5 +19,5 @@ class RefLaforteFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = RefLaforte
 
-    name = factory.Sequence(lambda n: 'laf%d' % n)
-    description = factory.Faker('paragraph', nb_sentences=1)
+    number = factory.Sequence(lambda n: 'laf%d' % n)
+    name = factory.Faker('paragraph', nb_sentences=1)

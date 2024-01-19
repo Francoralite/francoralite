@@ -47,8 +47,8 @@
         <form action="{%url "ref_laforte-add" %}" method="POST">
             {% endif %}
             {% csrf_token %}
+            {% field_editor form.number %}
             {% field_editor form.name %}
-            {% field_editor form.description %}
 
             {% buttons_form %}
         </form>

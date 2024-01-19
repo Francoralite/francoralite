@@ -14,11 +14,11 @@ class RefLaforteSerializer(serializers.ModelSerializer):
     Common serializer for all RefLaforte actions
     """
 
-    name = serializers.CharField(
+    number = serializers.CharField(
         required=True,
         validators=[UniqueValidator(queryset=RefLaforteModel.objects.all())]
     )
-    notes = serializers.CharField(required=False, allow_blank=True)
+    name = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = RefLaforteModel

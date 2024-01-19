@@ -16,9 +16,9 @@ class SkosConceptSerializer(serializers.ModelSerializer):
     Common serializer for all SkosConcept actions
     """
 
+    number = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     uri = serializers.URLField(required=True)
-    number = serializers.CharField(required=True)
     abstract = serializers.CharField(required=False, allow_blank=True)
     collection = AsymetricRelatedField.from_serializer(
         SkosCollectionSerializer, kwargs={'required': False})

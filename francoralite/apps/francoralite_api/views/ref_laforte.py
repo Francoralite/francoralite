@@ -17,9 +17,12 @@ class RefLaforteViewSet(viewsets.ModelViewSet):
     """
     queryset = RefLaforteModel.objects.all()
     serializer_class = RefLaforteSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ('name',)
-    
+
+    filter_backends = (DjangoFilterBackend,
+                       filters.OrderingFilter, filters.SearchFilter)
+    ordering = ('name', 'number')
+    search_fields = ('name', 'number')
+
     keycloak_scopes = {
         'GET': 'ref_laforte:view',
         'POST': 'ref_laforte:add',

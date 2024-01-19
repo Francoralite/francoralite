@@ -218,6 +218,17 @@ class FrancoraliteEnumAutocomplete extends FrancoraliteAutocomplete {
     }
 }
 
+class FrancoraliteNumberEnumAutocomplete extends FrancoraliteAutocomplete {
+    parseProposal(item) {
+        return {
+            'value': item.id,
+            'label': item.number + ' : ' + item.name,
+            'url': null,
+            'tooltip': null
+        };
+    }
+}
+
 class FrancoraliteFullTextAutocomplete extends FrancoraliteAutocomplete {
     parseProposal(item) {
         return {
@@ -249,18 +260,9 @@ class FrancoraliteCodeInternal extends FrancoraliteFullTextAutocomplete {
     }
 }
 
-class FrancoraliteCoirault extends FrancoraliteEnumAutocomplete {
+class FrancoraliteCoirault extends FrancoraliteNumberEnumAutocomplete {
     getDefaultUrl() {
         return '/api/skos_concept?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.number + ' : ' + item.name,
-            'url': null,
-            'tooltip': null
-        };
     }
 }
 
@@ -330,18 +332,9 @@ class FrancoraliteKeyword extends FrancoraliteEnumAutocomplete {
     }
 }
 
-class FrancoraliteLaforte extends FrancoraliteEnumAutocomplete {
+class FrancoraliteLaforte extends FrancoraliteNumberEnumAutocomplete {
     getDefaultUrl() {
         return '/api/ref_laforte?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.name + ' : ' + item.description,
-            'url': null,
-            'tooltip': null
-        };
     }
 }
 

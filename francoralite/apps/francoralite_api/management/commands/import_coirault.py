@@ -77,9 +77,9 @@ class Command(BaseCommand):
     def create_chapter(self, chapter):
         try:
             rec, created = SkosCollection.objects.update_or_create(
+                number=chapter["number"],
                 name=chapter["name"],
                 uri=chapter["uri"],
-                number=chapter["number"],
                 type="chapter"
             )
             self.current_chapter = rec
@@ -94,9 +94,9 @@ class Command(BaseCommand):
     def create_topic(self, topic):
         try:
             rec, created = SkosCollection.objects.update_or_create(
+                number=topic["number"],
                 name=topic["name"],
                 uri=topic["uri"],
-                number=topic["number"],
                 collection=self.current_chapter,
                 type="topic"
             )
@@ -112,9 +112,9 @@ class Command(BaseCommand):
     def create_song(self, song):
         try:
             rec, created = SkosConcept.objects.update_or_create(
+                number=song["number"],
                 name=song["name"],
                 uri=song["uri"],
-                number=song["number"],
                 collection=self.current_topic,
                 # TODO : penser à réupérer les notes --> abstract
                 abstract=""

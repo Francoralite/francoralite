@@ -17,7 +17,7 @@
 {% block title_name %}
 {{ block.super }}
 {% if ref_laforte %}
-: {{ ref_laforte.name }}
+: {{ ref_laforte.number }}
 {% endif %}
 {% endblock %}
 
@@ -38,8 +38,8 @@
 {% if not error|length %}
 {% if ref_laforte %}
 
+{% field_data_id form.number ref_laforte.number|safe %}
 {% field_data_id form.name ref_laforte.name|safe %}
-{% field_data_id form.description ref_laforte.description|markdown|safe %}
 
 {% else %}
 <p>{% trans "Cette référence Laforte n'existe pas." %}</p>

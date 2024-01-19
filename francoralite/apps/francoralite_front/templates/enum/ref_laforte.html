@@ -39,8 +39,8 @@
     <!-- Table to display the Laforte -->
     <table class="listing">
         <tr>
-            <th class="highlight">{% trans "Nom" %}</th>
-            <th>{% trans "Description" %}</th>
+            <th class="highlight">{% trans "Numérotation" %}</th>
+            <th>{% trans "Nom" %}</th>
             {% if perms.keycloak.ref_laforte_update or perms.keycloak.ref_laforte_delete %}
             <th>{% trans "Modifier" %}</th>
             {% endif %}
@@ -49,11 +49,11 @@
         <tr>
             <td class="highlight">
                 <a href="/ref_laforte/{{ref_laforte.id }}">
-                    {{ ref_laforte.name|upper }}</a>
+                    {{ ref_laforte.number|upper }}</a>
             </td>
             <td>
-                {% if ref_laforte.description %}
-                {{ ref_laforte.description|markdown|safe }}
+                {% if ref_laforte.name %}
+                {{ ref_laforte.name|safe }}
                 {% endif %}
             </td>
             {% if perms.keycloak.ref_laforte_update or perms.keycloak.ref_laforte_delete %}
