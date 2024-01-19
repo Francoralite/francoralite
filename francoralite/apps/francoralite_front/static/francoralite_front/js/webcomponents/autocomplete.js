@@ -218,6 +218,17 @@ class FrancoraliteEnumAutocomplete extends FrancoraliteAutocomplete {
     }
 }
 
+class FrancoraliteNumberEnumAutocomplete extends FrancoraliteAutocomplete {
+    parseProposal(item) {
+        return {
+            'value': item.id,
+            'label': item.number + ' : ' + item.name,
+            'url': null,
+            'tooltip': null
+        };
+    }
+}
+
 class FrancoraliteFullTextAutocomplete extends FrancoraliteAutocomplete {
     parseProposal(item) {
         return {
@@ -249,18 +260,9 @@ class FrancoraliteCodeInternal extends FrancoraliteFullTextAutocomplete {
     }
 }
 
-class FrancoraliteCoirault extends FrancoraliteEnumAutocomplete {
+class FrancoraliteCoirault extends FrancoraliteNumberEnumAutocomplete {
     getDefaultUrl() {
         return '/api/skos_concept?limit=10&search=';
-    }
-
-    parseProposal(item) {
-        return {
-            'value': item.id,
-            'label': item.number + ' : ' + item.name,
-            'url': null,
-            'tooltip': null
-        };
     }
 }
 
@@ -327,6 +329,12 @@ class FrancoraliteInstrument extends FrancoraliteEnumAutocomplete {
 class FrancoraliteKeyword extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
         return '/api/keyword?limit=50&search=';
+    }
+}
+
+class FrancoraliteLaforte extends FrancoraliteNumberEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/ref_laforte?limit=10&search=';
     }
 }
 
@@ -402,6 +410,7 @@ customElements.define('francoralite-domain-vocal', FrancoraliteDomainVocal);
 customElements.define('francoralite-informer', FrancoraliteInformer);
 customElements.define('francoralite-instrument', FrancoraliteInstrument);
 customElements.define('francoralite-keyword', FrancoraliteKeyword);
+customElements.define('francoralite-laforte', FrancoraliteLaforte);
 customElements.define('francoralite-language', FrancoraliteLanguage);
 customElements.define('francoralite-location', FrancoraliteLocation);
 customElements.define('francoralite-media-type', FrancoraliteMediaType);

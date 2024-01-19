@@ -21,9 +21,9 @@ class SkosCollectionSerializer(serializers.ModelSerializer):
     Common serializer for all SkosCollection actions
     """
 
+    number = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     uri = serializers.URLField(required=True)
-    number = serializers.CharField(required=True)
     type = serializers.CharField(required=True)
     collection = AsymetricRelatedField.from_serializer(
         SubSkosCollectionSerializer, kwargs={

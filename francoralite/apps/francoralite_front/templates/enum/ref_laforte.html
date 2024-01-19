@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+{{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+{% trans "Catalogue Laforte" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% if perms.keycloak.ref_laforte_add %}
+    <a href="{% url "ref_laforte-add" %}" class="btn_add btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            {% trans "Créer une référence Laforte" %}
+    </a>
+{% endif %}
+{% endblock %}  
+
+
+{% block title %}
+   {{block.super}}
+{% endblock %}
+
+<div class="fullpage">
+    <!-- If there is some Laforte ref (number of elements > 0 ) -->
+    {% if ref_lafortes|length > 0 %}
+    <!-- Table to display the Laforte -->
+    <table class="listing">
+        <tr>
+            <th class="highlight">{% trans "Numérotation" %}</th>
+            <th>{% trans "Nom" %}</th>
+            {% if perms.keycloak.ref_laforte_update or perms.keycloak.ref_laforte_delete %}
+            <th>{% trans "Modifier" %}</th>
+            {% endif %}
+        </tr>
+        {% for ref_laforte in ref_lafortes %}
+        <tr>
+            <td class="highlight">
+                <a href="/ref_laforte/{{ref_laforte.id }}">
+                    {{ ref_laforte.number|upper }}</a>
+            </td>
+            <td>
+                {% if ref_laforte.name %}
+                {{ ref_laforte.name|safe }}
+                {% endif %}
+            </td>
+            {% if perms.keycloak.ref_laforte_update or perms.keycloak.ref_laforte_delete %}
+            <td>
+                {% if perms.keycloak.ref_laforte_update %}
+                <a href="{% url "ref_laforte-edit" id=ref_laforte.id %}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+                </a>
+                {% endif %}
+                {% if perms.keycloak.ref_laforte_delete %}
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDelete"
+                    data-name="{{ref_laforte.title}}" data-url="{% url "ref_laforte-delete" id=ref_laforte.id %}">
+                    <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+                </button>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if perms.keycloak.ref_laforte_delete %}
+    {% modal_delete %}
+    {% endif %}
+
+    {% else %}
+    {% if error|length %}
+    {% display_error error %}
+    {% else %}
+    <p>{% trans "Il n'y a pas de référence Laforte." %}</p>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

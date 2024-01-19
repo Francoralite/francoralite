@@ -170,6 +170,7 @@ def write_item_related(id_main, request, headers):
         ["musical_organization", "musical_organizations"],
         ["musical_group", "musical_groups"],
         ["coirault", "coiraults"],
+        ["laforte", "lafortes"],
         ["language", "languages"],
     ]
 

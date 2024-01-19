@@ -574,36 +574,53 @@
         {% markdown_editor component=form.refrain %}
         {% markdown_editor component=form.jingle %}
         {% field_editor form.coupe %}
-
-        <div id="app5">
         <div class="block-grey">
           <h2>{% trans "Références" %}</h2>
-          <div class="container_data">
-            <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Coirault" %}</label>
-            <v-select
-            multiple
-            v-model="coiraults"
-            label="name"
-            :filterable="false"
-            @search="onSearchCoirault"
-            :options="optionsCoirault">
-              <template slot="option" slot-scope="option">
-                ${option.number} : ${ option.name } -
+          <div id="app5">
+            <div class="container_data">
+              <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Coirault" %}</label>
+              <v-select
+              multiple
+              v-model="coiraults"
+              label="name"
+              :filterable="false"
+              @search="onSearchCoirault"
+              :options="optionsCoirault">
+                <template slot="option" slot-scope="option">
+                  ${option.number} : ${ option.name } -
+                    <a :href="option.url"
+                      onclick="window.open(this.href); return false;">
+                      <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
                   <a :href="option.url"
-                    onclick="window.open(this.href); return false;">
-                    <i>Fiche...</i></a>
-              </template>
-              <template slot="selected-option" slot-scope="option">
-                <a :href="option.url"
-                onclick="window.open(this.href); return false;">
-                ${option.number} : ${ option.name }</a>
-              </template>
-            </v-select>
+                  onclick="window.open(this.href); return false;">
+                  ${option.number} : ${ option.name }</a>
+                </template>
+              </v-select>
+            </div>
+            <input name="coiraults" type="hidden"
+            :value="JSON.stringify(coiraults,replacerCoirault)" />
           </div>
-          <input name="coiraults" type="hidden"
-          :value="JSON.stringify(coiraults,replacerCoirault)" />
-        </div>
-      </div> <!-- app5 -->
+          <div id="appLaforte">
+            <div class="container_data">
+              <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Laforte" %}</label>
+              <v-select multiple v-model="lafortes" label="name" :filterable="false" @search="onSearchLaforte"
+                :options="optionsLafortes">
+                <template slot="option" slot-scope="option">
+                  ${ option.name } -
+                  <a :href="option.url" onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                  <a :href="option.url" onclick="window.open(this.href); return false;">
+                    ${ option.name }</a>
+                </template>
+              </v-select>
+            </div>
+            <input name="lafortes" type="hidden" :value="JSON.stringify(lafortes,replacerLaforte)" />
+          </div>
+        </div> <!-- app5 -->
       </div> <!-- tab_text-->
 
 

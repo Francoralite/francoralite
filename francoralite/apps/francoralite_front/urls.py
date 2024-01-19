@@ -70,6 +70,8 @@ from .views.enum import (
     publisher_add,
     recording_context, recording_context_edit, recording_context_delete,
     recording_context_detail, recording_context_add,
+    ref_laforte, ref_laforte_edit, ref_laforte_delete, ref_laforte_detail,
+    ref_laforte_add,
 )
 
 
@@ -572,4 +574,16 @@ urlpatterns = [
     re_path(r'^recording_context/delete/(?P<id>[0-9]+)$',
         recording_context_delete.RecordingContextDelete.as_view(),
         name='recording_context-delete'),
+
+    # Ref_laforte
+    re_path(r'^ref_laforte$', ref_laforte.RefLaforteView.as_view(),
+        name="ref_laforte"),
+    re_path(r'^ref_laforte/add$',  ref_laforte_add.RefLaforteAdd.as_view(),
+        name='ref_laforte-add'),
+    re_path(r'^ref_laforte/(?P<id>[0-9]+)$', ref_laforte_detail.RefLaforteDetail.as_view(),
+        name='ref_laforte-detail'),
+    re_path(r'^ref_laforte/edit/(?P<id>[0-9]+)$', ref_laforte_edit.RefLaforteEdit.as_view(),
+        name='ref_laforte-edit'),
+    re_path(r'^ref_laforte/delete/(?P<id>[0-9]+)$', ref_laforte_delete.RefLaforteDelete.as_view(),
+        name='ref_laforte-delete'),
 ]

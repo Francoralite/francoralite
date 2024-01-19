@@ -135,6 +135,7 @@
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coupe operator=parameters.operators.coupe title=_('Coupe(s)') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_vocal operator=parameters.operators.domain_vocal title=_('Genre(s) de l’autre expression vocale') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Coirault') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.laforte operator=parameters.operators.laforte title=_('Laforte') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_music operator=parameters.operators.domain_music title=_('Genre(s) de l’expression instrumentale') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.instrument operator=parameters.operators.instrument title=_('Voix/Instrument(s)') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_tale operator=parameters.operators.domain_tale title=_('Genre(s) du conte') %}
@@ -379,7 +380,7 @@
             </a>
             </details>
 
-            <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_song or parameters_instances_json.timbre or parameters_instances_json.timbre_ref or parameters_instances_json.coupe or parameters_instances_json.domain_vocal or parameters_instances_json.coirault or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.domain_tale or parameters.text or parameters.incipit or parameters.refrain or parameters.jingle %} open{% endif %} id="details_genders">
+            <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_song or parameters_instances_json.timbre or parameters_instances_json.timbre_ref or parameters_instances_json.coupe or parameters_instances_json.domain_vocal or parameters_instances_json.coirault or parameters_instances_json.laforte or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.domain_tale or parameters.text or parameters.incipit or parameters.refrain or parameters.jingle %} open{% endif %} id="details_genders">
               <summary>{% trans "Genres" %}</summary>
               <label>{% trans "Domaine(s) :" %}</label>
               <br>
@@ -443,6 +444,11 @@
                 <label for="coirault">{% trans "Coirault" %}</label>
                 <br>
                 <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
+              </p>
+              <p class="domains_song domains_vocal">
+                <label for="laforte">{% trans "Laforte" %}</label>
+                <br>
+                <francoralite-laforte name="laforte" data-values="{{ parameters_instances_json.laforte }}" data-default-operator="{{ parameters.operators.laforte|default:'or' }}"></francoralite-laforte>
               </p>
               <p class="domains_music">
                 <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>

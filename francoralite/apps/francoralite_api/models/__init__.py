@@ -26,6 +26,7 @@ from .item_thematic import ItemThematic
 from .item_language import ItemLanguage
 from .item_musical_organization import ItemMusicalOrganization
 from .item_musical_group import ItemMusicalGroup
+from .item_laforte import ItemLaforte
 from .item_coirault import ItemCoirault
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
@@ -55,6 +56,7 @@ from .domain_music import DomainMusic
 from .domain_vocal import DomainVocal
 from .domain_song import DomainSong
 from .usefulness import Usefulness
+from .ref_laforte import RefLaforte
 from .skos_collection import SkosCollection
 from .skos_concept import SkosConcept
 from .document import Document

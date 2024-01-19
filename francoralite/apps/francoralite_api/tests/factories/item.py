@@ -29,6 +29,7 @@ from .item_musical_organization import ItemMusicalOrganizationFactory
 from .item_thematic import ItemThematicFactory
 from .item_usefulness import ItemUsefulnessFactory
 from .item_coirault import ItemCoiraultFactory
+from .item_laforte import ItemLaforteFactory
 
 
 from ..fake_data.fake_sound import create_tmp_sound
@@ -123,6 +124,7 @@ class ItemCompleteFactory(ItemFactory):
         ItemThematicFactory.create_batch(2, item = self)
         ItemUsefulnessFactory.create_batch(2, item = self)
         ItemCoiraultFactory.create_batch(2, item = self)
+        ItemLaforteFactory.create_batch(2, item = self)
 
 
 

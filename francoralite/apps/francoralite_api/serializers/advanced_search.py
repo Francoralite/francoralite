@@ -22,6 +22,7 @@ from ..models.language import Language as LanguageModel
 from ..models.location import Location as LocationModel
 from ..models.mediatype import MediaType as MediaTypeModel
 from ..models.recording_context import RecordingContext as RecordingContextModel
+from ..models.ref_laforte import RefLaforte as RefLaforteModel
 from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..models.thematic import Thematic as ThematicModel
 from ..models.usefulness import Usefulness as UsefulnessModel
@@ -41,6 +42,7 @@ from .language import LanguageSerializer
 from .location_gis import LocationGisSerializer
 from .mediatype import MediaTypeSerializer
 from .recording_context import RecordingContextSerializer
+from .ref_laforte import RefLaforteSerializer
 from .skos_concept import SkosConceptSerializer
 from .thematic import ThematicSerializer
 from .usefulness import UsefulnessSerializer
@@ -81,6 +83,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = MediaTypeSerializer(instance)
         elif isinstance(instance, RecordingContextModel):
             serializer = RecordingContextSerializer(instance)
+        elif isinstance(instance, RefLaforteModel):
+            serializer = RefLaforteSerializer(instance)
         elif isinstance(instance, SkosConceptModel):
             serializer = SkosConceptSerializer(instance)
         elif isinstance(instance, ThematicModel):

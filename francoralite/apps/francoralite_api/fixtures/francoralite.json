@@ -45,9 +45,9 @@
   },
   {
     "fields": {
+      "number": "X.90",
       "name": "QUÊTES DE MAI, DE PRINTEMPS",
       "uri": "http://sha.univ-poitiers.fr/musicologie/vocabulaires/coirault/collection_90",
-      "number": "X.90",
       "type": "topic"
     },
     "model": "francoralite_api.skoscollection",
@@ -55,9 +55,9 @@
   },
   {
     "fields": {
+      "number": "9003",
       "name": "À l’arrivée du doux printemps",
       "uri": "http://sha.univ-poitiers.fr/musicologie/vocabulaires/coirault/concept_9003",
-      "number": "9003",
       "abstract": "",
       "collection": 1
     },
@@ -66,9 +66,9 @@
   },
   {
     "fields": {
+      "number": "9018",
       "name": "Joli mois de mai, que tu es agréable",
       "uri": "http://sha.univ-poitiers.fr/musicologie/vocabulaires/coirault/concept_9018",
-      "number": "9018",
       "abstract": "",
       "collection": 1
     },
@@ -1010,6 +1010,14 @@
   {
     "fields":{
       "item":1,
+      "laforte":1
+    },
+    "model":"francoralite_api.itemlaforte",
+    "pk":1
+  },
+  {
+    "fields":{
+      "item":1,
       "collector":8
     },
     "model":"francoralite_api.itemcollector",
@@ -1107,6 +1115,22 @@
     },
     "model":"francoralite_api.itemcoirault",
     "pk":2
+  },
+  {
+    "fields": {
+      "item": 2,
+      "laforte": 2
+    },
+    "model": "francoralite_api.itemlaforte",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "item": 2,
+      "laforte": 1
+    },
+    "model": "francoralite_api.itemlaforte",
+    "pk": 3
   },
   {
     "fields":{
@@ -1376,5 +1400,21 @@
     },
     "model":"francoralite_api.itemlanguage",
     "pk":4
+  },
+  {
+    "fields":{
+      "number": "I.A01",
+      "name": "Gabriel (archange)"
+    },
+    "model":"francoralite_api.reflaforte",
+    "pk":1
+  },
+  {
+    "fields":{
+      "number": "I.A02",
+      "name": "La fuite en Égypte : Le blé"
+    },
+    "model":"francoralite_api.reflaforte",
+    "pk":2
   }
 ]
