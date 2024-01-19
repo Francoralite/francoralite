@@ -330,6 +330,21 @@ class FrancoraliteKeyword extends FrancoraliteEnumAutocomplete {
     }
 }
 
+class FrancoraliteLaforte extends FrancoraliteEnumAutocomplete {
+    getDefaultUrl() {
+        return '/api/ref_laforte?limit=10&search=';
+    }
+
+    parseProposal(item) {
+        return {
+            'value': item.id,
+            'label': item.name + ' : ' + item.description,
+            'url': null,
+            'tooltip': null
+        };
+    }
+}
+
 class FrancoraliteLanguage extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
         return '/api/language?limit=50&search=';
@@ -402,6 +417,7 @@ customElements.define('francoralite-domain-vocal', FrancoraliteDomainVocal);
 customElements.define('francoralite-informer', FrancoraliteInformer);
 customElements.define('francoralite-instrument', FrancoraliteInstrument);
 customElements.define('francoralite-keyword', FrancoraliteKeyword);
+customElements.define('francoralite-laforte', FrancoraliteLaforte);
 customElements.define('francoralite-language', FrancoraliteLanguage);
 customElements.define('francoralite-location', FrancoraliteLocation);
 customElements.define('francoralite-media-type', FrancoraliteMediaType);

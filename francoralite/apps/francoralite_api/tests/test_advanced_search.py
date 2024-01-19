@@ -429,6 +429,19 @@ class TestAdvancedSearch(APITestCase):
             },
         )
 
+    def test_laforte(self):
+        """
+        - laforte : I.A01 - Gabriel (archange)
+        - laforte : I.A02 - La fuite en Égypte : Le blé
+        """
+        self._test_all_combinations(
+            "laforte",
+            {
+                1: {"collections": {2}, "items": {1, 2}},
+                2: {"collections": {2}, "items": {2}},
+            },
+        )
+
     def test_location(self):
         """
         - location : 1 - Poitiers

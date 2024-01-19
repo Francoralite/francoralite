@@ -25,6 +25,7 @@ from ..models.language import Language
 from ..models.location import Location
 from ..models.mediatype import MediaType
 from ..models.recording_context import RecordingContext
+from ..models.ref_laforte import RefLaforte
 from ..models.skos_concept import SkosConcept
 from ..models.thematic import Thematic
 from ..models.usefulness import Usefulness
@@ -198,6 +199,14 @@ class AdvancedSearchList(generics.GenericAPIView):
                     "itemkeyword__keyword",
                 ),
                 "parameter_model": Keyword,
+            },
+            {
+                "name": "laforte",
+                "paths": (
+                    "collection__itemlaforte__laforte",
+                    "itemlaforte__laforte",
+                ),
+                "parameter_model": RefLaforte,
             },
             {
                 "name": "language",
