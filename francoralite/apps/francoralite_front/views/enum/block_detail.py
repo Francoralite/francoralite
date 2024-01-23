@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.block import BlockForm
-from ... import tools as tools
+from ... import tools
 
 
 class BlockDetail(FrancoraliteTemplateView):
@@ -27,7 +27,7 @@ class BlockDetail(FrancoraliteTemplateView):
                 BlockForm.TYPE_CHOICES).get(context['custom_block']['type'])
             context['form'] = BlockForm()
         except Http404:
-            raise Http404(_('Ce bloc n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce bloc n’existe pas.'))
         except Exception as err:
             context['custom_block'] = {}
             context['error'] = err

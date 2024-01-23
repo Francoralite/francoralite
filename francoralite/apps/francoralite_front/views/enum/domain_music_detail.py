@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.domain_music import DomainMusicForm
-from ... import tools as tools
+from ... import tools
 
 class DomainMusicDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/domain_music-detail.html"
@@ -24,7 +24,7 @@ class DomainMusicDetail(FrancoraliteTemplateView):
                 '/api/domain_music/' + context['id'])
             context['form'] = DomainMusicForm()
         except Http404:
-            raise Http404(_('Ce genre de musique n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce genre de musique n’existe pas.'))
         except Exception as err:
             context['domain_music'] = {}
             context['error'] = err

@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.utils.decorators import classonlymethod
-from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
@@ -8,7 +7,7 @@ from francoralite.apps.francoralite_front import tools
 
 
 class FrancoraliteFormView(FormView):
-    default_403_error_message = _('Accès interdit.')
+    is_front_view = True
 
     def get_initial(self):
         initial = super().get_initial()
@@ -39,7 +38,7 @@ class FrancoraliteFormView(FormView):
 
 
 class FrancoraliteTemplateView(TemplateView):
-    default_403_error_message = _('Accès interdit.')
+    is_front_view = True
 
     @classonlymethod
     def as_view(cls, **initkwargs):

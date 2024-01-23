@@ -14,7 +14,7 @@ from django.utils.translation import gettext as _
 from requests.exceptions import RequestException
 from rest_framework import status
 
-from francoralite.apps.francoralite_front.errors import APPLICATION_ERRORS
+from .errors import APPLICATION_ERRORS
 from .views.related import (
     write_fond_related,
     write_mission_related,
@@ -36,6 +36,9 @@ PROBLEM_NAMES = [
     "recording_context",
     "location_gis",
 ]
+
+
+class UserMessageHttp404(Http404): pass
 
 
 class UserMessageError(RequestException): pass
@@ -62,7 +65,7 @@ def check_status_code(status_code, allowed_codes=(status.HTTP_200_OK,)):
         raise PermissionDenied(_('Accès interdit.'))
 
     if status_code == status.HTTP_404_NOT_FOUND:
-        raise Http404(_('Cette fiche n’existe pas.'))
+        raise UserMessageHttp404(_('Cette fiche n’existe pas.'))
 
     if status_code == status.HTTP_409_CONFLICT:
         raise UserMessageError(_('Une fiche avec ce code existe déjà.'))

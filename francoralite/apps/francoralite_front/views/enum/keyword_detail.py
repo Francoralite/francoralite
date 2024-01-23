@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.keyword import KeywordForm
-from ... import tools as tools
+from ... import tools
 
 
 class KeywordDetail(FrancoraliteTemplateView):
@@ -26,7 +26,7 @@ class KeywordDetail(FrancoraliteTemplateView):
                 '/api/keyword/' + context['id'])
             context['form'] = KeywordForm()
         except Http404:
-            raise Http404(_('Ce mot-clé n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce mot-clé n’existe pas.'))
         except Exception as err:
             context['keyword'] = {}
             context['error'] = err

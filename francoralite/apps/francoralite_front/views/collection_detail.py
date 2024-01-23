@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ..forms.collection import CollectionForm
 from ..francoralite_template_view import FrancoraliteTemplateView
-from .. import tools as tools
+from .. import tools
 
 
 class CollectionDetail(FrancoraliteTemplateView):
@@ -33,7 +33,7 @@ class CollectionDetail(FrancoraliteTemplateView):
             context['documents'] = tools.request_api(
                 '/api/collection/' + context['id'] + '/document')
         except Http404:
-            raise Http404(_('Cette enquête n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette enquête n’existe pas.'))
         except Exception as err:
             context['collection'] = {}
             context['items'] = []

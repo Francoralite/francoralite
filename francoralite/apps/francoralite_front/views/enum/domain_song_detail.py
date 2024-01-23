@@ -9,12 +9,12 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.domain_song import DomainSongForm
-from ... import tools as tools
+from ... import tools
 
 
 class DomainSongDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/domain_song-detail.html"
-    
+
     keycloak_scopes = {
         'DEFAULT': 'domain_song:view',
     }
@@ -26,7 +26,7 @@ class DomainSongDetail(FrancoraliteTemplateView):
                 '/api/domain_song/' + context['id'])
             context['form'] = DomainSongForm()
         except Http404:
-            raise Http404(_('Ce genre de chanson n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce genre de chanson n’existe pas.'))
         except Exception as err:
             context['domain_song'] = {}
             context['error'] = err

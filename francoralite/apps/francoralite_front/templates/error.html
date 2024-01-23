@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% load data_display %}
 
 {% block content %}
-{{ exception }}
+{% if title %}<h1>{{ title }}</h1>{% endif %}
+{% if message %}<p>{{ message }}</p>{% endif %}
 {% endblock %}
