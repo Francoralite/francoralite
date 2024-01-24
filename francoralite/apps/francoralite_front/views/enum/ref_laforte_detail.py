@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.ref_laforte import RefLaforteForm
-from ... import tools as tools
+from ... import tools
 
 
 class RefLaforteDetail(FrancoraliteTemplateView):
@@ -25,7 +25,7 @@ class RefLaforteDetail(FrancoraliteTemplateView):
             context["ref_laforte"] = tools.request_api("/api/ref_laforte/" + context["id"])
             context["form"] = RefLaforteForm()
         except Http404:
-            raise Http404(_("Cette référence Laforte n’existe pas."))
+            raise tools.UserMessageHttp404(_("Cette référence Laforte n’existe pas."))
         except Exception as err:
             context["ref_laforte"] = {}
             context["error"] = err

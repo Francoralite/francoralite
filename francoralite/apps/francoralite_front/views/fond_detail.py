@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 from ..forms.fond import FondForm
 from ..francoralite_template_view import FrancoraliteTemplateView
 from ..widgets import DomainsBarLoader
-from .. import tools as tools
+from .. import tools
 
 
 class FondDetail(FrancoraliteTemplateView):
@@ -51,7 +51,7 @@ class FondDetail(FrancoraliteTemplateView):
             context['duration'] = tools.request_api(
                 self.api_url_prefix + context['id'] + '/duration')
         except Http404:
-            raise Http404(_('Ce fonds n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce fonds n’existe pas.'))
         except Exception as err:
             context['fond'] = {}
             context['missions'] = []

@@ -9,12 +9,12 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.usefulness import UsefulnessForm
-from ... import tools as tools
+from ... import tools
 
 
 class UsefulnessDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/usefulness-detail.html"
-       
+
     keycloak_scopes = {
         'DEFAULT': 'usefulness:view',
     }
@@ -26,7 +26,7 @@ class UsefulnessDetail(FrancoraliteTemplateView):
                 '/api/usefulness/' + context['id'])
             context['form'] = UsefulnessForm()
         except Http404:
-            raise Http404(_('Cette fonction n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette fonction n’existe pas.'))
         except Exception as err:
             context['usefulness'] = {}
             context['error'] = err

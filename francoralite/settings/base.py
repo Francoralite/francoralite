@@ -135,6 +135,7 @@ REST_FRAMEWORK = {
 }
 
 ROOT_URLCONF = 'francoralite.urls'
+CSRF_FAILURE_VIEW =  'francoralite.apps.francoralite_front.views.errors.csrf_failure'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'francoralite.wsgi.application'

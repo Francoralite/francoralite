@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.dance import DanceForm
-from ... import tools as tools
+from ... import tools
 
 
 class DanceDetail(FrancoraliteTemplateView):
@@ -25,7 +25,7 @@ class DanceDetail(FrancoraliteTemplateView):
                 '/api/dance/' + context['id'])
             context['form'] = DanceForm()
         except Http404:
-            raise Http404(_('Cette danse n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette danse n’existe pas.'))
         except Exception as err:
             context['dance'] = {}
             context['error'] = err
