@@ -4,6 +4,7 @@ from .views import (
     acquisition_mode,
     advanced_search,
     authority,
+    authority_civility,
     block,
     civility,
     code_external,
@@ -78,8 +79,6 @@ from .views import (
 urlpatterns = [
     re_path(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
         name='search_advanced'),
-    re_path(r'^api/civility/$', civility.CivilityView.as_view(),
-        name='civility'),
     re_path(r'^api/code_external/$', code_external.CodeExternalView.as_view(),
         name='code_external'),
     re_path(r'^api/code_internal/$', code_internal.CodeInternalView.as_view(),
@@ -117,6 +116,7 @@ router.register(r'recordingcontext',
                 basename='recordingcontext')
 router.register(r'authority',
                 authority.AuthorityViewSet, basename='authority')
+router.register(r'civility', civility.CivilityViewSet, basename='civility'),
 router.register(r'collection',
                 collection.CollectionViewSet,
                 basename='collection')
@@ -194,6 +194,13 @@ router.register(r'skos_concept',
 
 
 # Nested routers
+
+# Authority's nested ------------------------------------
+authority_router = routers.NestedSimpleRouter(
+    router, r'authority', lookup='authority', trailing_slash=False)
+authority_router.register(
+    r'civilities', authority_civility.AuthorityCivilityViewSet)
+
 
 # Fond's nested ------------------------------------
 fond_router = routers.NestedSimpleRouter(

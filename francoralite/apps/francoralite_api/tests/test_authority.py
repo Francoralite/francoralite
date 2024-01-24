@@ -24,7 +24,6 @@ AUTHORITY_STRUCTURE = [
     ('id', int),
     ('last_name', str),
     ('first_name', str),
-    ('civility', str),
     ('alias', str),
     ('is_collector', int),
     ('is_informer', bool),

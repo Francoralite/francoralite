@@ -10,6 +10,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from ..models.authority import Authority
+from ..models.civility import Civility
 from ..models.coupe import Coupe
 from ..models.collection import Collection
 from ..models.collection_location import CollectionLocation
@@ -87,12 +88,10 @@ class AdvancedSearchList(generics.GenericAPIView):
             {
                 "name": "collector_civility",
                 "paths": (
-                    "collectioncollectors__collector__civility",
-                    "itemcollector__collector__civility",
+                    "collectioncollectors__collector__authoritycivility__civility",
+                    "itemcollector__collector__authoritycivility__civility",
                 ),
-                "lookups": "exact",
-                "parameter_model": Authority,
-                "parameter_field": "civility",
+                "parameter_model": Civility,
             },
             {
                 "name": "coupe",
@@ -171,12 +170,10 @@ class AdvancedSearchList(generics.GenericAPIView):
             {
                 "name": "informer_civility",
                 "paths": (
-                    "collectioninformer__informer__civility",
-                    "iteminformer__informer__civility",
+                    "collectioninformer__informer__authoritycivility__civility",
+                    "iteminformer__informer__authoritycivility__civility",
                 ),
-                "lookups": "exact",
-                "parameter_model": Authority,
-                "parameter_field": "civility",
+                "parameter_model": Civility,
             },
             {
                 "name": "instrument",

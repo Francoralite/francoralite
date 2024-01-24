@@ -107,8 +107,10 @@ class KeycloakMiddleware(object):
             keycloak_permissions = {
                 'acquisition_mode:view',
                 'authority:view',
+                'authority_civility:view',
                 'acquisition_mode:view',
                 'block:view',
+                'civility:view',
                 'collection_language:view',
                 'collection_location:view',
                 'collection_publisher:view',

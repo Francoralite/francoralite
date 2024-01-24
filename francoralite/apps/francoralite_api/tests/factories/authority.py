@@ -22,7 +22,6 @@ class AuthorityFactory(factory.django.DjangoModelFactory):
 
     last_name = factory.Faker('last_name')
     first_name = factory.Faker('first_name')
-    civility = factory.Faker('prefix')
     alias = factory.Faker('word')
     is_collector = factory.Faker('boolean')
     is_informer = factory.Faker('boolean')

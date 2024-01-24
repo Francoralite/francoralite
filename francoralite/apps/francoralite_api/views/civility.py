@@ -2,30 +2,32 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Authors: Luc LEGER / Cooperative Artefacts <artefacts.lle@gmail.com>
-
-from rest_framework import generics
-
-from ..models.authority import Authority
-from ..serializers.core import SimpleSerializer
+# Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
 
-class CivilityView(generics.ListAPIView):
-    serializer_class = SimpleSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework import viewsets
+
+from ..models.civility import Civility as CivilityModel
+from ..serializers.civility import CivilitySerializer
+
+
+class CivilityViewSet(viewsets.ModelViewSet):
+    """
+    Civility management
+    """
+
+    queryset = CivilityModel.objects.all()
+    serializer_class = CivilitySerializer
+
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ('name',)
 
     keycloak_scopes = {
-        'GET': 'authority:view',
+        'GET': 'civility:view',
+        'POST': 'civility:add',
+        'PATCH': 'civility:update',
+        'PUT': 'civility:update',
+        'DELETE': 'civility:delete',
     }
-
-    def get_queryset(self):
-        search = self.request.query_params.get('search', None)
-
-        qs = Authority.objects.values_list('civility', flat=True)
-        qs = qs.exclude(civility=None).exclude(civility='')
-
-        if search:
-            qs = qs.filter(civility__icontains=search)
-
-        qs = qs.order_by('civility').distinct()
-
-        return qs
