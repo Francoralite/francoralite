@@ -39,7 +39,14 @@
   <div class="container_line">
     {% field_data_id form.first_name personne.first_name|safe %}
     {% field_data_id form.last_name personne.last_name|safe %}
-    {% field_data_id form.civility personne.civility|safe %}
+    <dl class="container_data">
+        <dt class="libelle">Civilité(s)</dt>
+        <dd id="id_civilities" class="donnee">
+            {% for authority_civility in authority_civilities %}
+                {{ authority_civility.civility.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </dd>
+    </dl>
     {% field_data_id form.alias personne.alias %}
   </div>
   <div class="container_line">
