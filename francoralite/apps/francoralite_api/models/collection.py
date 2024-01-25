@@ -33,10 +33,6 @@ class Collection(models.Model):
         _(u'Précisions sur le lieu'),
         default="",
         blank=True)
-    cultural_area = models.CharField(
-        _(u'Aire culturelle'),
-        help_text=_('Aire culturelle ; Aire culturelle'),
-        default="", blank=True,  max_length=255)
     language = models.CharField(
         'langage',
         help_text=_('Langage ; langage'),

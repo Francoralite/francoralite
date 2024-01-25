@@ -14,6 +14,7 @@ from ..models.civility import Civility
 from ..models.coupe import Coupe
 from ..models.collection import Collection
 from ..models.collection_location import CollectionLocation
+from ..models.cultural_area import CulturalArea
 from ..models.dance import Dance
 from ..models.domain_song import DomainSong
 from ..models.domain_music import DomainMusic
@@ -102,12 +103,10 @@ class AdvancedSearchList(generics.GenericAPIView):
             {
                 "name": "cultural_area",
                 "paths": (
-                    "cultural_area",
-                    "collection__cultural_area",
+                    "collectionculturalarea__cultural_area",
+                    "collection__collectionculturalarea__cultural_area",
                 ),
-                "lookups": "exact",
-                "parameter_model": Collection,
-                "parameter_field": "cultural_area",
+                "parameter_model": CulturalArea,
             },
             {
                 "name": "dance",
@@ -454,10 +453,10 @@ class AdvancedSearchList(generics.GenericAPIView):
 
         # Ordering results
         ordering = self.request.query_params.get("ordering")
-        if ordering not in ("code", "-code", "title", "-title", "cultural_area", "-cultural_area"):
+        if ordering not in ("code", "-code", "title", "-title"):
             ordering = "code"
         query_sets[0] = query_sets[0].order_by(ordering, "code")
-        query_sets[1] = query_sets[1].order_by(ordering.replace("cultural_area", "collection__cultural_area"), "code")
+        query_sets[1] = query_sets[1].order_by(ordering, "code")
 
         # Collecting static parameters
         parameters_instances = {}

@@ -10,6 +10,7 @@ from .views import (
     code_external,
     code_internal,
     collection,
+    collection_cultural_area,
     collection_informer,
     collection_language,
     collection_location,
@@ -83,8 +84,6 @@ urlpatterns = [
         name='code_external'),
     re_path(r'^api/code_internal/$', code_internal.CodeInternalView.as_view(),
         name='code_internal'),
-    re_path(r'^api/cultural_area/$', cultural_area.CulturalAreaView.as_view(),
-        name='cultural_area'),
     re_path(r'^api/locationgiscollection/$',
         location_gis_collection.LocationGisCollectionList.as_view(),
         name='location_gis_collection'),
@@ -104,6 +103,8 @@ router.register(r'block',
 router.register(r'institution',
                 institution.InstitutionViewSet, basename='institution')
 router.register(r'coupe', coupe.CoupeViewSet, basename='coupe')
+router.register(r'cultural_area',
+                cultural_area.CulturalAreaViewSet, basename='cultural_area')
 router.register(r'mediatype',
                 mediatype.MediaTypeViewSet, basename='mediatype')
 router.register(r'metadata_author',
@@ -221,6 +222,8 @@ collection_router = routers.NestedSimpleRouter(
     router, r'collection', lookup='collection', trailing_slash=False)
 collection_router.register(
     r'collectors', collectioncollectors.CollectionCollectorsViewSet)
+collection_router.register(
+    r'cultural_areas', collection_cultural_area.CollectionCulturalAreaViewSet)
 collection_router.register(
     r'informer', collection_informer.CollectionInformerViewSet)
 collection_router.register(

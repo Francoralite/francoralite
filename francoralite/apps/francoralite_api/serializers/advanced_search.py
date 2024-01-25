@@ -11,6 +11,7 @@ from ..models.civility import Civility as CivilityModel
 from ..models.collection import Collection as CollectionModel
 from ..models.collection_location import CollectionLocation as CollectionLocationModel
 from ..models.coupe import Coupe as CoupeModel
+from ..models.cultural_area import CulturalArea as CulturalAreaModel
 from ..models.dance import Dance as DanceModel
 from ..models.domain_song import DomainSong as DomainSongModel
 from ..models.domain_music import DomainMusic as DomainMusicModel
@@ -32,6 +33,7 @@ from .civility import CivilitySerializer
 from .collection import AdvancedSearchCollectionSerializer
 from .collection_location import CollectionLocationSerializer
 from .coupe import CoupeSerializer
+from .cultural_area import CulturalAreaSerializer
 from .dance import DanceSerializer
 from .domain_song import DomainSongSerializer
 from .domain_music import DomainMusicSerializer
@@ -63,6 +65,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = CollectionLocationSerializer(instance)
         elif isinstance(instance, CoupeModel):
             serializer = CoupeSerializer(instance)
+        elif isinstance(instance, CulturalAreaModel):
+            serializer = CulturalAreaSerializer(instance)
         elif isinstance(instance, DanceModel):
             serializer = DanceSerializer(instance)
         elif isinstance(instance, DomainSongModel):

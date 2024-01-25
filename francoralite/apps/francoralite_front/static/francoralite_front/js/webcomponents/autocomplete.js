@@ -278,9 +278,9 @@ class FrancoraliteCoupe extends FrancoraliteEnumAutocomplete {
     }
 }
 
-class FrancoraliteCulturalArea extends FrancoraliteFullTextAutocomplete {
+class FrancoraliteCulturalArea extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/cultural_area/?limit=50&search=';
+        return '/api/cultural_area?limit=50&search=';
     }
 }
 
