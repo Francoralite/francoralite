@@ -16,6 +16,7 @@ from rest_framework import status
 
 from .errors import APPLICATION_ERRORS
 from .views.related import (
+    write_authority_related,
     write_fond_related,
     write_mission_related,
     write_collection_related,
@@ -281,6 +282,12 @@ def patch_api(endpoint, data, request, entity):
     check_status_code(response.status_code)
 
     entity_json = response.json()
+    if entity == "authority":
+        write_authority_related(
+            entity_json,
+            request,
+            headers=get_token_header(request=request),
+        )
     if entity == "fond":
         write_fond_related(
             entity_json,

@@ -3,6 +3,8 @@ Manage these import to have models discoverables from Django makemigrations
 """
 
 from .authority import Authority
+from .authority_civility import AuthorityCivility
+from .civility import Civility
 from .block import Block
 from .coupe import Coupe
 from .mediatype import MediaType

@@ -242,9 +242,9 @@ class FrancoraliteFullTextAutocomplete extends FrancoraliteAutocomplete {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class FrancoraliteCivility extends FrancoraliteFullTextAutocomplete {
+class FrancoraliteCivility extends FrancoraliteEnumAutocomplete {
     getDefaultUrl() {
-        return '/api/civility/?limit=50&search=';
+        return '/api/civility?limit=50&search=';
     }
 }
 

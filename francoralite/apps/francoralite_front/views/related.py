@@ -28,6 +28,19 @@ class related():
         self.main_data = new_data
 
 
+def write_authority_related(authority, request, headers):
+
+    write_relations(
+        authority['id'],
+        'authority',
+        json.loads(request.POST['civilities']),
+        settings.FRONT_HOST_URL + '/api/authority/' + \
+            str(authority['id']) + '/civilities',
+        'civility',
+        headers,
+    )
+
+
 def write_fond_related(fond, request, headers):
     url_documents = \
         settings.FRONT_HOST_URL + '/api/fond/' + \

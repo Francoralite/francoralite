@@ -16,7 +16,6 @@ class Authority(models.Model):
     # List of the fields
     last_name = models.CharField(_('last name'), max_length=255)
     first_name = models.CharField(_('first name'), max_length=255)
-    civility = models.CharField(_('civility'), blank=True, max_length=255)
     alias = models.CharField(_('alias'), blank=True, max_length=255)
     is_collector = models.BooleanField(_('collector'), default=False)
     is_informer = models.BooleanField(_('informer'), default=False)

@@ -231,8 +231,11 @@ class ItemViewSet(viewsets.ModelViewSet):
             data["performances"].append(data_performance)
 
         # Retrieve the recording context name
-        rec_cont = RecordingContext.objects.get(id=int(instance.collection.recording_context))
-        data['recording_context'] = rec_cont.name
+        try:
+            rec_cont = RecordingContext.objects.get(id=int(instance.collection.recording_context))
+            data['recording_context'] = rec_cont.name
+        except:
+            data['recording_context'] = instance.collection.recording_context or ''
 
         return Response(data)
 
