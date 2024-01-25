@@ -24,6 +24,7 @@ def test_homepage(francoralite_context):
                 [_('Auteurs'), None, []],
                 [_('Compositeurs'), None, []],
                 [_('Éditeurs'), None, []],
+                [_('Civilités'), None, []],
             ]],
             [_('Lieux'), None, [
                 [_('Par enquêtes'), _('Lieux, par enquêtes'), []],
