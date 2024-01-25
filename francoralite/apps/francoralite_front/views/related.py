@@ -83,6 +83,7 @@ def write_collection_related(collection, request, headers):
 
     list_related = [
         'collector',
+        'cultural_area',
         'informer',
         'location',
         'language',
@@ -93,8 +94,8 @@ def write_collection_related(collection, request, headers):
     for related in list_related:
         items = json.loads(request.POST[related + 's'])
         nested = related
-        if related == 'collector':
-            nested = 'collectors'
+        if related in ('collector', 'cultural_area'):
+            nested = related + 's'
         url = \
             settings.FRONT_HOST_URL + '/api/collection/' + \
             str(collection["id"]) + '/' + nested
