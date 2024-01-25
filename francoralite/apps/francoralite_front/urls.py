@@ -29,6 +29,7 @@ from .views import (
 
 from .views.enum import (
     block, block_edit, block_delete, block_detail, block_add,
+    civility, civility_edit, civility_delete, civility_detail, civility_add,
     instrument, instrument_edit, instrument_delete, instrument_detail,
     instrument_add,
     domain_song, domain_song_edit, domain_song_delete, domain_song_detail,
@@ -145,6 +146,22 @@ urlpatterns = [
     re_path(r'^block/delete/(?P<id>[0-9]+)$',
         block_delete.BlockDelete.as_view(),
         name='block-delete'),
+
+    # Civilities
+    re_path(r'^civility$', civility.CivilityView.as_view(),
+        name="civility"),
+    re_path(r'^civility/add$',
+        civility_add.CivilityAdd.as_view(),
+        name='civility-add'),
+    re_path(r'^civility/(?P<id>[0-9]+)$',
+        civility_detail.CivilityDetail.as_view(),
+        name='civility-detail'),
+    re_path(r'^civility/edit/(?P<id>[0-9]+)$',
+        civility_edit.CivilityEdit.as_view(),
+        name='civility-edit'),
+    re_path(r'^civility/delete/(?P<id>[0-9]+)$',
+        civility_delete.CivilityDelete.as_view(),
+        name='civility-delete'),
 
     # Location ( Lieux)
     re_path(r'^location$', location.LocationView.as_view(),

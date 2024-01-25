@@ -48,6 +48,7 @@ urlpatterns = [
 #    re_path(r'^admin/django/', include(admin.site.urls)),
     re_path(r'^', include(francoralite_api_urls)),
     re_path(r'^api/', include(francoralite_api_urls.router.urls)),
+    re_path(r'^api/', include(francoralite_api_urls.authority_router.urls)),
     re_path(r'^api/', include(francoralite_api_urls.fond_router.urls)),
     re_path(r'^api/', include(francoralite_api_urls.mission_router.urls)),
     re_path(r'^api/', include(francoralite_api_urls.collection_router.urls)),

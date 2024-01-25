@@ -25,6 +25,8 @@ class PersonneDetail(FrancoraliteTemplateView):
             # Obtain values of the record authority
             context['personne'] = tools.request_api(
                 '/api/authority/' + context['id'])
+            context['authority_civilities'] = tools.request_api(
+                '/api/authority/' + context['id'] + '/civilities')
             context['contribs'] = tools.request_api(
                 '/api/authority/' + context['id'] + '/contribs')
             context['form'] = PersonneForm

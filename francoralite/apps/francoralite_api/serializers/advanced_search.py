@@ -7,6 +7,7 @@
 from rest_framework import serializers
 
 from ..models.authority import Authority as AuthorityModel
+from ..models.civility import Civility as CivilityModel
 from ..models.collection import Collection as CollectionModel
 from ..models.collection_location import CollectionLocation as CollectionLocationModel
 from ..models.coupe import Coupe as CoupeModel
@@ -27,6 +28,7 @@ from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..models.thematic import Thematic as ThematicModel
 from ..models.usefulness import Usefulness as UsefulnessModel
 from .authority import AuthoritySerializer
+from .civility import CivilitySerializer
 from .collection import AdvancedSearchCollectionSerializer
 from .collection_location import CollectionLocationSerializer
 from .coupe import CoupeSerializer
@@ -53,6 +55,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if isinstance(instance, AuthorityModel):
             serializer = AuthoritySerializer(instance)
+        elif isinstance(instance, CivilityModel):
+            serializer = CivilitySerializer(instance)
         elif isinstance(instance, CollectionModel):
             serializer = AdvancedSearchCollectionSerializer(instance)
         elif isinstance(instance, CollectionLocationModel):

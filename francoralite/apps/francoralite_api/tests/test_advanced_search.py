@@ -191,14 +191,20 @@ class TestAdvancedSearch(APITestCase):
         )
 
     def test_collector_civility(self):
+        """
+        - civility : 1 - (Mme)
+        - civility : 2 - Mlle
+        - civility : 3 - Monsieur
+        - civility : 4 - Sr
+        """
         self._test_all_combinations(
             "collector_civility",
             {
-                "(Mme)": {},
-                "Mlle": {"collections": {4}, "items": {1, 2, 4}},
-                "Mme": {},
-                "Monsieur": {},
-                "Sr": {"collections": {1}},
+                1: {"collections": {4}, "items": {1, 2, 4}},
+                2: {"collections": {4}, "items": {1, 2, 4}},
+                3: {},
+                4: {"collections": {1}},
+                5: {},
             },
         )
 
@@ -368,14 +374,20 @@ class TestAdvancedSearch(APITestCase):
         )
 
     def test_informer_civility(self):
+        """
+        - civility : 1 - (Mme)
+        - civility : 2 - Mlle
+        - civility : 3 - Monsieur
+        - civility : 4 - Sr
+        """
         self._test_all_combinations(
             "informer_civility",
             {
-                "(Mme)": {"collections": {2, 3}},
-                "Mlle": {"collections": {4}, "items": {4}},
-                "Mme": {},
-                "Monsieur": {"collections": {2, 3}, "items": {1, 2}},
-                "Sr": {"collections": {1}},
+                1: {"collections": {2, 3}},
+                2: {"collections": {4}, "items": {4}},
+                3: {"collections": {2, 3}, "items": {1, 2}},
+                4: {"collections": {1}},
+                5: {},
             },
         )
 
