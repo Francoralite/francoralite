@@ -14,7 +14,7 @@ class CulturalAreaSerializer(serializers.ModelSerializer):
     name = serializers.CharField(
         required=True,
         validators=[UniqueValidator(queryset=CulturalAreaModel.objects.all())])
-    geojson = serializers.CharField(required=False, allow_blank=True)
+    geojson = serializers.JSONField(required=False)
 
     class Meta:
         model = CulturalAreaModel

@@ -89,7 +89,7 @@ def test_homepage_partners(francoralite_context):
 
 def browse_menu(francoralite_context, children, pointer_path=[]):
     for link, target, subchildren in children:
-        if target is not False and link is not _('Aires culturelles'):
+        if target is not False:
             # Move pointer to the top-left logo
             francoralite_context.move_to_element(by_css_selector='img')
             # Move pointer to open the sub-menu

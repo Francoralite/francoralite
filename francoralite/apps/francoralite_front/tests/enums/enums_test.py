@@ -4,7 +4,10 @@ from django.utils.translation import gettext as _
 class EnumsTest:
     first_text_field = 'name'
     second_text_field = 'notes'
+    first_text_value = 'Test nom'
+    second_text_value = 'Test notes'
     title_use_second_text_field = False
+    clear_fields_on_add = False
     update_record_id = 1
 
     @property
@@ -76,7 +79,7 @@ class EnumsTest:
             content = {'id_' + field: self.new_data[field]
                 for field in (self.first_text_field, self.second_text_field)
                 if field is not None}
-            francoralite_context.fill_data(content)
+            francoralite_context.fill_data(content, clear_before=self.clear_fields_on_add)
 
             # Validation
             francoralite_context.find_element(by_id='save').click()
@@ -105,9 +108,9 @@ class EnumsTest:
 
             # Write in a field
             if self.second_text_field is not None:
-                francoralite_context.set_element_value('id_' + self.second_text_field, 'Test notes')
+                francoralite_context.set_element_value('id_' + self.second_text_field, self.second_text_value)
             else:
-                francoralite_context.set_element_value('id_' + self.first_text_field, 'Test nom')
+                francoralite_context.set_element_value('id_' + self.first_text_field, self.first_text_value)
 
             # Validation
             francoralite_context.find_element(by_id='save').click()
@@ -116,10 +119,10 @@ class EnumsTest:
             francoralite_context.open_url(self.url_prefix + '/' + str(self.update_record_id))
             if self.second_text_field is not None:
                 label = francoralite_context.find_element(by_id="id_" + self.second_text_field)
-                assert label.text == 'Test notes'
+                assert label.text == self.second_text_value
             else:
                 label = francoralite_context.find_element(by_id="id_" + self.first_text_field)
-                assert label.text == 'Test nom'
+                assert label.text == self.first_text_value
 
             # And, then logout (if authenticated user)
             if username:
