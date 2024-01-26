@@ -149,8 +149,35 @@
         <input name="locations" type="hidden"
           :value="JSON.stringify(locations, replacerLocation)" />
         </div> <!-- app2 -->
+
         {% markdown_editor component=form.location_details %}
-        {% field_editor form.cultural_area %}
+
+        <div class = "app2">
+          <!-- CulturalAreas -->
+          <div class="container_data">
+            <label class="control_label">{% trans "Aires culturelles" %}</label>
+            <v-select
+            multiple
+            v-model="culturalAreas"
+            label="name"
+            :filterable="false"
+            @search="onSearchCulturalAreas"
+            :options="optionsCulturalAreas">
+            <template slot="option" slot-scope="option">
+              <p>${ option.name }</p>
+              <p><a :href="option.url"
+                onclick="window.open(this.href); return false;">Fiche...</a></p>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+        </div>
+        <input name="cultural_areas" type="hidden"
+          :value="JSON.stringify(culturalAreas, replacerCulturalArea)" />
+        </div> <!-- app2 -->
       </div>
 
       <div class="app2">

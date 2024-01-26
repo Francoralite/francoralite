@@ -154,7 +154,18 @@
           </div>
           <div class="col-md-6">
             {% field_data form.location_details.label|safe collection.location_details|markdown|safe empty=False %}
-            {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
+          </div>
+          <div class="col-md-6">
+            <dl class="container_data">
+              <dt class="libelle"> {% trans 'Aires culturelles' %}</dt>
+              <dd class="donnee">
+                <ul>
+                {% for cultural_area in collection.cultural_areas %}
+                  <li>{{cultural_area.name}}</li>
+                {% endfor %}
+                </ul>
+              </dd>
+            </dl>
           </div>
         </div>
       </div>

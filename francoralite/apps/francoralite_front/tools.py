@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+import json
 import requests
 
 from django.conf import settings
@@ -141,6 +142,8 @@ def post(entity, form_entity, request, *args, **kwargs):
 
     # Problem with old Telemeta fields/entities
     if form.is_valid():
+        if entity == 'cultural_area':
+            form.cleaned_data['geojson'] = json.dumps(form.cleaned_data['geojson'])
         if entity == 'item':
             # Concatenate domains
             form.cleaned_data['domain'] = ''.join(form.cleaned_data['domain'])
@@ -229,6 +232,8 @@ def patch(entity, form_entity, request, *args, **kwargs):
         entity_api = entity.replace('_', '')
 
     if form.is_valid():
+        if entity == 'cultural_area':
+            form.cleaned_data['geojson'] = json.dumps(form.cleaned_data['geojson'])
         if entity == "collection":
             form.cleaned_data['recorded_from_year'] = \
                 form.data['recorded_from_year']

@@ -1,0 +1,48 @@
+{% extends "enum/cultural_area.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {{ block.super }}
+    {% if cultural_area %}
+     : {{ cultural_area.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+  {% if perms.keycloak.cultural_area_update %}
+  <a href="{% url "cultural_area-edit" id=id %}" class="btn_add btn btn-default">
+    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+  </a>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% if not error|length %}
+{% if cultural_area %}
+
+  {% field_data_id form.name cultural_area.name|safe %}
+  {% field_data_id form.geojson cultural_area.geojson|json %}
+
+{% else %}
+  <p>{% trans "Cette aire culturelle n'existe pas." %}</p>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

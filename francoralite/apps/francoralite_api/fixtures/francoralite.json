@@ -249,6 +249,27 @@
   },
   {
     "fields": {
+      "name": "Poitou"
+    },
+    "model": "francoralite_api.culturalarea",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "Saintonge, Poitou"
+    },
+    "model": "francoralite_api.culturalarea",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "Vendée"
+    },
+    "model": "francoralite_api.culturalarea",
+    "pk": 3
+  },
+  {
+    "fields": {
       "name": "air de musique",
       "notes": "Notes air de musique"
     },
@@ -834,7 +855,6 @@
       "recorded_to_year": "1969-09-04",
       "year_published": null,
       "location_details": "La Biroire est un lieu-dit situé à Saint-Pierre-d'Oléron, sur l'Île d'Oléron.",
-      "cultural_area": "Saintonge, Poitou",
       "language": "",
       "booklet_author": "",
       "metadata_author": "Alexandre Seli, Marion Labau",
@@ -860,6 +880,14 @@
     },
     "model":"francoralite_api.collectioncollectors",
     "pk":2
+  },
+  {
+    "fields": {
+      "collection": 2,
+      "cultural_area": 2
+    },
+    "model": "francoralite_api.collectionculturalarea",
+    "pk": 2
   },
   {
     "fields":{
@@ -914,7 +942,6 @@
       "recorded_to_year": "1969-09-07",
       "year_published": null,
       "location_details": "",
-      "cultural_area": "Poitou",
       "language": "",
       "booklet_author": "",
       "metadata_author": "",
@@ -940,6 +967,14 @@
     },
     "model":"francoralite_api.collectioncollectors",
     "pk":3
+  },
+  {
+    "fields": {
+      "collection": 3,
+      "cultural_area": 1
+    },
+    "model": "francoralite_api.collectionculturalarea",
+    "pk": 3
   },
   {
     "fields":{
@@ -989,8 +1024,7 @@
       "booklet_description":"Carnets d'enquête, photographies.",
       "comment":"",
       "media_type": 3,
-      "location_details":"",
-      "cultural_area":"Vendée"
+      "location_details":""
     },
     "model":"francoralite_api.collection",
     "pk":4
@@ -1018,6 +1052,14 @@
     },
     "model":"francoralite_api.collectioninformer",
     "pk":6
+  },
+  {
+    "fields": {
+      "collection": 4,
+      "cultural_area": 3
+    },
+    "model": "francoralite_api.collectionculturalarea",
+    "pk": 1
   },
   {
     "fields":{

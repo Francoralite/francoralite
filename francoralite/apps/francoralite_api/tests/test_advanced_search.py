@@ -223,16 +223,16 @@ class TestAdvancedSearch(APITestCase):
 
     def test_cultural_area(self):
         """
-        - cultural area : Poitou
-        - cultural area : Saintonge, Poitou
-        - cultural area : Vendée
+        - cultural area : 1 - Poitou
+        - cultural area : 2 - Saintonge, Poitou
+        - cultural area : 3 - Vendée
         """
         self._test_all_combinations(
             "cultural_area",
             {
-                "Poitou": {"collections": {3}},
-                "Saintonge, Poitou": {"collections": {2}, "items": {1, 2}},
-                "Vendée": {"collections": {4}, "items": {4}},
+                1: {"collections": {3}},
+                2: {"collections": {2}, "items": {1, 2}},
+                3: {"collections": {4}, "items": {4}},
             },
         )
 

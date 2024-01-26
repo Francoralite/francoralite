@@ -7,6 +7,7 @@ from .authority_civility import AuthorityCivility
 from .civility import Civility
 from .block import Block
 from .coupe import Coupe
+from .cultural_area import CulturalArea
 from .mediatype import MediaType
 from .legal_rights import LegalRights
 from .metadata_author import MetadataAuthor
@@ -32,6 +33,7 @@ from .item_laforte import ItemLaforte
 from .item_coirault import ItemCoirault
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
+from .collection_cultural_area import CollectionCulturalArea
 from .collection_informer import CollectionInformer
 from .collection_publisher import CollectionPublisher
 from .collection_location import CollectionLocation

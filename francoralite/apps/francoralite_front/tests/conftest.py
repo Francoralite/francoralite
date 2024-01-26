@@ -249,8 +249,10 @@ class FrancoraliteSeleniumContext():
             )
         )
 
-    def fill_data(self, data):
+    def fill_data(self, data, clear_before=False):
         for element_id, element_value in data.items():
+            if clear_before:
+                self.set_element_value(by_id=element_id, value='')
             self.find_element(by_id=element_id).send_keys(element_value)
 
     def verify_data(self, data):
