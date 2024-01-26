@@ -1185,7 +1185,7 @@ a.image-link {
     margin-bottom: 0px;
 }
 
-#block-geonav .home-block-content {
+#block-geonav .home-block-content, .map-container {
     padding: 0px;
     height: 400px;
     width: 100%;
