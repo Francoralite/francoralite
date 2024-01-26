@@ -7,9 +7,9 @@
 from django.http import Http404
 from django.utils.translation import gettext as _
 
-from francoralite.apps.francoralite_front.forms.personne import PersonneForm
-from francoralite.apps.francoralite_front.francoralite_template_view import FrancoraliteTemplateView
-import francoralite.apps.francoralite_front.tools as tools
+from ..forms.personne import PersonneForm
+from ..francoralite_template_view import FrancoraliteTemplateView
+from .. import tools
 
 
 class PersonneDetail(FrancoraliteTemplateView):
@@ -25,11 +25,13 @@ class PersonneDetail(FrancoraliteTemplateView):
             # Obtain values of the record authority
             context['personne'] = tools.request_api(
                 '/api/authority/' + context['id'])
+            context['authority_civilities'] = tools.request_api(
+                '/api/authority/' + context['id'] + '/civilities')
             context['contribs'] = tools.request_api(
                 '/api/authority/' + context['id'] + '/contribs')
             context['form'] = PersonneForm
         except Http404:
-            raise Http404(_('Cette personne n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette personne n’existe pas.'))
         except Exception as err:
             context['personne'] = {}
             context['contribs'] = {}

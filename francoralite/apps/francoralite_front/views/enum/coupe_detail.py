@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.coupe import CoupeForm
-from ... import tools as tools
+from ... import tools
 
 
 class CoupeDetail(FrancoraliteTemplateView):
@@ -25,7 +25,7 @@ class CoupeDetail(FrancoraliteTemplateView):
                 '/api/coupe/' + context['id'])
             context['form'] = CoupeForm()
         except Http404:
-            raise Http404(_('Cette coupe n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette coupe n’existe pas.'))
         except Exception as err:
             context['coupe'] = {}
             context['error'] = err

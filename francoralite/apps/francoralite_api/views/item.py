@@ -62,6 +62,9 @@ from ..serializers.performance_collection_musician import (
     PerformanceCollectionMusicianSerializer)
 from ..models.item_coirault import ItemCoirault
 from ..serializers.item_coirault import ItemCoiraultSerializer
+from ..models.item_laforte import ItemLaforte
+from ..serializers.item_laforte import ItemLaforteSerializer
+
 
 from ..models.recording_context import RecordingContext
 
@@ -147,6 +150,11 @@ entities = [
         "model": ItemCoirault,
         "serializer": ItemCoiraultSerializer
     },
+    {
+        "names": "lafortes", "name": "laforte",
+        "model": ItemLaforte,
+        "serializer": ItemLaforteSerializer
+    },
 ]
 
 
@@ -223,8 +231,11 @@ class ItemViewSet(viewsets.ModelViewSet):
             data["performances"].append(data_performance)
 
         # Retrieve the recording context name
-        rec_cont = RecordingContext.objects.get(id=int(instance.collection.recording_context))
-        data['recording_context'] = rec_cont.name
+        try:
+            rec_cont = RecordingContext.objects.get(id=int(instance.collection.recording_context))
+            data['recording_context'] = rec_cont.name
+        except:
+            data['recording_context'] = instance.collection.recording_context or ''
 
         return Response(data)
 

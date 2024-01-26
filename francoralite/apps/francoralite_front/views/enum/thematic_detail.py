@@ -9,12 +9,12 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.thematic import ThematicForm
-from ... import tools as tools
+from ... import tools
 
 
 class ThematicDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/thematic-detail.html"
-    
+
     keycloak_scopes = {
         'DEFAULT': 'thematic:view',
     }
@@ -26,7 +26,7 @@ class ThematicDetail(FrancoraliteTemplateView):
                 '/api/thematic/' + context['id'])
             context['form'] = ThematicForm()
         except Http404:
-            raise Http404(_('Cette thématique n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette thématique n’existe pas.'))
         except Exception as err:
             context['thematic'] = {}
             context['error'] = err

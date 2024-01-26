@@ -10,9 +10,11 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from ..models.authority import Authority
+from ..models.civility import Civility
 from ..models.coupe import Coupe
 from ..models.collection import Collection
 from ..models.collection_location import CollectionLocation
+from ..models.cultural_area import CulturalArea
 from ..models.dance import Dance
 from ..models.domain_song import DomainSong
 from ..models.domain_music import DomainMusic
@@ -25,6 +27,7 @@ from ..models.language import Language
 from ..models.location import Location
 from ..models.mediatype import MediaType
 from ..models.recording_context import RecordingContext
+from ..models.ref_laforte import RefLaforte
 from ..models.skos_concept import SkosConcept
 from ..models.thematic import Thematic
 from ..models.usefulness import Usefulness
@@ -86,12 +89,10 @@ class AdvancedSearchList(generics.GenericAPIView):
             {
                 "name": "collector_civility",
                 "paths": (
-                    "collectioncollectors__collector__civility",
-                    "itemcollector__collector__civility",
+                    "collectioncollectors__collector__authoritycivility__civility",
+                    "itemcollector__collector__authoritycivility__civility",
                 ),
-                "lookups": "exact",
-                "parameter_model": Authority,
-                "parameter_field": "civility",
+                "parameter_model": Civility,
             },
             {
                 "name": "coupe",
@@ -102,12 +103,10 @@ class AdvancedSearchList(generics.GenericAPIView):
             {
                 "name": "cultural_area",
                 "paths": (
-                    "cultural_area",
-                    "collection__cultural_area",
+                    "collectionculturalarea__cultural_area",
+                    "collection__collectionculturalarea__cultural_area",
                 ),
-                "lookups": "exact",
-                "parameter_model": Collection,
-                "parameter_field": "cultural_area",
+                "parameter_model": CulturalArea,
             },
             {
                 "name": "dance",
@@ -170,12 +169,10 @@ class AdvancedSearchList(generics.GenericAPIView):
             {
                 "name": "informer_civility",
                 "paths": (
-                    "collectioninformer__informer__civility",
-                    "iteminformer__informer__civility",
+                    "collectioninformer__informer__authoritycivility__civility",
+                    "iteminformer__informer__authoritycivility__civility",
                 ),
-                "lookups": "exact",
-                "parameter_model": Authority,
-                "parameter_field": "civility",
+                "parameter_model": Civility,
             },
             {
                 "name": "instrument",
@@ -198,6 +195,14 @@ class AdvancedSearchList(generics.GenericAPIView):
                     "itemkeyword__keyword",
                 ),
                 "parameter_model": Keyword,
+            },
+            {
+                "name": "laforte",
+                "paths": (
+                    "collection__itemlaforte__laforte",
+                    "itemlaforte__laforte",
+                ),
+                "parameter_model": RefLaforte,
             },
             {
                 "name": "language",
@@ -448,10 +453,10 @@ class AdvancedSearchList(generics.GenericAPIView):
 
         # Ordering results
         ordering = self.request.query_params.get("ordering")
-        if ordering not in ("code", "-code", "title", "-title", "cultural_area", "-cultural_area"):
+        if ordering not in ("code", "-code", "title", "-title"):
             ordering = "code"
         query_sets[0] = query_sets[0].order_by(ordering, "code")
-        query_sets[1] = query_sets[1].order_by(ordering.replace("cultural_area", "collection__cultural_area"), "code")
+        query_sets[1] = query_sets[1].order_by(ordering, "code")
 
         # Collecting static parameters
         parameters_instances = {}

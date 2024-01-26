@@ -11,7 +11,6 @@ def test_authority_details(francoralite_context):
         data = {
             'id_last_name': 'Le Gaulois',
             'id_first_name': 'Astérix',
-            'id_civility': '',
             'id_alias': '',
             'id_birth_date': '',
             'id_birth_location': '',
@@ -50,7 +49,6 @@ def test_authority_add(francoralite_context):
         'id_last_name' : 'verne',
         'id_first_name' : 'jules',
         'id_alias' : 'julot',
-        'id_civility' : 'mr',
         'id_birth_date' : '1828-02-08',
         'id_death_date' : '1905-03-24',
         'id_uri' : 'https://fr.wikipedia.org/wiki/Jules_Verne',

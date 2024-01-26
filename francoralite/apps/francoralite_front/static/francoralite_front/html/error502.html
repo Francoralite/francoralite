@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml"/>
+        <link rel="icon" href="/static/francoralite_front/images/favicon.ico"/>
+        <title>Francoralité</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link type="text/css" rel="stylesheet" href="/static/francoralite_front/css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="/static/francoralite_front/css/player.css"/>
+        <link type="text/css" rel="stylesheet" href="/static/francoralite_front/css/search.css"/>
+        <link type="text/css" rel="stylesheet" href="/static/francoralite_front/css/francoralite.css"/>
+    </head>
+    <body>
+        <header id="header">
+            <div id="logo">
+                <a href="/">
+                    <img src="/static/francoralite_front/images/logo_universite_poitiers.jpg" alt="Université de Poitiers" />
+                </a>
+                <img id="francoralite-bandeau" src="/static/francoralite_front/images/bandeau_francoralite.svg" alt="Francoralité" />
+            </div>
+            <div id="quick_search">
+                <span class="glyphicon glyphicon-question-sign" title="Recherche sur les champs&nbsp;:&#10;- prénom/nom des personnes,&#10;- nom des lieux,&#10;- titre des fonds,&#10;- titre des missions,&#10;- titre des enquêtes,&#10;- titre, mots-clés, paroles et résumé des items."></span>
+                <form action="/search/" id="_quickSearchForm" method="get" role="search">
+                    <div class="input-group">
+                        <input class="form-control" id="id_q" name="q" type="text" value="" placeholder="Recherche rapide ..." /><span
+                        class="input-group-btn"><button type="submit" id="btn" class="btn btn-default"><span
+                        class="glyphicon glyphicon-search"></span></button></span>
+                    </div>
+                </form>
+            </div>
+            <div id="menu">
+                <nav role="navigation" aria-label="Menu principal" class="nav">
+                    <ul class="menu">
+                        <li class="blue">
+                            <a href="/">Accueil</a>
+                        </li>
+                        <li class="green">
+                            <a href="/">Archives sonores</a>
+                        </li>
+                        <li class="yellow">
+                            <a href="/">Thésaurus</a>
+                        </li>
+                        <li class="orange">
+                            <a href="/search_advanced/">Recherche avancée</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main id="content" role="main">
+            <h1>Service non disponible</h1>
+            <p>Merci d’attendre quelques instants avant de ré-essayer ou de contacter votre administrateur si le problème persiste.</p>
+        </main>
+        <footer id="footer">
+            <hr>
+        </footer>
+    </body>
+</html>

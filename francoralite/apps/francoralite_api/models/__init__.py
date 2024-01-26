@@ -3,8 +3,11 @@ Manage these import to have models discoverables from Django makemigrations
 """
 
 from .authority import Authority
+from .authority_civility import AuthorityCivility
+from .civility import Civility
 from .block import Block
 from .coupe import Coupe
+from .cultural_area import CulturalArea
 from .mediatype import MediaType
 from .legal_rights import LegalRights
 from .metadata_author import MetadataAuthor
@@ -26,9 +29,11 @@ from .item_thematic import ItemThematic
 from .item_language import ItemLanguage
 from .item_musical_organization import ItemMusicalOrganization
 from .item_musical_group import ItemMusicalGroup
+from .item_laforte import ItemLaforte
 from .item_coirault import ItemCoirault
 from .collection import Collection
 from .collectioncollectors import CollectionCollectors
+from .collection_cultural_area import CollectionCulturalArea
 from .collection_informer import CollectionInformer
 from .collection_publisher import CollectionPublisher
 from .collection_location import CollectionLocation
@@ -55,6 +60,7 @@ from .domain_music import DomainMusic
 from .domain_vocal import DomainVocal
 from .domain_song import DomainSong
 from .usefulness import Usefulness
+from .ref_laforte import RefLaforte
 from .skos_collection import SkosCollection
 from .skos_concept import SkosConcept
 from .document import Document

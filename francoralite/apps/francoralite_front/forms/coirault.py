@@ -9,15 +9,15 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CoiraultForm(forms.Form):
+    number = forms.CharField(
+        label=_(u'Numérotation'),
+        max_length=40, required=True)
     name = forms.CharField(
         label=_(u'Chanson-type'),
-        max_length=255, required=True)
-    number = forms.CharField(
-        label=_(u'Numéro'),
-        max_length=255, required=True)
+        max_length=500, required=True)
     uri = forms.CharField(
         label=_(u'URI'),
-        max_length=512, required=True)
+        max_length=500, required=True)
     abstract = forms.CharField(
         label=_(u'Résumé'),
         widget=forms.Textarea, required=False)

@@ -15,9 +15,9 @@ class SkosConcept(models.Model):
     ""
 
     # List ofe the fields
+    number = models.CharField(_('numérotation'), max_length=40)
     name = models.CharField(_('nom'), max_length=500)
     uri = models.CharField(_('uri'), max_length=500)
-    number = models.CharField(_(u'numérotation'), max_length=40)
     collection = models.ForeignKey(
             'francoralite_api.SkosCollection',
             related_name='skos_concept',

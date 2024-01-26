@@ -21,6 +21,7 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.http.response import JsonResponse
 from django.shortcuts import render
+from django.utils.translation import gettext as _
 from keycloak import KeycloakOpenID
 from keycloak.exceptions import KeycloakInvalidTokenError
 from rest_framework.exceptions import PermissionDenied
@@ -106,13 +107,17 @@ class KeycloakMiddleware(object):
             keycloak_permissions = {
                 'acquisition_mode:view',
                 'authority:view',
+                'authority_civility:view',
                 'acquisition_mode:view',
                 'block:view',
+                'civility:view',
+                'collection_cultural_area:view',
                 'collection_language:view',
                 'collection_location:view',
                 'collection_publisher:view',
                 'collection:view',
                 'collectioncollectors:view',
+                'cultural_area:view',
                 'coupe:view',
                 'dance:view',
                 'document_fonds:view',
@@ -141,6 +146,7 @@ class KeycloakMiddleware(object):
                 'item_informer:view',
                 'item_keyword:view',
                 'item_language:view',
+                'item_laforte:view',
                 'item_musical_group:view',
                 'item_musical_organization:view',
                 'item_performance:view',
@@ -161,6 +167,7 @@ class KeycloakMiddleware(object):
                 'performance_collection:view',
                 'publisher:view',
                 'recording_context:view',
+                'ref_laforte:view',
                 'skos_collection:view',
                 'skos_concept:view',
                 'thematic:view',
@@ -204,12 +211,11 @@ class KeycloakMiddleware(object):
         """
 
         # Create HTML response (Front request)
-        default_403_error_message = getattr(
-            view_class, 'default_403_error_message', None)
-        if default_403_error_message is not None:
+        if getattr(view_class, 'is_front_view', False):
             return render(request, 'error.html', {
-                'exception': default_403_error_message or _('Accès interdit.'),
-            }, status=403)
+                'title': _('Accès interdit'),
+                'message': _('Vous n’avez pas l’autorisation d’accéder à cette page.'),
+            }, status=PermissionDenied.status_code)
 
         # Create JSON response (Back request)
         return JsonResponse(

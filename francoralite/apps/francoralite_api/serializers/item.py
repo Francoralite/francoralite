@@ -15,6 +15,7 @@ from .asymetric_related_field import AsymetricRelatedField
 from .authority import AuthoritySerializer
 from .collection import CollectionSerializer
 from .coupe import CoupeSerializer
+from .cultural_area import CulturalAreaSerializer
 from .mediatype import MediaTypeSerializer
 
 
@@ -105,6 +106,10 @@ class AdvancedSearchItemSerializer(ItemSerializer):
 
     def to_representation(self, instance):
         result = super().to_representation(instance)
+        result['cultural_areas'] = tuple(
+            CulturalAreaSerializer(collectionculturalarea.cultural_area).data
+            for collectionculturalarea in instance.collection.collectionculturalarea_set.select_related('cultural_area')
+        )
         result['informers'] = tuple(
             AuthoritySerializer(iteminformer.informer).data
             for iteminformer in instance.iteminformer_set.select_related('informer')

@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.language import LanguageForm
-from ... import tools as tools
+from ... import tools
 
 
 class LanguageDetail(FrancoraliteTemplateView):
@@ -25,7 +25,7 @@ class LanguageDetail(FrancoraliteTemplateView):
                 '/api/language/' + context['id'])
             context['form'] = LanguageForm()
         except Http404:
-            raise Http404(_('Cette langue n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette langue n’existe pas.'))
         except Exception as err:
             context['language'] = {}
             context['error'] = err

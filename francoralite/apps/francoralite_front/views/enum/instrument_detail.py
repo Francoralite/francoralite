@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.instrument import InstrumentForm
-from ... import tools as tools
+from ... import tools
 
 
 class InstrumentDetail(FrancoraliteTemplateView):
@@ -25,7 +25,7 @@ class InstrumentDetail(FrancoraliteTemplateView):
                 '/api/instrument/' + context['id'])
             context['form'] = InstrumentForm()
         except Http404:
-            raise Http404(_('Cet instrument n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cet instrument n’existe pas.'))
         except Exception as err:
             context['instrument'] = {}
             context['error'] = err

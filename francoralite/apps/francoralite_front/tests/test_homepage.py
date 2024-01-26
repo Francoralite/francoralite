@@ -24,6 +24,7 @@ def test_homepage(francoralite_context):
                 [_('Auteurs'), None, []],
                 [_('Compositeurs'), None, []],
                 [_('Éditeurs'), None, []],
+                [_('Civilités'), None, []],
             ]],
             [_('Lieux'), None, [
                 [_('Par enquêtes'), _('Lieux, par enquêtes'), []],
@@ -45,7 +46,7 @@ def test_homepage(francoralite_context):
             [_('Chanson'), False, [
                 [_('Genre de chanson'), None, []],
                 [_('Coupe'), None, []],
-
+                [_('Catalogue Laforte'), None, []],
             ]],
             [_('Conte'), False, [
                 [_('Genre de conte'), None, []],
@@ -88,7 +89,7 @@ def test_homepage_partners(francoralite_context):
 
 def browse_menu(francoralite_context, children, pointer_path=[]):
     for link, target, subchildren in children:
-        if target is not False and link is not _('Aires culturelles'):
+        if target is not False:
             # Move pointer to the top-left logo
             francoralite_context.move_to_element(by_css_selector='img')
             # Move pointer to open the sub-menu

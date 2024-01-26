@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.musical_organization import MusicalOrganizationForm
-from ... import tools as tools
+from ... import tools
 
 
 class MusicalOrganizationDetail(FrancoraliteTemplateView):
@@ -27,7 +27,7 @@ class MusicalOrganizationDetail(FrancoraliteTemplateView):
                 '/api/musical_organization/' + context['id'])
             context['form'] = MusicalOrganizationForm()
         except Http404:
-            raise Http404(_('Cette organisation musicale n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette organisation musicale n’existe pas.'))
         except Exception as err:
             context['musical_organization'] = {}
             context['form'] = MusicalOrganizationForm()

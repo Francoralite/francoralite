@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.mediatype import MediaTypeForm
-from ... import tools as tools
+from ... import tools
 
 
 class MediaTypeDetail(FrancoraliteTemplateView):
@@ -25,7 +25,7 @@ class MediaTypeDetail(FrancoraliteTemplateView):
                 '/api/mediatype/' + context['id'])
             context['form'] = MediaTypeForm()
         except Http404:
-            raise Http404(_('Ce type de média n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce type de média n’existe pas.'))
         except Exception as err:
             context['mediatype'] = {}
             context['error'] = err

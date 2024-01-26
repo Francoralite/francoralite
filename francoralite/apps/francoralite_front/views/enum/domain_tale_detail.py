@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.domain_tale import DomainTaleForm
-from ... import tools as tools
+from ... import tools
 
 
 class DomainTaleDetail(FrancoraliteTemplateView):
@@ -25,7 +25,7 @@ class DomainTaleDetail(FrancoraliteTemplateView):
                 '/api/domain_tale/' + context['id'])
             context['form'] = DomainTaleForm()
         except Http404:
-            raise Http404(_('Ce genre de conte n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce genre de conte n’existe pas.'))
         except Exception as err:
             context['domain_tale'] = {}
             context['error'] = err

@@ -17,7 +17,7 @@ from drf_yasg import openapi
 from .apps.francoralite_api import urls as francoralite_api_urls
 from .apps.francoralite_front import urls as francoralite_front_urls
 from .apps.francoralite_front.views.errors import (
-    handler403, handler404, handler500)
+    handler400, handler403, handler404, handler500)
 
 # AuthenticationFailed
 import mozilla_django_oidc.urls
@@ -48,6 +48,7 @@ urlpatterns = [
 #    re_path(r'^admin/django/', include(admin.site.urls)),
     re_path(r'^', include(francoralite_api_urls)),
     re_path(r'^api/', include(francoralite_api_urls.router.urls)),
+    re_path(r'^api/', include(francoralite_api_urls.authority_router.urls)),
     re_path(r'^api/', include(francoralite_api_urls.fond_router.urls)),
     re_path(r'^api/', include(francoralite_api_urls.mission_router.urls)),
     re_path(r'^api/', include(francoralite_api_urls.collection_router.urls)),

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+  {{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Civilités" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if perms.keycloak.civility_add %}
+  <a href="{% url "civility-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une civilité" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some civility (number of elements > 0 ) -->
+{% if civilities|length > 0 %}
+  <!-- Table to display the civilities -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      {% if perms.keycloak.civility_update or perms.keycloak.civility_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for civility in civilities %}
+  <tr>
+      <td class="highlight">
+          <a href="/civility/{{civility.id }}">
+            {{ civility.name|upper }}</a>
+      </td>
+      {% if perms.keycloak.civility_update or perms.keycloak.civility_delete %}
+      <td>
+        {% if perms.keycloak.civility_update %}
+        <a href="{% url "civility-edit" id=civility.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.civility_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{civility.title}}"
+            data-url="{% url "civility-delete" id=civility.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.civility_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas de civilité" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

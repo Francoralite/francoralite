@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.hornbostelsachs import HornbostelsachsForm
-from ... import tools as tools
+from ... import tools
 
 
 
@@ -27,7 +27,7 @@ class HornbostelsachsDetail(FrancoraliteTemplateView):
                 '/api/hornbostelsachs/' + context['id'])
             context['form'] = HornbostelsachsForm()
         except Http404:
-            raise Http404(_('Cette référence n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette référence n’existe pas.'))
         except Exception as err:
             context['hornbostelsachs'] = {}
             context['error'] = err

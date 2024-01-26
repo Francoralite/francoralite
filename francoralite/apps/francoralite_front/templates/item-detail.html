@@ -279,6 +279,14 @@
         {% related_list libelle='Coirault' items=item.coiraults url_detail="coirault-detail" field="number" field2="name"%}
       </aside>
       {% endif %}
+
+      {% if item.lafortes %}
+      <aside class="block-grey">
+        <h3>{% trans "Laforte" %}</h3>
+        {%  related_list libelle='Laforte' items=item.lafortes url_detail="ref_laforte-detail" field="number" field2="name" %}
+      </aside>
+      {% endif %}
+
     </section>
 
 

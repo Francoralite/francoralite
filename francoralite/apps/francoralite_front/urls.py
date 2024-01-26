@@ -29,6 +29,9 @@ from .views import (
 
 from .views.enum import (
     block, block_edit, block_delete, block_detail, block_add,
+    civility, civility_edit, civility_delete, civility_detail, civility_add,
+    cultural_area, cultural_area_edit, cultural_area_delete,
+    cultural_area_detail, cultural_area_add,
     instrument, instrument_edit, instrument_delete, instrument_detail,
     instrument_add,
     domain_song, domain_song_edit, domain_song_delete, domain_song_detail,
@@ -70,6 +73,8 @@ from .views.enum import (
     publisher_add,
     recording_context, recording_context_edit, recording_context_delete,
     recording_context_detail, recording_context_add,
+    ref_laforte, ref_laforte_edit, ref_laforte_delete, ref_laforte_detail,
+    ref_laforte_add,
 )
 
 
@@ -143,6 +148,38 @@ urlpatterns = [
     re_path(r'^block/delete/(?P<id>[0-9]+)$',
         block_delete.BlockDelete.as_view(),
         name='block-delete'),
+
+    # Civilities
+    re_path(r'^civility$', civility.CivilityView.as_view(),
+        name="civility"),
+    re_path(r'^civility/add$',
+        civility_add.CivilityAdd.as_view(),
+        name='civility-add'),
+    re_path(r'^civility/(?P<id>[0-9]+)$',
+        civility_detail.CivilityDetail.as_view(),
+        name='civility-detail'),
+    re_path(r'^civility/edit/(?P<id>[0-9]+)$',
+        civility_edit.CivilityEdit.as_view(),
+        name='civility-edit'),
+    re_path(r'^civility/delete/(?P<id>[0-9]+)$',
+        civility_delete.CivilityDelete.as_view(),
+        name='civility-delete'),
+
+    # Civilities
+    re_path(r'^cultural_area$', cultural_area.CulturalAreaView.as_view(),
+        name="cultural_area"),
+    re_path(r'^cultural_area/add$',
+        cultural_area_add.CulturalAreaAdd.as_view(),
+        name='cultural_area-add'),
+    re_path(r'^cultural_area/(?P<id>[0-9]+)$',
+        cultural_area_detail.CulturalAreaDetail.as_view(),
+        name='cultural_area-detail'),
+    re_path(r'^cultural_area/edit/(?P<id>[0-9]+)$',
+        cultural_area_edit.CulturalAreaEdit.as_view(),
+        name='cultural_area-edit'),
+    re_path(r'^cultural_area/delete/(?P<id>[0-9]+)$',
+        cultural_area_delete.CulturalAreaDelete.as_view(),
+        name='cultural_area-delete'),
 
     # Location ( Lieux)
     re_path(r'^location$', location.LocationView.as_view(),
@@ -572,4 +609,16 @@ urlpatterns = [
     re_path(r'^recording_context/delete/(?P<id>[0-9]+)$',
         recording_context_delete.RecordingContextDelete.as_view(),
         name='recording_context-delete'),
+
+    # Ref_laforte
+    re_path(r'^ref_laforte$', ref_laforte.RefLaforteView.as_view(),
+        name="ref_laforte"),
+    re_path(r'^ref_laforte/add$',  ref_laforte_add.RefLaforteAdd.as_view(),
+        name='ref_laforte-add'),
+    re_path(r'^ref_laforte/(?P<id>[0-9]+)$', ref_laforte_detail.RefLaforteDetail.as_view(),
+        name='ref_laforte-detail'),
+    re_path(r'^ref_laforte/edit/(?P<id>[0-9]+)$', ref_laforte_edit.RefLaforteEdit.as_view(),
+        name='ref_laforte-edit'),
+    re_path(r'^ref_laforte/delete/(?P<id>[0-9]+)$', ref_laforte_delete.RefLaforteDelete.as_view(),
+        name='ref_laforte-delete'),
 ]
