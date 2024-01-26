@@ -8,7 +8,11 @@ class TestCivility(EnumsTest):
     entity = 'cultural_area'
     title = 'Aires culturelles'
     data = [
-        {"id":"1", "name":"Poitou", "geojson":"null"},
+        {"id":"1", "name":"Poitou", "geojson":'{"type": "Polygon", '
+            '"coordinates": [[[1.021729, 46.562637], [0.587769, 46.984], '
+            '[-0.22522, 47.06638], [-2.312622, 47.017716], '
+            '[-1.653442, 46.327965], [-0.488892, 46.297611], '
+            '[0.447006, 45.926319], [1.021729, 46.562637]]]}'},
         {"id":"2", "name":"Saintonge, Poitou", "geojson":"null"},
         {"id":"3", "name":"Vendée", "geojson":"null"},
     ]

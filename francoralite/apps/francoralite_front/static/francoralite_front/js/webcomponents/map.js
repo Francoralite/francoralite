@@ -39,7 +39,7 @@ const STYLESHEET = `
 class FrancoraliteMap extends HTMLElement {
 
   static get observedAttributes() {
-    return ["lat", "lng", "zoom", "bounds", "markers-url", "markers-list", "markers-drag"];
+    return ["lat", "lng", "zoom", "bounds", "markers-url", "markers-list", "markers-drag", "geojson-data"];
   }
 
   get lat() {
@@ -72,6 +72,10 @@ class FrancoraliteMap extends HTMLElement {
 
   get markersDrag() {
     return this.getAttribute("markers-drag") === 'yes';
+  }
+
+  get geojsonData() {
+    return JSON.parse(this.getAttribute("geojson-data"));
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -218,7 +222,9 @@ class FrancoraliteMap extends HTMLElement {
       removeOutsideVisibleBounds: true,
     });
 
-    if (this.markersList) {
+    if (this.geojsonData) {
+      L.geoJSON(this.geojsonData).addTo(this.map);
+    } else if (this.markersList) {
       // There's a markers list !
       this.addMarkers(this.markersList, markersLayer);
     } else if(!this.markersUrl) {
