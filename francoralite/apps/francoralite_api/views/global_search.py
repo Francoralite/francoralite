@@ -38,6 +38,8 @@ class GlobalSearchList(generics.ListAPIView):
         items = Item.objects.filter(
             Q(title__icontains=query) |
             Q(alt_title__icontains=query) |
+            Q(text__icontains=query) |  # paroles
+            Q(deposit_digest__icontains=query) |  # résumé
             Q(itemkeyword__keyword__name__icontains=query))[:limit]
         all_results = list(itertools.chain(
             authorities,

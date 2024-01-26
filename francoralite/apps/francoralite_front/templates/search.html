@@ -7,11 +7,17 @@
 {% regroup results by entity as result_list %}
 
 <h1>{% trans "Résultats de la recherche, pour :"%}&nbsp;<strong>{{ query }}</strong></h1>
+
+<p>
+    Les résultats de cette recherche sont limités à quelques champs (titres, mots-clés, descriptions).
+    Pour une plus grande précision de résultats, utilisez la <a href="{% url "search-advanced" %}">recherche avancée</a>.
+</p>
+
 <hr/>
+
+{% if result_list %}
 <ul class="list-group">
-
   {% for result in result_list %}
-
   <li class="list-group-item well">
     <h2>{{ topics|get_obj_attr:result.grouper }}</h2>
     <ul class="list-group search">
@@ -62,7 +68,9 @@
     </ul>
   </li>
   {% endfor %}
-
 </ul>
+{% else %}
+<h2>Aucun résultat trouvé pour cette recherche.</h2>
+{% endif %}
 
 {% endblock %}

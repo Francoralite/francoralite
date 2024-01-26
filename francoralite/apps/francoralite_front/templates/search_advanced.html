@@ -41,8 +41,8 @@
         <p>Sur le formulaire de recherche, cliquez sur une des sections listées ci-dessous pour faire apparaître les champs de saisie (regroupés par thèmes).</p>
         <p>Recherchez&nbsp;:</p>
         <ul>
-            <li>par <strong>référence (cote)</strong>&nbsp;: quand vous savez précisément la mission ou l’enquête ou l’item que vous voulez, tapez son nom ou sa cote&nbsp;;</li>
-            <li>par <strong>personne</strong> (Qui&nbsp;?)&nbsp;: sélectionnez directement dans une liste prédéfinie, l’intervieweur ou la personne interviewée&nbsp;;</li>
+            <li>par <strong>référence (cote)</strong>&nbsp;: quand vous savez précisément l’enquête ou l’item que vous voulez, tapez son nom ou sa cote&nbsp;;</li>
+            <li>par <strong>personne</strong> (Qui&nbsp;?)&nbsp;: sélectionnez directement dans une liste prédéfinie, l’enquêteur (intervieweur) ou l’informateur (la personne interviewée)&nbsp;;</li>
             <li>en limitant les résultats à une <strong>période</strong> donnée (Quand&nbsp;?)&nbsp;: saisissez une date de début, et une date de fin de période&nbsp;;</li>
             <li><strong>Où&nbsp;?</strong>&nbsp;: les documents liés à un lieu précis, ou une région (aire culturelle) donnée&nbsp;;</li>
             <li>le <strong>type de contenu</strong> (Quoi&nbsp;?)&nbsp;: son ou média associé, sujet de l’enregistrement, …&nbsp;;</li>
@@ -134,8 +134,8 @@
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre_ref operator=parameters.operators.timbre_ref title=_('Timbre référencé') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coupe operator=parameters.operators.coupe title=_('Coupe(s)') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_vocal operator=parameters.operators.domain_vocal title=_('Genre(s) de l’autre expression vocale') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Coirault') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.laforte operator=parameters.operators.laforte title=_('Laforte') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Titre référencé et cote Coirault') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.laforte operator=parameters.operators.laforte title=_('Titre référencé et cote Laforte') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_music operator=parameters.operators.domain_music title=_('Genre(s) de l’expression instrumentale') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.instrument operator=parameters.operators.instrument title=_('Voix/Instrument(s)') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_tale operator=parameters.operators.domain_tale title=_('Genre(s) du conte') %}
@@ -453,12 +453,12 @@
                 </a>
               </p>
               <p class="domains_song domains_vocal">
-                <label for="coirault">{% trans "Coirault" %}</label>
+                <label for="coirault">{% trans "Titre référencé et cote Coirault" %}</label>
                 <br>
                 <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
               </p>
               <p class="domains_song domains_vocal">
-                <label for="laforte">{% trans "Laforte" %}</label>
+                <label for="laforte">{% trans "Titre référencé et cote Laforte" %}</label>
                 <br>
                 <francoralite-laforte name="laforte" data-values="{{ parameters_instances_json.laforte }}" data-default-operator="{{ parameters.operators.laforte|default:'or' }}"></francoralite-laforte>
               </p>
