@@ -38,8 +38,8 @@
 }
 
 .container_data {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
   margin: 0.5em;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .donnee {
-  background-color: #ece0d0;
+  background-color: #d9d7ec;
   padding: 0.5em;
   padding-bottom: 0.2em;
   flex-grow: 2;
