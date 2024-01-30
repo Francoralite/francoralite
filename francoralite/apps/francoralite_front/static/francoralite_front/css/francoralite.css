@@ -4,12 +4,19 @@ a {text-decoration: none; color: #bf1b2c;}
 a img {border: none;}
 
 body {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100vh;
     /*font: 0.8125em/1em verdana, sans-serif;
     line-height: 1.3em;*/
     color: #333;
     background: #FFF;
     margin: 0em;
     text-rendering: optimizeLegibility;
+}
+
+main {
+    flex-grow: 99;
 }
 
 .title {
@@ -206,7 +213,7 @@ h1, h2, h3, h4 {
 /*     background: url("../images/waves.png") 100% 0% no-repeat; */
 }
 
-#content_header, #header{
+#content_header {
     margin-bottom: .8em;
 }
 
@@ -1129,12 +1136,12 @@ a.image-link {
 }
 
 #logo {
-    margin: 15px;
+    margin: 15px 0 15px 15px;
 }
 
-#francoralite-bandeau {
+#logo img {
     max-height: 88px;
-    margin-left: 10px;
+    margin-right: 15px;
 }
 
 .logo {

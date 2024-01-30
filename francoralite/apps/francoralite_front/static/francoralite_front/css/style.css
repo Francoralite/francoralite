@@ -52,11 +52,14 @@
 
 .donnee {
   background-color: #d9d7ec;
-  padding: 0.5em;
-  padding-bottom: 0.2em;
+  padding: 0.2em 0.5em;
   flex-grow: 2;
   min-height: 2em;
   font-size: 1em;
+}
+
+.donnee p:last-child {
+  margin-bottom: 0;
 }
 
 .form-group.has-warning .control-label:after {
