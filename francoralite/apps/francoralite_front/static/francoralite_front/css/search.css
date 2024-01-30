@@ -8,22 +8,22 @@
 
 .ui-selectmenu-button.ui-widget.ui-state-default {
     background-image: none;
-    background-color: #6a0307;
-    border-color: #6a0307;
+    background-color: #393189;
+    border-color: #393189;
     color: white;
 }
 
 .ui-selectmenu-button.ui-widget.ui-state-hover {
     background-image: none;
-    background-color: #6a0307;
-    border-color: #6a0307;
+    background-color: #393189;
+    border-color: #393189;
     color: white;
 }
 
 .ui-selectmenu-button.ui-widget.ui-state-focus {
     background-image: none;
-    background-color: #6a0307;
-    border-color: #6a0307;
+    background-color: #393189;
+    border-color: #393189;
     color: white;
 }
 
@@ -37,8 +37,8 @@
 
 .ui-menu-item.ui-state-focus {
     background-image: none;
-    background-color: #6a0307;
-    border-color: #6a0307;
+    background-color: #393189;
+    border-color: #393189;
     color: white;
 }
 
@@ -117,7 +117,7 @@ summary {
     margin: -.5em -.5em 0;
     padding: .5em;
     color: white;
-    background-color: #AE8484;
+    background-color: #7069b8;
     cursor: pointer;
     display: list-item;
 }
@@ -136,7 +136,7 @@ details > p > input:not([type]) {
     width: 558px;
     max-width: calc(100% - 6px);
     margin: 2px 0;
-    border: 1px solid #6f0a08;
+    border: 1px solid #393189;
     border-radius: 3px;
 }
 
