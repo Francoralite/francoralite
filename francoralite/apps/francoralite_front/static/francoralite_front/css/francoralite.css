@@ -1,17 +1,11 @@
-body {margin: 0; padding: 0;}
-a {text-decoration: none; color: #bf1b2c;}
-
-a img {border: none;}
-
 body {
     display: flex;
     flex-flow: column nowrap;
     height: 100vh;
-    /*font: 0.8125em/1em verdana, sans-serif;
-    line-height: 1.3em;*/
     color: #333;
     background: #FFF;
-    margin: 0em;
+    margin: 0;
+    padding: 0;
     text-rendering: optimizeLegibility;
 }
 
@@ -40,8 +34,6 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     font-size: 100%;
     vertical-align: baseline;
     background: transparent;
-    /*width: auto;
-    height: auto;*/
 }
 
 a, a:visited {
@@ -81,33 +73,13 @@ svg {
     position: relative;
 }
 
-/*#content ul, #content ul ul, #content ol {
-    list-style: square;
-    padding: .7em;
-    padding-left: 2em;
-    font-size: 0.8em;
-    clear: both;
-}
-#content ul ul {
-    font-size: 1.1em;
-    padding-left: 0;
-}
-#content li {
-    padding: .2em;
-    padding-left: 0;
-}
-#content li a {
-    padding: .1em 0;
-}
-
-*/
 .login, .logout{
   display:flex;
   align-items: center;
 }
 
 .login::before {
-  content: url(/static/francoralite_front/images/user_tr.png);
+  content: url(/static/francoralite_front/images/user.png);
   padding-right: 5px;
 }
 
@@ -186,31 +158,10 @@ h1, h2, h3, h4 {
     z-index: 5;
 }
 
-
-/*
-#content h1 {
-    color: #393189;
-    font-weight: bold;
-    display:  inline;
-    font-size: 140%;
-}
-
-#content h2 {
-    color: #393189;
-}
-
-#content h3 {
-    font-weight: bold;
-    display:  inline;
-    font-size: 1.1em;
-}
-*/
-
 #logo a, #logo a:hover { border: none; background: transparent; }
 
 #header {
     padding: 0em;
-/*     background: url("../images/waves.png") 100% 0% no-repeat; */
 }
 
 #content_header {
@@ -248,7 +199,6 @@ h1, h2, h3, h4 {
     padding: 6px; /**if u change this, change also width #content_header td.rightcol, see above*/
     position: relative;
     z-index: 1;
-    /*float: right;*/
     border: 1px solid #999;
     background-color: #eee;
     -moz-border-radius: 8px 8px 8px 8px;
@@ -275,7 +225,6 @@ h1, h2, h3, h4 {
 
 #collection_player {
     background: transparent;
-    /*     background-image: url(../images/grid_bg.png); */
 }
 
 #collection_player .title {
@@ -307,7 +256,6 @@ h1, h2, h3, h4 {
     border: 1px solid #adadad;
     width: 348px;
     padding: 2px;
-    /* margin: 5px 0 0; */
     font-size: 1em;
 }
 
@@ -348,7 +296,6 @@ ul.continents ul li a { line-height: 1.8em; }
 /* Collection */
 #content .intro {
     font-size: 1em;
-    /*font-weight: bold;*/
     color: #444;
     margin: 5px 0;
     width: 400px;
@@ -456,7 +403,6 @@ form ul.switch li input:checked + label {
     color: #393189;
 }
 
-/**/
 .has-warning > label {
     color: black !important;
 }
@@ -548,7 +494,6 @@ header.advanced-search aside.search-tooltip h1::before {
   font-weight: bold;
   position: absolute;
   top: 10px;
-  /*right: 1.1em;*/
   margin-right: 1em;
   font-size: 0.9em;
   background-color: #393189;
@@ -630,7 +575,6 @@ form.login .submit {
     line-height: 1.8em;
     font-weight: bold;
     color: #333;
-    /*text-transform: uppercase;*/
 }
 #searchform select {
     width: 59%;
@@ -830,7 +774,6 @@ dl.dublincore dd.caption {
     margin-bottom: -5px;
 }
 .extraInfos h4 {
-    /* clear: both; */
     font-size: 1em;
     line-height: 1.4em;
     border-bottom: 1px dotted #aaa;
@@ -930,7 +873,6 @@ div.instruments {
 table.instruments {
     border: none;
     border-collapse: separate;
-    /* width: 100%; */
     border-spacing: .7em;
 }
 table.instruments td {
@@ -975,10 +917,6 @@ table.listing thead th {
 table.listing thead th :link:hover, table.listing thead th :visited:hover {
     background-color: transparent;
 }
-/*conflicts with buttons inside table*/
-/*table.listing a {
-    border: none;
-}*/
 table.listing thead th a {
     padding-right: 12px;
 }
@@ -1257,33 +1195,21 @@ a.image-link {
 }
 
 .roundBorder4{
-    /*padding: 0.3em 0.8em 0.8em 0.8em;
-    margin: 0 0 1.5em 1.5em;*/
-
     -moz-border-radius: 4px 4px 4px 4px;
     -webkit-border-radius: 4px 4px 4px 4px;
     border-radius: 4px 4px 4px 4px;
 }
 .roundBorder6{
-    /*padding: 0.3em 0.8em 0.8em 0.8em;
-    margin: 0 0 1.5em 1.5em;*/
-
     -moz-border-radius: 6px 6px 6px 6px;
     -webkit-border-radius: 6px 6px 6px 6px;
     border-radius: 6px 6px 6px 6px;
 }
 .roundBorder8{
-    /*padding: 0.3em 0.8em 0.8em 0.8em;
-    margin: 0 0 1.5em 1.5em;*/
-
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
 }
 .roundBorder10{
-    /*padding: 0.3em 0.8em 0.8em 0.8em;
-    margin: 0 0 1.5em 1.5em;*/
-
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius:  10px 10px 10px 10px;
     border-radius:  10px 10px 10px 10px;
@@ -1381,7 +1307,7 @@ a.image-link {
     -webkit-border-radius: 1ex 1ex 1ex 1ex;
     border-radius: 1ex 1ex 1ex 1ex;
     padding:.7ex .7ex .7ex .7ex;
-    background-color:  #f9f9f9; /*#626262;*/
+    background-color:  #f9f9f9;
     color:#444;
     text-decoration: none;
     margin:0;
@@ -1402,10 +1328,6 @@ a.image-link {
     font-weight: bold;
     border:  1px solid #e1e1e1;
     white-space:nowrap;
-    /*    border-top:  1px solid #e1e1e1 !important;
-        border-left:  1px solid #e1e1e1 !important;
-        border-right:  1px solid #e1e1e1 !important;
-        border-bottom:  1px solid #e1e1e1 !important;*/
 }
 
 .button:hover{
@@ -1413,8 +1335,8 @@ a.image-link {
     border-left:  1px solid #f9f9f9 !important;
     border-bottom:  1px solid #999 !important;
     border-right:  1px solid #999 !important;
-    background-color:  #f4f4f4; /*#e9e9d9;*/
-    color: #000; /*#393189;*/
+    background-color:  #f4f4f4;
+    color: #000;
     text-decoration: none;
 }
 
@@ -1591,7 +1513,7 @@ textarea.form-control {
 /*focus on elements*/
 a:focus,div:focus{
     -moz-outline: 1px dotted #999  !important;
-    outline: #999 dotted 1px;  /*!important;*/
+    outline: #999 dotted 1px;
 }
 
 .related_media {
@@ -1756,7 +1678,6 @@ ul.messages li.error {
 }
 
 #menu .has-children .has-children > a::after {
-    /*background:url(../images/next.png) no-repeat;*/
     content: " ▶";
     color: white;
     position: absolute;
