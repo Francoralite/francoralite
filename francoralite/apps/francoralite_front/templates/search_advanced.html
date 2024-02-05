@@ -487,6 +487,9 @@
                 <label for="laforte">{% trans "Titre référencé et cote Laforte" %}</label>
                 <br>
                 <francoralite-laforte name="laforte" data-values="{{ parameters_instances_json.laforte }}" data-default-operator="{{ parameters.operators.laforte|default:'or' }}"></francoralite-laforte>
+                <a target="_blank" id="link_laforte" href="/ref_laforte">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Laforte ..."%}
+                </a>
               </p>
               <p class="domains_song">
                 <label for="coupe">{% trans "Coupe(s)" %}</label>
