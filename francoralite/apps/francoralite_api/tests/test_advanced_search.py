@@ -191,14 +191,20 @@ class TestAdvancedSearch(APITestCase):
         )
 
     def test_collector_civility(self):
+        """
+        - civility : 1 - (Mme)
+        - civility : 2 - Mlle
+        - civility : 3 - Monsieur
+        - civility : 4 - Sr
+        """
         self._test_all_combinations(
             "collector_civility",
             {
-                "(Mme)": {},
-                "Mlle": {"collections": {4}, "items": {1, 2, 4}},
-                "Mme": {},
-                "Monsieur": {},
-                "Sr": {"collections": {1}},
+                1: {"collections": {4}, "items": {1, 2, 4}},
+                2: {"collections": {4}, "items": {1, 2, 4}},
+                3: {},
+                4: {"collections": {1}},
+                5: {},
             },
         )
 
@@ -217,16 +223,16 @@ class TestAdvancedSearch(APITestCase):
 
     def test_cultural_area(self):
         """
-        - cultural area : Poitou
-        - cultural area : Saintonge, Poitou
-        - cultural area : Vendée
+        - cultural area : 1 - Poitou
+        - cultural area : 2 - Saintonge, Poitou
+        - cultural area : 3 - Vendée
         """
         self._test_all_combinations(
             "cultural_area",
             {
-                "Poitou": {"collections": {3}},
-                "Saintonge, Poitou": {"collections": {2}, "items": {1, 2}},
-                "Vendée": {"collections": {4}, "items": {4}},
+                1: {"collections": {3}},
+                2: {"collections": {2}, "items": {1, 2}},
+                3: {"collections": {4}, "items": {4}},
             },
         )
 
@@ -368,14 +374,20 @@ class TestAdvancedSearch(APITestCase):
         )
 
     def test_informer_civility(self):
+        """
+        - civility : 1 - (Mme)
+        - civility : 2 - Mlle
+        - civility : 3 - Monsieur
+        - civility : 4 - Sr
+        """
         self._test_all_combinations(
             "informer_civility",
             {
-                "(Mme)": {"collections": {2, 3}},
-                "Mlle": {"collections": {4}, "items": {4}},
-                "Mme": {},
-                "Monsieur": {"collections": {2, 3}, "items": {1, 2}},
-                "Sr": {"collections": {1}},
+                1: {"collections": {2, 3}},
+                2: {"collections": {4}, "items": {4}},
+                3: {"collections": {2, 3}, "items": {1, 2}},
+                4: {"collections": {1}},
+                5: {},
             },
         )
 

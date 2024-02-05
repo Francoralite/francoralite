@@ -36,6 +36,11 @@ from ..fake_data.fake_sound import create_tmp_sound
 from django.conf import settings
 
 
+def format_code_number(n):
+    numbers = '{0:0>11}'.format(n)
+    return 'TEST_TST_' + '_'.join([numbers[i:i+4] for i in range(0, 11, 4)])
+
+
 class ItemFactory(factory.django.DjangoModelFactory):
     """
     Item factory
@@ -45,7 +50,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
         model = Item
 
     # General -----------
-    code = factory.Sequence(lambda n: 'TEST_TST_0000_0000_{0:0>3}'.format(n))
+    code = factory.Sequence(lambda n: format_code_number(n))
     collection = factory.SubFactory('francoralite.apps.francoralite_api.tests.factories.collection.CollectionFactory')
     title = factory.Faker('word')
     alt_title = factory.Faker('word')

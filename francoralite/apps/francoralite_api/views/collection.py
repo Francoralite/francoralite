@@ -12,6 +12,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from ..models.collection import Collection as CollectionModel
 from ..models.collectioncollectors import CollectionCollectors
+from ..models.collection_cultural_area import CollectionCulturalArea
 from ..models.collection_informer import CollectionInformer
 from ..models.collection_location import CollectionLocation
 from ..models.collection_language import CollectionLanguage
@@ -22,6 +23,7 @@ from ..models.performance_collection_musician import (
     PerformanceCollectionMusician)
 from ..models.item import Item
 from ..serializers.collection import CollectionSerializer
+from ..serializers.collection_cultural_area import CollectionCulturalAreaSerializer
 from ..serializers.collection_informer import CollectionInformerSerializer
 from ..serializers.collectioncollectors import CollectionCollectorsSerializer
 from ..serializers.collection_location import CollectionLocationSerializer
@@ -39,6 +41,11 @@ entities = [
         "names": "collectors", "name": "collector",
         "model": CollectionCollectors,
         "serializer": CollectionCollectorsSerializer
+    },
+    {
+        "names": "cultural_areas", "name": "cultural_area",
+        "model": CollectionCulturalArea,
+        "serializer": CollectionCulturalAreaSerializer
     },
     {
         "names": "informers", "name": "informer",

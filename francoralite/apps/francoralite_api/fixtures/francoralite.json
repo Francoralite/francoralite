@@ -249,6 +249,42 @@
   },
   {
     "fields": {
+      "name": "Poitou",
+      "geojson": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [1.021729, 46.562637],
+            [0.587769, 46.984],
+            [-0.22522, 47.06638],
+            [-2.312622, 47.017716],
+            [-1.653442, 46.327965],
+            [-0.488892, 46.297611],
+            [0.447006, 45.926319],
+            [1.021729, 46.562637]
+          ]
+        ]
+      }
+    },
+    "model": "francoralite_api.culturalarea",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "Saintonge, Poitou"
+    },
+    "model": "francoralite_api.culturalarea",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "Vendée"
+    },
+    "model": "francoralite_api.culturalarea",
+    "pk": 3
+  },
+  {
+    "fields": {
       "name": "air de musique",
       "notes": "Notes air de musique"
     },
@@ -439,13 +475,40 @@
   },
   {
     "fields": {
+      "name": "(Mme)"
+    },
+    "model": "francoralite_api.civility",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "Mlle"
+    },
+    "model": "francoralite_api.civility",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "Monsieur"
+    },
+    "model": "francoralite_api.civility",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "name": "Sr"
+    },
+    "model": "francoralite_api.civility",
+    "pk": 4
+  },
+  {
+    "fields": {
       "first_name": "Astérix",
       "last_name": "Le Gaulois",
       "is_collector": true,
       "birth_location": null,
       "is_editor": false,
       "is_composer": false,
-      "civility": "",
       "uri": "",
       "is_informer": true,
       "alias": "",
@@ -466,7 +529,6 @@
       "birth_location": null,
       "is_editor": false,
       "is_composer": false,
-      "civility": "Sr",
       "uri": "",
       "is_informer": true,
       "alias": "",
@@ -487,7 +549,6 @@
       "birth_location": null,
       "is_editor": false,
       "is_composer": false,
-      "civility": "Sr",
       "uri": "",
       "is_informer": false,
       "alias": "",
@@ -508,7 +569,6 @@
       "birth_location": null,
       "is_editor": false,
       "is_composer": false,
-      "civility": "Monsieur",
       "uri": "",
       "is_informer": true,
       "alias": "",
@@ -529,7 +589,6 @@
       "birth_location": null,
       "is_editor": false,
       "is_composer": false,
-      "civility": "(Mme)",
       "uri": "",
       "is_informer": true,
       "alias": "",
@@ -550,7 +609,6 @@
       "birth_location": null,
       "is_editor": false,
       "is_composer": false,
-      "civility": "",
       "uri": "",
       "is_informer": false,
       "alias": "",
@@ -571,7 +629,6 @@
       "birth_location": null,
       "is_editor": true,
       "is_composer": false,
-      "civility": "Sr",
       "uri": "",
       "is_informer": false,
       "alias": "Nathan",
@@ -592,7 +649,6 @@
       "birth_location": null,
       "is_editor": true,
       "is_composer": false,
-      "civility": "Mlle",
       "uri": "",
       "is_informer": false,
       "alias": "",
@@ -613,7 +669,6 @@
       "birth_location": null,
       "is_editor": false,
       "is_composer": false,
-      "civility": "Mlle",
       "uri": "",
       "is_informer": true,
       "alias": "",
@@ -625,6 +680,70 @@
     },
     "model": "francoralite_api.authority",
     "pk": 9
+  },
+  {
+    "fields": {
+      "authority": 4,
+      "civility": 3
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "authority": 5,
+      "civility": 1
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "authority": 9,
+      "civility": 2
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "authority": 3,
+      "civility": 4
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "authority": 8,
+      "civility": 2
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "authority": 2,
+      "civility": 4
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "authority": 7,
+      "civility": 4
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "authority": 8,
+      "civility": 1
+    },
+    "model": "francoralite_api.authoritycivility",
+    "pk": 8
   },
   {
     "fields": {
@@ -751,7 +870,6 @@
       "recorded_to_year": "1969-09-04",
       "year_published": null,
       "location_details": "La Biroire est un lieu-dit situé à Saint-Pierre-d'Oléron, sur l'Île d'Oléron.",
-      "cultural_area": "Saintonge, Poitou",
       "language": "",
       "booklet_author": "",
       "metadata_author": "Alexandre Seli, Marion Labau",
@@ -777,6 +895,14 @@
     },
     "model":"francoralite_api.collectioncollectors",
     "pk":2
+  },
+  {
+    "fields": {
+      "collection": 2,
+      "cultural_area": 2
+    },
+    "model": "francoralite_api.collectionculturalarea",
+    "pk": 2
   },
   {
     "fields":{
@@ -831,7 +957,6 @@
       "recorded_to_year": "1969-09-07",
       "year_published": null,
       "location_details": "",
-      "cultural_area": "Poitou",
       "language": "",
       "booklet_author": "",
       "metadata_author": "",
@@ -857,6 +982,14 @@
     },
     "model":"francoralite_api.collectioncollectors",
     "pk":3
+  },
+  {
+    "fields": {
+      "collection": 3,
+      "cultural_area": 1
+    },
+    "model": "francoralite_api.collectionculturalarea",
+    "pk": 3
   },
   {
     "fields":{
@@ -906,8 +1039,7 @@
       "booklet_description":"Carnets d'enquête, photographies.",
       "comment":"",
       "media_type": 3,
-      "location_details":"",
-      "cultural_area":"Vendée"
+      "location_details":""
     },
     "model":"francoralite_api.collection",
     "pk":4
@@ -935,6 +1067,14 @@
     },
     "model":"francoralite_api.collectioninformer",
     "pk":6
+  },
+  {
+    "fields": {
+      "collection": 4,
+      "cultural_area": 3
+    },
+    "model": "francoralite_api.collectionculturalarea",
+    "pk": 1
   },
   {
     "fields":{

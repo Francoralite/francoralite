@@ -44,7 +44,6 @@ COLLECTION_STRUCTURE = [
     ('year_published', int),
     ('legal_rights', dict),
     ('location_details', str),
-    ('cultural_area', str),
     ('language', str),
     ('publisher_collection', str),
     ('booklet_author', str),

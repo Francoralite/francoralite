@@ -8,9 +8,9 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 
 from ..francoralite_template_view import FrancoraliteTemplateView
-from .. import tools as tools
 from ..forms.item import ItemForm
 from ..forms.collection import CollectionForm
+from .. import tools
 
 
 class ItemDetail(FrancoraliteTemplateView):
@@ -47,7 +47,7 @@ class ItemDetail(FrancoraliteTemplateView):
                 + '/performance')
             context['performances'] = performances
         except Http404:
-            raise Http404(_('Cet item n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cet item n’existe pas.'))
         except Exception as err:
             context['item'] = {}
             context['locations'] = []

@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.domain_vocal import DomainVocalForm
-from ... import tools as tools
+from ... import tools
 
 
 
@@ -26,7 +26,7 @@ class DomainVocalDetail(FrancoraliteTemplateView):
                 '/api/domain_vocal/' + context['id'])
             context['form'] = DomainVocalForm()
         except Http404:
-            raise Http404(_('Ce genre vocal n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Ce genre vocal n’existe pas.'))
         except Exception as err:
             context['domain_vocal'] = {}
             context['error'] = err

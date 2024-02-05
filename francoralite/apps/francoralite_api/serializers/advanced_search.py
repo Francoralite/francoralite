@@ -7,9 +7,11 @@
 from rest_framework import serializers
 
 from ..models.authority import Authority as AuthorityModel
+from ..models.civility import Civility as CivilityModel
 from ..models.collection import Collection as CollectionModel
 from ..models.collection_location import CollectionLocation as CollectionLocationModel
 from ..models.coupe import Coupe as CoupeModel
+from ..models.cultural_area import CulturalArea as CulturalAreaModel
 from ..models.dance import Dance as DanceModel
 from ..models.domain_song import DomainSong as DomainSongModel
 from ..models.domain_music import DomainMusic as DomainMusicModel
@@ -27,9 +29,11 @@ from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..models.thematic import Thematic as ThematicModel
 from ..models.usefulness import Usefulness as UsefulnessModel
 from .authority import AuthoritySerializer
+from .civility import CivilitySerializer
 from .collection import AdvancedSearchCollectionSerializer
 from .collection_location import CollectionLocationSerializer
 from .coupe import CoupeSerializer
+from .cultural_area import CulturalAreaSerializer
 from .dance import DanceSerializer
 from .domain_song import DomainSongSerializer
 from .domain_music import DomainMusicSerializer
@@ -53,12 +57,16 @@ class AdvancedSearchSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if isinstance(instance, AuthorityModel):
             serializer = AuthoritySerializer(instance)
+        elif isinstance(instance, CivilityModel):
+            serializer = CivilitySerializer(instance)
         elif isinstance(instance, CollectionModel):
             serializer = AdvancedSearchCollectionSerializer(instance)
         elif isinstance(instance, CollectionLocationModel):
             serializer = CollectionLocationSerializer(instance)
         elif isinstance(instance, CoupeModel):
             serializer = CoupeSerializer(instance)
+        elif isinstance(instance, CulturalAreaModel):
+            serializer = CulturalAreaSerializer(instance)
         elif isinstance(instance, DanceModel):
             serializer = DanceSerializer(instance)
         elif isinstance(instance, DomainSongModel):

@@ -29,7 +29,7 @@ COUPE_FIELD = sorted([item[0] for item in COUPE_STRUCTURE])
 
 
 @pytest.mark.django_db
-class TestAcquisitionList(APITestCase):
+class TestCoupeList(APITestCase):
     """
     This class manage all Acquisition tests
     """

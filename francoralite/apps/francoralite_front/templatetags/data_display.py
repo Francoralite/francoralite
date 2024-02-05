@@ -187,6 +187,15 @@ def modal_delete():
     return {}
 
 
+@register.inclusion_tag('inc/select-vue-personne.html', takes_context=True)
+def select_vue_personne(context):
+    if 'id' in context:
+        return {
+            'id': context['id'],
+        }
+    return {}
+
+
 @register.inclusion_tag('inc/select-vue-item.html', takes_context=True)
 def select_vue_item(context):
     if 'id' in context:

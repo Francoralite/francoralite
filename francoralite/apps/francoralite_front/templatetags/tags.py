@@ -34,13 +34,13 @@ except:
 
 try:
     head = subprocess.Popen(
-        f"git describe --tags {latest_tagged_commit} --abbrev=0",
+        f"git tag --list",
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         encoding="utf-8",
     )
-    last_tag = head.stdout.readline().strip()
+    last_tag = head.stdout.readlines()[-1].strip()
 except:
     last_tag = ""
 

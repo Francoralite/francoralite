@@ -1,19 +1,19 @@
 .francoralite-autocomplete-webcomponent {
     --component-default-width: 558px;
     --component-bg-color: white;
-    --component-fg-color: #6f0a08;
+    --component-fg-color: #393189;
     --item-bg-color: var(--component-fg-color);
     --item-fg-color: var(--component-bg-color);
     --input-fg-color: #333333;
     --proposal-bg-color: var(--component-bg-color);
-    --proposal-hover-bg-color: #AE8484;
+    --proposal-hover-bg-color: #d9d7ec;
     --proposal-fg-color: var(--input-fg-color);
     --proposal-link-color: var(--component-fg-color);
     --operators-width: 0px;
-    --operator-checked-bg-color: #AE8484;
-    --operator-checked-fg-color: var(--component-fg-color);
-    --operator-unchecked-bg-color: var(--component-fg-color);
-    --operator-unchecked-fg-color: var(--component-bg-color);
+    --operator-unchecked-bg-color: #d9d7ec;
+    --operator-unchecked-fg-color: var(--component-fg-color);
+    --operator-checked-bg-color: var(--component-fg-color);
+    --operator-checked-fg-color: var(--component-bg-color);
     position: relative;
     display: inline-flex;
     flex-flow: row wrap;

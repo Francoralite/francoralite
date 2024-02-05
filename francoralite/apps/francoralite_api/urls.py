@@ -4,11 +4,13 @@ from .views import (
     acquisition_mode,
     advanced_search,
     authority,
+    authority_civility,
     block,
     civility,
     code_external,
     code_internal,
     collection,
+    collection_cultural_area,
     collection_informer,
     collection_language,
     collection_location,
@@ -78,14 +80,10 @@ from .views import (
 urlpatterns = [
     re_path(r'^advancedsearch/$', advanced_search.AdvancedSearchList.as_view(),
         name='search_advanced'),
-    re_path(r'^api/civility/$', civility.CivilityView.as_view(),
-        name='civility'),
     re_path(r'^api/code_external/$', code_external.CodeExternalView.as_view(),
         name='code_external'),
     re_path(r'^api/code_internal/$', code_internal.CodeInternalView.as_view(),
         name='code_internal'),
-    re_path(r'^api/cultural_area/$', cultural_area.CulturalAreaView.as_view(),
-        name='cultural_area'),
     re_path(r'^api/locationgiscollection/$',
         location_gis_collection.LocationGisCollectionList.as_view(),
         name='location_gis_collection'),
@@ -105,6 +103,8 @@ router.register(r'block',
 router.register(r'institution',
                 institution.InstitutionViewSet, basename='institution')
 router.register(r'coupe', coupe.CoupeViewSet, basename='coupe')
+router.register(r'cultural_area',
+                cultural_area.CulturalAreaViewSet, basename='cultural_area')
 router.register(r'mediatype',
                 mediatype.MediaTypeViewSet, basename='mediatype')
 router.register(r'metadata_author',
@@ -117,6 +117,7 @@ router.register(r'recordingcontext',
                 basename='recordingcontext')
 router.register(r'authority',
                 authority.AuthorityViewSet, basename='authority')
+router.register(r'civility', civility.CivilityViewSet, basename='civility'),
 router.register(r'collection',
                 collection.CollectionViewSet,
                 basename='collection')
@@ -195,6 +196,13 @@ router.register(r'skos_concept',
 
 # Nested routers
 
+# Authority's nested ------------------------------------
+authority_router = routers.NestedSimpleRouter(
+    router, r'authority', lookup='authority', trailing_slash=False)
+authority_router.register(
+    r'civilities', authority_civility.AuthorityCivilityViewSet)
+
+
 # Fond's nested ------------------------------------
 fond_router = routers.NestedSimpleRouter(
     router, r'fond', lookup='fond', trailing_slash=False)
@@ -214,6 +222,8 @@ collection_router = routers.NestedSimpleRouter(
     router, r'collection', lookup='collection', trailing_slash=False)
 collection_router.register(
     r'collectors', collectioncollectors.CollectionCollectorsViewSet)
+collection_router.register(
+    r'cultural_areas', collection_cultural_area.CollectionCulturalAreaViewSet)
 collection_router.register(
     r'informer', collection_informer.CollectionInformerViewSet)
 collection_router.register(

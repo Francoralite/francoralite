@@ -29,7 +29,7 @@ def test_authority_not_found(francoralite_context):
     assert response.status_code == 404
     assert _('Cette personne n’existe pas.') in response.content.decode('utf8')
 
-    
+
 def test_authority_not_authorized(francoralite_context):
     url_prefix = francoralite_context.URL_PREFIX
     client = Client()
@@ -42,9 +42,9 @@ def test_authority_not_authorized(francoralite_context):
     # Front (lecture)
     response = client.get(url_prefix + '/authority/edit/1')
     assert response.status_code == 403
-    assert _('Accès interdit.') in response.content.decode('utf8')
-    
+    assert _('Accès interdit') in response.content.decode('utf8')
+
     # Front (écriture)
     response = client.post(url_prefix + '/authority/edit/1')
     assert response.status_code == 403
-    assert _('Accès interdit.') in response.content.decode('utf8')
+    assert _('Accès interdit') in response.content.decode('utf8')

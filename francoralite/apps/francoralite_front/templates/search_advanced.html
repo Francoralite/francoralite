@@ -154,7 +154,7 @@
       <thead>
         {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
         {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
-        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
+        <th>{% trans "Aires culturelles" %}</th>
         <th>{% trans "Informateurs" %}</th>
       </thead>
       <tbody>
@@ -164,7 +164,13 @@
             <a target="_blank" href="/collection/{{ collection.id }}">{{ collection.code }}</a>
           </td>
           <td>{{ collection.title }}</td>
-          <td>{{ collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for cultural_area in collection.cultural_areas %}
+              <li>{{ cultural_area.name}}</li>
+              {% endfor %}
+            </ul>
+          </td>
           <td>
             <ul>
               {% for informer in collection.informers %}
@@ -194,7 +200,7 @@
       <thead>
         {% include "inc/sortable-table-column-header.html" with field="code" label=_("Cote") %}
         {% include "inc/sortable-table-column-header.html" with field="title" label=_("Titre") %}
-        {% include "inc/sortable-table-column-header.html" with field="cultural_area" label=_("Aire culturelle") %}
+        <th>{% trans "Aires culturelles" %}</th>
         <th>{% trans "Informateurs" %}</th>
         <th>{% trans "Piste son" %}</th>
       </thead>
@@ -205,7 +211,13 @@
             <a target="_blank" href="/item/{{ item.id }}">{{ item.code }}</a>
           </td>
           <td>{{ item.title }}</td>
-          <td>{{ item.collection.cultural_area }}</td>
+          <td>
+            <ul>
+              {% for cultural_area in item.cultural_areas %}
+              <li>{{ cultural_area.name}}</li>
+              {% endfor %}
+            </ul>
+          </td>
           <td>
             <ul>
               {% for informer in item.informers %}

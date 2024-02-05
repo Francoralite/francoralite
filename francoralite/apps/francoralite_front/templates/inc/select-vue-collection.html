@@ -21,6 +21,8 @@ new Vue({
   data: {
       collectors: [],
       optionsCollectors: [],
+      culturalAreas: [],
+      optionsCulturalAreas: [],
       informers: [],
       optionsInformers: [],
       locations: [],
@@ -58,6 +60,15 @@ new Vue({
         `/api/authority?is_collector=true&ordering=first_name+last_name&search=${escape(search)}`,
         'optionsCollectors',
         'authority'
+       );
+     },
+    onSearchCulturalAreas(search, loading) {
+      loading(true);
+       this.searchRelated(
+       loading, search, this,
+        `/api/cultural_area?ordering=name&search=${escape(search)}`,
+        'optionsCulturalAreas',
+        'cultural_area'
        );
      },
     onSearchInformers(search, loading) {
@@ -118,6 +129,14 @@ new Vue({
         'collectors',
         'collector',
         'authority'
+      );
+    },
+    getCulturalAreas: function(){
+      this.getRelated(
+        `/api/collection/${escape({{id}})}/cultural_areas`,
+        'culturalAreas',
+        'cultural_area',
+        'cultural_area'
       );
     },
     getInformers: function(){
@@ -189,6 +208,9 @@ new Vue({
     replacerCollector: function(key,value){
       return this.replacer(key,value,"collector");
     },
+    replacerCulturalArea: function(key,value){
+      return this.replacer(key,value,"cultural_area");
+    },
     replacerInformer: function(key,value){
       return this.replacer(key,value,"informer");
     },
@@ -237,6 +259,7 @@ new Vue({
    created: function () {
      {% if id %}
        this.getCollectors();
+       this.getCulturalAreas();
        this.getInformers();
        this.getLocations();
        this.getLanguages();

@@ -35,8 +35,6 @@ class CollectionForm(forms.Form):
     location_details = forms.CharField(
         label=_(u'Précisions sur le lieu'),
         widget=forms.Textarea, required=False)
-    cultural_area = forms.CharField(
-        label=_(u'Aire culturelle'), required=False)
     language = forms.CharField(
         label=_(u'Langue(s)'), required=False)
     publisher_collection = forms.CharField(
