@@ -3,6 +3,7 @@ import subprocess
 import django
 from rest_framework import views
 from rest_framework.response import Response
+from ..version import __version__
 
 import os
 
@@ -22,5 +23,9 @@ class VersionsView(views.APIView):
 
         # Django
         data["django"] = django.VERSION
+
+        # Application
+        data["application"] = __version__
+
 
         return Response(data)
