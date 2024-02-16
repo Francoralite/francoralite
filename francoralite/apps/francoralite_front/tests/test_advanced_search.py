@@ -245,6 +245,12 @@ def test_links_to_list(francoralite_context):
         },
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_song',
+            'id_link': 'link_coirault',
+            'title': 'Catalogue Coirault',
+        },
+        {
+            'id_block': 'details_genders',
             'id_checkbox': 'domains_deposit',
             'id_link': 'link_thematic',
             'title': 'Thématique',
