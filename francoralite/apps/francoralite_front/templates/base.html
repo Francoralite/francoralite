@@ -53,7 +53,7 @@
         <div id="logo">
         {% block logo %}
             <a href="{% url "home" %}">
-              <img src="{% static "francoralite_front/images/logo_universite_poitiers.jpg" %}"
+              <img src="{% static "francoralite_front/images/logo_universite_poitiers.svg" %}"
                alt="{% trans "Université de Poitiers" %}" />
             </a>
             <img id="francoralite-bandeau" src="{% static "francoralite_front/images/bandeau_francoralite.svg" %}"
@@ -107,7 +107,7 @@
 {% block footer %}
     <footer id="footer">
         <hr>
-        {% git_label %} - {% git_short_version %} - {% host_name %}
+         v{% version %} - {% host_name %}
     </footer>
 {% endblock %}
 </body>

@@ -9,58 +9,95 @@ def test_homepage(francoralite_context):
 
     # Define the hierarchy of all menus
     all_menus = [
-        [_('Accueil'), False, []],
-        [_('Archives sonores'), False, [
-            [_('Institutions'), None, []],
-            [_('Fonds'), None, []],
-            [_('Missions'), None, []],
-            [_('Enquêtes'), None, []],
-            [_('Items'), None, []],
-        ]],
-        [_('Thésaurus'), False, [
-            [_('Personnes'), None, [
-                [_('Enquêteurs'), None, []],
-                [_('Informateurs'), None, []],
-                [_('Auteurs'), None, []],
-                [_('Compositeurs'), None, []],
-                [_('Éditeurs'), None, []],
-                [_('Civilités'), None, []],
-            ]],
-            [_('Lieux'), None, [
-                [_('Par enquêtes'), _('Lieux, par enquêtes'), []],
-            ]],
-            [_('Aires culturelles'), None, []],
-            [_('Langue'), None, []],
-            [_('Mot-clé'), None, []],
-            [_('Thématique'), None, []],
-            [_('Musique'), False, [
-                [_("Genre d'autre expression vocale"), _('Genre vocal'), []],
-                [_('Genre de musique instrumentale'), _('Genre de musique'), []],
-                [_('Nature des émissions vocales'), None, []],
-                [_('Instruments-Voix'), _('Voix/Instruments'), []],
-                [_('Classification Hornbostel-Sachs'), None, []],
-                [_('Fonction'), None, []],
-                [_('Organisation musicale'), None, []],
-                [_('Formation (musicale)'), _('Formation'), []],
-            ]],
-            [_('Chanson'), False, [
-                [_('Genre de chanson'), None, []],
-                [_('Coupe'), None, []],
-                [_('Catalogue Laforte'), None, []],
-            ]],
-            [_('Conte'), False, [
-                [_('Genre de conte'), None, []],
-            ]],
-            [_('Danses'), _('Genre de danse'), []],
-            [_('Contexte d’enregistrement'), None, []],
-            [_('Type de média'), None, []],
-            [_('Édition'), False, [
-                [_('Droits légaux'), None, []],
-                [_('Éditeur'), None, []],
-                [_('Meta donnée auteur'), None, []],
-            ]],
-        ]],
-        [_('Recherche avancée'), None, []],
+        [_("Accueil"), False, []],
+        [
+            _("Archives sonores"),
+            False,
+            [
+                [_("Institutions"), None, []],
+                [_("Fonds"), None, []],
+                [_("Missions"), None, []],
+                [_("Enquêtes"), None, []],
+                [_("Items"), None, []],
+            ],
+        ],
+        [
+            _("Thésaurus"),
+            False,
+            [
+                [
+                    _("Personnes"),
+                    None,
+                    [
+                        [_("Enquêteurs"), None, []],
+                        [_("Informateurs"), None, []],
+                        [_("Auteurs"), None, []],
+                        [_("Compositeurs"), None, []],
+                        [_("Éditeurs"), None, []],
+                        [_("Civilités"), None, []],
+                    ],
+                ],
+                [
+                    _("Lieux"),
+                    None,
+                    [
+                        [_("Par enquêtes"), _("Lieux, par enquêtes"), []],
+                    ],
+                ],
+                [_("Aires culturelles"), None, []],
+                [_("Langue"), None, []],
+                [_("Mot-clé"), None, []],
+                [_("Thématique"), None, []],
+                [
+                    _("Musique"),
+                    False,
+                    [
+                        [_("Genre d'autre expression vocale"), _("Genre vocal"), []],
+                        [
+                            _("Genre de musique instrumentale"),
+                            _("Genre de musique"),
+                            [],
+                        ],
+                        [_("Nature des émissions vocales"), None, []],
+                        [_("Instruments-Voix"), _("Voix/Instruments"), []],
+                        [_("Classification Hornbostel-Sachs"), None, []],
+                        [_("Fonction"), None, []],
+                        [_("Organisation musicale"), None, []],
+                        [_("Formation (musicale)"), _("Formation"), []],
+                    ],
+                ],
+                [
+                    _("Chanson"),
+                    False,
+                    [
+                        [_("Genre de chanson"), None, []],
+                        [_("Coupe"), None, []],
+                        [_("Catalogue Laforte"), None, []],
+                        [_("Catalogue Coirault"), None, []],
+                    ],
+                ],
+                [
+                    _("Conte"),
+                    False,
+                    [
+                        [_("Genre de conte"), None, []],
+                    ],
+                ],
+                [_("Danses"), _("Genre de danse"), []],
+                [_("Contexte d’enregistrement"), None, []],
+                [_("Type de média"), None, []],
+                [
+                    _("Édition"),
+                    False,
+                    [
+                        [_("Droits légaux"), None, []],
+                        [_("Éditeur"), None, []],
+                        [_("Meta donnée auteur"), None, []],
+                    ],
+                ],
+            ],
+        ],
+        [_("Recherche avancée"), None, []],
     ]
 
     # Test top level menu labels

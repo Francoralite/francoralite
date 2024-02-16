@@ -38,8 +38,8 @@
 }
 
 .container_data {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
   margin: 0.5em;
 }
 
@@ -51,12 +51,15 @@
 }
 
 .donnee {
-  background-color: #ece0d0;
-  padding: 0.5em;
-  padding-bottom: 0.2em;
+  background-color: #d9d7ec;
+  padding: 0.2em 0.5em;
   flex-grow: 2;
   min-height: 2em;
   font-size: 1em;
+}
+
+.donnee p:last-child {
+  margin-bottom: 0;
 }
 
 .form-group.has-warning .control-label:after {

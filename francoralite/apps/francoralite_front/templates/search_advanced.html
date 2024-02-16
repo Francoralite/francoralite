@@ -129,20 +129,20 @@
       {% if 'I' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Expression instrumentale') %}{% endif %}
       {% if 'R' in parameters.domain %}{% include "inc/search_remind_filter.html" with mono_value=_('oui') title=_('Conte ou récit légendaire') %}{% endif %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.thematic operator=parameters.operators.thematic title=_('Thématique(s) du témoignage') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_song operator=parameters.operators.domain_song title=_('Genre(s) de la chanson') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre operator=parameters.operators.timbre title=_('Timbre de l’air') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre_ref operator=parameters.operators.timbre_ref title=_('Timbre référencé') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coupe operator=parameters.operators.coupe title=_('Coupe(s)') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_vocal operator=parameters.operators.domain_vocal title=_('Genre(s) de l’autre expression vocale') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Titre référencé et cote Coirault') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.laforte operator=parameters.operators.laforte title=_('Titre référencé et cote Laforte') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_music operator=parameters.operators.domain_music title=_('Genre(s) de l’expression instrumentale') %}
-      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.instrument operator=parameters.operators.instrument title=_('Voix/Instrument(s)') %}
       {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_tale operator=parameters.operators.domain_tale title=_('Genre(s) du conte') %}
+      {% include "inc/search_remind_filter.html" with mono_value=parameters.jingle title=_('Ritournelle') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_music operator=parameters.operators.domain_music title=_('Genre(s) de l’expression instrumentale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_vocal operator=parameters.operators.domain_vocal title=_('Genre(s) de l’autre expression vocale') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.domain_song operator=parameters.operators.domain_song title=_('Genre(s) de la chanson') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.instrument operator=parameters.operators.instrument title=_('Voix/Instrument(s)') %}
       {% include "inc/search_remind_filter.html" with mono_value=parameters.text title=_('Texte') %}
       {% include "inc/search_remind_filter.html" with mono_value=parameters.incipit title=_('Incipit') %}
       {% include "inc/search_remind_filter.html" with mono_value=parameters.refrain title=_('Refrain') %}
-      {% include "inc/search_remind_filter.html" with mono_value=parameters.jingle title=_('Ritournelle') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coirault operator=parameters.operators.coirault title=_('Titre référencé et cote Coirault') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.laforte operator=parameters.operators.laforte title=_('Titre référencé et cote Laforte') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.coupe operator=parameters.operators.coupe title=_('Coupe(s)') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre operator=parameters.operators.timbre title=_('Timbre de l’air') %}
+      {% include "inc/search_remind_filter.html" with multi_values=parameters.instances.timbre_ref operator=parameters.operators.timbre_ref title=_('Timbre référencé') %}
     </ul>
   </div>
 
@@ -392,7 +392,7 @@
             </a>
             </details>
 
-            <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_song or parameters_instances_json.timbre or parameters_instances_json.timbre_ref or parameters_instances_json.coupe or parameters_instances_json.domain_vocal or parameters_instances_json.coirault or parameters_instances_json.laforte or parameters_instances_json.domain_music or parameters_instances_json.instrument or parameters_instances_json.domain_tale or parameters.text or parameters.incipit or parameters.refrain or parameters.jingle %} open{% endif %} id="details_genders">
+            <details{% if parameters.domain or parameters_instances_json.thematic or parameters_instances_json.domain_tale or parameters.jingle or parameters_instances_json.domain_music or parameters_instances_json.domain_vocal or parameters_instances_json.domain_song or parameters_instances_json.instrument or parameters.text or parameters.incipit or parameters.refrain or parameters_instances_json.coirault or parameters_instances_json.laforte or parameters_instances_json.coupe or parameters_instances_json.timbre or parameters_instances_json.timbre_ref %} open{% endif %} id="details_genders">
               <summary>{% trans "Genres" %}</summary>
               <label>{% trans "Domaine(s) :" %}</label>
               <br>
@@ -418,30 +418,25 @@
                   <span class="glyphicon glyphicon-list"></span> {% trans "Thématiques ..."%}
                 </a>
               </p>
-              <p class="domains_song">
-                <label for="domain_song">{% trans "Genre(s) de la chanson" %}</label>
+              <p class="domains_tale">
+                <label for="domain_tale">{% trans "Genre(s) du conte" %}</label>
                 <br>
-                <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}" data-default-operator="{{ parameters.operators.domain_song|default:'or' }}"></francoralite-domain-song>
-                <a target="_blank" id="link_domain_song" href="/domain_song">
-                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
+                <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}" data-default-operator="{{ parameters.operators.domain_tale|default:'or' }}"></francoralite-domain-tale>
+                <a target="_blank" id="link_domain_tale" href="/domain_tale">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
                 </a>
               </p>
-              <p class="domains_song">
-                <label for="timbre">{% trans "Timbre de l’air" %}</label>
+              <p class="domains_tale">
+                <label for="jingle">{% trans "Ritournelle" %}</label>
                 <br>
-                <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}" data-default-operator="{{ parameters.operators.timbre|default:'or' }}"></francoralite-timbre>
+                <input name="jingle" id="jingle" value="{{ parameters.jingle | default:'' }}">
               </p>
-              <p class="domains_song">
-                <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
+              <p class="domains_music">
+                <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
                 <br>
-                <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}" data-default-operator="{{ parameters.operators.timbre_ref|default:'or' }}"></francoralite-timbre-ref>
-              </p>
-              <p class="domains_song">
-                <label for="coupe">{% trans "Coupe(s)" %}</label>
-                <br>
-                <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.operators.coupe|default:'or' }}"></francoralite-coupe>
-                <a target="_blank" id="link_coupe" href="/coupe">
-                  <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
+                <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}" data-default-operator="{{ parameters.operators.domain_music|default:'or' }}"></francoralite-domain-music>
+                <a target="_blank" id="link_domain_music" href="/domain_music">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
                 </a>
               </p>
               <p class="domains_vocal">
@@ -452,22 +447,12 @@
                   <span class="glyphicon glyphicon-list"></span> {% trans "Genres vocaux ..."%}
                 </a>
               </p>
-              <p class="domains_song domains_vocal">
-                <label for="coirault">{% trans "Titre référencé et cote Coirault" %}</label>
+              <p class="domains_song">
+                <label for="domain_song">{% trans "Genre(s) de la chanson" %}</label>
                 <br>
-                <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
-              </p>
-              <p class="domains_song domains_vocal">
-                <label for="laforte">{% trans "Titre référencé et cote Laforte" %}</label>
-                <br>
-                <francoralite-laforte name="laforte" data-values="{{ parameters_instances_json.laforte }}" data-default-operator="{{ parameters.operators.laforte|default:'or' }}"></francoralite-laforte>
-              </p>
-              <p class="domains_music">
-                <label for="domain_music">{% trans "Genre(s) de l’expression instrumentale" %}</label>
-                <br>
-                <francoralite-domain-music name="domain_music" data-values="{{ parameters_instances_json.domain_music }}" data-default-operator="{{ parameters.operators.domain_music|default:'or' }}"></francoralite-domain-music>
-                <a target="_blank" id="link_domain_music" href="/domain_music">
-                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de musiques ..."%}
+                <francoralite-domain-song name="domain_song" data-values="{{ parameters_instances_json.domain_song }}" data-default-operator="{{ parameters.operators.domain_song|default:'or' }}"></francoralite-domain-song>
+                <a target="_blank" id="link_domain_song" href="/domain_song">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de chansons ..."%}
                 </a>
               </p>
               <p class="domains_music">
@@ -476,14 +461,6 @@
                 <francoralite-instrument name="instrument" data-values="{{ parameters_instances_json.instrument }}" data-default-operator="{{ parameters.operators.instrument|default:'or' }}"></francoralite-instrument>
                 <a target="_blank" id="link_instrument" href="/instrument">
                   <span class="glyphicon glyphicon-list"></span> {% trans "Voix/Instruments ..."%}
-                </a>
-              </p>
-              <p class="domains_tale">
-                <label for="domain_tale">{% trans "Genre(s) du conte" %}</label>
-                <br>
-                <francoralite-domain-tale name="domain_tale" data-values="{{ parameters_instances_json.domain_tale }}" data-default-operator="{{ parameters.operators.domain_tale|default:'or' }}"></francoralite-domain-tale>
-                <a target="_blank" id="link_domain_tale" href="/domain_tale">
-                  <span class="glyphicon glyphicon-list"></span> {% trans "Genres de contes ..."%}
                 </a>
               </p>
               <p class="domains_song domains_tale domains_vocal">
@@ -501,10 +478,39 @@
                 <br>
                 <input name="refrain" id="refrain" value="{{ parameters.refrain | default:'' }}">
               </p>
-              <p class="domains_tale">
-                <label for="jingle">{% trans "Ritournelle" %}</label>
+              <p class="domains_song domains_vocal">
+                <label for="coirault">{% trans "Titre référencé et cote Coirault" %}</label>
                 <br>
-                <input name="jingle" id="jingle" value="{{ parameters.jingle | default:'' }}">
+                <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
+                <a target="_blank" id="link_coirault" href="/coirault">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Coirault ..."%}
+                </a>
+              </p>
+              <p class="domains_song domains_vocal">
+                <label for="laforte">{% trans "Titre référencé et cote Laforte" %}</label>
+                <br>
+                <francoralite-laforte name="laforte" data-values="{{ parameters_instances_json.laforte }}" data-default-operator="{{ parameters.operators.laforte|default:'or' }}"></francoralite-laforte>
+                <a target="_blank" id="link_laforte" href="/ref_laforte">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Laforte ..."%}
+                </a>
+              </p>
+              <p class="domains_song">
+                <label for="coupe">{% trans "Coupe(s)" %}</label>
+                <br>
+                <francoralite-coupe name="coupe" data-values="{{ parameters_instances_json.coupe }}" data-default-operator="{{ parameters.operators.coupe|default:'or' }}"></francoralite-coupe>
+                <a target="_blank" id="link_coupe" href="/coupe">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Coupes ..."%}
+                </a>
+              </p>
+              <p class="domains_song">
+                <label for="timbre">{% trans "Timbre de l’air" %}</label>
+                <br>
+                <francoralite-timbre name="timbre" data-values="{{ parameters_instances_json.timbre }}" data-default-operator="{{ parameters.operators.timbre|default:'or' }}"></francoralite-timbre>
+              </p>
+              <p class="domains_song">
+                <label for="timbre_ref">{% trans "Timbre référencé" %}</label>
+                <br>
+                <francoralite-timbre-ref name="timbre_ref" data-values="{{ parameters_instances_json.timbre_ref }}" data-default-operator="{{ parameters.operators.timbre_ref|default:'or' }}"></francoralite-timbre-ref>
               </p>
               </details>
 
