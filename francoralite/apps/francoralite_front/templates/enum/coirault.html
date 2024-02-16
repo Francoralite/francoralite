@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+
+{% block javascript %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block stylesheets %}
+{{ block.super }}
+{% endblock %}
+
+{% block title_name %}
+{% trans "Catalogue Coirault" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+
+{% block title %}
+{{block.super}}
+{% endblock %}
+
+<div class="fullpage">
+    <!-- If there is some Coirault ref (number of elements > 0 ) -->
+    {% if coiraults|length > 0 %}
+    <!-- Table to display the Coirault -->
+    <table class="listing">
+        <tr>
+            <th class="highlight">{% trans "Cote" %}</th>
+            <th>{% trans "Phrase" %}</th>
+            <th>{% trans "Catégorie" %}</th>
+        </tr>
+        {% for coirault in coiraults %}
+        <tr>
+            <td class="highlight">
+                    {{ coirault.number|upper }}
+            </td>
+            <td>
+                {% if coirault.name %}
+                {{ coirault.name|safe }}
+                {% endif %}
+            </td>
+            <td>
+                {{ coirault.collection.number }} : {{ coirault.collection.name }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    {% if error|length %}
+    {% display_error error %}
+    {% else %}
+    <p>{% trans "Il n'y a pas de référence Coirault." %}</p>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

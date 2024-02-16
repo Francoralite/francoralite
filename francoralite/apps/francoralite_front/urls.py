@@ -58,7 +58,7 @@ from .views.enum import (
     musical_group_add,
     thematic, thematic_edit, thematic_delete, thematic_detail,
     thematic_add,
-    coirault_detail,
+    coirault,coirault_detail,
     usefulness, usefulness_edit, usefulness_delete, usefulness_detail,
     usefulness_add,
     coupe, coupe_edit, coupe_delete, coupe_detail,
@@ -475,6 +475,8 @@ urlpatterns = [
         name='thematic-delete'),
 
     # Coirault
+    re_path(r'^coirault$', coirault.CoiraultView.as_view(),
+        name="coirault"),
     re_path(r'^coirault/(?P<id>[0-9]+)$',
         coirault_detail.CoiraultDetail.as_view(),
         name='coirault-detail'),

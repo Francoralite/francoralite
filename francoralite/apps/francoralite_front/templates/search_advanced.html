@@ -482,6 +482,9 @@
                 <label for="coirault">{% trans "Titre référencé et cote Coirault" %}</label>
                 <br>
                 <francoralite-coirault name="coirault" data-values="{{ parameters_instances_json.coirault }}" data-default-operator="{{ parameters.operators.coirault|default:'or' }}"></francoralite-coirault>
+                <a target="_blank" id="link_coirault" href="/coirault">
+                  <span class="glyphicon glyphicon-list"></span> {% trans "Coirault ..."%}
+                </a>
               </p>
               <p class="domains_song domains_vocal">
                 <label for="laforte">{% trans "Titre référencé et cote Laforte" %}</label>
