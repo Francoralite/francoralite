@@ -16,7 +16,7 @@ class TestVersions(APITestCase):
          response = self.client.get(url)
 
          self.assertEqual(response.status_code, status.HTTP_200_OK)
-         self.assertEqual(len(response.data), 3)
+         self.assertEqual(len(response.data), 4)
          #self.assertEqual(len(response.data["git_commit"]), 61)
          self.assertEqual(response.data["python"][0:6], "3.8.12")
          self.assertEqual(response.data["django"], (3,1,14,"final",0) )

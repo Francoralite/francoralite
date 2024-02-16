@@ -1,6 +1,7 @@
 import subprocess
 import os
 from django.template import Library
+from ...francoralite_api.version import __version__
 
 register = Library()
 
@@ -78,3 +79,7 @@ def git_label():
 @register.simple_tag()
 def host_name():
     return hostname
+
+@register.simple_tag()
+def version():
+    return __version__
