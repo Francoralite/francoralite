@@ -126,7 +126,7 @@ def field_editor(field):
                         f'id_{field.name}_{context["index"]}',
                         widget.render(
                             field.name,
-                            context['value'] in value,
+                            value is not None and context['value'] in value,
                             {
                                 'id': f'id_{field.name}_{context["index"]}',
                                 'value': context['value'],
