@@ -15,14 +15,14 @@ def create_civilities(apps, schema_editor):
     qs = qs.exclude(civility=None).exclude(civility='')
     qs = qs.order_by('civility').distinct()
     for name in qs:
-        civilities_ids[name] = Civility.objects.get_or_create(name=name)[0].id
+        civilities_ids[name.lower()] = Civility.objects.get_or_create(name=name)[0].id
 
     qs = Authority.objects.values_list('id', 'civility')
     qs = qs.exclude(civility=None).exclude(civility='')
     for authority_id, civility_name in qs:
         AuthorityCivility.objects.create(
             authority_id=authority_id,
-            civility_id=civilities_ids[civility_name],
+            civility_id=civilities_ids[civility_name.lower()],
         )
 
 

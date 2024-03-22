@@ -15,14 +15,14 @@ def create_cultural_areas(apps, schema_editor):
     qs = qs.exclude(cultural_area=None).exclude(cultural_area='')
     qs = qs.order_by('cultural_area').distinct()
     for name in qs:
-        cultural_areas_ids[name] = CulturalArea.objects.get_or_create(name=name)[0].id
+        cultural_areas_ids[name.lower()] = CulturalArea.objects.get_or_create(name=name)[0].id
 
     qs = Collection.objects.values_list('id', 'cultural_area')
     qs = qs.exclude(cultural_area=None).exclude(cultural_area='')
     for collection_id, cultural_area_name in qs:
         CollectionCulturalArea.objects.create(
             collection_id=collection_id,
-            cultural_area_id=cultural_areas_ids[cultural_area_name],
+            cultural_area_id=cultural_areas_ids[cultural_area_name.lower()],
         )
 
 
