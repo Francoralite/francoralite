@@ -140,8 +140,10 @@ class EnumsTest:
             francoralite_context.set_element_value('id_' + self.first_text_field, self.data[0][self.first_text_field])
 
             # Write other field
-            if self.second_text_field is not None:
-                francoralite_context.set_element_value('id_' + self.second_text_field, self.data[0][self.second_text_field])
+            if self.second_text_field is not None :
+                if self.second_text_field == 'geojson':
+                    francoralite_context.set_element_value('id_' + self.second_text_field, '{}')
+                francoralite_context.set_element_value('id_' + self.second_text_field, 'null')
 
             # Validation
             francoralite_context.find_element(by_id='save').click()
