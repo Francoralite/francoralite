@@ -39,7 +39,11 @@
 {% if cultural_area %}
 
   {% field_data_id form.name cultural_area.name|safe %}
-  {% field_data_id form.geojson cultural_area.geojson|json truncate=150 %}
+  {% if cultural_area.geojson|json|length > 150 %}
+    {% field_data_id form.geojson cultural_area.geojson|json truncate=150 %}
+  {% else %}
+    {% field_data_id form.geojson cultural_area.geojson|json %}
+  {% endif %}
 
   {% if cultural_area.geojson %}
   <div class="map-container">
