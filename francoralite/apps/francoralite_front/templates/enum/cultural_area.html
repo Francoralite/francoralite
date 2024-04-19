@@ -2,15 +2,24 @@
 {% load i18n %}
 {% load markdown_extra %}
 {% load data_display %}
-
+{% load static %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
 {% endblock %}
 
 
 {% block stylesheets %}
   {{ block.super }}
+  <style>
+    francoralite-map {
+      height: 500px;
+      width: 100%;
+      display: inline-block;
+      justify-content: center;
+    }
+  </style>
 {% endblock %}
 
 {% block title_name %}
@@ -36,6 +45,8 @@
 <div class="fullpage">
   <!-- If there is some cultural_area (number of elements > 0 ) -->
 {% if cultural_areas|length > 0 %}
+  <francoralite-map cultural-areas=True></francoralite-map>
+
   <!-- Table to display the cultural_areas -->
   <table class="listing">
   <tr>

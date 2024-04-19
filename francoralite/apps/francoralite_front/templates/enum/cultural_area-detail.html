@@ -39,14 +39,14 @@
 {% if cultural_area %}
 
   {% field_data_id form.name cultural_area.name|safe %}
-  {% field_data_id form.geojson cultural_area.geojson|json %}
+  {% field_data_id form.geojson cultural_area.geojson|json truncate=150 %}
 
   {% if cultural_area.geojson %}
   <div class="map-container">
     <francoralite-map geojson-data="{{ cultural_area.geojson|json|escape }}"></francoralite-map>
   </div>
   {% endif %}
-
+ 
 {% else %}
   <p>{% trans "Cette aire culturelle n'existe pas." %}</p>
 {% endif %}
