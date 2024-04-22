@@ -34,7 +34,7 @@ setup(
     'djangorestframework-xml==2.0.0',
     'drf-nested-routers==0.93.3',
     'drf-yasg==1.20.0',
-    'gunicorn==20.0.4',
+    'gunicorn==22.0.0',
     # V2
     'psycopg2-binary==2.8.6',
     'pyaml==20.4.0',
