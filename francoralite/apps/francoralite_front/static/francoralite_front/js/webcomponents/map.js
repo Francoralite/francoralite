@@ -39,7 +39,7 @@ const STYLESHEET = `
 class FrancoraliteMap extends HTMLElement {
 
   static get observedAttributes() {
-    return ["lat", "lng", "zoom", "bounds", "markers-url", "markers-list", "markers-drag", "geojson-data"];
+    return ["lat", "lng", "zoom", "bounds", "markers-url", "markers-list", "markers-drag", "geojson-data","cultural-areas"];
   }
 
   get lat() {
@@ -76,6 +76,10 @@ class FrancoraliteMap extends HTMLElement {
 
   get geojsonData() {
     return JSON.parse(this.getAttribute("geojson-data"));
+  }
+
+  get culturalAreas() {
+    return this.getAttribute("cultural-areas");
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -222,8 +226,11 @@ class FrancoraliteMap extends HTMLElement {
       removeOutsideVisibleBounds: true,
     });
 
+
     if (this.geojsonData) {
       L.geoJSON(this.geojsonData).addTo(this.map);
+    } else if (this.culturalAreas ) {
+      this.requestCulturalArea();
     } else if (this.markersList) {
       // There's a markers list !
       this.addMarkers(this.markersList, markersLayer);
@@ -241,11 +248,16 @@ class FrancoraliteMap extends HTMLElement {
       this.map.fitWorld({animate: false});
     } else if (this.lat && this.lng || this.zoom) {
       this.map.setView([this.lat || DEFAULT_LAT, this.lng || DEFAULT_LNG], this.zoom || DEFAULT_ZOOM);
+    } else if (this.geojsonData) {
+      let bounds = L.geoJSON(this.geojsonData).getBounds();
+      this.map.fitBounds(bounds);
     } else {
       this.map.fitBounds(this.bounds || DEFAULT_BOUNDS);
     }
   }
 
+  
+ 
   requestMarkers(markersLayer, dragMarkers='') {
     // Request the locations of the collections
     if (this.markersUrl) {
@@ -312,6 +324,8 @@ class FrancoraliteMap extends HTMLElement {
       }
     };
 
+    
+
     // Test the type of the locations
     if (Array.isArray(locations)) {
       locations.forEach(loc => createMarker(loc));
@@ -321,6 +335,30 @@ class FrancoraliteMap extends HTMLElement {
 
     // Add on the map this new layer
     this.map.addLayer(markersLayer);
+  }
+
+  requestCulturalArea() {
+    // Request the locations of the cultural areas
+    let xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', (event) => {
+      const data = JSON.parse(event.target.response);
+      data.forEach(area => {
+        if (!area.geojson) {
+          return;
+        }
+        const geojson = area.geojson;
+        L.geoJSON(geojson, {color: 'orange', fillOpacity: 0.5})
+          .bindTooltip(
+            area.name
+          )
+          .on("click", function(e) {
+              this._map.fitBounds(e.target.getBounds());
+          })
+          .addTo(this.map);
+      });
+    });
+    xhr.open('GET', '/api/cultural_area', true);
+    xhr.send(null);
   }
 
   setNodeValue(nodeSelector, value) {

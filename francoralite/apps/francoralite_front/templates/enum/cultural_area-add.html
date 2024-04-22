@@ -46,6 +46,32 @@
     {% csrf_token %}
     {% field_editor form.name %}
     {% field_editor form.geojson %}
+    
+    <!-- Sélection du fichier GeoJSON -->
+    <div class="container_line">
+      <label class="control-label" for="id_geojson_file">{% trans "Choix d'un fichier GeoJSON ..." %}</label>
+      <div class="input-group">
+        <input type="file" id="id_geojson_file" class="form-control" accept=".geojson" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" id="id_geojson_submit" type="button">{% trans "Sélectionner" %}</button>
+        </span>
+      </div>
+      <!-- Lecture du fichier GeoJSON et dépôt dans le champ caché -->
+      <script>
+        document.getElementById('id_geojson_submit').addEventListener('click', function() {
+          const fileInput = document.getElementById('id_geojson_file');
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const geojson = event.target.result;
+            document.getElementById('id_geojson').value = geojson;
+          };
+          reader.readAsText(file);
+        });
+      </script>
+    </div>
+
+
 
     {% buttons_form %}
   </form>

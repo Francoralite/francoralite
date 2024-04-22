@@ -61,7 +61,7 @@ def field_data(label, data, empty=True):
     return mark_safe(code)
 
 @register.simple_tag
-def field_data_id(field, data, empty=True):
+def field_data_id(field, data, empty=True, truncate=0):
     try:
         str_label = str(field.label)
     except Exception:
@@ -73,6 +73,9 @@ def field_data_id(field, data, empty=True):
             str_data = ""
     except Exception:
         str_data = data
+        
+    if truncate>0:
+        str_data = str_data[:truncate] + " ..."
 
     if empty is False and str_data == "":
         code = ""
