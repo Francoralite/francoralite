@@ -46,7 +46,7 @@ setup(
     'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
     'pyyaml==5.4.1',
-    'Werkzeug==2.2.3',
+    'Werkzeug==2.3.8',
     'django-dirtyfields==1.5.0',
     'sqlparse==0.4.4',
     'django-markdownx==3.0.1',
