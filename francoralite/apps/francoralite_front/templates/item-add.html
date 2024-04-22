@@ -1,13 +1,7 @@
-
 {% extends "item-detail.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -88,10 +82,10 @@
     <div class="tab-content">
       <!-- Tab General -->
       <div class="tab-pane fade active in" id="tab_general">
-        {% bootstrap_field form.collection layout='vertical' %}
-        {% bootstrap_field form.title layout='vertical' %}
-        {% bootstrap_field form.alt_title layout='vertical' %}
-        {% bootstrap_field form.trans_title layout='vertical' %}
+        {% field_editor form.collection %}
+        {% field_editor form.title %}
+        {% field_editor form.alt_title %}
+        {% field_editor form.trans_title %}
         {% markdown_editor component=form.description %}
 
         {% if id %}
@@ -99,8 +93,8 @@
         {% else %}
           <div>
         {% endif %}
-        {% bootstrap_field form.file layout='vertical' %}
-        {% bootstrap_field form.url_file layout='vertical' %}
+        {% field_editor form.file %}
+        {% field_editor form.url_file %}
         </div>
 
 
@@ -200,17 +194,17 @@
 
         <div class="block-grey">
           <h2>{% trans "Données d'archivage" %}</h2>
-          {% bootstrap_field form.code layout='vertical' %}
-          {% bootstrap_field form.code_partner layout='vertical' %}
-          {% bootstrap_field form.auto_period_access layout='vertical' %}
+          {% field_editor form.code %}
+          {% field_editor form.code_partner %}
+          {% field_editor form.auto_period_access %}
           {% markdown_editor component=form.remarks %}
 
         </div>
 
         <div class="block-grey">
           <h2>{% trans "Données techniques" %}</h2>
-          {% bootstrap_field form.media_type layout='vertical' %}
-          {% bootstrap_field form.approx_duration layout='vertical' %}
+          {% field_editor form.media_type %}
+          {% field_editor form.approx_duration %}
         </div>
 
       <div id="appmedia">
@@ -321,8 +315,8 @@
           :value="JSON.stringify(compositors,replacerCompositor)" />
 
 
-        {% bootstrap_field form.timbre layout='vertical' %}
-        {% bootstrap_field form.timbre_ref layout='vertical' %}
+        {% field_editor form.timbre %}
+        {% field_editor form.timbre_ref %}
         <div class="block-grey row">
           <div class="col-md-6">
             <label for="id_melody" class="control-label melody">{% trans "Mélodie (transcription alphabétique)" %}</label>
@@ -344,7 +338,7 @@
         <div class="block-grey">
           <h2>{% trans "Genres" %}</h2>
 
-          {% bootstrap_field form.domain layout='vertical' %}
+          {% field_editor form.domain %}
 
           <!-- Domain song -->
           <div class="container_data">
@@ -531,54 +525,102 @@
           <input name="thematics" type="hidden"
           :value="JSON.stringify(thematics,replacerThematic)" />
 
-          {% bootstrap_field  form.deposit_names layout='vertical' %}
-          {% bootstrap_field  form.deposit_places layout='vertical' %}
-          {% bootstrap_field  form.deposit_periods layout='vertical' %}
+          {% field_editor form.deposit_names %}
+          {% field_editor form.deposit_places %}
+          {% field_editor form.deposit_periods %}
 
       </div> <!-- app4 -->
       </div>
+
+        <div class="block-grey">
+          <h2>{% trans "Mots-clés" %}</h2>
+
+          <div id="appKeywords">
+          <!-- Keyword -->
+          <div class="container_data">
+          <label class="control_label">{% trans "Mot(s)-clé(s)" %}</label>
+          <v-select
+          multiple
+          v-model="keywords"
+          label="name"
+          :filterable="false"
+          @search="onSearchKeywords"
+          :options="optionsKeywords">
+            <template slot="option" slot-scope="option">
+              ${ option.name } -
+                <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  <i>Fiche...</i></a>
+            </template>
+            <template slot="selected-option" slot-scope="option">
+              <a :href="option.url"
+              onclick="window.open(this.href); return false;">
+              ${ option.name }</a>
+            </template>
+          </v-select>
+          </div>
+          <input name="keywords" type="hidden"
+          :value="JSON.stringify(keywords,replacerKeyword)" />
+      </div> <!-- appKeywords -->
+      </div>
+
       </div> <!-- tab_desc -->
-
-
 
       <!-- Tab Text ---------------------------------------------->
       <div class="tab-pane" id="tab_text">
-        {% bootstrap_field form.text_bool layout='vertical' %}
+        {% field_editor form.text_bool %}
         {% markdown_editor component=form.text %}
         {% markdown_editor component=form.incipit %}
         {% markdown_editor component=form.refrain %}
         {% markdown_editor component=form.jingle %}
-        {% bootstrap_field form.coupe layout='vertical' %}
-
-        <div id="app5">
+        {% field_editor form.coupe %}
         <div class="block-grey">
           <h2>{% trans "Références" %}</h2>
-          <div class="container_data">
-            <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Coirault" %}</label>
-            <v-select
-            multiple
-            v-model="coiraults"
-            label="name"
-            :filterable="false"
-            @search="onSearchCoirault"
-            :options="optionsCoirault">
-              <template slot="option" slot-scope="option">
-                ${option.number} : ${ option.name } -
+          <div id="app5">
+            <div class="container_data">
+              <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Coirault" %}</label>
+              <v-select
+              multiple
+              v-model="coiraults"
+              label="name"
+              :filterable="false"
+              @search="onSearchCoirault"
+              :options="optionsCoirault">
+                <template slot="option" slot-scope="option">
+                  ${option.number} : ${ option.name } -
+                    <a :href="option.url"
+                      onclick="window.open(this.href); return false;">
+                      <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
                   <a :href="option.url"
-                    onclick="window.open(this.href); return false;">
-                    <i>Fiche...</i></a>
-              </template>
-              <template slot="selected-option" slot-scope="option">
-                <a :href="option.url"
-                onclick="window.open(this.href); return false;">
-                ${option.number} : ${ option.name }</a>
-              </template>
-            </v-select>
+                  onclick="window.open(this.href); return false;">
+                  ${option.number} : ${ option.name }</a>
+                </template>
+              </v-select>
+            </div>
+            <input name="coiraults" type="hidden"
+            :value="JSON.stringify(coiraults,replacerCoirault)" />
           </div>
-          <input name="coiraults" type="hidden"
-          :value="JSON.stringify(coiraults,replacerCoirault)" />
-        </div>
-      </div> <!-- app5 -->
+          <div id="appLaforte">
+            <div class="container_data">
+              <label class="control_label">{% trans "Titre(s) référencé(s) et cote(s) Laforte" %}</label>
+              <v-select multiple v-model="lafortes" label="name" :filterable="false" @search="onSearchLaforte"
+                :options="optionsLafortes">
+                <template slot="option" slot-scope="option">
+                  ${ option.name } -
+                  <a :href="option.url" onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                  <a :href="option.url" onclick="window.open(this.href); return false;">
+                    ${ option.name }</a>
+                </template>
+              </v-select>
+            </div>
+            <input name="lafortes" type="hidden" :value="JSON.stringify(lafortes,replacerLaforte)" />
+          </div>
+        </div> <!-- app5 -->
       </div> <!-- tab_text-->
 
 

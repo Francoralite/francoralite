@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.utils.decorators import classonlymethod
-from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from urllib.parse import urlparse, parse_qs
 
 from francoralite.apps.francoralite_front import tools
 
 
 class FrancoraliteFormView(FormView):
-    default_403_error_message = _('Accès interdit.')
+    is_front_view = True
 
     def get_initial(self):
         initial = super().get_initial()
@@ -39,7 +39,7 @@ class FrancoraliteFormView(FormView):
 
 
 class FrancoraliteTemplateView(TemplateView):
-    default_403_error_message = _('Accès interdit.')
+    is_front_view = True
 
     @classonlymethod
     def as_view(cls, **initkwargs):
@@ -64,16 +64,19 @@ class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
                 page = 1
             offset = self.PAGE_SIZE * (page - 1)
 
+            # Obtain params values of the request
+            parsed_url = urlparse(self.api_url)
+            params = parse_qs(parsed_url.query)
+            
             api_response = tools.request_api(
                 '%s%slimit=%s&offset=%s&ordering=%s' % (
                     self.api_url,
                     '&' if '?' in self.api_url else '?',
                     self.PAGE_SIZE,
                     offset,
-                    self.request.GET.get('ordering', None) or '',
+                    params['ordering'][0] if 'ordering' in params else '',
                 )
             )
-
             results_count = api_response.get('count') or 0
             last_page = (results_count - 1) // self.PAGE_SIZE + 1
 
@@ -87,7 +90,6 @@ class FrancoralitePaginatedTemplateView(FrancoraliteTemplateView):
                 'first_item': min(self.PAGE_SIZE * (page - 1) + 1, results_count),
                 'last_item': min(self.PAGE_SIZE * page, results_count),
                 'last_page': last_page,
-                'pages': tuple(range(1, last_page + 1)),
                 'ordering': self.request.GET.get('ordering', None),
             }
 

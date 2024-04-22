@@ -1,12 +1,7 @@
 {% extends "fond.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -18,7 +13,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-select/2.5.1/vue-select.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
-
 
 {% endblock %}
 
@@ -39,13 +33,13 @@
 
 
 {% block content %}
+
 {% block title_buttons %}
 {% endblock %}
 
 {% block title %}
 {{ block.super }}
 {% endblock %}
-
 
 {% if not error|length %}
 {{ form.media }}
@@ -57,12 +51,12 @@
   {% endif %}
     {% csrf_token %}
     <div class="container_line">
-      {% bootstrap_field form.institution layout='vertical' %}
-      {% bootstrap_field form.code_partner layout='vertical' %}
+      {% field_editor form.institution %}
+      {% field_editor form.code_partner %}
     </div>
     <div class="container_line">
-      {% bootstrap_field form.code layout='vertical' %}
-      {% bootstrap_field form.title layout='vertical' %}
+      {% field_editor form.code %}
+      {% field_editor form.title %}
     </div>
     {% markdown_editor component=form.description  %}
 
@@ -70,8 +64,8 @@
     <div class="block-grey">
       <h2>{% trans "Archivage" %}</h2>
       <div class="container_line">
-        {% bootstrap_field form.acquisition_mode layout='vertical' %}
-        {% bootstrap_field form.conservation_site layout='vertical' %}
+        {% field_editor form.acquisition_mode %}
+        {% field_editor form.conservation_site %}
       </div>
     </div>
 

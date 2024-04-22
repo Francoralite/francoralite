@@ -4,14 +4,37 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
-from django import template
-from django.utils.translation import gettext_lazy as _
-from francoralite_front.errors import APPLICATION_ERRORS
-from django.utils.safestring import mark_safe
-
 import json
 
+from django import template
+from django.forms.widgets import CheckboxInput, CheckboxSelectMultiple, HiddenInput
+from django.utils.datastructures import MultiValueDict
+from django.utils.html import format_html, format_html_join
+from django.utils.http import urlencode
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
+
+from francoralite_front.errors import APPLICATION_ERRORS
+
 register = template.Library()
+
+
+@register.simple_tag(takes_context=True)
+def current_url_params(context, **kwargs):
+    # Get previous parameters
+    params = MultiValueDict(context['request'].GET)
+    # Remove parameters to be replaced, otherwise new are added, not replaced
+    for key in kwargs:
+        if key in params:
+            del params[key]
+    # Add new parameters
+    params.update(kwargs)
+    # Remove empty parameters
+    for key in tuple(params):
+        if not any(params.getlist(key)):
+            del params[key]
+    # Build new query string
+    return '?' + urlencode(params, doseq=True)
 
 
 @register.simple_tag
@@ -38,7 +61,7 @@ def field_data(label, data, empty=True):
     return mark_safe(code)
 
 @register.simple_tag
-def field_data_id(field, data, empty=True):
+def field_data_id(field, data, empty=True, truncate=0):
     try:
         str_label = str(field.label)
     except Exception:
@@ -50,6 +73,9 @@ def field_data_id(field, data, empty=True):
             str_data = ""
     except Exception:
         str_data = data
+        
+    if truncate>0:
+        str_data = str_data[:truncate] + " ..."
 
     if empty is False and str_data == "":
         code = ""
@@ -72,6 +98,69 @@ def field_data_bool(label, data):
     code = code + "</dd> </dl>"
 
     return mark_safe(code)
+
+
+@register.simple_tag
+def field_editor(field):
+    if isinstance(field.field.widget, HiddenInput):
+        return field
+
+    elif isinstance(field.field.widget, CheckboxInput):
+        inner_html = format_html(
+            '<div class="checkbox"><label for="{}">{} {}</label>{}</div>',
+            field.id_for_label,
+            field,
+            field.label,
+            field.errors,
+        )
+
+    elif isinstance(field.field.widget, CheckboxSelectMultiple):
+        value = field.value()
+        widget = CheckboxInput()
+        inner_html = format_html(
+            '<label class="control-label">{}</label><div id="id_{}">{}</div>',
+            field.label,
+            field.name,
+            format_html_join(
+                '',
+                '<div class="checkbox"><label for="{}">{} {}</label></div>',
+                (
+                    (
+                        f'id_{field.name}_{context["index"]}',
+                        widget.render(
+                            field.name,
+                            value is not None and context['value'] in value,
+                            {
+                                'id': f'id_{field.name}_{context["index"]}',
+                                'value': context['value'],
+                            },
+                        ),
+                        context['label'],
+                    ) for context in field.field.widget.subwidgets(field.name, value)
+                ),
+            ),
+        )
+
+    else:
+        attrs = field.field.widget.attrs
+        attrs['class'] = f'form-control {attrs.get("class") or ""}'.strip()
+        inner_html = format_html(
+            '<label class="control-label" for="{}">{}</label>{}{}',
+            field.id_for_label,
+            field.label,
+            field,
+            field.errors,
+        )
+
+    return format_html(
+        '<div class="{}">{}</div>',
+        ' '.join(filter(None, [
+            'form-group',
+            'has-error' if field.errors else '',
+            'has-warning' if field.field.required else '',
+        ])),
+        inner_html,
+    )
 
 
 @register.simple_tag
@@ -98,6 +187,15 @@ def display_error(error="0"):
 
 @register.inclusion_tag('inc/modal-delete.html')
 def modal_delete():
+    return {}
+
+
+@register.inclusion_tag('inc/select-vue-personne.html', takes_context=True)
+def select_vue_personne(context):
+    if 'id' in context:
+        return {
+            'id': context['id'],
+        }
     return {}
 
 
@@ -197,3 +295,8 @@ def nakala_button(*args, **kwargs):
 @register.filter(name='json')
 def json_dumps(data):
     return json.dumps(data)
+
+
+@register.filter(name='range')
+def range_filter(length, offset=0):
+    return range(offset, length + offset)

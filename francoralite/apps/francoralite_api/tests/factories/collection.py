@@ -43,7 +43,6 @@ class CollectionFactory(factory.django.DjangoModelFactory):
 
     # location = factory.SubFactory(LocationGisFactory)
     location_details = factory.Faker('paragraph', nb_sentences=3)
-    cultural_area = factory.Faker('paragraph', nb_sentences=1)
     language = factory.Faker('word')
 
     # publisher = factory.SubFactory(PublisherFactory)

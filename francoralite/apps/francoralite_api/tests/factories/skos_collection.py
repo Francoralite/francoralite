@@ -20,8 +20,8 @@ class SkosCollectionFactory(factory.django.DjangoModelFactory):
         model = SkosCollection
 
     # FIXIT------------------
+    number = factory.Faker('word')
     name = factory.Faker('word')
     uri = factory.Faker('url')
-    number = factory.Faker('word')
     type = "topic"
     collection = None

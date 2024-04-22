@@ -7,9 +7,11 @@
 from rest_framework import serializers
 
 from ..models.authority import Authority as AuthorityModel
+from ..models.civility import Civility as CivilityModel
 from ..models.collection import Collection as CollectionModel
 from ..models.collection_location import CollectionLocation as CollectionLocationModel
 from ..models.coupe import Coupe as CoupeModel
+from ..models.cultural_area import CulturalArea as CulturalAreaModel
 from ..models.dance import Dance as DanceModel
 from ..models.domain_song import DomainSong as DomainSongModel
 from ..models.domain_music import DomainMusic as DomainMusicModel
@@ -17,17 +19,21 @@ from ..models.domain_tale import DomainTale as DomainTaleModel
 from ..models.domain_vocal import DomainVocal as DomainVocalModel
 from ..models.instrument import Instrument as InstrumentModel
 from ..models.item import Item as ItemModel
+from ..models.keyword import Keyword as KeywordModel
 from ..models.language import Language as LanguageModel
 from ..models.location import Location as LocationModel
 from ..models.mediatype import MediaType as MediaTypeModel
 from ..models.recording_context import RecordingContext as RecordingContextModel
+from ..models.ref_laforte import RefLaforte as RefLaforteModel
 from ..models.skos_concept import SkosConcept as SkosConceptModel
 from ..models.thematic import Thematic as ThematicModel
 from ..models.usefulness import Usefulness as UsefulnessModel
 from .authority import AuthoritySerializer
+from .civility import CivilitySerializer
 from .collection import AdvancedSearchCollectionSerializer
 from .collection_location import CollectionLocationSerializer
 from .coupe import CoupeSerializer
+from .cultural_area import CulturalAreaSerializer
 from .dance import DanceSerializer
 from .domain_song import DomainSongSerializer
 from .domain_music import DomainMusicSerializer
@@ -35,10 +41,12 @@ from .domain_tale import DomainTaleSerializer
 from .domain_vocal import DomainVocalSerializer
 from .instrument import InstrumentSerializer
 from .item import AdvancedSearchItemSerializer
+from .keyword import KeywordSerializer
 from .language import LanguageSerializer
 from .location_gis import LocationGisSerializer
 from .mediatype import MediaTypeSerializer
 from .recording_context import RecordingContextSerializer
+from .ref_laforte import RefLaforteSerializer
 from .skos_concept import SkosConceptSerializer
 from .thematic import ThematicSerializer
 from .usefulness import UsefulnessSerializer
@@ -49,12 +57,16 @@ class AdvancedSearchSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if isinstance(instance, AuthorityModel):
             serializer = AuthoritySerializer(instance)
+        elif isinstance(instance, CivilityModel):
+            serializer = CivilitySerializer(instance)
         elif isinstance(instance, CollectionModel):
             serializer = AdvancedSearchCollectionSerializer(instance)
         elif isinstance(instance, CollectionLocationModel):
             serializer = CollectionLocationSerializer(instance)
         elif isinstance(instance, CoupeModel):
             serializer = CoupeSerializer(instance)
+        elif isinstance(instance, CulturalAreaModel):
+            serializer = CulturalAreaSerializer(instance)
         elif isinstance(instance, DanceModel):
             serializer = DanceSerializer(instance)
         elif isinstance(instance, DomainSongModel):
@@ -69,6 +81,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = InstrumentSerializer(instance)
         elif isinstance(instance, ItemModel):
             serializer = AdvancedSearchItemSerializer(instance)
+        elif isinstance(instance, KeywordModel):
+            serializer = KeywordSerializer(instance)
         elif isinstance(instance, LanguageModel):
             serializer = LanguageSerializer(instance)
         elif isinstance(instance, LocationModel):
@@ -77,6 +91,8 @@ class AdvancedSearchSerializer(serializers.Serializer):
             serializer = MediaTypeSerializer(instance)
         elif isinstance(instance, RecordingContextModel):
             serializer = RecordingContextSerializer(instance)
+        elif isinstance(instance, RefLaforteModel):
+            serializer = RefLaforteSerializer(instance)
         elif isinstance(instance, SkosConceptModel):
             serializer = SkosConceptSerializer(instance)
         elif isinstance(instance, ThematicModel):

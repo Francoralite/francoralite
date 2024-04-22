@@ -14,9 +14,9 @@ class SkosCollection(models.Model):
     "Collections found in an DRF file."
 
     # List ofe the fields
+    number = models.CharField(_('numérotation'), max_length=40)
     name = models.CharField(_('nom'), max_length=500)
     uri = models.CharField(_('uri'), max_length=500)
-    number = models.CharField(_(u'numérotation'), max_length=40)
     collection = models.ForeignKey(
             'francoralite_api.SkosCollection',
             related_name='skos_collection',
@@ -29,7 +29,7 @@ class SkosCollection(models.Model):
         app_label = 'francoralite_api'
         db_table = 'skos_collection'
         verbose_name_plural = _('skos_collections')
-        ordering = []
+        ordering = ['number']
 
     def __unicode__(self):
         return self.name

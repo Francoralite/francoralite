@@ -26,13 +26,13 @@
 {% block content %}
 {% block title_buttons %}
   {% if perms.keycloak.item_add and collection %}
-  <a href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}" class="btn_add btn btn-default">
+  <a id="btn_add_item" href="{% url "item-add" id_institution=collection.mission.fonds.institution.id id_fond=collection.mission.fonds.id id_mission=collection.mission.id id_collection=id %}" class="btn_add btn btn-default">
       <span class="glyphicon glyphicon-plus"></span>
       {% trans "Créer un item" %}
   </a>
   {% endif %}
   {% if perms.keycloak.collection_update and collection %}
-  <a href="{% url "collection-edit" id=id %}" class="btn_add btn btn-default">
+  <a id="btn_edit_collection" href="{% url "collection-edit" id=id %}" class="btn_add btn btn-default">
     <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </a>
   {% endif %}
@@ -154,7 +154,18 @@
           </div>
           <div class="col-md-6">
             {% field_data form.location_details.label|safe collection.location_details|markdown|safe empty=False %}
-            {% field_data form.cultural_area.label|safe collection.cultural_area|safe %}
+          </div>
+          <div class="col-md-6">
+            <dl class="container_data">
+              <dt class="libelle"> {% trans 'Aires culturelles' %}</dt>
+              <dd class="donnee">
+                <ul>
+                {% for cultural_area in collection.cultural_areas %}
+                  <li>{{cultural_area.name}}</li>
+                {% endfor %}
+                </ul>
+              </dd>
+            </dl>
           </div>
         </div>
       </div>
@@ -174,7 +185,7 @@
 
       {% if collection.publishers %}
       <dl class="container_data">
-        <dt class="libelle"> {% trans 'Editeurs' %}</dt>
+        <dt class="libelle"> {% trans 'Éditeurs' %}</dt>
         <dd class="donnee">
           <ul>
           {% for publisher in collection.publishers %}

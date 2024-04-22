@@ -68,10 +68,6 @@ francoralite/static/
 # node
 node_modules/
 
-# bower packages
-francoralite/assets-src/vendor/
-.sass-cache/
-
 # Data
 backups/
 data/

@@ -9,7 +9,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.emit_vox import EmitVoxForm
-from ... import tools as tools
+from ... import tools
 
 class EmitVoxDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/emit_vox-detail.html"
@@ -24,7 +24,7 @@ class EmitVoxDetail(FrancoraliteTemplateView):
                 '/api/emit_vox/' + context['id'])
             context['form'] = EmitVoxForm()
         except Http404:
-            raise Http404(_('Cette nature d’émission vocale n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette nature d’émission vocale n’existe pas.'))
         except Exception as err:
             context['emit_vox'] = {}
             context['error'] = err

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+{% load static %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+  {{ block.super }}
+  <style>
+    francoralite-map {
+      height: 500px;
+      width: 100%;
+      display: inline-block;
+      justify-content: center;
+    }
+  </style>
+{% endblock %}
+
+{% block title_name %}
+  {% trans "Aires culturelles" %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+
+{% if perms.keycloak.cultural_area_add %}
+  <a href="{% url "cultural_area-add" %}" class="btn_add btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {% trans "Créer une aire culturelle" %}
+  </a>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+<div class="fullpage">
+  <!-- If there is some cultural_area (number of elements > 0 ) -->
+{% if cultural_areas|length > 0 %}
+  <francoralite-map cultural-areas=True></francoralite-map>
+
+  <!-- Table to display the cultural_areas -->
+  <table class="listing">
+  <tr>
+      <th class="highlight">{% trans "Nom" %}</th>
+      {% if perms.keycloak.cultural_area_update or perms.keycloak.cultural_area_delete %}
+      <th>{% trans "Modifier" %}</th>
+      {% endif %}
+  </tr>
+  {% for cultural_area in cultural_areas %}
+  <tr>
+      <td class="highlight">
+          <a href="/cultural_area/{{cultural_area.id }}">
+            {{ cultural_area.name|upper }}</a>
+      </td>
+      {% if perms.keycloak.cultural_area_update or perms.keycloak.cultural_area_delete %}
+      <td>
+        {% if perms.keycloak.cultural_area_update %}
+        <a href="{% url "cultural_area-edit" id=cultural_area.id %}" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> {% trans "Éditer" %}
+        </a>
+        {% endif %}
+        {% if perms.keycloak.cultural_area_delete %}
+        <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#modalDelete"
+            data-name="{{cultural_area.title}}"
+            data-url="{% url "cultural_area-delete" id=cultural_area.id %}">
+              <span class="glyphicon glyphicon-trash"></span> {% trans "Supprimer" %}
+        </button>
+        {% endif %}
+      </td>
+      {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% if perms.keycloak.cultural_area_delete %}
+    {% modal_delete %}
+{% endif %}
+
+{% else %}
+  {% if error|length %}
+      {% display_error error %}
+    {% else %}
+      <p>{% trans "Il n'y a pas d’aire culturelle" %}</p>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

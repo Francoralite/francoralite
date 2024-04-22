@@ -12,7 +12,6 @@ class AuthoritySerializer(serializers.ModelSerializer):
     Common serializer for all authority actions
     """
     last_name = serializers.CharField(allow_blank=True, required=False)
-    civility = serializers.CharField(allow_blank=True, required=False)
     birth_date = serializers.DateField(required=False)
     birth_location = AsymetricRelatedField.from_serializer(
         LocationGisSerializer, kwargs={'required': False, 'allow_null': True})

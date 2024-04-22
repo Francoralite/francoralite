@@ -9,12 +9,12 @@ from django.utils.translation import gettext as _
 
 from ..forms.institution import InstitutionForm
 from ..francoralite_template_view import FrancoraliteTemplateView
-from .. import tools as tools
+from .. import tools
 
 
 class InstitutionDetail(FrancoraliteTemplateView):
     template_name = "../templates/institution-detail.html"
-    
+
     keycloak_scopes = {
         'DEFAULT': 'institution:view',
     }
@@ -31,7 +31,7 @@ class InstitutionDetail(FrancoraliteTemplateView):
             context['fonds'] = tools.request_api(
                 '/api/fond?institution=' + context['id'])
         except Http404:
-            raise Http404(_('Cette institution n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cette institution n’existe pas.'))
         except Exception as err:
             context['institution'] = {}
             context['fonds'] = []

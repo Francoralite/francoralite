@@ -1,0 +1,85 @@
+{% extends "enum/cultural_area.html" %}
+{% load i18n %}
+{% load markdown_extra %}
+{% load data_display %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
+
+{% block title_name %}
+   {{ block.super }} -
+   {% if id %}
+    {% trans "Modification" %}
+   {% else %}
+    {% trans "Création" %}
+   {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+{{ form.media }}
+{% if not error|length %}
+<div class="container">
+  {% if id %}
+  <form action="{%url "cultural_area-edit" id %}" method="POST">
+  {% else %}
+  <form action="{%url "cultural_area-add" %}" method="POST">
+  {% endif %}
+    {% csrf_token %}
+    {% field_editor form.name %}
+    {% field_editor form.geojson %}
+    
+    <!-- Sélection du fichier GeoJSON -->
+    <div class="container_line">
+      <label class="control-label" for="id_geojson_file">{% trans "Choix d'un fichier GeoJSON ..." %}</label>
+      <div class="input-group">
+        <input type="file" id="id_geojson_file" class="form-control" accept=".geojson" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" id="id_geojson_submit" type="button">{% trans "Sélectionner" %}</button>
+        </span>
+      </div>
+      <!-- Lecture du fichier GeoJSON et dépôt dans le champ caché -->
+      <script>
+        document.getElementById('id_geojson_submit').addEventListener('click', function() {
+          const fileInput = document.getElementById('id_geojson_file');
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const geojson = event.target.result;
+            document.getElementById('id_geojson').value = geojson;
+          };
+          reader.readAsText(file);
+        });
+      </script>
+    </div>
+
+
+
+    {% buttons_form %}
+  </form>
+</div>
+
+{% else %}
+  {% display_error error %}
+{% endif %}
+
+{{ form.media.js }}
+{% endblock %}

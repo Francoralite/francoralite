@@ -28,6 +28,19 @@ class related():
         self.main_data = new_data
 
 
+def write_authority_related(authority, request, headers):
+
+    write_relations(
+        authority['id'],
+        'authority',
+        json.loads(request.POST['civilities']),
+        settings.FRONT_HOST_URL + '/api/authority/' + \
+            str(authority['id']) + '/civilities',
+        'civility',
+        headers,
+    )
+
+
 def write_fond_related(fond, request, headers):
     url_documents = \
         settings.FRONT_HOST_URL + '/api/fond/' + \
@@ -70,6 +83,7 @@ def write_collection_related(collection, request, headers):
 
     list_related = [
         'collector',
+        'cultural_area',
         'informer',
         'location',
         'language',
@@ -80,8 +94,8 @@ def write_collection_related(collection, request, headers):
     for related in list_related:
         items = json.loads(request.POST[related + 's'])
         nested = related
-        if related == 'collector':
-            nested = 'collectors'
+        if related in ('collector', 'cultural_area'):
+            nested = related + 's'
         url = \
             settings.FRONT_HOST_URL + '/api/collection/' + \
             str(collection["id"]) + '/' + nested
@@ -159,6 +173,7 @@ def write_item_related(id_main, request, headers):
         ["informer", "informers"],
         ["author", "authors"],
         ["compositor", "compositors"],
+        ["keyword", "keywords"],
         ["thematic", "thematics"],
         ["dance", "dances"],
         ["usefulness", "usefulnesses"],
@@ -169,6 +184,7 @@ def write_item_related(id_main, request, headers):
         ["musical_organization", "musical_organizations"],
         ["musical_group", "musical_groups"],
         ["coirault", "coiraults"],
+        ["laforte", "lafortes"],
         ["language", "languages"],
     ]
 

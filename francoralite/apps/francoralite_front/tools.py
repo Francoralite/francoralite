@@ -4,6 +4,7 @@
 #
 # Authors: Luc LEGER / Coopérative ARTEFACTS <artefacts.lle@gmail.com>
 
+import json
 import requests
 
 from django.conf import settings
@@ -14,8 +15,9 @@ from django.utils.translation import gettext as _
 from requests.exceptions import RequestException
 from rest_framework import status
 
-from francoralite.apps.francoralite_front.errors import APPLICATION_ERRORS
+from .errors import APPLICATION_ERRORS
 from .views.related import (
+    write_authority_related,
     write_fond_related,
     write_mission_related,
     write_collection_related,
@@ -36,6 +38,9 @@ PROBLEM_NAMES = [
     "recording_context",
     "location_gis",
 ]
+
+
+class UserMessageHttp404(Http404): pass
 
 
 class UserMessageError(RequestException): pass
@@ -62,7 +67,7 @@ def check_status_code(status_code, allowed_codes=(status.HTTP_200_OK,)):
         raise PermissionDenied(_('Accès interdit.'))
 
     if status_code == status.HTTP_404_NOT_FOUND:
-        raise Http404(_('Cette fiche n’existe pas.'))
+        raise UserMessageHttp404(_('Cette fiche n’existe pas.'))
 
     if status_code == status.HTTP_409_CONFLICT:
         raise UserMessageError(_('Une fiche avec ce code existe déjà.'))
@@ -137,6 +142,8 @@ def post(entity, form_entity, request, *args, **kwargs):
 
     # Problem with old Telemeta fields/entities
     if form.is_valid():
+        if entity == 'cultural_area':
+            form.cleaned_data['geojson'] = json.dumps(form.cleaned_data['geojson'])
         if entity == 'item':
             # Concatenate domains
             form.cleaned_data['domain'] = ''.join(form.cleaned_data['domain'])
@@ -225,6 +232,8 @@ def patch(entity, form_entity, request, *args, **kwargs):
         entity_api = entity.replace('_', '')
 
     if form.is_valid():
+        if entity == 'cultural_area':
+            form.cleaned_data['geojson'] = json.dumps(form.cleaned_data['geojson'])
         if entity == "collection":
             form.cleaned_data['recorded_from_year'] = \
                 form.data['recorded_from_year']
@@ -278,6 +287,12 @@ def patch_api(endpoint, data, request, entity):
     check_status_code(response.status_code)
 
     entity_json = response.json()
+    if entity == "authority":
+        write_authority_related(
+            entity_json,
+            request,
+            headers=get_token_header(request=request),
+        )
     if entity == "fond":
         write_fond_related(
             entity_json,

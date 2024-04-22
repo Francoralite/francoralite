@@ -4,7 +4,10 @@ from django.utils.translation import gettext as _
 class EnumsTest:
     first_text_field = 'name'
     second_text_field = 'notes'
+    first_text_value = 'Test nom'
+    second_text_value = 'Test notes'
     title_use_second_text_field = False
+    clear_fields_on_add = False
     update_record_id = 1
 
     @property
@@ -50,10 +53,9 @@ class EnumsTest:
                 francoralite_context.open_url(self.url_prefix + '/' + d["id"])
 
                 # Verify data
-                data = {
-                    'id_' + self.first_text_field: d[self.first_text_field],
-                    'id_' + self.second_text_field: d[self.second_text_field],
-                }
+                data = {'id_' + field: d[field]
+                    for field in (self.first_text_field, self.second_text_field)
+                    if field is not None}
                 if self.title_use_second_text_field:
                     francoralite_context.verify_title(_(self.title) + ' : ' + d[self.second_text_field])
                 else:
@@ -74,11 +76,10 @@ class EnumsTest:
             francoralite_context.verify_title(_(self.title) + ' - Création')
 
             # Write content
-            content = {
-                'id_' + self.first_text_field: self.new_data[self.first_text_field],
-                'id_' + self.second_text_field: self.new_data[self.second_text_field],
-            }
-            francoralite_context.fill_data(content)
+            content = {'id_' + field: self.new_data[field]
+                for field in (self.first_text_field, self.second_text_field)
+                if field is not None}
+            francoralite_context.fill_data(content, clear_before=self.clear_fields_on_add)
 
             # Validation
             francoralite_context.find_element(by_id='save').click()
@@ -105,16 +106,23 @@ class EnumsTest:
             # Go to the first edit page
             francoralite_context.open_url(self.url_prefix + '/edit/' + str(self.update_record_id))
 
-            # Write a note
-            francoralite_context.set_element_value('id_' + self.second_text_field, 'Test notes')
+            # Write in a field
+            if self.second_text_field is not None:
+                francoralite_context.set_element_value('id_' + self.second_text_field, self.second_text_value)
+            else:
+                francoralite_context.set_element_value('id_' + self.first_text_field, self.first_text_value)
 
             # Validation
             francoralite_context.find_element(by_id='save').click()
 
-            # The notes updated on the detail page
+            # The field updated on the detail page
             francoralite_context.open_url(self.url_prefix + '/' + str(self.update_record_id))
-            label = francoralite_context.find_element(by_id="id_" + self.second_text_field)
-            assert label.text == 'Test notes'
+            if self.second_text_field is not None:
+                label = francoralite_context.find_element(by_id="id_" + self.second_text_field)
+                assert label.text == self.second_text_value
+            else:
+                label = francoralite_context.find_element(by_id="id_" + self.first_text_field)
+                assert label.text == self.first_text_value
 
             # And, then logout (if authenticated user)
             if username:
@@ -130,6 +138,12 @@ class EnumsTest:
 
             # Write a code
             francoralite_context.set_element_value('id_' + self.first_text_field, self.data[0][self.first_text_field])
+
+            # Write other field
+            if self.second_text_field is not None :
+                if self.second_text_field == 'geojson':
+                    francoralite_context.set_element_value('id_' + self.second_text_field, '{}')
+                francoralite_context.set_element_value('id_' + self.second_text_field, 'null')
 
             # Validation
             francoralite_context.find_element(by_id='save').click()

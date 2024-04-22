@@ -1,0 +1,13 @@
+{% if multi_values %}
+<li>
+    {{ title }}&nbsp;:
+    {% for value in multi_values %}
+    {% if forloop.counter0 or operator == 'nor' %}
+    <span class="request_remind_operator">{% if operator == 'and' %}et{% elif operator == 'nor' %}sauf{% else %}ou{% endif %}</span>
+    {% endif %}
+    {% block value_formatter %}{% firstof value.name value.code value %}{% endblock %}
+    {% endfor %}
+</li>
+{% elif mono_value %}
+<li>{{ title }}&nbsp;: {{ mono_value }}</li>
+{% endif %}

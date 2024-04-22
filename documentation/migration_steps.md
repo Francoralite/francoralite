@@ -10,6 +10,9 @@
 
 ## Référencement des applications à supprimer
 
+'bootstrap3',
+'djangobower',
+'timezones',
 'telemeta',
 'timeside.player',
 # 'timeside.server',
@@ -38,13 +41,10 @@
 'django.contrib.admin',
 'django.contrib.staticfiles',
 'django_extensions',
-'timezones',
-'bootstrap3',
 'registration',
 'rest_framework',
 'rest_framework_xml',
 'djcelery',
-'djangobower', # A verifier
 'django',
 'rest_framework_swagger',
 'django_filters',

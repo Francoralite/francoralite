@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import multiprocessing
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
-
-import sys
 
 
 CLASSIFIERS = ['Environment :: Web Environment',
@@ -33,7 +29,6 @@ setup(
   install_requires = [
     'django==3.1.14',
     'django-appconf==1.0.4',
-    'django-environ==0.4.5',
     'django-filter==2.4.0',
     'djangorestframework==3.12.2',
     'djangorestframework-xml==2.0.0',
@@ -41,21 +36,15 @@ setup(
     'drf-yasg==1.20.0',
     'gunicorn==20.0.4',
     # V2
-    'django-model-utils==4.1.1',
     'psycopg2-binary==2.8.6',
     'pyaml==20.4.0',
-    'django-google-tools==1.1.0', # Always useful ?
     #'MySQL-python==1.2.5',
     'mysqlclient==2.0.3',
     # V3
     'django-registration-redux==2.9',
     'django-extensions==3.1.1',
-    'django-timezones', # Always useful ?
     'django-debug-toolbar==3.2.1',
     'django-extra-views==0.13.0',
-    'django-breadcrumbs==1.1.3', # Always useful ?
-    'django-bootstrap3==14.2.0',
-    'django-bower==5.2.0',
     'pyyaml==5.4.1',
     'Werkzeug==2.2.3',
     'django-dirtyfields==1.5.0',

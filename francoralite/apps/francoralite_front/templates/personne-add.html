@@ -1,17 +1,17 @@
 {% extends "personne.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-select/2.5.1/vue-select.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
 
 {% endblock %}
 
@@ -47,39 +47,64 @@
   {% endif %}
     {% csrf_token %}
     <div class="container_line">
-      {% bootstrap_field form.last_name layout='vertical' %}
-      {% bootstrap_field form.first_name layout='vertical' %}
+      {% field_editor form.last_name %}
+      {% field_editor form.first_name %}
     </div>
     <div class="container_line">
-        {% bootstrap_field form.civility layout='vertical' %}
-        {% bootstrap_field form.alias layout='vertical' %}
+        <div class="app2">
+          <div class="container_data">
+            <label class="control_label">{% trans "Civilités(s)" %}</label>
+            <v-select
+              multiple
+                v-model="civilities"
+                label="name"
+                :filterable="false"
+                @search="onSearchCivilities"
+                :options="optionsCivilities">
+                <template slot="option" slot-scope="option">
+                  ${ option.name } -
+                  <a :href="option.url"
+                    onclick="window.open(this.href); return false;">
+                    <i>Fiche...</i></a>
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                  <a :href="option.url"
+                  onclick="window.open(this.href); return false;">
+                  ${ option.name }</a>
+                </template>
+            </v-select>
+          </div>
+          <input name="civilities" type="hidden"
+            :value="JSON.stringify(civilities, replacerCivility)" />
+        </div>
+        {% field_editor form.alias %}
     </div>
     <div class="form-group">
           <label class="control-label">{% trans "Rôles" %}</label>
           <div class="container_line space-around">
-          {% bootstrap_field form.is_collector %}
-          {% bootstrap_field form.is_informer %}
-          {% bootstrap_field form.is_author %}
-          {% bootstrap_field form.is_composer %}
-          {% bootstrap_field form.is_editor %}
+          {% field_editor form.is_collector %}
+          {% field_editor form.is_informer %}
+          {% field_editor form.is_author %}
+          {% field_editor form.is_composer %}
+          {% field_editor form.is_editor %}
         </div>
 
     </div>
     <div class="block-grey">
       <h2>{% trans "Naissance" %}</h2>
-      {% bootstrap_field form.birth_date %}
-      {% bootstrap_field form.birth_location_name layout='vertical' %}
-      {% bootstrap_field form.birth_location %}
+      {% field_editor form.birth_date %}
+      {% field_editor form.birth_location_name %}
+      {% field_editor form.birth_location %}
     </div>
     <div class="block-grey">
       <h2>{% trans "Décès" %}</h2>
-      {% bootstrap_field form.death_date layout='vertical' %}
-      {% bootstrap_field form.death_location_name layout='vertical' %}
-      {% bootstrap_field form.death_location %}
+      {% field_editor form.death_date %}
+      {% field_editor form.death_location_name %}
+      {% field_editor form.death_location %}
     </div>
 
     {% markdown_editor component=form.biography  %}
-    {% bootstrap_field form.uri layout='vertical' %}
+    {% field_editor form.uri %}
 
     {% buttons_form %}
   </form>
@@ -162,6 +187,10 @@ $('#id_death_location_name').change(function() {
     }
 });
 </script>
+
+
+    {% select_vue_personne %}
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
 
 
 {{ form.media.js }}

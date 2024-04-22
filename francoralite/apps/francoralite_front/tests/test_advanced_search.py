@@ -103,6 +103,12 @@ def test_search(francoralite_context):
         },
         {
             'id_block': 'details_what',
+            'id_field': 'keyword',
+            'value': 'grap',
+            'option': 'biographie',
+        },
+        {
+            'id_block': 'details_what',
             'id_field': 'language',
             'value': 'fr',
             'option': 'Créoles et pidgins basés sur le français',
@@ -233,6 +239,18 @@ def test_links_to_list(francoralite_context):
         },
         {
             'id_block': 'details_genders',
+            'id_checkbox': 'domains_song',
+            'id_link': 'link_laforte',
+            'title': 'Catalogue Laforte',
+        },
+        {
+            'id_block': 'details_genders',
+            'id_checkbox': 'domains_song',
+            'id_link': 'link_coirault',
+            'title': 'Catalogue Coirault',
+        },
+        {
+            'id_block': 'details_genders',
             'id_checkbox': 'domains_deposit',
             'id_link': 'link_thematic',
             'title': 'Thématique',
@@ -241,6 +259,11 @@ def test_links_to_list(francoralite_context):
             'id_block': 'details_what',
             'id_link': 'link_dance',
             'title': 'Genre de danse',
+        },
+        {
+            'id_block': 'details_what',
+            'id_link': 'link_keyword',
+            'title': 'Mot-clé',
         },
         {
             'id_block': 'details_what',

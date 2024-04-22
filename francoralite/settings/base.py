@@ -45,15 +45,6 @@ TEMPLATES = [
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 AUTH_USER_MODEL = 'auth.User'
 
-# Settings for django-bootstrap3
-BOOTSTRAP3 = {
-    'set_required': True,
-    'set_placeholder': False,
-    'error_css_class': 'has-error',
-    'required_css_class': 'has-warning',
-    'javascript_in_head': True,
-}
-
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
@@ -83,8 +74,6 @@ INSTALLED_APPS = (
 #    'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
-    'timezones',
-    'bootstrap3',
     'registration',
     'rest_framework',
     'rest_framework_xml',
@@ -146,6 +135,7 @@ REST_FRAMEWORK = {
 }
 
 ROOT_URLCONF = 'francoralite.urls'
+CSRF_FAILURE_VIEW =  'francoralite.apps.francoralite_front.views.errors.csrf_failure'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'francoralite.wsgi.application'

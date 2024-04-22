@@ -1,13 +1,8 @@
 {% extends "location.html" %}
-{% load bootstrap3 %}
 {% load i18n %}
 {% load data_display %}
 {% load markdown_extra %}
 {% load static %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block javascript %}
   {{ block.super }}
@@ -63,13 +58,13 @@
     <div class="block-grey">
       <h2>{% trans "Coordonnées" %}</h2>
       <div class="container_line">
-        {% bootstrap_field form.latitude layout='vertical' %}
-        {% bootstrap_field form.longitude layout='vertical' %}
+        {% field_editor form.latitude %}
+        {% field_editor form.longitude %}
       </div>
     </div>
     <div class="container_line">
-        {% bootstrap_field form.code layout='vertical' %}
-        {% bootstrap_field form.name layout='vertical' %}
+        {% field_editor form.code %}
+        {% field_editor form.name %}
     </div>
     <div >
       {% markdown_editor component=form.notes %}

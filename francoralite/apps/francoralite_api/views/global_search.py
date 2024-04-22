@@ -20,29 +20,31 @@ from ..serializers.global_search import GlobalSearchSerializer
 class GlobalSearchList(generics.ListAPIView):
     serializer_class = GlobalSearchSerializer
 
+    RESULTS_LIMIT = 5
+
     def get_queryset(self):
-        limit = 5
         query = self.request.query_params.get('q', None)
-        authorities = Authority.objects.filter(
-            Q(first_name__icontains=query) |
-            Q(last_name__icontains=query))[:limit]
-        locations = Location.objects.filter(
-            Q(name__icontains=query))[:limit]
-        fonds = Fond.objects.filter(
-            Q(title__icontains=query))[:limit]
-        missions = Mission.objects.filter(
-            Q(title__icontains=query))[:limit]
-        collections = Collection.objects.filter(
-            Q(title__icontains=query) |
-            Q(alt_title__icontains=query))[:limit]
-        items = Item.objects.filter(
-            Q(title__icontains=query) |
-            Q(alt_title__icontains=query))[:limit]
-        all_results = list(itertools.chain(
-            authorities,
-            locations,
-            fonds,
-            missions,
-            collections,
-            items))
-        return all_results
+
+        return list(itertools.chain(*(
+            model.distinct()[:self.RESULTS_LIMIT]
+            for model in (
+                Authority.objects.filter(
+                    Q(first_name__icontains=query) |
+                    Q(last_name__icontains=query)),
+                Location.objects.filter(
+                    Q(name__icontains=query)),
+                Fond.objects.filter(
+                    Q(title__icontains=query)),
+                Mission.objects.filter(
+                    Q(title__icontains=query)),
+                Collection.objects.filter(
+                    Q(title__icontains=query) |
+                    Q(alt_title__icontains=query)),
+                Item.objects.filter(
+                    Q(title__icontains=query) |
+                    Q(alt_title__icontains=query) |
+                    Q(text__icontains=query) |  # paroles
+                    Q(deposit_digest__icontains=query) |  # résumé
+                    Q(itemkeyword__keyword__name__icontains=query)),
+            )
+        )))

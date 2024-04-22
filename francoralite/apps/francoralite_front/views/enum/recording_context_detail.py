@@ -9,12 +9,12 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from ...francoralite_template_view import FrancoraliteTemplateView
 from ...forms.recording_context import RecordingContextForm
-from ... import tools as tools
+from ... import tools
 
 
 class RecordingContextDetail(FrancoraliteTemplateView):
     template_name = "../templates/enum/recording_context-detail.html"
-    
+
     keycloak_scopes = {
         'DEFAULT': 'recording_context:view',
     }
@@ -27,7 +27,7 @@ class RecordingContextDetail(FrancoraliteTemplateView):
                 '/api/recordingcontext/' + context['id'])
             context['form'] = RecordingContextForm()
         except Http404:
-            raise Http404(_('Cet éditeur n’existe pas.'))
+            raise tools.UserMessageHttp404(_('Cet éditeur n’existe pas.'))
         except Exception as err:
             context['recording_context'] = {}
             context['error'] = err
