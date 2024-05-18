@@ -1,39 +1,41 @@
 {% extends "enum/language.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
-  {{ block.super }}
+{{ block.super }}
+<script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
 {% block stylesheets %}
-  {{ block.super }}
+{{ block.super }}
 {% endblock %}
 
 
 {% block title_name %}
-  {{ block.super }}
-    {% if language %}
-     : {{ language.name }}
-    {% endif %}
+{{ block.super }}
+{% if language %}
+: {{ language.name }}
+{% endif %}
 {% endblock %}
 
 
 {% block content %}
 
 {% block title_buttons %}
-  {% if perms.keycloak.language_update %}
-  <a href="{% url "language-edit" id=id %}" class="btn_add btn btn-default">
-    <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
+{% if perms.keycloak.language_update %}
+<a href="{% url "language-edit" id=id %}" class="btn_add btn btn-default">
+  <span class="glyphicon glyphicon-edit"></span> {% trans "Modifier" %}
   </button>
-  </a>
-  {% endif %}
+</a>
+{% endif %}
 {% endblock %}
 
 {% block title %}
-  {{ block.super }}
+{{ block.super }}
 {% endblock %}
 
 {% if not error|length %}
@@ -41,17 +43,21 @@
 {% if language %}
 
 
-  {% field_data_id form.identifier language.identifier|upper|safe %}
-  {% field_data_id form.part2B language.part2B|safe %}
-  {% field_data_id form.part2T language.part2T|safe %}
-  {% field_data_id form.part1 language.part1|safe %}
-  {% field_data_id form.scope language.scope|safe %}
-  {% field_data_id form.type language.type|safe %}
-  {% field_data_id form.name language.name|safe %}
-  {% field_data_id form.comment dance.comment|markdown|safe %}
+{% field_data_id form.identifier language.identifier|upper|safe %}
+{% field_data_id form.part2B language.part2B|safe %}
+{% field_data_id form.part2T language.part2T|safe %}
+{% field_data_id form.part1 language.part1|safe %}
+{% field_data_id form.scope language.scope|safe %}
+{% field_data_id form.type language.type|safe %}
+{% field_data_id form.name language.name|safe %}
+{% field_data_id form.comment dance.comment|markdown|safe %}
+
+
+<francoralite-related-items thesaurus="language" filter_value="{{language.id}}">
+</francoralite-related-items>
 
 {% else %}
-  <p>{% trans "Cette langue n'existe pas." %}</p>
+<p>{% trans "Cette langue n'existe pas." %}</p>
 {% endif %}
 
 {% endif %}
