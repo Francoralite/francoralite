@@ -1,10 +1,12 @@
 {% extends "enum/musical_group.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -37,6 +39,10 @@
   {% if musical_group %}
   {% field_data_id form.name musical_group.name|safe %}
   {% field_data_id form.notes musical_group.notes|markdown|safe %}
+  <francoralite-related-items
+    thesaurus="musical_group"
+    filter_value="{{ musical_group.id }}"
+    ></francoralite-related-items>
   {% else %}
     <p>{% trans "Cette formation n'existe pas." %}</p>
      {% display_error error %}

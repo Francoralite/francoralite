@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -38,6 +40,11 @@
   {% field_data form.abstract.label|safe coiraultabstract|markdown|safe %}
   {% field_data "Rubrique" coirault.collection.name|add:" - "|add:coirault.collection.number|safe %}
   {% field_data "Chapitre" coirault.collection.collection.name|add:" - "|add:coirault.collection.collection.number|safe %}
+
+  <francoralite-related-items
+    thesaurus="coirault"
+    filter_value="{{ coirault.id }}"
+    ></francoralite-related-items>
 
 {% else %}
   <p>{% trans "Cette chanson-type n'existe pas." %}</p>

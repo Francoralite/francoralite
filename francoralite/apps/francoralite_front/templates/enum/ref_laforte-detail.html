@@ -1,10 +1,12 @@
 {% extends "enum/ref_laforte.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
 {{ block.super }}
+    <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -40,6 +42,11 @@
 
 {% field_data_id form.number ref_laforte.number|safe %}
 {% field_data_id form.name ref_laforte.name|safe %}
+
+<francoralite-related-items
+  thesaurus="ref_laforte"
+  filter_value="{{ ref_laforte.id }}"
+  ></francoralite-related-items>
 
 {% else %}
 <p>{% trans "Cette référence Laforte n'existe pas." %}</p>

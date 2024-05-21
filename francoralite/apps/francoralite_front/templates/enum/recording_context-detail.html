@@ -1,10 +1,12 @@
 {% extends "enum/recording_context.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -38,6 +40,11 @@
 
   {% field_data_id form.name recording_context.name|safe %}
   {% field_data_id form.notes recording_context.notes|markdown|safe %}
+
+  <francoralite-related-items
+    thesaurus="recording_context"
+    filter_value="{{ recording_context.id }}"
+    ></francoralite-related-items>
 
 {% else %}
   <p>{% trans "Ce contexte d'enregistrement n'existe pas." %}</p>

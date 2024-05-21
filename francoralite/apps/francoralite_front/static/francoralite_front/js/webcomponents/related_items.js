@@ -25,12 +25,12 @@ class FrancoraliteRelatedItems extends HTMLElement {
         this.style.left = '50%';
         this.style.transform = 'translateX(-50%)';
 
-        const createButton = (related) => {
+        const createButton = (related, caption) => {
             const button = document.createElement('button');
             button.setAttribute('class', 'btn');
             button.setAttribute('type', 'button');
             button.setAttribute('id', 'btn-' + related + '-related');
-            button.innerHTML = `<span class="glyphicon glyphicon-search"></span> Rechercher les <b>${related}</b> ...`;
+            button.innerHTML = `<span class="glyphicon glyphicon-search"></span> Rechercher les <b>${caption}</b> ...`;
             Object.assign(button.style, {
                 backgroundColor: '#ef7c56',
                 color: 'black',
@@ -42,8 +42,8 @@ class FrancoraliteRelatedItems extends HTMLElement {
             return button;
         };
 
-        this.buttonItem = createButton('items');
-        this.buttonCollection = createButton('enquêtes');
+        this.buttonItem = createButton('item', 'items');
+        this.buttonCollection = createButton('collection', 'enquêtes');
 
     }
     connectedCallback() {

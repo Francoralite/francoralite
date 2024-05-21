@@ -1,10 +1,12 @@
 {% extends "enum/thematic.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -40,6 +42,11 @@
 
   {% field_data_id form.name thematic.name|safe %}
   {% field_data_id form.notes thematic.notes|markdown|safe %}
+
+  <francoralite-related-items
+    thesaurus="thematic"
+    filter_value="{{ thematic.id }}"
+    ></francoralite-related-items>
 
 {% else %}
   <p>{% trans "Cette thématique n'existe pas." %}</p>

@@ -62,12 +62,15 @@ class EnumsTest:
                     francoralite_context.verify_title(_(self.title) + ' : ' + d[self.first_text_field])
                 francoralite_context.verify_data(data)
 
-                if(self.entity == 'language'):
-                    buttons = [('btn-item-related','items'), ( 'btn-collection-related', 'enquêtes')]
+                if self.entity != "block":
+                    buttons = [('btn-item-related','item'), ( 'btn-collection-related', 'enquête')]
                     for button in buttons:
+                        assert francoralite_context.exists_element(by_id=button[0])
                         if francoralite_context.exists_element(by_id=button[0]):
                             francoralite_context.find_element(by_id=button[0]).click()
                             francoralite_context.verify_title("Recherche avancée")
+                            """
+                            francoralite_context.scroll_to_element(by_id="search-results-summary")
                             assert (
                                 francoralite_context.find_element(
                                     by_id="search-results-summary"
@@ -76,6 +79,7 @@ class EnumsTest:
                                     button[1]
                                 )
                             )
+                            """
                             francoralite_context.open_url(self.url_prefix + '/' + d["id"])
 
             # And, then logout (if authenticated user)

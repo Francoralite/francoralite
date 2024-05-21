@@ -7,6 +7,7 @@
 {% block javascript %}
   {{ block.super }}
   <script type="module" src="{% static "francoralite_front/js/webcomponents/map.js" %}"></script>
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -43,14 +44,19 @@
     {% field_data_id form.geojson cultural_area.geojson|json truncate=150 %}
   {% else %}
     {% field_data_id form.geojson cultural_area.geojson|json %}
-  {% endif %}
-
+    {% endif %}
+    
+  <francoralite-related-items
+    thesaurus="cultural_area"
+    filter_value="{{ cultural_area.id }}"
+  ></francoralite-related-items>
+    
   {% if cultural_area.geojson %}
   <div class="map-container">
     <francoralite-map geojson-data="{{ cultural_area.geojson|json|escape }}"></francoralite-map>
   </div>
   {% endif %}
- 
+  
 {% else %}
   <p>{% trans "Cette aire culturelle n'existe pas." %}</p>
 {% endif %}

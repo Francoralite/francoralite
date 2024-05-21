@@ -1,10 +1,12 @@
 {% extends "enum/domain_tale.html" %}
 {% load i18n %}
+{% load static %}
 {% load markdown_extra %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -38,6 +40,11 @@
 
   {% field_data_id form.name domain_tale.name|safe %}
   {% field_data_id form.notes domain_tale.notes|markdown|safe %}
+
+  <francoralite-related-items
+    thesaurus="domain_tale"
+    filter_value="{{ domain_tale.id }}"
+    ></francoralite-related-items>
 
 {% else %}
   <p>{% trans "Ce genre n'existe pas." %}</p>

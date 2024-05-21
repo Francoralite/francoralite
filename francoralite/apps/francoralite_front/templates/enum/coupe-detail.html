@@ -1,10 +1,12 @@
 {% extends "enum/coupe.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -38,6 +40,11 @@
 
   {% field_data_id form.name coupe.name|safe %}
   {% field_data_id form.notes coupe.notes|markdown|safe %}
+
+  <francoralite-related-items
+    thesaurus="coupe"
+    filter_value="{{ coupe.id }}"
+    ></francoralite-related-items>
 
 {% else %}
   <p>{% trans "Cette coupe n'existe pas." %}</p>

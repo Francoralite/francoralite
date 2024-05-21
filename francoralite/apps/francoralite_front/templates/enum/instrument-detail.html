@@ -1,10 +1,12 @@
 {% extends "enum/instrument.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -43,6 +45,11 @@
       <span class="donnee"> {{ instrument.typology.number|safe }} :
         {{ instrument.typology.name|safe }}</span>
     </span>
+
+    <francoralite-related-items
+      thesaurus="instrument"
+      filter_value="{{ instrument.id }}"
+      ></francoralite-related-items>
 
   {% else %}
     <p>{% trans "Cet instrument n'existe pas." %}</p>

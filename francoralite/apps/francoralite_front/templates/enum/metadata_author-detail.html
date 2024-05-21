@@ -1,10 +1,12 @@
 {% extends "enum/metadata_author.html" %}
 {% load i18n %}
 {% load markdown_extra %}
+{% load static %}
 {% load data_display %}
 
 {% block javascript %}
   {{ block.super }}
+  <script type="module" src="{% static "francoralite_front/js/webcomponents/related_items.js" %}"></script>
 {% endblock %}
 
 
@@ -40,6 +42,10 @@
 
   {% field_data form.name.label|safe metadata_author.name|safe %}
   {% field_data form.notes.label|safe metadata_author.notes|markdown|safe %}
+
+  <francoralite-related-items
+    thesaurus="metadata_author"
+    filter_value="{{ metadata_author.id }}" ></francoralite-related-items>
 
 {% else %}
   <p>{% trans "Cette méta donnée auteur n'existe pas." %}</p>
