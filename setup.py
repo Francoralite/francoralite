@@ -27,7 +27,7 @@ setup(
   author_email = "leger.luc@gmail.com",
   version = '1.7.0',
   install_requires = [
-    'django==3.1.14',
+    'django==3.2.25',
     'django-appconf==1.0.4',
     'django-filter==2.4.0',
     'djangorestframework==3.12.2',
