@@ -37,11 +37,11 @@
   <!-- Table to display the institutions -->
   <table class="listing">
   <tr>
-      <th class="highlight">{% trans "Nom / Prénom" %}</th>
-      <th>{% trans "Alias" %}</th>
-      <th>{% trans "Rôles" %}</th>
+      <th style="width:40%;" class="highlight">{% trans "Nom / Prénom" %}</th>
+      <th style="width:20%;">{% trans "Alias" %}</th>
+      <th style="width:20%;">{% trans "Rôles" %}</th>
       {% if perms.keycloak.authority_update or perms.keycloak.authority_delete %}
-      <th>{% trans "Modifier" %}</th>
+      <th style="width:20%;">{% trans "Modifier" %}</th>
       {% endif %}
   </tr>
   {% for personne in personnes %}
