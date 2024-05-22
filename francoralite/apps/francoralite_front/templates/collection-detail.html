@@ -108,8 +108,8 @@
                 {% for collector in collection.collectors %}
                     <a href="{% url "personne-detail" id=collector.id %}"
                     onclick="window.open(this.href); return false;">
-                    {{collector.first_name}} {{collector.last_name}}
-                    </a>{% if not forloop.last %}, {% endif %}
+                    {{collector.last_name}}, {{collector.first_name}}
+                    </a>{% if not forloop.last %}; {% endif %}
                 {% endfor %}
               </dd>
             </dl>
@@ -121,8 +121,8 @@
                 {% for informer in collection.informers %}
                     <a href="{% url "personne-detail" id=informer.id %}"
                     onclick="window.open(this.href); return false;">
-                    {{informer.first_name}} {{informer.last_name}}
-                    </a>{% if not forloop.last %}, {% endif %}
+                    {{informer.last_name}}, {{informer.first_name}}
+                    </a>{% if not forloop.last %}; {% endif %}
                 {% endfor %}
                 </ul>
               </dd>

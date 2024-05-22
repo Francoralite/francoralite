@@ -123,7 +123,7 @@
               <li>
                 <a href="{% url "personne-detail" id=collector.id %}"
                 target="_blank">
-                {{collector.first_name}} {{collector.last_name}}
+                {{collector.last_name}}, {{collector.first_name}} 
                 </a>
 
               </li>
@@ -139,7 +139,7 @@
               <li>
                 <a href="{% url "personne-detail" id=informer.id %}"
                 target="_blank">
-                {{informer.first_name}} {{informer.last_name}}
+                {{informer.last_name}}, {{informer.first_name}}
               </a>
               </li>
               {% endfor %}
