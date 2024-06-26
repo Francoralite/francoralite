@@ -30,7 +30,7 @@ setup(
     'django==3.1.14',
     'django-appconf==1.0.4',
     'django-filter==2.4.0',
-    'djangorestframework==3.12.2',
+    'djangorestframework==3.15.2',
     'djangorestframework-xml==2.0.0',
     'drf-nested-routers==0.93.3',
     'drf-yasg==1.20.0',
